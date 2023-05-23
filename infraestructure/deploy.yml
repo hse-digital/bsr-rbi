@@ -42,5 +42,5 @@ jobs:
       inputs:
         app_location: 'HSE.RP.Client'
         app_build_command: '${{parameters.appBuildCommand}}'
-        output_location: 'dist/hsepacclient/browser'
+        output_location: 'dist/hserpclient/browser'
         azure_static_web_apps_api_token: $(swaToken)
