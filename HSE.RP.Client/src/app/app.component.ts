@@ -8,7 +8,7 @@ import { DateTimeService } from './services/datetime.service';
   providers: [DateTimeService]
 })
 export class AppComponent {
-  title = 'HSE Planning And Control Client';
+  title = 'HSE Regulating Professions Client';
   dateTime = '';
 
   constructor(private dateTimeService: DateTimeService ) {   
