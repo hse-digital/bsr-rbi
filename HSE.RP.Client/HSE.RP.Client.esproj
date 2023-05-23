@@ -8,7 +8,7 @@
     <!-- Command to create an optimized build of the project that's ready for publishing -->
     <ProductionBuildCommand>npm run build</ProductionBuildCommand>
     <!-- Folder where production build objects will be placed -->
-    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\HSE.PAC.Client</BuildOutputFolder>
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\HSE.RP.Client</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\services\" />

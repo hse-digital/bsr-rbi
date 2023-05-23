@@ -12,16 +12,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'HSE.PAC.Client'`, () => {
+  it(`should have as title 'HSE.RP.Client'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('HSE.PAC.Client');
+    expect(app.title).toEqual('HSE.RP.Client');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('HSE.PAC.Client app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('HSE.RP.Client app is running!');
   });
 });
