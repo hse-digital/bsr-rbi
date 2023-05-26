@@ -79,6 +79,24 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2022-05-15
     }
 }
 
+var containerName = 'regulated_building_professions'
+resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2022-05-15' = {
+    parent: cosmosDB
+    name: containerName
+    properties: {
+        resource: {
+            id: containerName
+            partitionKey: {
+                paths: [
+                    '/id'
+                ]
+                kind: 'Hash'
+            }
+            defaultTtl: -1
+        }
+    }
+}
+
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
     name: 's118-${environment}-bsr-acs-ai'
     location: location
