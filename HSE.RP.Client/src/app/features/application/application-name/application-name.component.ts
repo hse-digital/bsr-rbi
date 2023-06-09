@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService, BuildingControlModel } from '../../../services/application.service';
+import { ApplicationService, BuildingInspectorModel } from '../../../services/application.service';
 
 @Component({
   templateUrl: './application-name.component.html'
@@ -31,9 +31,9 @@ export class ApplicationNameComponent extends PageComponent<string> {
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    let AppType = applicationService.model.ApplicationType;
-    
-    return FieldValidations.IsNotNullOrWhitespace(AppType?.toString())
+/*    let AppType = applicationService.model.ApplicationType;
+    return FieldValidations.IsNotNullOrWhitespace(AppType?.toString())*/
+    return true;
   }
 
   override isValid(): boolean {

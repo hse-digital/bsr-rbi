@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
 import { PhoneNumberValidator } from '../../../helpers/validators/phone-number-validator';
-import { ApplicationService, BuildingControlModel } from '../../../services/application.service';
+import { ApplicationService, BuildingInspectorModel } from '../../../services/application.service';
 
 @Component({
   selector: 'hse-applicant-phone',

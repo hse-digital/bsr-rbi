@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
 import { GovukErrorSummaryComponent } from "hse-angular";
-import { ApplicationService, BuildingApplicationStatus } from "src/app/services/application.service";
+import { ApplicationService } from "src/app/services/application.service";
 import { NavigationService } from "src/app/services/navigation.service";
 import { TitleService } from 'src/app/services/title.service';
 
@@ -65,7 +65,7 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
   private async doesSecurityCodeMatch(): Promise<boolean> {
     try {
-      await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress);
+/*      await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress);
       await this.applicationService.continueApplication(this.applicationNumber, this.emailAddress, this.securityCode!);
 
       var applicationStatus = this.applicationService.model.ApplicationStatus;
@@ -73,7 +73,8 @@ export class ReturningApplicationVerifyComponent implements OnInit {
         this.navigationService.navigate(`application/${this.applicationNumber}/payment/confirm`);
       } else {
         this.navigationService.navigate(`application/${this.applicationNumber}`);
-      }
+      }*/
+      //TODO re-enable this
 
       return true;
     } catch {

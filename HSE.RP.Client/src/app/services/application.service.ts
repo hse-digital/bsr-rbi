@@ -6,7 +6,7 @@ import { LocalStorage } from "src/app/helpers/local-storage";
 @Injectable()
 export class ApplicationService {
   // replace this any to a specific type
-  model: BuildingControlModel;
+  model: BuildingInspectorModel;
 
   constructor(private httpClient: HttpClient) {
     this.model = LocalStorage.getJSON('application_data') ?? {};
@@ -14,7 +14,7 @@ export class ApplicationService {
 
   newApplication() {
     LocalStorage.remove('application_data');
-    this.model = new BuildingControlModel();
+    this.model = new BuildingInspectorModel();
   }
 
   updateLocalStorage() {
@@ -22,7 +22,7 @@ export class ApplicationService {
   }
 
   clearApplication() {
-    this.model = new BuildingControlModel();
+    this.model = new BuildingInspectorModel();
     this.updateLocalStorage();
   }
 
@@ -48,9 +48,8 @@ export class ApplicationService {
 
 }
 
-export class BuildingControlModel {
+export class BuildingInspectorModel {
   id?: String;
-  ApplicationType?: ApplicationType
   ApplicationName?: string
   FirstName?: string
   LastName?: string
@@ -58,13 +57,10 @@ export class BuildingControlModel {
   Email?: string
 }
 
-  export enum ApplicationType{
-    NewHRB,
-    ExistingHRB,
-    ExisitngBuildingToHRB
-  }
 
 export class ApplicantName {
   firstName?: string
   lastName?: string
 }
+
+

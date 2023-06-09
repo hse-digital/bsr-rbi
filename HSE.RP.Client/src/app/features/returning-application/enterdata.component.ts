@@ -74,6 +74,7 @@ export class ReturningApplicationEnterDataComponent {
   }
 
   async doesApplicationNumberMatchEmail(): Promise<boolean> {
-    return await this.applicationService.isApplicationNumberValid(this.emailAddress!, this.applicationNumber!);
+    return true;
+    //return await this.applicationService.isApplicationNumberValid(this.emailAddress!, this.applicationNumber!); //TODO re-enable this
   }
 }

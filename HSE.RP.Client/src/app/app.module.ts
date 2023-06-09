@@ -19,14 +19,22 @@ import { CookiesBannerService } from './services/cookies-banner.service';
 import { HomeComponent } from './features/home/home.component';
 import { ApplicationSelectorComponent } from './features/application-selector/application-selector.component';
 import { ApplicationModule } from './features/application/application.module';
+import { NewApplicationModule } from './features/new-application/new-application.module';
+import { ReturningApplicationComponent } from './features/returning-application/returning-application.component';
+import { ReturningApplicationEnterDataComponent } from './features/returning-application/enterdata.component';
+import { ReturningApplicationResendCodeComponent } from './features/returning-application/resend.component';
+import { ReturningApplicationVerifyComponent } from './features/returning-application/verify.component';
 
 const routes = new HseRoutes([
   HseRoute.protected(SampleComponent.route, SampleComponent, SampleComponent.title),
   HseRoute.unsafe(HomeComponent.route, HomeComponent, undefined, HomeComponent.title),
   HseRoute.unsafe(ApplicationSelectorComponent.route, ApplicationSelectorComponent, undefined, ApplicationSelectorComponent.title),
+  HseRoute.forLoadChildren(NewApplicationModule.baseRoute, () => import('./features/new-application/new-application.module').then(m => m.NewApplicationModule)),
   HseRoute.forLoadChildren(HelpPagesModule.baseRoute, () => import('./components/footer/help-pages.module').then(m => m.HelpPagesModule)),
   HseRoute.forLoadChildren(ApplicationModule.baseRoute, () => import('./features/application/application.module').then(m => m.ApplicationModule)),
   HseRoute.unsafe(NotFoundComponent.route, NotFoundComponent, undefined, NotFoundComponent.title),
+  HseRoute.unsafe(ReturningApplicationComponent.route, ReturningApplicationComponent, undefined, ReturningApplicationComponent.title),
+
   HseRoute.unsafe('**', undefined, NotFoundComponent.route)
 ]);
 
@@ -38,6 +46,10 @@ const routes = new HseRoutes([
     NotFoundComponent,
     HomeComponent,
     ApplicationSelectorComponent,
+    ReturningApplicationComponent,
+    ReturningApplicationEnterDataComponent,
+    ReturningApplicationResendCodeComponent,
+    ReturningApplicationVerifyComponent,
     SampleComponent
   ],
   imports: [

@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicantName, ApplicationService, BuildingControlModel } from '../../../services/application.service';
+import { ApplicantName, ApplicationService, BuildingInspectorModel } from '../../../services/application.service';
 
 @Component({
   selector: 'hse-applicant-name',
