@@ -6,13 +6,12 @@
       <div class="govuk-form-group">
 
         <govuk-error-summary *ngIf="showError" title="There is a problem" #summaryError>
-    <govuk-error-link anchorId="application-new-input" message="Select what does this work involve" />
-  </govuk-error-summary>
+          <govuk-error-link anchorId="application-new-input" message="Select if you want to start a new application or continue a saved application" />
+        </govuk-error-summary>
 
-        <govuk-radio-group title="What does this work involve?" [isPageHeading]=true [(model)]="selection" [errorText]="showError ? 'Select what does this work involve': undefined">
-          <govuk-radio name="application-group" id="new-hrb" value='0' label="Constructing a new higher-risk building" (onKeyupEnter)="continue()" />
-          <govuk-radio name="application-group" id="ExistingHRB" value="1" label="Work to an existing building that will make it a higher-risk building" (onKeyupEnter)="continue()" />
-          <govuk-radio name="application-group" id="ExisitngBuildingToHRB" value="2" label="Work to an existing higher-risk building" class="govuk-radio-no-margin-bottom" (onKeyupEnter)="continue()" />
+        <govuk-radio-group title="Your application" [isPageHeading]=true [(model)]="continueLink" [errorText]="showError ? 'Select if you want to start a new application or continue a saved application': undefined">
+          <govuk-radio name="application-group" id="application-new" value="/new-application/building-name" label="Start a new application" (onKeyupEnter)="continue()" />
+          <govuk-radio name="application-group" id="application-return" value="/returning-application" label="Continue a saved application" class="govuk-radio-no-margin-bottom" (onKeyupEnter)="continue()" />
         </govuk-radio-group>
 
       </div>
