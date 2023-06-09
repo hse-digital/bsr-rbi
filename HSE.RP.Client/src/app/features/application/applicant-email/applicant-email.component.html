@@ -1,0 +1,34 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Send Verification Email" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+  <govuk-error-summary *ngIf="emailHasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="!modelValid" anchorId="input-sample-field" message="Enter your email address" />
+  </govuk-error-summary>
+
+  <span class="govuk-caption-l">Your details</span>
+
+  <h1 class="govuk-heading-l">Your email address</h1>
+
+
+  <govuk-body>
+    To secure your application and allow you to return to it later, we need to verify your email address. To do this, we will send you a 6-digit security code.
+  </govuk-body>
+
+  <govuk-body>
+    If you do not have an email address, contact us to apply for building control approval for a higher-risk building.
+  </govuk-body>
+
+  <govuk-input id="applicant-email" label="Enter your email address"
+               [(model)]="model" [maxlength]=100
+               labelClass="govuk-label--s"
+               hint="We will use this to contact you about this application. You will need to use this email address to access the whole application - including the detailed information about the structure and safety of the building."
+               [errorText]="getErrorDescription(!modelValid, 'Enter an email address in the correct format')"
+               hintClass="no-margin-top"
+               class="govuk-!-margin-bottom-1"
+               (onKeyupEnter)="saveAndContinue()" />
+
+</govuk-formpage>
+
+
