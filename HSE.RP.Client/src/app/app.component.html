@@ -1,3 +1,20 @@
-<h1>{{title}}</h1>
+<govuk-cookie-banner [viewCookiesLink]="viewCookiesLink"
+                     title="Register as a building inspector"
+                     class="govuk-width-container"
+                     [showCookieBanner]="cookieBannerModel.showCookies"
+                     [showConfirmBanner]="cookieBannerModel.showConfirmBanner"
+                     [cookiesAccepted]="cookieBannerModel.cookiesAccepted"
+                     (onChangeCookies)="cookiesChanged()"
+                     (onCookiesAccepted)="cookiesAccepted()"
+                     (onCookiesRejected)="cookiesRejected()" />
 
-<p>{{dateTime}}</p>
+<govuk-page headerTitle="Register as a building inspector" [govukLogoLink]="govukLogoLink" [headerTitleLink]="appHeaderLink" [footerLinks]="footerLinks">
+  <govuk-phase-banner tag="Beta">
+    This is a new service - your <a href="#" role="link" tabindex="0" target="_blank">feedback</a> will help us to improve it.
+  </govuk-phase-banner>
+  <router-outlet />
+</govuk-page>
+
+
+<timeout-modal *ngIf="showTimeoutDialog" [delayToTimeout]="120" (onContinueClicked)="timeoutContinue()" (onSaveAndComebackClicked)="timeoutSaveAndComeBack()" (onTimeout)="timeout()" />
+<div id="hiddenAlertContainer" role="alert" class="visually-hidden"></div>

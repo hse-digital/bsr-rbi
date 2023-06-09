@@ -1,0 +1,23 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<div class="govuk-main-wrapper">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-form-group">
+
+        <govuk-error-summary *ngIf="showError" title="There is a problem" #summaryError>
+    <govuk-error-link anchorId="application-new-input" message="Select what does this work involve" />
+  </govuk-error-summary>
+
+        <govuk-radio-group title="What does this work involve?" [isPageHeading]=true [(model)]="selection" [errorText]="showError ? 'Select what does this work involve': undefined">
+          <govuk-radio name="application-group" id="new-hrb" value='0' label="Constructing a new higher-risk building" (onKeyupEnter)="continue()" />
+          <govuk-radio name="application-group" id="ExistingHRB" value="1" label="Work to an existing building that will make it a higher-risk building" (onKeyupEnter)="continue()" />
+          <govuk-radio name="application-group" id="ExisitngBuildingToHRB" value="2" label="Work to an existing higher-risk building" class="govuk-radio-no-margin-bottom" (onKeyupEnter)="continue()" />
+        </govuk-radio-group>
+
+      </div>
+
+      <govuk-button (onClick)="continue()">Continue</govuk-button>
+    </div>
+  </div>
+</div>

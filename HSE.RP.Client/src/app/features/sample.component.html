@@ -1,0 +1,17 @@
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+  <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="!modelValid" anchorId="input-sample-field" message="Required" />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">What is this field value?</h1>
+
+  <govuk-body>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem incidunt eveniet neque quos natus totam officia, beatae eos sit explicabo! Doloremque repellat veniam dolorum cum explicabo quis dicta, natus quasi.</govuk-body>
+
+  <govuk-input id="sample-field" label="Value" labelClass="govuk-label--s"
+               [(model)]="model"
+               [errorText]="getErrorDescription(!modelValid, 'Required')"
+               hintClass="no-margin-top"
+               (onKeyupEnter)="saveAndContinue()" />
+
+</govuk-formpage>
