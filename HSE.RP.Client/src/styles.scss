@@ -1,5 +1,10 @@
 @import "node_modules/govuk-frontend/govuk/all";
 
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
 .govuk-header__logotype-text {
   margin-left: 10px;
 }
@@ -13,7 +18,7 @@
 }
 
 // GOVUK-RADIO
-.govuk-radio-no-margin-bottom>.govuk-radios__item {
+.govuk-radio-no-margin-bottom > .govuk-radios__item {
   margin-bottom: 0px !important;
 }
 
@@ -216,4 +221,22 @@ a.govuk-back-link {
   font-size: 19px;
   font-size: 1.1875rem;
   margin-bottom: 5px;
+}
+
+a, .govuk-link, .app-task-list__task-name > a {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, .0625rem);
+  text-underline-offset: 0.1em;
+}
+
+a:hover, .govuk-link:hover {
+  color: #003078;
+  text-decoration-thickness: max(3px, .1875rem, .12em);
+}
+
+a:link, .govuk-link:link {
+  color: #1d70b8;
 }

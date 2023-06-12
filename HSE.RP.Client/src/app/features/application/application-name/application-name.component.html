@@ -1,0 +1,22 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+  <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="!modelValid" anchorId="input-sample-field" message="Enter your application Name" />
+  </govuk-error-summary>
+
+  <span class="govuk-caption-l">Application name</span>
+  <h1 class="govuk-heading-l">Choose a name for your application</h1>
+
+  <govuk-body>To help us track your application, choose a name that identifies it clearly to you.</govuk-body>
+  <govuk-body>We suggest using the site name of the application. For example, 123 Broad Street.</govuk-body>
+
+  <govuk-input id="sample-field" labelClass="govuk-label--s"
+               [maxlength]=150
+               [(model)]="model"
+               [errorText]="getErrorDescription(!modelValid, 'Enter your application Name')"
+               hintClass="no-margin-top"
+               (onKeyupEnter)="saveAndContinue()" />
+
+</govuk-formpage>
