@@ -1,4 +1,4 @@
-import {  NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HseRoute, HseRoutes } from '../../helpers/hse.route';
 import { ApplicationNameComponent } from './application-name/application-name.component';
@@ -14,6 +14,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ApplicationService } from '../../services/application.service';
 import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../services/cookies-banner.service';
+import { ApplicationTaskListComponent } from './task-list/task-list.component';
 
 const routes = new HseRoutes([
   HseRoute.protected(ApplicationNameComponent.route, ApplicationNameComponent, ApplicationNameComponent.title),
@@ -21,6 +22,7 @@ const routes = new HseRoutes([
   HseRoute.protected(ApplicantPhoneComponent.route, ApplicantPhoneComponent, ApplicantPhoneComponent.title),
   HseRoute.protected(ApplicantNameComponent.route, ApplicantNameComponent, ApplicantNameComponent.title),
   HseRoute.protected(ApplicantEmailComponent.route, ApplicantEmailComponent, ApplicantEmailComponent.title),
+  HseRoute.protected(ApplicationTaskListComponent.route, ApplicationTaskListComponent, ApplicationTaskListComponent.title),
 
 ]);
 
@@ -30,7 +32,9 @@ const routes = new HseRoutes([
     ApplicantPhoneComponent,
     ApplicantNameComponent,
     ApplicantEmailComponent,
-    ApplicationNameComponent
+    ApplicationNameComponent,
+    ApplicationTaskListComponent,
+
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

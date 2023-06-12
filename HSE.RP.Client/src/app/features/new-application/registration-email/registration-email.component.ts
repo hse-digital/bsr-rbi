@@ -8,6 +8,8 @@ import { TitleService } from 'src/app/services/title.service';
 import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 import { PageComponent } from '../../../helpers/page.component';
 import { environment } from '../../../../environments/environment';
+import { ApplicationTaskListComponent } from '../../application/task-list/task-list.component';
+import { relative } from 'path';
 
 @Component({
   templateUrl: './registration-email.component.html',
@@ -37,17 +39,14 @@ export class RegistrationEmailComponent extends PageComponent<BuildingInspectorM
   override async onSave(applicationService: ApplicationService): Promise<void> {
     applicationService.model.Email = this.model?.Email;
 
+
     //await applicationService.sendVerificationEmail(this.model?.Email!);
   }
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return true;
   }
 
-  navigateNext(): Promise<boolean> {
-      throw new Error('Method not implemented.');
-  }
-
-  navigateToNextPage(navigationService: NavigationService, activatedRoute: ActivatedRoute): Promise<boolean> {
-    return navigationService.navigateRelative('verify', activatedRoute);
+  override navigateNext(): Promise<boolean> {
+    return this.navigationService.navigate("application/task-list");;
   }
 }
