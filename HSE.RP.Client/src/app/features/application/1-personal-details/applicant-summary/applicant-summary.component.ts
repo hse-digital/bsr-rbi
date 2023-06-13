@@ -5,14 +5,16 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
+import { takeLast } from 'rxjs';
+import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 
 @Component({
-  selector: 'hse-applicant-photo',
-  templateUrl: './applicant-photo.component.html',
+  selector: 'hse-applicant-summary',
+  templateUrl: './applicant-summary.component.html',
 })
-export class ApplicantPhotoComponent extends PageComponent<string> {
+export class ApplicantSummaryComponent extends PageComponent<string> {
 
-  public static route: string = "applicant-photo";
+  public static route: string = "applicant-summary";
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
@@ -47,7 +49,7 @@ export class ApplicantPhotoComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantAddressComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
   }
 
 }

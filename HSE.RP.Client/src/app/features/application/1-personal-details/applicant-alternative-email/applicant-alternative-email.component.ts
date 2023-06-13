@@ -5,6 +5,7 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { EmailValidator } from '../../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
+import { ApplicantProofOfIdentityComponent } from '../applicant-proof-of-identity/applicant-proof-of-identity.component';
 
 @Component({
   selector: 'hse-applicant-alternative-email',
@@ -13,7 +14,7 @@ import { ApplicationService } from '../../../../services/application.service';
 export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
 
   public static route: string = "applicant-alternative-email";
-  static title: string = "Apply for building control approval for a higher-risk building - GOV.UK";
+  static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   emailHasErrors: boolean = false;
   modelValid: boolean = false;
@@ -47,7 +48,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
   }
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative('verify', this.activatedRoute)
+    return this.navigationService.navigateRelative(ApplicantProofOfIdentityComponent.route, this.activatedRoute)
 
   }
 

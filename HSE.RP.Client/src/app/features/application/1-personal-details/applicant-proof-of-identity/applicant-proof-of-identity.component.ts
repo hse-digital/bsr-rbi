@@ -5,12 +5,13 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
+import { ApplicantSummaryComponent } from '../applicant-summary/applicant-summary.component';
 
 @Component({
-  selector: 'hse-applicant-photo',
-  templateUrl: './applicant-photo.component.html',
+  selector: 'hse-applicant-proof-of-identity',
+  templateUrl: './applicant-proof-of-identity.component.html',
 })
-export class ApplicantPhotoComponent extends PageComponent<string> {
+export class ApplicantProofOfIdentityComponent extends PageComponent<string> {
 
   public static route: string = "applicant-photo";
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
@@ -47,7 +48,7 @@ export class ApplicantPhotoComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantAddressComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(ApplicantSummaryComponent.route, this.activatedRoute);
   }
 
 }

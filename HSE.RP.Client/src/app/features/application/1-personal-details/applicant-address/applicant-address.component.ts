@@ -4,15 +4,16 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
-import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
+import { ApplicantAlternativeEmailComponent } from '../applicant-alternative-email/applicant-alternative-email.component';
+import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
 
 @Component({
-  selector: 'hse-applicant-photo',
-  templateUrl: './applicant-photo.component.html',
+  selector: 'hse-applicant-address',
+  templateUrl: './applicant-address.component.html',
 })
-export class ApplicantPhotoComponent extends PageComponent<string> {
+export class ApplicantAddressComponent extends PageComponent<string> {
 
-  public static route: string = "applicant-photo";
+  public static route: string = "applicant-address";
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
@@ -29,7 +30,7 @@ export class ApplicantPhotoComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    //
+    throw new Error('Method not implemented.');
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -47,7 +48,7 @@ export class ApplicantPhotoComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantAddressComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(ApplicantPhoneComponent.route, this.activatedRoute);
   }
 
 }
