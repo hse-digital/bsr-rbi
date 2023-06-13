@@ -32,12 +32,12 @@ export class RegistrationEmailComponent extends PageComponent<BuildingInspectorM
   }
 
   override isValid(): boolean {
-    this.emailHasErrors = !EmailValidator.isValid(this.model?.Email ?? '');
+    this.emailHasErrors = !EmailValidator.isValid(this.model?.applicationEmail ?? '');
     return !this.emailHasErrors;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.Email = this.model?.Email;
+    applicationService.model.applicationEmail = this.model?.applicationEmail;
 
 
     //await applicationService.sendVerificationEmail(this.model?.Email!);

@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { firstValueFrom } from "rxjs";
 import { LocalStorage } from "src/app/helpers/local-storage";
+import { AddressModel } from "./address.service";
 
 @Injectable()
 export class ApplicationService {
@@ -50,14 +51,19 @@ export class ApplicationService {
 
 export class BuildingInspectorModel {
   id?: String;
-  ApplicationName?: string
-  FirstName?: string
-  LastName?: string
-  PhoneNumber?: string
-  Email?: string
-  RegistrationStatus: ApplicationStatus = ApplicationStatus.None
+  applicationName?: string //TODO review if required
+  personalDetails?: PersonalDetails
+  applicationEmail?: string
+  registrationStatus: ApplicationStatus = ApplicationStatus.None
 }
 
+export class PersonalDetails {
+  applicatantName?: ApplicantName
+  applicantPhoto?: string //Blob
+  applicantAddress?: AddressModel;
+  applicantAlternativeEmail?: AddressModel;
+
+}
 
 export class ApplicantName {
   firstName?: string
@@ -80,4 +86,5 @@ export enum ApplicationStatus {
   KbiConnectionsComplete = 2048,
   KbiSubmitInProgress = 4096,
   KbiSubmitComplete = 8192
+
 }

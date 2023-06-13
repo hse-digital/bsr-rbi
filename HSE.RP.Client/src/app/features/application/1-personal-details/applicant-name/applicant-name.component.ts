@@ -24,13 +24,13 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model.firstName = applicationService.model.FirstName;
-    this.model.lastName = applicationService.model.LastName;
+    this.model.firstName = applicationService.model.personalDetails?.applicatantName?.firstName ?? '';
+    this.model.lastName = applicationService.model.personalDetails?.applicatantName?.lastName ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.FirstName = this.model.firstName;
-    applicationService.model.LastName = this.model.lastName;
+    applicationService.model.personalDetails!.applicatantName!.firstName = this.model.firstName;
+    applicationService.model.personalDetails!.applicatantName!.lastName = this.model.lastName;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
