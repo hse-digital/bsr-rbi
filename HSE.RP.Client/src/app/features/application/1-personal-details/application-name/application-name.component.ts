@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { environment } from '../../../../environments/environment';
-import { PageComponent } from '../../../helpers/page.component';
-import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService, BuildingInspectorModel } from '../../../services/application.service';
+import { environment } from '../../../../../environments/environment';
+import { PageComponent } from '../../../../helpers/page.component';
+import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
+import { ApplicationService, BuildingInspectorModel } from '../../../../services/application.service';
 
 @Component({
   templateUrl: './application-name.component.html'

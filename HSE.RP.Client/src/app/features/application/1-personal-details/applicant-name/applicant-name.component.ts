@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { environment } from '../../../../environments/environment';
-import { PageComponent } from '../../../helpers/page.component';
-import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicantName, ApplicationService, BuildingInspectorModel } from '../../../services/application.service';
+import { environment } from '../../../../../environments/environment';
+import { PageComponent } from '../../../../helpers/page.component';
+import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
+import { ApplicantName, ApplicationService, BuildingInspectorModel } from '../../../../services/application.service';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -39,7 +39,7 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
 
 
 
-  override isValid(): boolean {  
+  override isValid(): boolean {
     this.firstNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.firstName)
     this.lastNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.lastName)
     return this.firstNameValid && this.lastNameValid;
