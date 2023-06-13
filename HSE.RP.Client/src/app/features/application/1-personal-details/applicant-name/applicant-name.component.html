@@ -8,22 +8,21 @@
     <govuk-error-link *ngIf="!lastNameValid" anchorId="input-last-name" message="Enter your last name" />
   </govuk-error-summary>
 
-  <span class="govuk-caption-l">Your details</span>
   <h1 class="govuk-heading-l">Your Name</h1>
 
   <govuk-body>
     We will use this if we need to check anything you have told us in this application.
   </govuk-body>
-  <govuk-input id="first-name" label="First Name" 
+  <govuk-input id="first-name" label="First Name"
                [(model)]="model.firstName"
-               class="govuk-input--width-10"
+               class="govuk-input--width-20"
                [errorText]="getErrorDescription(!firstNameValid, 'Enter your first name')"
                hintClass="no-margin-top"
                (onKeyupEnter)="saveAndContinue()" />
 
   <govuk-input id="last-name" label="Last Name"
                [(model)]="model.lastName"
-               class="govuk-input--width-10"
+               class="govuk-input--width-20"
                [errorText]="getErrorDescription(!lastNameValid, 'Enter your last name')"
                hintClass="no-margin-top"
                (onKeyupEnter)="saveAndContinue()" />

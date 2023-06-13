@@ -10,19 +10,19 @@ import { PageComponent } from '../../helpers/page.component';
 })
 export class ReturningApplicationComponent extends PageComponent<string>{
   onInit(applicationService: ApplicationService): void {
-      throw new Error('Method not implemented.');
+      //throw new Error('Method not implemented.');
   }
   onSave(applicationService: ApplicationService): Promise<void> {
       throw new Error('Method not implemented.');
-  }
+      }
   canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-      throw new Error('Method not implemented.');
+    return true;
   }
   isValid(): boolean {
-      throw new Error('Method not implemented.');
+      return true;
   }
   navigateNext(): Promise<boolean> {
-      throw new Error('Method not implemented.');
+    return this.navigationService.navigate("application/task-list");;
   }
   static route: string = "returning-application";
   static title: string = "Continue a saved application - Register a high-rise building - GOV.UK";
@@ -32,7 +32,7 @@ export class ReturningApplicationComponent extends PageComponent<string>{
   applicationNumber?: string;
 
   canContinue(): boolean {
-    return false;
+    return true;
   }
 
   showVerifyApplication() {

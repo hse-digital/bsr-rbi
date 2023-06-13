@@ -12,15 +12,13 @@ import { ApplicationTaskListComponent } from './task-list/task-list.component';
 import { ApplicationPersonalDetailsModule } from './1-personal-details/application.personal-details.module';
 
 const routes = new HseRoutes([
-  HseRoute.forLoadChildren(ApplicationPersonalDetailsModule.baseRoute, () => import('./1-personal-details/application.personal-details.module').then(m => m.ApplicationPersonalDetailsModule)),
   HseRoute.protected(ApplicationTaskListComponent.route, ApplicationTaskListComponent, ApplicationTaskListComponent.title),
-
+  HseRoute.forLoadChildren(ApplicationPersonalDetailsModule.baseRoute, () => import('./1-personal-details/application.personal-details.module').then(m => m.ApplicationPersonalDetailsModule)),
 ]);
 
 @NgModule({
   declarations: [
     ApplicationTaskListComponent,
-
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

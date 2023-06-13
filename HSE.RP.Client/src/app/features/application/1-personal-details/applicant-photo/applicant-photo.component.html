@@ -1,0 +1,12 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+
+  <span class="govuk-caption-l">Your details</span>
+  <h1 class="govuk-heading-l">Your telephone number</h1>
+  <govuk-body>
+    We will use this if we need to check anything you have told us in this application.
+  </govuk-body>
+</govuk-formpage>

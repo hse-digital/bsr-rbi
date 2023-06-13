@@ -52,16 +52,18 @@ export class ApplicationService {
 export class BuildingInspectorModel {
   id?: String;
   applicationName?: string //TODO review if required
-  personalDetails?: PersonalDetails
+  personalDetails?: PersonalDetails = {};
   applicationEmail?: string
   registrationStatus: ApplicationStatus = ApplicationStatus.None
 }
 
 export class PersonalDetails {
-  applicatantName?: ApplicantName
+  applicantName?: ApplicantName = {};
   applicantPhoto?: string //Blob
   applicantAddress?: AddressModel;
-  applicantAlternativeEmail?: AddressModel;
+  applicantPhone?: string;
+  applicantAlternativeEmail?: string;
+  applicantProofOfIdentity?: string;
 
 }
 
@@ -78,13 +80,13 @@ export enum ApplicationStatus {
   AccountablePersonsComplete = 8,
   PaymentInProgress = 16,
   PaymentComplete = 32,
-  KbiCheckBeforeInProgress = 64,
+/*   KbiCheckBeforeInProgress = 64,
   KbiCheckBeforeComplete = 128,
   KbiStructureInformationInProgress = 256,
   KbiStructureInformationComplete = 512,
   KbiConnectionsInProgress = 1024,
   KbiConnectionsComplete = 2048,
   KbiSubmitInProgress = 4096,
-  KbiSubmitComplete = 8192
+  KbiSubmitComplete = 8192 */
 
 }

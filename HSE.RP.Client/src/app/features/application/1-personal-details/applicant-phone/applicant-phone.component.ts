@@ -24,15 +24,16 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = applicationService.model.PhoneNumber;
+    this.model = applicationService.model.personalDetails?.applicantPhone?.toString() ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.PhoneNumber = this.model;
-  }
+/*     applicationService.model.personalDetails?.applicantPhone? = this.model;
+ */  }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.FirstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.LastName));
+    return true;
+    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicantName?.lastName));
   }
 
 

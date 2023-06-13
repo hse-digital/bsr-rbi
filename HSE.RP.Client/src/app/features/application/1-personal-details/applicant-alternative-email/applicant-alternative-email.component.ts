@@ -25,18 +25,19 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = applicationService.model.Email;
-  }
+/*     this.model = applicationService.model.Email;
+ */  }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.Email = this.model;
+/*     applicationService.model.Email = this.model;
 
-    await applicationService.sendVerificationEmail(this.model!)
+    await applicationService.sendVerificationEmail(this.model!) */
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
 
-    return FieldValidations.IsNotNullOrWhitespace(applicationService.model?.PhoneNumber);
+   /*  return FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails.); */
+   return true;
   }
 
 

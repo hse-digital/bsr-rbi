@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicantName, ApplicationService, BuildingInspectorModel } from '../../../../services/application.service';
+import { ApplicantName, ApplicationService} from '../../../../services/application.service';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -24,17 +24,22 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model.firstName = applicationService.model.personalDetails?.applicatantName?.firstName ?? '';
-    this.model.lastName = applicationService.model.personalDetails?.applicatantName?.lastName ?? '';
+    if(applicationService.model.personalDetails?.applicantName == null)
+    {
+      applicationService.model.personalDetails!.applicantName = new ApplicantName();
+    }
+    this.model.firstName = applicationService.model.personalDetails?.applicantName?.firstName ?? '';
+    this.model.lastName = applicationService.model.personalDetails?.applicantName?.lastName ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.personalDetails!.applicatantName!.firstName = this.model.firstName;
-    applicationService.model.personalDetails!.applicatantName!.lastName = this.model.lastName;
+    applicationService.model.personalDetails!.applicantName!.firstName = this.model.firstName;
+    applicationService.model.personalDetails!.applicantName!.lastName = this.model.lastName;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return FieldValidations.IsNotNullOrWhitespace(applicationService.model.ApplicationName);
+    //return FieldValidations.IsNotNullOrWhitespace(applicationService.model.personalDetails!.applicantName?.firstName) && FieldValidations.IsNotNullOrWhitespace(applicationService.model.personalDetails!.applicantName?.lastName);
+    return true;
   }
 
 
@@ -46,7 +51,7 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigate('application/applicant-phone');
+    return this.navigationService.navigate('personal-details/applicant-photo');
   }
 }
 
