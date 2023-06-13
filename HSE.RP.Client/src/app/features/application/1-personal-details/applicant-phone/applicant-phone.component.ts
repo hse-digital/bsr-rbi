@@ -6,6 +6,7 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { PhoneNumberValidator } from '../../../../helpers/validators/phone-number-validator';
 import { ApplicationService, BuildingInspectorModel } from '../../../../services/application.service';
 
+
 @Component({
   selector: 'hse-applicant-phone',
   templateUrl: './applicant-phone.component.html',
@@ -47,3 +48,4 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
   }
 
 }
+

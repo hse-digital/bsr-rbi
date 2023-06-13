@@ -63,7 +63,7 @@ export class PersonalDetails {
   applicantAddress?: AddressModel;
   applicantPhone?: string;
   applicantAlternativeEmail?: string;
-  applicantProofOfIdentity?: string;
+  applicantProofOfIdentity?: string; //Blob
 
 }
 

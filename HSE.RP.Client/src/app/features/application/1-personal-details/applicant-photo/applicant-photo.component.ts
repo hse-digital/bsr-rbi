@@ -10,7 +10,8 @@ import { ApplicationService } from '../../../../services/application.service';
   templateUrl: './applicant-photo.component.html',
 })
 export class ApplicantPhotoComponent extends PageComponent<string> {
-  public static route: string = "applicant-phone";
+
+  public static route: string = "applicant-photo";
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;

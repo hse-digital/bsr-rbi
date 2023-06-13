@@ -4,6 +4,7 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicantName, ApplicationService} from '../../../../services/application.service';
+import { ApplicantPhotoComponent } from '../applicant-photo/applicant-photo.component';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -51,7 +52,7 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigate('personal-details/applicant-photo');
+    return this.navigationService.navigateRelative(ApplicantPhotoComponent.route, this.activatedRoute);
   }
 }
 
