@@ -146,6 +146,78 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     name: 'AzureWebJobsStorage'
                     value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
                 }
+                {
+                    name: 'FUNCTIONS_WORKER_RUNTIME'
+                    value: 'dotnet-isolated'
+                }
+                {
+                    name: 'FUNCTIONS_EXTENSION_VERSION'
+                    value: '~4'
+                }
+                {
+                    name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+                    value: appInsights.properties.InstrumentationKey
+                }
+                {
+                    name: 'Dynamics__EmailVerificationFlowUrl'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--EmailVerificationFlowUrl)'
+                }
+                {
+                    name: 'Dynamics__EnvironmentUrl'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--EnvironmentUrl)'
+                }
+                {
+                    name: 'Dynamics__TenantId'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--TenantId)'
+                }
+                {
+                    name: 'Dynamics__ClientId'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--ClientId)'
+                }
+                {
+                    name: 'Dynamics__ClientSecret'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--ClientSecret)'
+                }
+                {
+                    name: 'Dynamics__LocalAuthorityTypeId'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--LocalAuthorityTypeId)'
+                }
+                {
+                    name: 'CosmosConnection'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=CosmosConnection)'
+                }
+                {
+                    name: 'Integrations__OrdnanceSurveyEndpoint'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--OrdnanceSurveyEndpoint)'
+                }
+                {
+                    name: 'Integrations__OrdnanceSurveyApiKey'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--OrdnanceSurveyApiKey)'
+                }
+                {
+                    name: 'Integrations__CompaniesHouseEndpoint'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--CompaniesHouseEndpoint)'
+                }
+                {
+                    name: 'Integrations__CompaniesHouseApiKey'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--CompaniesHouseApiKey)'
+                }
+                {
+                    name: 'Integrations__PaymentEndpoint'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--PaymentEndpoint)'
+                }
+                {
+                    name: 'Integrations__PaymentApiKey'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--PaymentApiKey)'
+                }
+                {
+                    name: 'Integrations__PaymentAmount'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--PaymentAmount)'
+                }
+                {
+                    name: 'Feature__DisableOtpValidation'
+                    value: 'false'
+                }
             ]
         }
         httpsOnly: true
