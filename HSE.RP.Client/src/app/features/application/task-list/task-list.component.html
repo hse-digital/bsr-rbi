@@ -6,7 +6,7 @@
 
       <govuk-body>We will save your information for each page you complete.</govuk-body>
 
-      <govuk-warning message="We have sent your application number and instructions on how to return to {{model!.Email}}" background="#0"></govuk-warning>
+      <govuk-warning message="We have sent your application number and instructions on how to return to {{model!.applicationEmail}}" background="#0"></govuk-warning>
 
       <ol class="app-task-list">
         <li>
@@ -23,19 +23,13 @@
             </li>
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Recent photo</a>
-              </span>
-              <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
-            </li>
-            <li class="app-task-list__item">
-              <span class="app-task-list__task-name">
                 <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Address</a>
               </span>
               <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
             </li>
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Telephone number</a>
+                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Alternative telephone number</a>
               </span>
               <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
             </li>
@@ -47,16 +41,13 @@
             </li>
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Proof of identity</a>
+                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">National Insurance number</a>
               </span>
               <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
             </li>
-            <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Summary</a>
+                Warning
               </span>
-              <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
-            </li>
           </ul>
         </li>
 
@@ -71,11 +62,6 @@
                 <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Class selection</a>
               </span>
                 <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
-            </li>
-            <li class="app-task-list__item">
-              <span class="app-task-list__task-name"><a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Class details</a>
-              </span>
-              <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
             </li>
             <li class="app-task-list__item">
               <span class="app-task-list__task-name"><a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Country</a>
@@ -93,7 +79,7 @@
           <ul class="app-task-list__items">
             <li class="app-task-list__item firstItem">
               <span class="app-task-list__task-name">
-                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Independent competency verification</a>
+                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Independent assessment</a>
               </span>
                 <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
             </li>
@@ -108,13 +94,19 @@
           <ul class="app-task-list__items">
             <li class="app-task-list__item firstItem">
               <span class="app-task-list__task-name">
+                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Professional body membership</a>
+              </span>
+                <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
+            </li>
+            <li class="app-task-list__item firstItem">
+              <span class="app-task-list__task-name">
                 <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Employment type</a>
               </span>
                 <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
             </li>
             <li class="app-task-list__item firstItem">
               <span class="app-task-list__task-name">
-                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Provide employment details</a>
+                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Employment details</a>
               </span>
                 <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
             </li>
@@ -133,12 +125,6 @@
             Application overview
           </h2>
           <ul class="app-task-list__items">
-            <li class="app-task-list__item firstItem">
-              <span class="app-task-list__task-name">
-                <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Additional information</a>
-              </span>
-                <govuk-tag tag class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
-            </li>
             <li class="app-task-list__item firstItem">
               <span class="app-task-list__task-name">
                 <a task class="govuk-link" (keyup.enter)="navigateToSections()" (click)="navigateToSections()" tabindex="0" role="link">Application summary</a>
