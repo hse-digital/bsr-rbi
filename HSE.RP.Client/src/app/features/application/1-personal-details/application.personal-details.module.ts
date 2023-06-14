@@ -16,6 +16,7 @@ import { ApplicantAddressComponent } from './applicant-address/applicant-address
 import { ApplicantProofOfIdentityComponent } from './applicant-proof-of-identity/applicant-proof-of-identity.component';
 import { ApplicantSummaryComponent } from './applicant-summary/applicant-summary.component';
 import { ApplicantAlternativePhoneComponent } from './applicant-alternative-phone/applicant-alternative-phone.component';
+import { PersonalDetailsPlaceholderComponent } from './personal-details-placeholder/personal-details-placeholder.component';
 
 
 const routes = new HseRoutes([
@@ -27,6 +28,7 @@ const routes = new HseRoutes([
   HseRoute.protected(ApplicantAddressComponent.route, ApplicantAddressComponent, ApplicantAddressComponent.title),
   HseRoute.protected(ApplicantProofOfIdentityComponent.route, ApplicantProofOfIdentityComponent, ApplicantProofOfIdentityComponent.title),
   HseRoute.protected(ApplicantSummaryComponent.route, ApplicantSummaryComponent, ApplicantSummaryComponent.title),
+  HseRoute.protected(PersonalDetailsPlaceholderComponent.route, PersonalDetailsPlaceholderComponent, PersonalDetailsPlaceholderComponent.title),
 ]);
 
 @NgModule({
@@ -40,6 +42,7 @@ const routes = new HseRoutes([
     ApplicantProofOfIdentityComponent,
     ApplicantAlternativeEmailComponent,
     ApplicantSummaryComponent,
+    PersonalDetailsPlaceholderComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
