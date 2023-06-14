@@ -177,7 +177,7 @@
           <ul class="app-task-list__items">
             <li class="app-task-list__item firstItem">
               <span class="app-task-list__task-name">
-                <span task *ngIf="model!.applicationStatus < applicationStatus.ApplicationOverviewComplete">Application summary</span>
+                <span task *ngIf="model!.applicationStatus < applicationStatus.ApplicationOverviewComplete">Pay your fee and submit your application</span>
                 <a task *ngIf="model!.applicationStatus >= applicationStatus.ApplicationOverviewComplete" class="govuk-link" (keyup.enter)="navigateToPayAndSubmit()" (click)="navigateToPayAndSubmit()" tabindex="0" role="link">Pay your fee and submit your application</a>
               </span>
               <govuk-tag tag *ngIf="model!.applicationStatus < applicationStatus.ApplicationOverviewComplete" class="govuk-tag--grey">CANNOT START YET</govuk-tag>
