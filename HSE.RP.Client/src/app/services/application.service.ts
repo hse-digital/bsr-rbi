@@ -54,7 +54,7 @@ export class BuildingInspectorModel {
   applicationName?: string //TODO review if required
   personalDetails?: PersonalDetails = {};
   applicationEmail?: string
-  registrationStatus: ApplicationStatus = ApplicationStatus.None
+  applicationStatus: ApplicationStatus = ApplicationStatus.None
 }
 
 export class PersonalDetails {
@@ -62,6 +62,7 @@ export class PersonalDetails {
   applicantPhoto?: string //Blob
   applicantAddress?: AddressModel;
   applicantPhone?: string;
+  applicantAlternativePhone?: string;
   applicantAlternativeEmail?: string;
   applicantProofOfIdentity?: string; //Blob
 
@@ -74,19 +75,10 @@ export class ApplicantName {
 
 export enum ApplicationStatus {
   None = 0,
-  BlocksInBuildingInProgress = 1,
-  BlocksInBuildingComplete = 2,
-  AccountablePersonsInProgress = 4,
-  AccountablePersonsComplete = 8,
-  PaymentInProgress = 16,
-  PaymentComplete = 32,
-/*   KbiCheckBeforeInProgress = 64,
-  KbiCheckBeforeComplete = 128,
-  KbiStructureInformationInProgress = 256,
-  KbiStructureInformationComplete = 512,
-  KbiConnectionsInProgress = 1024,
-  KbiConnectionsComplete = 2048,
-  KbiSubmitInProgress = 4096,
-  KbiSubmitComplete = 8192 */
-
+  PersonalDetailsComplete = 1,
+  BuildingInspectorClassComplete = 2,
+  CompetencyComplete = 4,
+  EmploymentComplete = 8,
+  ApplicationOverviewComplete = 16,
+  PayAndSumbitComplete = 32,
 }

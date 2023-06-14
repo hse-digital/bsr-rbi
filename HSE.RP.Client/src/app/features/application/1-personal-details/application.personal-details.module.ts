@@ -15,10 +15,12 @@ import { ApplicantAlternativeEmailComponent } from './applicant-alternative-emai
 import { ApplicantAddressComponent } from './applicant-address/applicant-address.component';
 import { ApplicantProofOfIdentityComponent } from './applicant-proof-of-identity/applicant-proof-of-identity.component';
 import { ApplicantSummaryComponent } from './applicant-summary/applicant-summary.component';
+import { ApplicantAlternativePhoneComponent } from './applicant-alternative-phone/applicant-alternative-phone.component';
 
 
 const routes = new HseRoutes([
   HseRoute.protected(ApplicantPhoneComponent.route, ApplicantPhoneComponent, ApplicantPhoneComponent.title),
+  HseRoute.protected(ApplicantAlternativePhoneComponent.route, ApplicantAlternativePhoneComponent, ApplicantAlternativePhoneComponent.title),
   HseRoute.protected(ApplicantNameComponent.route, ApplicantNameComponent, ApplicantNameComponent.title),
   HseRoute.protected(ApplicantAlternativeEmailComponent.route, ApplicantAlternativeEmailComponent, ApplicantAlternativeEmailComponent.title),
   HseRoute.protected(ApplicantPhotoComponent.route, ApplicantPhotoComponent, ApplicantPhotoComponent.title),
@@ -33,6 +35,7 @@ const routes = new HseRoutes([
     ApplicantNameComponent,
     ApplicantPhotoComponent,
     ApplicantPhoneComponent,
+    ApplicantAlternativePhoneComponent,
     ApplicantAddressComponent,
     ApplicantProofOfIdentityComponent,
     ApplicantAlternativeEmailComponent,
