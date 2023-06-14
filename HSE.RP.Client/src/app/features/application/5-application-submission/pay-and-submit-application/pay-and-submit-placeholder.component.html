@@ -1,0 +1,12 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+
+  <h1 class="govuk-heading-l">Pay your fee and submit your application</h1>
+  <govuk-body>
+    Pay your fee and submit your application
+ </govuk-body>
+</govuk-formpage>
+

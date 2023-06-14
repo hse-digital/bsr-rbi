@@ -6,14 +6,15 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { CompetencyCertificateCodeComponent } from '../certificate-code/competency-certificate-code.component';
 
 @Component({
-  selector: 'hse-competency-placeholder',
-  templateUrl: './competency-placeholder.component.html',
+  selector: 'hse-independent-competency-status',
+  templateUrl: './independent-competency-status.component.html',
 })
-export class CompetencyPlaceholderComponent extends PageComponent<string> {
+export class CompetencyIndependentStatusComponent extends PageComponent<string> {
 
-  public static route: string = "competency-placeholder";
+  public static route: string = "independent-competency-status";
   static title: string = "Competency - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
@@ -48,7 +49,7 @@ export class CompetencyPlaceholderComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(CompetencyCertificateCodeComponent.route, this.activatedRoute);
   }
 
 }

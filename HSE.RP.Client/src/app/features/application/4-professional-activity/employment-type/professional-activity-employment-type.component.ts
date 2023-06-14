@@ -6,15 +6,16 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { ProfessionalActivityEmploymentDetailsComponent } from '../employment-details/professional-activity-employment-details.component';
 
 @Component({
-  selector: 'hse-competency-placeholder',
-  templateUrl: './competency-placeholder.component.html',
+  selector: 'hse-professional-activity-employment-type',
+  templateUrl: './professional-activity-employment-type.component.html',
 })
-export class CompetencyPlaceholderComponent extends PageComponent<string> {
+export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<string> {
 
-  public static route: string = "competency-placeholder";
-  static title: string = "Competency - Register as a building inspector - GOV.UK";
+  public static route: string = "professional-activity-employment-type";
+  static title: string = "Professional activity - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
@@ -30,7 +31,7 @@ export class CompetencyPlaceholderComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.applicationStatus = ApplicationStatus.CompetencyComplete;
+    applicationService.model.applicationStatus = ApplicationStatus.ProfessionalActivityComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -48,7 +49,7 @@ export class CompetencyPlaceholderComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(ProfessionalActivityEmploymentDetailsComponent.route, this.activatedRoute);
   }
 
 }

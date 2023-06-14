@@ -4,17 +4,18 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
+import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 
 @Component({
-  selector: 'hse-competency-placeholder',
-  templateUrl: './competency-placeholder.component.html',
+  selector: 'hse-applicant-date-of-birth',
+  templateUrl: './applicant-date-of-birth.component.html',
 })
-export class CompetencyPlaceholderComponent extends PageComponent<string> {
+export class ApplicantDateOfBirthComponent extends PageComponent<string> {
 
-  public static route: string = "competency-placeholder";
-  static title: string = "Competency - Register as a building inspector - GOV.UK";
+  public static route: string = "applicant-date-of-birth";
+  static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
@@ -30,7 +31,7 @@ export class CompetencyPlaceholderComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.applicationStatus = ApplicationStatus.CompetencyComplete;
+    applicationService.model.applicationStatus = ApplicationStatus.PersonalDetailsComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -48,7 +49,7 @@ export class CompetencyPlaceholderComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(ApplicantAddressComponent.route, this.activatedRoute);
   }
 
 }

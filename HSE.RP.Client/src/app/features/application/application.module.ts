@@ -13,7 +13,7 @@ import { ApplicationPersonalDetailsModule } from './1-personal-details/applicati
 import { BuildingInspectorClassModule } from './2-building-inspector-class/application.building-inspector-class.module';
 import { CompetencyModule } from './3-competency/application.competency.module';
 import { ProfessionalActivityModule } from './4-professional-activity/application.professional-activity.module';
-import { ApplicationOverviewModule } from './5-application-overview/application.application-overview.module';
+import { ApplicationSubmissionModule } from './5-application-submission/application.application-submission.module';
 import { PayAndSubmitModule } from './6-pay-and-submit/application.pay-and-submit.module';
 
 const routes = new HseRoutes([
@@ -22,7 +22,7 @@ const routes = new HseRoutes([
   HseRoute.forLoadChildren(BuildingInspectorClassModule.baseRoute, () => import('./2-building-inspector-class/application.building-inspector-class.module').then(m => m.BuildingInspectorClassModule)),
   HseRoute.forLoadChildren(CompetencyModule.baseRoute, () => import('./3-competency/application.competency.module').then(m => m.CompetencyModule)),
   HseRoute.forLoadChildren(ProfessionalActivityModule.baseRoute, () => import('./4-professional-activity/application.professional-activity.module').then(m => m.ProfessionalActivityModule)),
-  HseRoute.forLoadChildren(ApplicationOverviewModule.baseRoute, () => import('./5-application-overview/application.application-overview.module').then(m => m.ApplicationOverviewModule)),
+  HseRoute.forLoadChildren(ApplicationSubmissionModule.baseRoute, () => import('./5-application-submission/application.application-submission.module').then(m => m.ApplicationSubmissionModule)),
   HseRoute.forLoadChildren(PayAndSubmitModule.baseRoute, () => import('./6-pay-and-submit/application.pay-and-submit.module').then(m => m.PayAndSubmitModule)),
 ]);
 

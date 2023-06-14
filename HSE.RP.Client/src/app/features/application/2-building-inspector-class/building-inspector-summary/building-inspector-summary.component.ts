@@ -8,13 +8,13 @@ import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 
 @Component({
-  selector: 'hse-competency-placeholder',
-  templateUrl: './competency-placeholder.component.html',
+  selector: 'hse-building-inspector-summary',
+  templateUrl: './building-inspector-summary.component.html',
 })
-export class CompetencyPlaceholderComponent extends PageComponent<string> {
+export class BuildingInspectorSummaryComponent extends PageComponent<string> {
 
-  public static route: string = "competency-placeholder";
-  static title: string = "Competency - Register as a building inspector - GOV.UK";
+  public static route: string = "building-inspector-summary";
+  static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
@@ -30,7 +30,7 @@ export class CompetencyPlaceholderComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.applicationStatus = ApplicationStatus.CompetencyComplete;
+    applicationService.model.applicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {

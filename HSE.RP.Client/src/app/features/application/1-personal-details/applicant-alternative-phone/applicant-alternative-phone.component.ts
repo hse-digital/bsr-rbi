@@ -9,6 +9,7 @@ import {
   BuildingInspectorModel,
 } from '../../../../services/application.service';
 import { ApplicantAlternativeEmailComponent } from '../applicant-alternative-email/applicant-alternative-email.component';
+import { ApplicantNationalInsuranceNumberComponent } from '../applicant-national-insurance-number/applicant-national-insurance-number.component';
 
 @Component({
   selector: 'hse-applicant-alternative-phone',
@@ -58,7 +59,7 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
-      ApplicantAlternativeEmailComponent.route,
+      ApplicantNationalInsuranceNumberComponent.route,
       this.activatedRoute
     );
   }

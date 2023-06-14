@@ -1,0 +1,12 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+
+  <h1 class="govuk-heading-l">Assessment organisation</h1>
+  <govuk-body>
+  Please enter your assessment organisation
+ </govuk-body>
+</govuk-formpage>
+

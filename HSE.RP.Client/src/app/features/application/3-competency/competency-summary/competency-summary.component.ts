@@ -8,12 +8,12 @@ import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 
 @Component({
-  selector: 'hse-competency-placeholder',
-  templateUrl: './competency-placeholder.component.html',
+  selector: 'hse-competency-summary',
+  templateUrl: './competency-summary.component.html',
 })
-export class CompetencyPlaceholderComponent extends PageComponent<string> {
+export class CompetencySummaryComponent extends PageComponent<string> {
 
-  public static route: string = "competency-placeholder";
+  public static route: string = "competency-summary";
   static title: string = "Competency - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
