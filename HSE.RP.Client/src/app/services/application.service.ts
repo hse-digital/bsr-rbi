@@ -78,7 +78,7 @@ export enum ApplicationStatus {
   PersonalDetailsComplete = 1,
   BuildingInspectorClassComplete = 2,
   CompetencyComplete = 4,
-  EmploymentComplete = 8,
+  ProfessionalActivityComplete = 8,
   ApplicationOverviewComplete = 16,
   PayAndSumbitComplete = 32,
 }
