@@ -16,7 +16,7 @@ export abstract class PageComponent<T> implements OnInit {
     hasErrors: boolean = false;
     updateOnSave: boolean = true;
     private injector: Injector = GetInjector();
-    private applicationService: ApplicationService = this.injector.get(ApplicationService);
+    protected applicationService: ApplicationService = this.injector.get(ApplicationService);
     protected titleService: TitleService = this.injector.get(TitleService);
     protected navigationService: NavigationService = this.injector.get(NavigationService);
 
@@ -120,7 +120,7 @@ export abstract class PageComponent<T> implements OnInit {
         await this.applicationService.updateApplication();
     }
 
-    private focusAndUpdateErrors() {
+    protected focusAndUpdateErrors() {
         this.summaryError?.first?.focus();
         this.titleService.setTitleError();
     }

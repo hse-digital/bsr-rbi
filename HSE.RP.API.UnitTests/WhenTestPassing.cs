@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace HSE.PAC.API.UnitTests;
+namespace HSE.RP.API.UnitTests;
 
 public class WhenTestPassing
 {

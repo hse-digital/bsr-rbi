@@ -2,7 +2,7 @@
 using Xunit;
 
 
-namespace HSE.PAC.API.IntegrationTests;
+namespace HSE.RP.API.IntegrationTests;
 
 public class WhenTestPassing
 {

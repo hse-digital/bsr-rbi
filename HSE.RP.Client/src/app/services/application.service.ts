@@ -6,7 +6,7 @@ import { AddressModel } from "./address.service";
 
 @Injectable()
 export class ApplicationService {
-  // replace this any to a specific type
+
   model: BuildingInspectorModel;
 
   constructor(private httpClient: HttpClient) {
@@ -51,9 +51,7 @@ export class ApplicationService {
 
 export class BuildingInspectorModel {
   id?: String;
-  applicationName?: string //TODO review if required
   personalDetails?: PersonalDetails = {};
-  applicationEmail?: string
   applicationStatus: ApplicationStatus = ApplicationStatus.None
 }
 
@@ -63,6 +61,7 @@ export class PersonalDetails {
   applicantAddress?: AddressModel;
   applicantPhone?: string;
   applicantAlternativePhone?: string;
+  applicantEmail?: string;
   applicantAlternativeEmail?: string;
   applicantProofOfIdentity?: string; //Blob
 
