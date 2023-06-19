@@ -10,7 +10,7 @@ import { TitleService } from 'src/app/services/title.service';
 })
 export class ReturningApplicationVerifyComponent implements OnInit {
 
-  static title: string = "Enter security code - Register a high-rise building - GOV.UK";
+  static title: string = "Enter security code - Register as a building inspector - GOV.UK";
 
   @Input() emailAddress!: string;
   @Input() applicationNumber!: string;
@@ -67,20 +67,20 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
   private async doesSecurityCodeMatch(): Promise<boolean> {
     try {
-      return this.navigationService.navigate("application/task-list");;
+      //return this.navigationService.navigate("application/task-list");;
 
-/*      await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress);
+      await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress);
       await this.applicationService.continueApplication(this.applicationNumber, this.emailAddress, this.securityCode!);
 
-      var applicationStatus = this.applicationService.model.ApplicationStatus;
-      if ((applicationStatus & BuildingApplicationStatus.PaymentComplete) == BuildingApplicationStatus.PaymentComplete) {
+      /*var applicationStatus = this.applicationService.model.applicationStatus;
+       if ((applicationStatus & BuildingApplicationStatus.PaymentComplete) == BuildingApplicationStatus.PaymentComplete) {
         this.navigationService.navigate(`application/${this.applicationNumber}/payment/confirm`);
       } else {
         this.navigationService.navigate(`application/${this.applicationNumber}`);
-      }*/
+      } */
       //TODO re-enable this
 
-      return true;
+      return this.navigationService.navigate('application/task-list');
     } catch {
       return false;
     }

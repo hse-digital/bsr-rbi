@@ -9,6 +9,7 @@ export class ApplicationService {
 
   model: BuildingInspectorModel;
 
+
   constructor(private httpClient: HttpClient) {
     this.model = LocalStorage.getJSON('application_data') ?? {};
   }
@@ -47,12 +48,24 @@ export class ApplicationService {
     }
   }
 
+  async continueApplication(applicationNumber: string, emailAddress: string, otpToken: string): Promise<void> {
+    //let application: BuildingInspectorModel = await firstValueFrom(this.httpClient.get<BuildingInspectorModel>(`api/GetApplication/${applicationNumber}/${emailAddress}/${otpToken}`)); //TODO update when information in Dynamics
+    this.clearApplication();
+    this.model = new BuildingInspectorModel();
+    this.model.id = applicationNumber;
+    this.model.personalDetails = {};
+    this.model.personalDetails!.applicantEmail=emailAddress;
+    this.model.returningApplication = true;
+    this.updateLocalStorage();
+  }
+
 }
 
 export class BuildingInspectorModel {
   id?: String;
   personalDetails?: PersonalDetails = {};
   applicationStatus: ApplicationStatus = ApplicationStatus.None
+  returningApplication: boolean = false;
 }
 
 export class PersonalDetails {

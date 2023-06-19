@@ -36,7 +36,6 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     applicationService.model.personalDetails!.applicantEmail = this.model;
-
     await applicationService.sendVerificationEmail(this.model!)
   }
 
