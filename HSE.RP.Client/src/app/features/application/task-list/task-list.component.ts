@@ -86,7 +86,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingInspecto
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return true;
+
+    return !this.model?.personalDetails?.applicantEmail;
   }
   override isValid(): boolean {
     throw new Error('Method not implemented.');

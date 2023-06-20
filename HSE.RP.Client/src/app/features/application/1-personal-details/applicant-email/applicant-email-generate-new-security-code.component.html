@@ -1,0 +1,11 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Send new security Code" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+
+  <h1 class="govuk-heading-l">Generate a new security code</h1>
+  <govuk-body>We will send a 6-digit security code to: <b>{{model}}</b>.</govuk-body>
+
+</govuk-formpage>
+

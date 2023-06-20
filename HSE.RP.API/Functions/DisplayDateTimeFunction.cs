@@ -1,8 +1,8 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using HSE.PAC.API.Extensions;
+using HSE.RP.API.Extensions;
 
-namespace HSE.PAC.API.Functions;
+namespace HSE.RP.API.Functions;
 
 public class DisplayDateTimeFunction
 {

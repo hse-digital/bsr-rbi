@@ -1,0 +1,36 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Send Verification Email" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+  <govuk-error-summary *ngIf="emailHasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="!modelValid" anchorId="input-sample-field" message="Enter your email address" />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">Your email address</h1>
+
+
+  <govuk-body>To secure your application and allow you to return to it later, we need to verify your email address. To do this, we will send you a 6-digit security code.</govuk-body>
+
+  <govuk-inset-text>
+    <govuk-body>
+      Use your individual or personal email address to apply. You as an individual, not your organisation, will be registered as a building inspector.
+    </govuk-body>
+    <govuk-body> You will be able to add a second contact email address later.   </govuk-body>
+  </govuk-inset-text>
+
+  <govuk-body>If you do not have an email address, <a href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm" class="govuk-link" target="_blank">contact us</a> to apply to register a high-rise building.</govuk-body>
+
+
+  <govuk-input id="applicant-email" label="Enter your email address"
+               [(model)]="model" [maxlength]=100
+               labelClass="govuk-label--s"
+               hint="We will use this to contact you about this application."
+               [errorText]="getErrorDescription(!modelValid, 'Enter an email address in the correct format')"
+               hintClass="no-margin-top"
+               class="govuk-!-margin-bottom-1"
+               (onKeyupEnter)="saveAndContinue()" />
+
+</govuk-formpage>
+
+

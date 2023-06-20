@@ -25,14 +25,14 @@ export class ReturningApplicationComponent extends PageComponent<string>{
     return this.navigationService.navigate("application/task-list");;
   }
   static route: string = "returning-application";
-  static title: string = "Continue a saved application - Register a high-rise building - GOV.UK";
+  static title: string = "Continue a saved application - Register as a building inspector - GOV.UK";
 
   step = "enterdata";
   emailAddress?: string;
   applicationNumber?: string;
 
   canContinue(): boolean {
-    return true;
+    return false;
   }
 
   showVerifyApplication() {

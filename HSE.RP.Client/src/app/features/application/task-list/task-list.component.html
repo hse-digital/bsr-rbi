@@ -10,11 +10,13 @@
 
 
       <h1 class="govuk-heading-xl">Register as a building inspector</h1>
+      <ng-container *ngIf="!model!.returningApplication">
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Returning to this application</h2>
+        <govuk-body>We will save your information for each page you complete.</govuk-body>
 
-      <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Returning to this application</h2>
-      <govuk-body>We will save your information for each page you complete.</govuk-body>
+        <govuk-warning message="We have sent your application number and instructions on how to return to {{model!.personalDetails!.applicantEmail}}" background="#0"></govuk-warning>
 
-      <govuk-warning message="We have sent your application number and instructions on how to return to {{model!.applicationEmail}}" background="#0"></govuk-warning>
+      </ng-container>
 
       <ol class="app-task-list">
         <li>

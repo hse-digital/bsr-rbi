@@ -17,6 +17,9 @@ import { ApplicantProofOfIdentityComponent } from './applicant-proof-of-identity
 import { ApplicantSummaryComponent } from './applicant-summary/applicant-summary.component';
 import { ApplicantAlternativePhoneComponent } from './applicant-alternative-phone/applicant-alternative-phone.component';
 import { PersonalDetailsPlaceholderComponent } from './personal-details-placeholder/personal-details-placeholder.component';
+import { ApplicantEmailComponent } from './applicant-email/applicant-email.component';
+import { ApplicantEmailVerifyComponent } from './applicant-email/applicant-email-verify.component';
+import { ApplicantGenerateNewSecurityCodeComponent } from './applicant-email/applicant-email-generate-new-security-code';
 
 
 const routes = new HseRoutes([
@@ -24,25 +27,30 @@ const routes = new HseRoutes([
   HseRoute.protected(ApplicantAlternativePhoneComponent.route, ApplicantAlternativePhoneComponent, ApplicantAlternativePhoneComponent.title),
   HseRoute.protected(ApplicantNameComponent.route, ApplicantNameComponent, ApplicantNameComponent.title),
   HseRoute.protected(ApplicantAlternativeEmailComponent.route, ApplicantAlternativeEmailComponent, ApplicantAlternativeEmailComponent.title),
+  HseRoute.protected(ApplicantEmailComponent.route, ApplicantEmailComponent, ApplicantEmailComponent.title),
   HseRoute.protected(ApplicantPhotoComponent.route, ApplicantPhotoComponent, ApplicantPhotoComponent.title),
   HseRoute.protected(ApplicantAddressComponent.route, ApplicantAddressComponent, ApplicantAddressComponent.title),
   HseRoute.protected(ApplicantProofOfIdentityComponent.route, ApplicantProofOfIdentityComponent, ApplicantProofOfIdentityComponent.title),
   HseRoute.protected(ApplicantSummaryComponent.route, ApplicantSummaryComponent, ApplicantSummaryComponent.title),
   HseRoute.protected(PersonalDetailsPlaceholderComponent.route, PersonalDetailsPlaceholderComponent, PersonalDetailsPlaceholderComponent.title),
+  HseRoute.protected(ApplicantEmailVerifyComponent.route, ApplicantEmailVerifyComponent, ApplicantEmailVerifyComponent.title),
+  HseRoute.protected(ApplicantGenerateNewSecurityCodeComponent.route, ApplicantGenerateNewSecurityCodeComponent, ApplicantGenerateNewSecurityCodeComponent.title),
 ]);
 
 @NgModule({
   declarations: [
     ApplicantAlternativeEmailComponent,
+    ApplicantEmailComponent,
     ApplicantNameComponent,
     ApplicantPhotoComponent,
     ApplicantPhoneComponent,
     ApplicantAlternativePhoneComponent,
     ApplicantAddressComponent,
     ApplicantProofOfIdentityComponent,
-    ApplicantAlternativeEmailComponent,
     ApplicantSummaryComponent,
     PersonalDetailsPlaceholderComponent,
+    ApplicantEmailVerifyComponent,
+    ApplicantGenerateNewSecurityCodeComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

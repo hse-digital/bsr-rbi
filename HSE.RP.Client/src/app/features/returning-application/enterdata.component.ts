@@ -36,7 +36,7 @@ export class ReturningApplicationEnterDataComponent {
   async validateAndContinue(): Promise<void> {
     this.sendingRequest = true;
 
-/*     this.isEmailAddressValid();
+    this.isEmailAddressValid();
     await this.isApplicationNumberValid();
 
     this.hasErrors = this.errors.emailAddress.hasError || this.errors.applicationNumber.hasError;
@@ -47,7 +47,7 @@ export class ReturningApplicationEnterDataComponent {
     } else {
       this.summaryError?.first?.focus();
       this.titleService.setTitleError();
-    } */
+    }
 
     this.onContinue.emit({ emailAddress: this.emailAddress!, applicationNumber: this.applicationNumber! });
 
@@ -56,25 +56,24 @@ export class ReturningApplicationEnterDataComponent {
 
   async isApplicationNumberValid() {
     this.errors.applicationNumber.hasError = true;
-/*     if (!this.applicationNumber) {
+     if (!this.applicationNumber) {
       this.errors.applicationNumber.errorText = 'Enter the application number';
     } else if (this.applicationNumber.length != 12) {
       this.errors.applicationNumber.errorText = 'Application number must be 12 characters';
-    } else if (!(await this.doesApplicationNumberMatchEmail())) {
-      this.errors.applicationNumber.errorText = 'Application number doesn\'t match this email address. Enter the correct application number';
+/*     } else if (!(await this.doesApplicationNumberMatchEmail())) {
+      this.errors.applicationNumber.errorText = 'Application number doesn\'t match this email address. Enter the correct application number'; */  //TODO re-enable this
     } else {
       this.errors.applicationNumber.hasError = false;
-    } */ //TODO re-enable this
+    }
     return true;
   }
 
   isEmailAddressValid() {
     this.errors.emailAddress.hasError = false;
-/*     if (!this.emailAddress) {
+    if (!this.emailAddress) {
       this.errors.emailAddress.errorText = 'Enter your email address';
       this.errors.emailAddress.hasError = true;
-    } */
-    //TODO re-enable this
+    }
     return true
   }
 

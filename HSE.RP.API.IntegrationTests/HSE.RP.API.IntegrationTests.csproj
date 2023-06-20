@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HSE.PAC.API\HSE.PAC.API.csproj" />
+    <ProjectReference Include="..\HSE.RP.API\HSE.RP.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

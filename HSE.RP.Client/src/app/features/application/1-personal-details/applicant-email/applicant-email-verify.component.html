@@ -1,0 +1,35 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Verify Email" [hideSaveAndComeBack]=true (saveAndContinue)="validateOTP()" [hideBackButton]=true>
+  <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link anchorId="input-security-code" [message]="getOtpError()" />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">Verify your email address</h1>
+
+  <govuk-body>
+    We have sent a 6-digit security code to: {{email}}
+  </govuk-body>
+
+  <govuk-body>
+    If you cannot find the email, please check your junk or spam folders.
+  </govuk-body>
+  <govuk-body>If you did not get an email, or wish to use a different email address, <a class="govuk-link" [routerLink]="['/application/personal-details/applicant-email-generate-new-security-code']">ask us to resend the email</a> or <a class="govuk-link" [routerLink]="['/application/personal-details/applicant-email']">enter a different email.</a></govuk-body>
+
+
+  <govuk-input id="email-verify" label="Security code"
+               [(model)]="model" [maxlength]=6
+               labelClass="govuk-label--s"
+               hint="For example, '123456'."
+               [errorText]="getErrorDescription(hasErrors, getOtpError())"
+               hintClass="no-margin-top"
+               class="govuk-!-margin-bottom-1"
+               (onKeyupEnter)="validateOTP()" />
+
+
+
+
+</govuk-formpage>
+
+

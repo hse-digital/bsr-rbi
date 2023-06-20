@@ -9,14 +9,14 @@ export class ReturningApplicationResendCodeComponent {
 
     @Input() emailAddress!: string;
     @Output() onVerificationCodeSent = new EventEmitter();
-    
+
     sendingRequest = false;
 
     constructor(private applicationService: ApplicationService) { }
-    
+
     async sendNewCode() {
-        this.sendingRequest = true;       
-        await this.applicationService.sendVerificationEmail(this.emailAddress!); 
+        this.sendingRequest = true;
+        await this.applicationService.sendVerificationEmail(this.emailAddress!);
         this.onVerificationCodeSent.emit();
     }
 }
