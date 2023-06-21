@@ -15,10 +15,12 @@ namespace HSE.RP.API.Functions
         private readonly OTPService otpService;
         private readonly DynamicsService dynamicsService;
         private readonly FeatureOptions featureOptions;
+        private readonly NotificationService notificationService;
 
-        public EmailVerificationFunction(DynamicsService dynamicsService , OTPService otpService, IOptions<FeatureOptions> featureOptions)
+        public EmailVerificationFunction(DynamicsService dynamicsService , OTPService otpService, IOptions<FeatureOptions> featureOptions, NotificationService notificationService)
         {
             this.dynamicsService = dynamicsService;
+            this.notificationService = notificationService;
             this.otpService = otpService;
             this.featureOptions = featureOptions.Value;
         }
@@ -26,6 +28,7 @@ namespace HSE.RP.API.Functions
         [Function(nameof(SendVerificationEmail))]
         public async Task<CustomHttpResponseData> SendVerificationEmail([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
         {
+
             var emailVerificationModel = await request.ReadAsJsonAsync<EmailVerificationModel>();
             var validation = emailVerificationModel.Validate();
             if (!validation.IsValid)
@@ -34,12 +37,15 @@ namespace HSE.RP.API.Functions
             }
 
             var otpToken = otpService.GenerateToken(emailVerificationModel.EmailAddress);
-            await dynamicsService.SendVerificationEmail(emailVerificationModel, otpToken);
+            await notificationService.SendOTPEmail(emailVerificationModel.EmailAddress, otpToken: otpToken);
+
             return new CustomHttpResponseData
             {
                 HttpResponse = request.CreateResponse()
             };
         }
+
+
 
         [Function(nameof(ValidateOTPToken))]
         public async Task<CustomHttpResponseData> ValidateOTPToken([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
