@@ -46,17 +46,21 @@ namespace HSE.RP.API.Services
 
             try
             {
-                EmailNotificationResponse response = client.SendEmail(emailAddress: emailAddress, templateId: this.integrationsOptions.NotificationServiceOTPEmailTemplateId, personalisation: personalisation, emailReplyToId: this.integrationsOptions.NotificationServiceReplyToId);
+                EmailNotificationResponse response = client.SendEmail(emailAddress: emailAddress, templateId: this.integrationsOptions.NotificationServiceOTPEmailTemplateId, personalisation: personalisation /*emailReplyToId: this.integrationsOptions.NotificationServiceReplyToId*/);
             }
             catch (NotifyClientException clientError)
             {
-                clientError.ToString();
+                Console.WriteLine(clientError.Message);
             }
-
+            catch (NotifyAuthException authError)
+            {
+                Console.WriteLine(authError.Message);
+            }
+            }
 
         }
 
 
 
     }
-}
+

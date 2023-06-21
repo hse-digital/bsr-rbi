@@ -214,6 +214,14 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     name: 'Integrations__PaymentAmount'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--PaymentAmount)'
                 }
+                                {
+                    name: 'Integrations__NotificationServiceApiKey'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--NotificationServiceApiKey)'
+                }
+                                {
+                    name: 'Integrations__Integrations__NotificationServiceOTPEmailTemplateId'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--NotificationServiceOTPEmailTemplateId)'
+                }
                 {
                     name: 'Feature__DisableOtpValidation'
                     value: 'false'
