@@ -164,7 +164,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                 }
                 {
                     name: 'Dynamics__EnvironmentUrl'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--EnvironmentUrl)'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=SQUAD3--Dynamics--EnvironmentUrl)'
                 }
                 {
                     name: 'Dynamics__TenantId'
