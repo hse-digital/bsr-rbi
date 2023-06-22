@@ -222,6 +222,10 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     name: 'Integrations__NotificationServiceOTPEmailTemplateId'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--NotificationServiceOTPEmailTemplateId)'
                 }
+                                                {
+                    name: 'Swa__Url'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=SQUAD3--Swa--Url)'
+                }
                 {
                     name: 'Feature__DisableOtpValidation'
                     value: 'false'
