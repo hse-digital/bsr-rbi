@@ -21,12 +21,14 @@ host.Run();
 static void ConfigureServices(HostBuilderContext builderContext, IServiceCollection serviceCollection)
 {
     serviceCollection.Configure<DynamicsOptions>(builderContext.Configuration.GetSection(DynamicsOptions.Dynamics));
+    serviceCollection.Configure<IntegrationsOptions>(builderContext.Configuration.GetSection(IntegrationsOptions.Integrations));
     serviceCollection.Configure<FeatureOptions>(builderContext.Configuration.GetSection(FeatureOptions.Feature));
     serviceCollection.Configure<SwaOptions>(builderContext.Configuration.GetSection(SwaOptions.Swa));
 
     serviceCollection.AddTransient<DynamicsService>();
     serviceCollection.AddTransient<DynamicsApi>();
     serviceCollection.AddTransient<OTPService>();
+    serviceCollection.AddTransient<NotificationService>();
 }
 
 /*    serviceCollection.AddSingleton(_ => new MapperConfiguration(config =>
