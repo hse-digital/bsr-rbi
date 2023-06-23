@@ -5,29 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using Flurl.Http;
 using HSE.RP.API.Models;
+using HSEPortal.Domain.DynamicsDefinitions;
 using Microsoft.Extensions.Options;
 
 namespace HSE.RP.API.Services
 {
     public class DynamicsService
     {
-        private readonly DynamicsOptions dynamicsOptions;
+        private readonly DynamicsModelDefinitionFactory dynamicsModelDefinitionFactory;
         private readonly SwaOptions swaOptions;
-        public DynamicsService(IOptions<DynamicsOptions> dynamicsOptions, IOptions<SwaOptions> swaOptions)
+        private readonly DynamicsApi dynamicsApi;
+        private readonly DynamicsOptions dynamicsOptions;
+        public DynamicsService(DynamicsModelDefinitionFactory dynamicsModelDefinitionFactory, IOptions<DynamicsOptions> dynamicsOptions, IOptions<SwaOptions> swaOptions, DynamicsApi dynamicsApi)
         {
-            this.dynamicsOptions = dynamicsOptions.Value;
+            this.dynamicsModelDefinitionFactory = dynamicsModelDefinitionFactory;
+            this.dynamicsApi = dynamicsApi;
             this.swaOptions = swaOptions.Value;
+            this.dynamicsOptions = dynamicsOptions.Value;
         }
 
-        public async Task SendVerificationEmail(EmailVerificationModel emailVerificationModel, string otpToken)
-        {
-            await dynamicsOptions.EmailVerificationFlowUrl.PostJsonAsync(new
-            {
-                emailAddress = emailVerificationModel.EmailAddress,
-                otp = otpToken,
-                hrbRegUrl = swaOptions.Url
-            });
-        }
 
     }
 }

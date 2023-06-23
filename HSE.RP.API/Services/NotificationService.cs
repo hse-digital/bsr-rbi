@@ -1,18 +1,14 @@
-﻿using Notify.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Notify.Models;
-using Notify.Models.Responses;
 using HSE.RP.API.Models;
 using HSE.RP.API.Services;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.Net.Mail;
 using Azure.Core;
-using Notify.Exceptions;
 
 namespace HSE.RP.API.Services
 {
@@ -20,14 +16,12 @@ namespace HSE.RP.API.Services
     public class NotificationService
     {
         private readonly IntegrationsOptions integrationsOptions;
-        private readonly NotificationClient client;
         private readonly SwaOptions swaOptions;
 
 
         public NotificationService(IOptions<IntegrationsOptions> integrationsOptions, IOptions<SwaOptions> swaOptions)
         {
             this.integrationsOptions = integrationsOptions.Value;
-            this.client = new NotificationClient(apiKey: this.integrationsOptions.NotificationServiceApiKey);
             this.swaOptions = swaOptions.Value;
             
         }

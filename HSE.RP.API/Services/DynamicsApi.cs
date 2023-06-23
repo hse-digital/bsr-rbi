@@ -1,91 +1,96 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Flurl.Http;
+using System.Net;
 using Flurl;
+using Flurl.Http;
 using HSE.RP.API.Models;
 using Microsoft.Extensions.Options;
-using Polly.Retry;
 using Polly;
+using Polly.Retry;
 
-namespace HSE.RP.API.Services
+namespace HSE.RP.API.Services;
+
+public class DynamicsApi
 {
-    public class DynamicsApi
+    private readonly DynamicsOptions dynamicsOptions;
+    private readonly AsyncRetryPolicy retryPolicy;
+
+    public DynamicsApi(IOptions<DynamicsOptions> dynamicsOptions)
     {
-        private readonly DynamicsOptions dynamicsOptions;
-        private readonly AsyncRetryPolicy retryPolicy;
+        retryPolicy = Policy
+            .Handle<FlurlHttpException>()
+            .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+        this.dynamicsOptions = dynamicsOptions.Value;
+    }
 
-        public DynamicsApi(IOptions<DynamicsOptions> dynamicsOptions)
+    public async Task<IFlurlResponse> Create(string endpoint, object entity, bool returnObjectResponse = false)
+    {
+        return await retryPolicy.ExecuteAsync(async () =>
         {
-            retryPolicy = Policy
-                .Handle<FlurlHttpException>()
-                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-            this.dynamicsOptions = dynamicsOptions.Value;
-        }
+            var token = await GetAuthenticationTokenAsync();
 
-        public async Task<IFlurlResponse> Create(string endpoint, object entity, bool returnObjectResponse = false)
-        {
-            return await retryPolicy.ExecuteAsync(async () =>
+            var request = dynamicsOptions.EnvironmentUrl
+                .AppendPathSegments("api", "data", "v9.2", endpoint)
+                .WithOAuthBearerToken(token);
+
+            if (returnObjectResponse)
             {
-                var token = await GetAuthenticationTokenAsync();
+                request = request.WithHeader("Prefer", "return=representation");
+            }
 
-                var request = dynamicsOptions.EnvironmentUrl
-                    .AppendPathSegments("api", "data", "v9.2", endpoint)
-                    .WithOAuthBearerToken(token);
+            return await request.PostJsonAsync(entity);
+        });
+    }
 
-                if (returnObjectResponse)
-                {
-                    request = request.WithHeader("Prefer", "return=representation");
-                }
-
-                return await request.PostJsonAsync(entity);
-            });
-        }
-
-        public async Task<IFlurlResponse> Update(string endpoint, object entity)
+    public async Task<IFlurlResponse> Update(string endpoint, object entity)
+    {
+        return await retryPolicy.ExecuteAsync(async () =>
         {
-            return await retryPolicy.ExecuteAsync(async () =>
+            var token = await GetAuthenticationTokenAsync();
+
+            return await dynamicsOptions.EnvironmentUrl
+                .AppendPathSegments("api", "data", "v9.2", endpoint)
+                .WithOAuthBearerToken(token)
+                .PatchJsonAsync(entity);
+        });
+    }
+
+    public async Task<T> Get<T>(string endpoint, params (string, string)[] filters)
+    {
+        return await retryPolicy.ExecuteAsync(async () =>
+        {
+            var token = await GetAuthenticationTokenAsync();
+
+            var request = dynamicsOptions.EnvironmentUrl
+                .AppendPathSegments("api", "data", "v9.2", endpoint)
+                .WithOAuthBearerToken(token);
+
+            request = filters.Aggregate(request, (current, filter) => current.SetQueryParam(filter.Item1, filter.Item2));
+
+            return await request.GetJsonAsync<T>();
+        });
+    }
+
+    internal async Task<string> GetAuthenticationTokenAsync()
+    {
+        var response = await $"https://login.microsoftonline.com/{dynamicsOptions.TenantId}/oauth2/token"
+            .PostUrlEncodedAsync(new
             {
-                var token = await GetAuthenticationTokenAsync();
+                grant_type = "client_credentials",
+                client_id = dynamicsOptions.ClientId,
+                client_secret = dynamicsOptions.ClientSecret,
+                resource = dynamicsOptions.EnvironmentUrl
+            })
+            .ReceiveJson<DynamicsAuthenticationModel>();
 
-                return await dynamicsOptions.EnvironmentUrl
-                    .AppendPathSegments("api", "data", "v9.2", endpoint)
-                    .WithOAuthBearerToken(token)
-                    .PatchJsonAsync(entity);
-            });
-        }
+        return response.AccessToken;
+    }
 
-        public async Task<T> Get<T>(string endpoint, params (string, string)[] filters)
-        {
-            return await retryPolicy.ExecuteAsync(async () =>
-            {
-                var token = await GetAuthenticationTokenAsync();
+    public async Task Delete(string path)
+    {
+        var token = await GetAuthenticationTokenAsync();
 
-                var request = dynamicsOptions.EnvironmentUrl
-                    .AppendPathSegments("api", "data", "v9.2", endpoint)
-                    .WithOAuthBearerToken(token);
-
-                request = filters.Aggregate(request, (current, filter) => current.SetQueryParam(filter.Item1, filter.Item2));
-
-                return await request.GetJsonAsync<T>();
-            });
-        }
-
-        internal async Task<string> GetAuthenticationTokenAsync()
-        {
-            var response = await $"https://login.microsoftonline.com/{dynamicsOptions.TenantId}/oauth2/token"
-                .PostUrlEncodedAsync(new
-                {
-                    grant_type = "client_credentials",
-                    client_id = dynamicsOptions.ClientId,
-                    client_secret = dynamicsOptions.ClientSecret,
-                    resource = dynamicsOptions.EnvironmentUrl
-                })
-                .ReceiveJson<DynamicsAuthenticationModel>();
-
-            return response.AccessToken;
-        }
+        await dynamicsOptions.EnvironmentUrl
+            .AppendPathSegments("api", "data", "v9.2", path)
+            .WithOAuthBearerToken(token)
+            .DeleteAsync();
     }
 }
