@@ -77,7 +77,6 @@ export class PersonalDetails {
   applicantEmail?: string;
   applicantAlternativeEmail?: string;
   applicantProofOfIdentity?: string; //Blob
-
 }
 
 export class ApplicantName {

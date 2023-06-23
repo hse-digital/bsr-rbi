@@ -29,5 +29,28 @@ namespace HSE.RP.API.Services
             });
         }
 
+        public async Task<BuildingInspectorModel> RegisterNewBuildingInspectorApplicationAsync(BuildingInspectorModel buildingInspectorModel)
+        {
+            var application = await CreateApplicationAsync(buildingInspectorModel);
+            var contact = await CreateContactAsync(buildingInspectorModel);
+            var dynamicsBuildingInspectorApplication = await CreateBuildingInspectorApplicationAsync(contact, application);
+
+            return buildingInspectorApplicationModel with { Id = dynamicsBuildingInspectorApplication.bsr_applicationid };
+        }
+
+        private Task CreateBuildingInspectorApplicationAsync(object contact, object application)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Task CreateContactAsync(BuildingInspectorModel buildingInspectorModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Task CreateApplicationAsync(BuildingInspectorModel buildingInspectorModel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
