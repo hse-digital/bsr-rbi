@@ -114,7 +114,6 @@ namespace HSE.RP.API.Services
                     response.StatusCode == (int)HttpStatusCode.InternalServerError)
                 {
                     var error = await response.GetJsonAsync<NotificationErrorResponse>();
-                    Console.WriteLine(error.errors);
                     throw new Exception(message: (error.errors[0].error + ": " + error.errors[0].message));
                 }
                 var result = await response.GetJsonAsync<EmailNotificationSuccessResponse>();
@@ -123,7 +122,6 @@ namespace HSE.RP.API.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 throw new Exception("Notification service unknown error");
             }
 
@@ -174,7 +172,6 @@ namespace HSE.RP.API.Services
                     response.StatusCode == (int)HttpStatusCode.InternalServerError)
                 {
                     var error = await response.GetJsonAsync<NotificationErrorResponse>();
-                    Console.WriteLine(error.errors);
                     throw new Exception(message: (error.errors[0].error + ": " + error.errors[0].message));
                 }
                 var result = await response.GetJsonAsync<SmsNotificationSuccessResponse>();

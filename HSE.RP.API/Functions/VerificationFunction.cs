@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace HSE.RP.API.Functions
 {
-    public class EmailVerificationFunction
+    public class VerificationFunction
     {
 
         private readonly OTPService otpService;
@@ -17,7 +17,7 @@ namespace HSE.RP.API.Functions
         private readonly FeatureOptions featureOptions;
         private readonly NotificationService notificationService;
 
-        public EmailVerificationFunction(DynamicsService dynamicsService , OTPService otpService, IOptions<FeatureOptions> featureOptions, NotificationService notificationService)
+        public VerificationFunction(DynamicsService dynamicsService , OTPService otpService, IOptions<FeatureOptions> featureOptions, NotificationService notificationService)
         {
             this.dynamicsService = dynamicsService;
             this.notificationService = notificationService;
