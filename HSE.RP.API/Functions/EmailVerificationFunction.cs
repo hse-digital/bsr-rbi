@@ -45,6 +45,26 @@ namespace HSE.RP.API.Functions
             };
         }
 
+        [Function(nameof(SendVerificationSms))]
+        public async Task<CustomHttpResponseData> SendVerificationSms([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+        {
+
+            var phoneVerificationModel = await request.ReadAsJsonAsync<PhoneNumberVerificationModel>();
+            var validation = phoneVerificationModel.Validate();
+            if (!validation.IsValid)
+            {
+                return await request.BuildValidationErrorResponseDataAsync(validation);
+            }
+
+            var otpToken = otpService.GenerateToken(phoneVerificationModel.EmailAddress);
+            await notificationService.SendOTPSms(phoneVerificationModel.PhoneNumber, otpToken: otpToken);
+
+            return new CustomHttpResponseData
+            {
+                HttpResponse = request.CreateResponse()
+            };
+        }
+
 
 
         [Function(nameof(ValidateOTPToken))]

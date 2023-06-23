@@ -25,6 +25,7 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
     serviceCollection.Configure<FeatureOptions>(builderContext.Configuration.GetSection(FeatureOptions.Feature));
     serviceCollection.Configure<SwaOptions>(builderContext.Configuration.GetSection(SwaOptions.Swa));
 
+
     serviceCollection.AddTransient<DynamicsService>();
     serviceCollection.AddTransient<DynamicsApi>();
     serviceCollection.AddTransient<OTPService>();
