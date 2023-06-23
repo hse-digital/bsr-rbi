@@ -1,5 +1,4 @@
-﻿using Notify.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,14 +26,12 @@ namespace HSE.RP.API.Services
     public class NotificationService
     {
         private readonly IntegrationsOptions integrationsOptions;
-        private readonly NotificationClient client;
         private readonly SwaOptions swaOptions;
         public NotificationAPIKey notificationAPIKey;
 
         public NotificationService(IOptions<IntegrationsOptions> integrationsOptions, IOptions<SwaOptions> swaOptions)
         {
             this.integrationsOptions = integrationsOptions.Value;
-            this.client = new NotificationClient(apiKey: this.integrationsOptions.NotificationServiceApiKey);
             this.swaOptions = swaOptions.Value;
             this.notificationAPIKey = SplitAPIKey(this.integrationsOptions.NotificationServiceApiKey);
 
