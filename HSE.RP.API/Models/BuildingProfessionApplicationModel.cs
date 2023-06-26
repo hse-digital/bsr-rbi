@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HSE.RP.API.Models
 {
-    public record BuildingInspectorModel
+    public record BuildingProfessionApplicationModel
     (
         [property: JsonPropertyName("id")] string Id,
         PersonalDetails PersonDetails = null,
