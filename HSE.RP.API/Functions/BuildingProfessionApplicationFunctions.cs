@@ -3,19 +3,20 @@ using System.Net;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Models;
 using HSE.RP.API.Services;
+using HSE.RP.Domain.Entities;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Options;
 
 namespace HSE.RP.API.Functions;
 
-public class BuildingProfessionalApplicationFunctions
+public class BuildingProfessionApplicationFunctions
 {
     private readonly DynamicsService dynamicsService;
     private readonly OTPService otpService;
     private readonly FeatureOptions featureOptions;
 
-    public BuildingProfessionalApplicationFunctions(DynamicsService dynamicsService, OTPService otpService, IOptions<FeatureOptions> featureOptions)
+    public BuildingProfessionApplicationFunctions(DynamicsService dynamicsService, OTPService otpService, IOptions<FeatureOptions> featureOptions)
     {
         this.dynamicsService = dynamicsService;
         this.otpService = otpService;
@@ -59,11 +60,11 @@ public class BuildingProfessionalApplicationFunctions
     [Function(nameof(GetApplication))]
     public async Task<HttpResponseData> GetApplication([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetApplication/{applicationNumber}/{emailAddress}/{otpToken}")] HttpRequestData request,
         [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and c.ContactEmailAddress = {emailAddress}", PartitionKey = "{applicationNumber}", Connection = "CosmosConnection")]
-        List<BuildingProfessionApplicationModel> buildingApplications, string otpToken)
+        List<BuildingProfessionApplicationModel> buildingProfessionApplications, string otpToken)
     {
-        if (buildingApplications.Any())
+        if (buildingProfessionApplications.Any())
         {
-            var application = buildingApplications[0];
+            var application = buildingProfessionApplications[0];
             if (otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantEmail) || featureOptions.DisableOtpValidation)
             {
                 return await request.CreateObjectResponseAsync(application);
@@ -76,8 +77,8 @@ public class BuildingProfessionalApplicationFunctions
     [Function(nameof(UpdateApplication))]
     public async Task<CustomHttpResponseData> UpdateApplication([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "UpdateApplication/{applicationNumber}")] HttpRequestData request)
     {
-        var buildingApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
-        var validation = buildingApplicationModel.Validate();
+        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var validation = buildingProfessionApplicationModel.Validate();
         if (!validation.IsValid)
         {
             return await request.BuildValidationErrorResponseDataAsync(validation);
@@ -85,7 +86,7 @@ public class BuildingProfessionalApplicationFunctions
 
         return new CustomHttpResponseData
         {
-            Application = buildingApplicationModel,
+            Application = buildingProfessionApplicationModel,
             HttpResponse = request.CreateResponse(HttpStatusCode.OK)
         };
     }
