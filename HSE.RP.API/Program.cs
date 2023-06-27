@@ -5,6 +5,7 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using HSE.RP.API.Models;
 using HSE.RP.API.Services;
+using HSE.RP.Domain.DynamicsDefinitions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -24,6 +25,8 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
     serviceCollection.Configure<IntegrationsOptions>(builderContext.Configuration.GetSection(IntegrationsOptions.Integrations));
     serviceCollection.Configure<FeatureOptions>(builderContext.Configuration.GetSection(FeatureOptions.Feature));
     serviceCollection.Configure<SwaOptions>(builderContext.Configuration.GetSection(SwaOptions.Swa));
+    serviceCollection.AddTransient<DynamicsModelDefinitionFactory>();
+
 
 
     serviceCollection.AddTransient<DynamicsService>();

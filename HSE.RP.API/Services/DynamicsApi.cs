@@ -16,7 +16,7 @@ namespace HSE.RP.API.Services
     {
         private readonly DynamicsOptions dynamicsOptions;
         private readonly AsyncRetryPolicy retryPolicy;
-
+            
         public DynamicsApi(IOptions<DynamicsOptions> dynamicsOptions)
         {
             retryPolicy = Policy
@@ -27,6 +27,7 @@ namespace HSE.RP.API.Services
 
         public async Task<IFlurlResponse> Create(string endpoint, object entity, bool returnObjectResponse = false)
         {
+
             return await retryPolicy.ExecuteAsync(async () =>
             {
                 var token = await GetAuthenticationTokenAsync();
@@ -40,6 +41,7 @@ namespace HSE.RP.API.Services
                     request = request.WithHeader("Prefer", "return=representation");
                 }
 
+                
                 return await request.PostJsonAsync(entity);
             });
         }

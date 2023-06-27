@@ -8,11 +8,11 @@ public class BuildingProfessionApplicationModelDefinition : DynamicsModelDefinit
 
     public override DynamicsBuildingProfessionApplication BuildDynamicsEntity(BuildingProfessionApplication entity)
     {
-        return new DynamicsBuildingProfessionApplication(contactReferenceId: $"/contacts({entity.Id})", bsr_buildingprofessiontypecode: DynamicsBuildingProfessionTypeCode.Ids["Building Inspector"] );
+        return new DynamicsBuildingProfessionApplication(bsr_applicantid: $"/contacts({entity.ContactId})", bsr_buildingprofessiontypecode: entity.BuildingProfessionTypeCode);
     }
 
     public override BuildingProfessionApplication BuildEntity(DynamicsBuildingProfessionApplication dynamicsEntity)
     {
-        return new BuildingProfessionApplication(dynamicsEntity.contactReferenceId, dynamicsEntity.bsr_buildingproappid);
+        return new BuildingProfessionApplication(dynamicsEntity.bsr_applicantid, ApplicationReturnId: dynamicsEntity.bsr_buildingproappid, BuildingProfessionTypeCode: dynamicsEntity.bsr_buildingprofessiontypecode);
     }
-}
+}   

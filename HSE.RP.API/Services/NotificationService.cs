@@ -119,7 +119,7 @@ namespace HSE.RP.API.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Notification service unknown error");
+                throw new Exception("Notification service unknown error: " + ex.Message);
             }
 
 

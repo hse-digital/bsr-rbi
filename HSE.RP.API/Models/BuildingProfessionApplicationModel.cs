@@ -10,12 +10,18 @@ namespace HSE.RP.API.Models
     public record BuildingProfessionApplicationModel
     (
         [property: JsonPropertyName("id")] string Id,
-        PersonalDetails PersonDetails = null,
+        PersonalDetails PersonalDetails = null,
         ApplicationStatus ApplicationStatus = ApplicationStatus.None) : IValidatableModel
     {
         public ValidationSummary Validate()
         {
-            throw new NotImplementedException();
+            var errors = new List<string>();
+            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantEmail))
+            {
+                errors.Add("Applicant email address is required");
+            }
+
+            return new ValidationSummary(!errors.Any(), errors.ToArray());
         }
     }
 

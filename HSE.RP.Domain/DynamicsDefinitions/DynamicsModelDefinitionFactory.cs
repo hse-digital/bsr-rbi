@@ -9,7 +9,7 @@ public class DynamicsModelDefinitionFactory
         [typeof(Contact)] = new ContactModelDefinition(),
         [typeof(Building)] = new BuildingModelDefinition(),
         [typeof(Block)] = new BlockModelDefinition(),
-        [typeof(BuildingApplication)] = new BuildingProfessionApplicationModelDefinition(),
+        [typeof(BuildingProfessionApplication)] = new BuildingProfessionApplicationModelDefinition(),
         [typeof(Structure)] = new StructureDefinition(),
     };
 

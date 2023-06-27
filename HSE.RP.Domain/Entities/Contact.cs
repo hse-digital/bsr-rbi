@@ -2,7 +2,14 @@ using System.Text.Json.Serialization;
 
 namespace HSE.RP.Domain.Entities;
 
-public record Contact(string FirstName, string LastName, string PhoneNumber, string Email, string Id = null) : Entity(Id);
+public record Contact(string FirstName,
+    string LastName,
+    string PhoneNumber,
+    string Email,
+    string Id = null,
+    string buildingProfessionApplicationReferenceId = null,
+    string jobRoleReferenceId = null
+    ) : Entity(Id);
 
 public record DynamicsContact(
     string firstname = null, 
@@ -19,7 +26,10 @@ public record DynamicsContact(
     string jobRoleReferenceId = null,
     DynamicsContactType[] bsr_contacttype_contact = null,
     [property: JsonPropertyName("bsr_Address1CountryCode@odata.bind")]
-    string countryReferenceId = null) : DynamicsEntity<Contact>;
+    string countryReferenceId = null,
+    [property: JsonPropertyName("bsr_buildingprofessionapplicationid@odata.bind")]
+    string bsr_buildingprofessionapplicationid = null
+    ) : DynamicsEntity<Contact>;
 
 public record DynamicsContactType(
     string bsr_name = null, 
@@ -34,6 +44,7 @@ public static class DynamicsJobRole
         ["director"] = "c76070f7-09bc-ed11-83fe-000d3a86ecac",
         ["administrative_worker"] = "37c5ab12-0abc-ed11-83fe-000d3a86ecac",
         ["building_manager"] = "671f4426-0abc-ed11-83fe-000d3a86ecac",
+        ["building_inspector"] = "c77d5afd-e006-ee11-8f6e-0022481b5210",
         ["building_director"] = "d5808a32-0abc-ed11-83fe-000d3a86ecac",
         ["other"] = "eee3fe38-0abc-ed11-83fe-000d3a86ecac"
     };
