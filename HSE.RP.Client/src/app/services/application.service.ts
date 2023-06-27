@@ -39,30 +39,29 @@ export class ApplicationService {
     }));
   }
 
+  async registerNewBuildingProfessionApplication(): Promise<void> {
+    this.model = await firstValueFrom(this.httpClient.post<BuildingProfessionalModel>('api/NewBuildingProfessionalApplication', this.model));
+    this.updateLocalStorage();
+  }
 
   async updateApplication(): Promise<void> {
     this.updateLocalStorage();
 
-    if (this.model?.Id) {
-      await firstValueFrom(this.httpClient.put(`api/UpdateApplication/${this.model.Id}`, this.model));
+    if (this.model?.id) {
+      await firstValueFrom(this.httpClient.put(`api/UpdateApplication/${this.model.id}`, this.model));
     }
   }
 
   async continueApplication(ApplicationNumber: string, EmailAddress: string, OTPToken: string): Promise<void> {
-    let application: BuildingProfessionalModel = await firstValueFrom(this.httpClient.get<BuildingProfessionalModel>(`api/GetApplication/${ApplicationNumber}/${EmailAddress}/${OTPToken}`)); //TODO update when information in Dynamics
     this.clearApplication();
-    this.model = new BuildingProfessionalModel();
-    this.model.Id = ApplicationNumber;
-    this.model.PersonalDetails = {};
-    this.model.PersonalDetails!.ApplicantEmail=EmailAddress;
-    this.model.ReturningApplication = true;
+    let application: BuildingProfessionalModel = await firstValueFrom(this.httpClient.get<BuildingProfessionalModel>(`api/GetApplication/${ApplicationNumber}/${EmailAddress}/${OTPToken}`)); //TODO update when information in Dynamics
     this.updateLocalStorage();
   }
 
 }
 
 export class BuildingProfessionalModel {
-  Id?: String;
+  id?: String;
   PersonalDetails?: PersonalDetails = {};
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
   ReturningApplication: boolean = false;
@@ -86,10 +85,11 @@ export class ApplicantName {
 
 export enum ApplicationStatus {
   None = 0,
-  PersonalDetailsComplete = 1,
-  BuildingInspectorClassComplete = 2,
-  CompetencyComplete = 4,
-  ProfessionalActivityComplete = 8,
-  ApplicationOverviewComplete = 16,
-  PayAndSumbitComplete = 32,
+  EmailVerified = 1,
+  PersonalDetailsComplete = 2,
+  BuildingInspectorClassComplete = 4,
+  CompetencyComplete = 8,
+  ProfessionalActivityComplete = 16,
+  ApplicationOverviewComplete = 32,
+  PayAndSubmitComplete = 64,
 }

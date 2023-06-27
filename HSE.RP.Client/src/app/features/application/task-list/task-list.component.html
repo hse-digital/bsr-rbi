@@ -192,7 +192,7 @@
               </span>
               <govuk-tag tag *ngIf="model!.ApplicationStatus < ApplicationStatus.ApplicationOverviewComplete" class="govuk-tag--grey">CANNOT START YET</govuk-tag>
               <govuk-tag tag *ngIf="model!.ApplicationStatus == ApplicationStatus.ApplicationOverviewComplete" class="govuk-tag--grey">NOT STARTED YET</govuk-tag>
-              <govuk-tag tag *ngIf="model!.ApplicationStatus >= ApplicationStatus.PayAndSumbitComplete" class="govuk-tag--green">COMPLETE</govuk-tag>
+              <govuk-tag tag *ngIf="model!.ApplicationStatus >= ApplicationStatus.PayAndSubmitComplete" class="govuk-tag--green">COMPLETE</govuk-tag>
             </li>
           </ul>
         </li>

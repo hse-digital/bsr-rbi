@@ -47,12 +47,13 @@ namespace HSE.RP.API.Models
     public enum ApplicationStatus
     {
         None = 0,
-        PersonalDetailsComplete = 1,
-        BuildingInspectorClassComplete = 2,
-        CompetencyComplete = 4,
-        ProfessionalActivityComplete = 8,
-        ApplicationOverviewComplete = 16,
-        PayAndSumbitComplete = 32,
+        EmailVerified = 1,
+        PersonalDetailsComplete = 2,
+        BuildingInspectorClassComplete = 4,
+        CompetencyComplete = 8,
+        ProfessionalActivityComplete = 16,
+        ApplicationOverviewComplete = 32,
+        PayAndSumbitComplete = 64,
     }
 
     public record Submit();

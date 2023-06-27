@@ -30,7 +30,7 @@ export class PayAndSubmitPlaceholderComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.PayAndSumbitComplete;
+    applicationService.model.ApplicationStatus = ApplicationStatus.PayAndSubmitComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
