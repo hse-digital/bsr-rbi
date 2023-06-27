@@ -7,7 +7,7 @@ import { AddressModel } from "./address.service";
 @Injectable()
 export class ApplicationService {
 
-  model: BuildingInspectorModel;
+  model: BuildingProfessionalModel;
 
 
   constructor(private httpClient: HttpClient) {
@@ -16,7 +16,7 @@ export class ApplicationService {
 
   newApplication() {
     LocalStorage.remove('application_data');
-    this.model = new BuildingInspectorModel();
+    this.model = new BuildingProfessionalModel();
   }
 
   updateLocalStorage() {
@@ -24,18 +24,18 @@ export class ApplicationService {
   }
 
   clearApplication() {
-    this.model = new BuildingInspectorModel();
+    this.model = new BuildingProfessionalModel();
     this.updateLocalStorage();
   }
 
-  async sendVerificationEmail(emailAddress: string): Promise<void> {
-    await firstValueFrom(this.httpClient.post('api/SendVerificationEmail', { "EmailAddress": emailAddress }));
+  async sendVerificationEmail(EmailAddress: string): Promise<void> {
+    await firstValueFrom(this.httpClient.post('api/SendVerificationEmail', { "EmailAddress": EmailAddress }));
   }
 
-  async validateOTPToken(otpToken: string, emailAddress: string): Promise<void> {
+  async validateOTPToken(OTPToken: string, EmailAddress: string): Promise<void> {
     await firstValueFrom(this.httpClient.post('api/ValidateOTPToken', {
-      "OTPToken": otpToken,
-      "EmailAddress": emailAddress
+      "OTPToken": OTPToken,
+      "EmailAddress": EmailAddress
     }));
   }
 
@@ -43,45 +43,45 @@ export class ApplicationService {
   async updateApplication(): Promise<void> {
     this.updateLocalStorage();
 
-    if (this.model?.id) {
-      await firstValueFrom(this.httpClient.put(`api/UpdateApplication/${this.model.id}`, this.model));
+    if (this.model?.Id) {
+      await firstValueFrom(this.httpClient.put(`api/UpdateApplication/${this.model.Id}`, this.model));
     }
   }
 
-  async continueApplication(applicationNumber: string, emailAddress: string, otpToken: string): Promise<void> {
-    //let application: BuildingInspectorModel = await firstValueFrom(this.httpClient.get<BuildingInspectorModel>(`api/GetApplication/${applicationNumber}/${emailAddress}/${otpToken}`)); //TODO update when information in Dynamics
+  async continueApplication(ApplicationNumber: string, EmailAddress: string, OTPToken: string): Promise<void> {
+    let application: BuildingProfessionalModel = await firstValueFrom(this.httpClient.get<BuildingProfessionalModel>(`api/GetApplication/${ApplicationNumber}/${EmailAddress}/${OTPToken}`)); //TODO update when information in Dynamics
     this.clearApplication();
-    this.model = new BuildingInspectorModel();
-    this.model.id = applicationNumber;
-    this.model.personalDetails = {};
-    this.model.personalDetails!.applicantEmail=emailAddress;
-    this.model.returningApplication = true;
+    this.model = new BuildingProfessionalModel();
+    this.model.Id = ApplicationNumber;
+    this.model.PersonalDetails = {};
+    this.model.PersonalDetails!.ApplicantEmail=EmailAddress;
+    this.model.ReturningApplication = true;
     this.updateLocalStorage();
   }
 
 }
 
-export class BuildingInspectorModel {
-  id?: String;
-  personalDetails?: PersonalDetails = {};
-  applicationStatus: ApplicationStatus = ApplicationStatus.None
-  returningApplication: boolean = false;
+export class BuildingProfessionalModel {
+  Id?: String;
+  PersonalDetails?: PersonalDetails = {};
+  ApplicationStatus: ApplicationStatus = ApplicationStatus.None
+  ReturningApplication: boolean = false;
 }
 
 export class PersonalDetails {
-  applicantName?: ApplicantName = {};
-  applicantPhoto?: string //Blob
-  applicantAddress?: AddressModel;
-  applicantPhone?: string;
-  applicantAlternativePhone?: string;
-  applicantEmail?: string;
-  applicantAlternativeEmail?: string;
-  applicantProofOfIdentity?: string; //Blob
+  ApplicantName?: ApplicantName = {};
+  ApplicantPhoto?: string //Blob
+  ApplicantAddress?: AddressModel;
+  ApplicantPhone?: string;
+  ApplicantAlternativePhone?: string;
+  ApplicantEmail?: string;
+  ApplicantAlternativeEmail?: string;
+  ApplicantProofOfIdentity?: string; //Blob
 }
 
 export class ApplicantName {
-  firstName?: string
-  lastName?: string
+  FirstName?: string
+  LastName?: string
 }
 
 export enum ApplicationStatus {

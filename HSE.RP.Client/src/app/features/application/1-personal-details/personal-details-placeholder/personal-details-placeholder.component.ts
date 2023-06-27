@@ -31,7 +31,7 @@ export class PersonalDetailsPlaceholderComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.applicationStatus = ApplicationStatus.PersonalDetailsComplete;
+    applicationService.model.ApplicationStatus = ApplicationStatus.PersonalDetailsComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {

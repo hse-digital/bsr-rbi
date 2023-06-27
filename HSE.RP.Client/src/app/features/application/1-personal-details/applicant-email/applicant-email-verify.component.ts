@@ -36,7 +36,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.email = applicationService.model.personalDetails?.applicantEmail;
+    this.email = applicationService.model.PersonalDetails?.ApplicantEmail;
   }
 
   override canAccess(
@@ -44,7 +44,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
     return FieldValidations.IsNotNullOrWhitespace(
-      applicationService.model.personalDetails?.applicantEmail
+      applicationService.model.PersonalDetails?.ApplicantEmail
     );
   }
 

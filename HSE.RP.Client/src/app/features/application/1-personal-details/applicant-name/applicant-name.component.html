@@ -4,8 +4,8 @@
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="!firstNameValid" anchorId="input-first-name" message="Enter your first name" />
-    <govuk-error-link *ngIf="!lastNameValid" anchorId="input-last-name" message="Enter your last name" />
+    <govuk-error-link *ngIf="!FirstNameValid" anchorId="input-first-name" message="Enter your first name" />
+    <govuk-error-link *ngIf="!LastNameValid" anchorId="input-last-name" message="Enter your last name" />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Your Name</h1>
@@ -14,16 +14,16 @@
     We will use this if we need to check anything you have told us in this application.
   </govuk-body>
   <govuk-input id="first-name" label="First Name"
-               [(model)]="model.firstName"
+               [(model)]="model.FirstName"
                class="govuk-input--width-20"
-               [errorText]="getErrorDescription(!firstNameValid, 'Enter your first name')"
+               [errorText]="getErrorDescription(!FirstNameValid, 'Enter your first name')"
                hintClass="no-margin-top"
                (onKeyupEnter)="saveAndContinue()" />
 
   <govuk-input id="last-name" label="Last Name"
-               [(model)]="model.lastName"
+               [(model)]="model.LastName"
                class="govuk-input--width-20"
-               [errorText]="getErrorDescription(!lastNameValid, 'Enter your last name')"
+               [errorText]="getErrorDescription(!LastNameValid, 'Enter your last name')"
                hintClass="no-margin-top"
                (onKeyupEnter)="saveAndContinue()" />
 </govuk-formpage>

@@ -51,7 +51,9 @@ namespace HSE.RP.API.Services
                 bsr_buildingprofessionapplicationid = $"/bsr_buildingprofessionapplications({buildingProfessionApplication.Id})" 
             });
 
-            return buildingProfessionApplicationModel with { Id = buildingProfessionApplication.Id };
+            var dynamicsBuildingProfessionApplication = await dynamicsApi.Get<DynamicsBuildingProfessionApplication>($"bsr_buildingprofessionapplications({buildingProfessionApplication.Id})");
+
+            return buildingProfessionApplicationModel with { Id = dynamicsBuildingProfessionApplication.bsr_buildingproappid };
         }
 
         private async Task<Contact> CreateContactAsync(BuildingProfessionApplicationModel model)
@@ -84,6 +86,8 @@ namespace HSE.RP.API.Services
             var dynamicsBuildingProfessionApplication = modelDefinition.BuildDynamicsEntity(buildingProfessionApplication);
             var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsBuildingProfessionApplication);
             var buildingProfessionalApplicationId = ExtractEntityIdFromHeader(response.Headers);
+
+
             return buildingProfessionApplicationModel with { Id = buildingProfessionalApplicationId };
         }
 

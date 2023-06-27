@@ -30,7 +30,7 @@ export class ApplicationOverviewPlaceholderComponent extends PageComponent<strin
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.applicationStatus = ApplicationStatus.ApplicationOverviewComplete;
+    applicationService.model.ApplicationStatus = ApplicationStatus.ApplicationOverviewComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {

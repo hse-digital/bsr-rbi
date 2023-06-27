@@ -27,15 +27,15 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    if(!applicationService.model.personalDetails)
+    if(!applicationService.model.PersonalDetails)
     {
-      applicationService.model.personalDetails = {};
+      applicationService.model.PersonalDetails = {};
     }
-    this.model = applicationService.model.personalDetails?.applicantEmail ?? '';
+    this.model = applicationService.model.PersonalDetails?.ApplicantEmail ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.personalDetails!.applicantEmail = this.model;
+    applicationService.model.PersonalDetails!.ApplicantEmail = this.model;
     await applicationService.sendVerificationEmail(this.model!)
   }
 

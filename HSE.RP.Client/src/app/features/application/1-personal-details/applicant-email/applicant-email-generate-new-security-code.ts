@@ -27,7 +27,7 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<str
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = applicationService.model.personalDetails?.applicantEmail ?? '';
+    this.model = applicationService.model.PersonalDetails?.ApplicantEmail ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -35,7 +35,7 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<str
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return !!applicationService.model.personalDetails?.applicantEmail
+    return !!applicationService.model.PersonalDetails?.ApplicantEmail
   }
 
 

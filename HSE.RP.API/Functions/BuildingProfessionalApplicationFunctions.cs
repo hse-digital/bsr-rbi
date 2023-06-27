@@ -43,7 +43,7 @@ public class BuildingProfessionalApplicationFunctions
 
     [Function(nameof(ValidateApplicationNumber))]
     public HttpResponseData ValidateApplicationNumber([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumber/{emailAddress}/{applicationNumber}")] HttpRequestData request,
-        [CosmosDBInput("hseportal", "building-professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and StringEquals(c.ContactEmailAddress, {emailAddress}, true)", Connection = "CosmosConnection")]
+        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and StringEquals(c.ContactEmailAddress, {emailAddress}, true)", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> buildingApplications)
     {
         return request.CreateResponse(buildingApplications.Any() ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
@@ -58,7 +58,7 @@ public class BuildingProfessionalApplicationFunctions
 
     [Function(nameof(GetApplication))]
     public async Task<HttpResponseData> GetApplication([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetApplication/{applicationNumber}/{emailAddress}/{otpToken}")] HttpRequestData request,
-        [CosmosDBInput("hseportal", "building-professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and c.ContactEmailAddress = {emailAddress}", PartitionKey = "{applicationNumber}", Connection = "CosmosConnection")]
+        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and c.ContactEmailAddress = {emailAddress}", PartitionKey = "{applicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> buildingApplications, string otpToken)
     {
         if (buildingApplications.Any())
@@ -111,7 +111,7 @@ public class BuildingProfessionalApplicationFunctions
 
 public class CustomHttpResponseData
 {
-    [CosmosDBOutput("hseportal", "building-professions", Connection = "CosmosConnection")]
+    [CosmosDBOutput("hseportal", "regulated_building_professions", Connection = "CosmosConnection")]
     public object Application { get; set; }
 
     public HttpResponseData HttpResponse { get; set; }

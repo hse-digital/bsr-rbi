@@ -8,7 +8,7 @@ import {
 import { GovukErrorSummaryComponent } from 'hse-angular';
 import {
   ApplicationService,
-  BuildingInspectorModel,
+  BuildingProfessionalModel,
   ApplicationStatus /* PaymentStatus */,
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
@@ -28,7 +28,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   templateUrl: './task-list.component.html',
 })
-export class ApplicationTaskListComponent extends PageComponent<BuildingInspectorModel> {
+export class ApplicationTaskListComponent extends PageComponent<BuildingProfessionalModel> {
 
 
   static route: string = 'task-list';
@@ -36,7 +36,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingInspecto
     'Register as a building inspector - Register a high-rise building - GOV.UK';
   paymentStatus: any;
   paymentEnum: any;
-  applicationStatus = ApplicationStatus;
+  ApplicationStatus = ApplicationStatus;
   completedSections: number = 0;
   checkingStatus = true;
   production: boolean = environment.production;
@@ -52,11 +52,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingInspecto
 
   override onInit(applicationService: ApplicationService): void {
     this.model = applicationService.model;
-    if (!applicationService.model.applicationStatus) {
-      applicationService.model.applicationStatus = ApplicationStatus.None;
+    if (!applicationService.model.ApplicationStatus) {
+      applicationService.model.ApplicationStatus = ApplicationStatus.None;
     }
 
-    console.log(applicationService.model.applicationStatus)
+    console.log(applicationService.model.ApplicationStatus)
 
 /*     if (this.containsFlag(ApplicationStatus.PersonalDetailsComplete)) this.completedSections++;
     if (this.containsFlag(ApplicationStatus.BuildingInspectorClassComplete)) this.completedSections++;
@@ -87,7 +87,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingInspecto
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
 
-    return !this.model?.personalDetails?.applicantEmail;
+    return !this.model?.PersonalDetails?.ApplicantEmail;
   }
   override isValid(): boolean {
     throw new Error('Method not implemented.');
@@ -102,7 +102,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingInspecto
   // paymentStatus?: PaymentStatus;
 
   containsFlag(flag: ApplicationStatus) {
-    return (this.model!.applicationStatus & flag) == flag;
+    return (this.model!.ApplicationStatus & flag) == flag;
   }
 
   navigateToPersonalDetails() {

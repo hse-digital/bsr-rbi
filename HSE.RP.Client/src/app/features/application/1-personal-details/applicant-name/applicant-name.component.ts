@@ -14,8 +14,8 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   public static route: string = "applicant-name";
   static title: string = "Your Name - Apply for building control approval for a higher-risk building - GOV.UK";
   production: boolean = environment.production;
-  firstNameValid: boolean = false;
-  lastNameValid: boolean = false;
+  FirstNameValid: boolean = false;
+  LastNameValid: boolean = false;
   override model: ApplicantName = new ApplicantName;
 
 
@@ -25,17 +25,17 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    if(applicationService.model.personalDetails?.applicantName == null)
+    if(applicationService.model.PersonalDetails?.ApplicantName == null)
     {
-      applicationService.model.personalDetails!.applicantName = new ApplicantName();
+      applicationService.model.PersonalDetails!.ApplicantName = new ApplicantName();
     }
-    this.model.firstName = applicationService.model.personalDetails?.applicantName?.firstName ?? '';
-    this.model.lastName = applicationService.model.personalDetails?.applicantName?.lastName ?? '';
+    this.model.FirstName = applicationService.model.PersonalDetails?.ApplicantName?.FirstName ?? '';
+    this.model.LastName = applicationService.model.PersonalDetails?.ApplicantName?.LastName ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.personalDetails!.applicantName!.firstName = this.model.firstName;
-    applicationService.model.personalDetails!.applicantName!.lastName = this.model.lastName;
+    applicationService.model.PersonalDetails!.ApplicantName!.FirstName = this.model.FirstName;
+    applicationService.model.PersonalDetails!.ApplicantName!.LastName = this.model.LastName;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -46,9 +46,9 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
 
 
   override isValid(): boolean {
-    this.firstNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.firstName)
-    this.lastNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.lastName)
-    return this.firstNameValid && this.lastNameValid;
+    this.FirstNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.FirstName)
+    this.LastNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.LastName)
+    return this.FirstNameValid && this.LastNameValid;
   }
 
   override navigateNext(): Promise<boolean> {
