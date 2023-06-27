@@ -40,6 +40,7 @@ export class ApplicationService {
   }
 
   async registerNewBuildingProfessionApplication(): Promise<void> {
+    this.model.ApplicationStatus = ApplicationStatus.EmailVerified;
     this.model = await firstValueFrom(this.httpClient.post<BuildingProfessionalModel>('api/NewBuildingProfessionalApplication', this.model));
     this.updateLocalStorage();
   }

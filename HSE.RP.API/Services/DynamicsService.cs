@@ -59,9 +59,9 @@ namespace HSE.RP.API.Services
         private async Task<Contact> CreateContactAsync(BuildingProfessionApplicationModel model)
         {
             var modelDefinition = dynamicsModelDefinitionFactory.GetDefinitionFor<Contact, DynamicsContact>();
-            var contact = new Contact(FirstName: model.PersonalDetails.ApplicantName.FirstName,
-                                      LastName: model.PersonalDetails.ApplicantName.LastName,
-                                      PhoneNumber: model.PersonalDetails.ApplicantPhone,
+            var contact = new Contact(/*FirstName: model.PersonalDetails.ApplicantName.FirstName ?? "",
+                                      LastName: model.PersonalDetails.ApplicantName.LastName ?? "",
+                                      PhoneNumber: model.PersonalDetails.ApplicantPhone ?? "",*/ //TODO Remove comments as fields become required
                                       Email: model.PersonalDetails.ApplicantEmail,
                                       jobRoleReferenceId: $"/bsr_jobroles({DynamicsJobRole.Ids["building_inspector"]})" 
                                       ); ;

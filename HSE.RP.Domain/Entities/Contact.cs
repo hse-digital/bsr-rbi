@@ -2,10 +2,10 @@ using System.Text.Json.Serialization;
 
 namespace HSE.RP.Domain.Entities;
 
-public record Contact(string FirstName,
-    string LastName,
-    string PhoneNumber,
-    string Email,
+public record Contact(string FirstName = null,
+    string LastName = null,
+    string PhoneNumber = null,
+    string Email = null,
     string Id = null,
     string buildingProfessionApplicationReferenceId = null,
     string jobRoleReferenceId = null

@@ -25,6 +25,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   isOtpNotNumber = false;
   isOtpInvalidLength = false;
   isOtpEmpty = false;
+  dataSyncError = false;
   email?: string;
 
   constructor(
@@ -50,7 +51,16 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
 
   override async onSave(
     applicationService: ApplicationService
-  ): Promise<void> {}
+  ): Promise<void> {
+    try {
+      await this.applicationService.registerNewBuildingProfessionApplication();
+    } catch (error) {
+      this.dataSyncError = true;
+      this.hasErrors = true;
+      this.focusAndUpdateErrors();
+      throw error;
+    }
+  }
 
   override isValid(): boolean {
     return !this.hasErrors;

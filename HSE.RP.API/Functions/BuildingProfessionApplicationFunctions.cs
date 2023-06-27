@@ -59,7 +59,7 @@ public class BuildingProfessionApplicationFunctions
 
     [Function(nameof(GetApplication))]
     public async Task<HttpResponseData> GetApplication([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetApplication/{applicationNumber}/{emailAddress}/{otpToken}")] HttpRequestData request,
-        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and c.ContactEmailAddress = {emailAddress}", PartitionKey = "{applicationNumber}", Connection = "CosmosConnection")]
+        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and c.PersonalDetails.ApplicantEmail = {emailAddress}", PartitionKey = "{applicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> buildingProfessionApplications, string otpToken)
     {
         if (buildingProfessionApplications.Any())
