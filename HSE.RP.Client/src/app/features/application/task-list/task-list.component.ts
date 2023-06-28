@@ -39,7 +39,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   ApplicationStatus = ApplicationStatus;
   completedSections: number = 0;
   checkingStatus = true;
-  ApplicationId!: String;
+  QueryApplicationId!: String;
+  ModelApplicationId!: String;
   production: boolean = environment.production;
 
 
@@ -50,8 +51,9 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     super(activatedRoute);
     this.updateOnSave = false;
     this.activatedRoute.params.subscribe(params => {
-      this.ApplicationId=params['id']
+      this.QueryApplicationId=params['id']
     })
+    this.ModelApplicationId=applicationService.model.id!;
   }
 
   override onInit(applicationService: ApplicationService): void {
@@ -108,22 +110,22 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   }
 
   navigateToPersonalDetails() {
-    return this.navigationService.navigateRelative(`${this.ApplicationId}/personal-details/${PersonalDetailsPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${PersonalDetailsPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToBuildingInspectorClass() {
-    return this.navigationService.navigateRelative(`${this.ApplicationId}/building-inspector-class/${BuildingInspectorClassPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/building-inspector-class/${BuildingInspectorClassPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToCompetency() {
-    return this.navigationService.navigateRelative(`${this.ApplicationId}/competency/${CompetencyPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/competency/${CompetencyPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToProfessionalActivity() {
-    return this.navigationService.navigateRelative(`${this.ApplicationId}/professional-activity/${ProfessionalActivityPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/professional-activity/${ProfessionalActivityPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToApplicationOverview() {
-    return this.navigationService.navigateRelative(`${this.ApplicationId}/application-overview/${ApplicationOverviewPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-overview/${ApplicationOverviewPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToPayAndSubmit() {
-    return this.navigationService.navigateRelative(`${this.ApplicationId}/pay-and-submit/${PayAndSubmitPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/pay-and-submit/${PayAndSubmitPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToPap() {
     throw new Error('Method not implemented.');

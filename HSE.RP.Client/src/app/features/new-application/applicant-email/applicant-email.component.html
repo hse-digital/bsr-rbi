@@ -4,7 +4,7 @@
 <govuk-formpage saveAndContinueText="Send Verification Email" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
   <govuk-error-summary *ngIf="emailHasErrors" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="!modelValid" anchorId="input-sample-field" message="Enter your email address" />
+    <govuk-error-link *ngIf="!modelValid" anchorId="applicant-email" message={{emailErrorMessage}} />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Your email address</h1>
@@ -26,7 +26,7 @@
                [(model)]="model" [maxlength]=100
                labelClass="govuk-label--s"
                hint="We will use this to contact you about this application."
-               [errorText]="getErrorDescription(!modelValid, 'Enter an email address in the correct format')"
+               [errorText]="getErrorDescription(!modelValid, emailErrorMessage)"
                hintClass="no-margin-top"
                class="govuk-!-margin-bottom-1"
                (onKeyupEnter)="saveAndContinue()" />

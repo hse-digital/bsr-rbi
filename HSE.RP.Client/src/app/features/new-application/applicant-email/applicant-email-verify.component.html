@@ -19,7 +19,7 @@
 
 
   <govuk-input id="email-verify" label="Security code"
-               [(model)]="model" [maxlength]=6
+               [(model)]="model"
                labelClass="govuk-label--s"
                hint="For example, '123456'."
                [errorText]="getErrorDescription(hasErrors, getOtpError())"

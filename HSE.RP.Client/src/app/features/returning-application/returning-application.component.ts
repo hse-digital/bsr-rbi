@@ -27,6 +27,24 @@ export class ReturningApplicationComponent extends PageComponent<string>{
   static route: string = "returning-application";
   static title: string = "Continue a saved application - Register as a building inspector - GOV.UK";
 
+  stepBack() {
+    if(this.step == "verify")
+    {
+      this.step = "enterdata";
+    }
+    else if(this.step == "resend")
+    {
+      this.step = "verify";
+    }
+    else if(this.step == "resendverify")
+    {
+      this.step = "resend";
+    }
+    else if(this.step == "enterdata")
+    {
+      history.back();
+    }
+  }
   step = "enterdata";
   emailAddress?: string;
   applicationNumber?: string;
@@ -42,4 +60,10 @@ export class ReturningApplicationComponent extends PageComponent<string>{
   showResendStep() {
     this.step = 'resend';
   }
+
+  showVerifyResend() {
+    this.step = 'resendverify';
+  }
+
+
 }

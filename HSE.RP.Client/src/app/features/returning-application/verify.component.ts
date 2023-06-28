@@ -40,9 +40,9 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
     this.errors.securityCode.hasError = true;
     if (!this.securityCode) {
-      this.errors.securityCode.errorText = 'Enter the security code';
+      this.errors.securityCode.errorText = 'You must enter your 6 digit security code';
     } else if (!Number(this.securityCode) || this.securityCode.length != 6) {
-      this.errors.securityCode.errorText = 'Security code must be a 6 digit number';
+      this.errors.securityCode.errorText = 'You must enter your 6 digit security code';
     } else if (!(await this.doesSecurityCodeMatch())) {
       this.errors.securityCode.errorText = 'Enter the correct security code';
     } else {

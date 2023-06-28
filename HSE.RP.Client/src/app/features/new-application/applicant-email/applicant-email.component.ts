@@ -18,6 +18,7 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   emailHasErrors: boolean = false;
+  emailErrorMessage: string = "Enter a valid email address";
   modelValid: boolean = false;
   override model?: string;
 
@@ -45,7 +46,16 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
 
 
   override isValid(): boolean {
-    this.emailHasErrors = !EmailValidator.isValid(this.model ?? '');
+    this.emailHasErrors = false;
+    if (this.model == null || this.model == '')
+    {
+      this.emailErrorMessage = "Enter an email address";
+      this.emailHasErrors = true;
+    }
+    else{
+      this.emailHasErrors = !EmailValidator.isValid(this.model ?? '');
+      this.emailErrorMessage = "Enter a valid email address";
+    }
     return !this.emailHasErrors;
   }
 
