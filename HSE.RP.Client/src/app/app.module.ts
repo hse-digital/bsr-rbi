@@ -25,6 +25,7 @@ import { ReturningApplicationResendCodeComponent } from './features/returning-ap
 import { ReturningApplicationVerifyComponent } from './features/returning-application/verify.component';
 import { ApplicantEmailComponent } from './features/new-application/applicant-email/applicant-email.component';
 import { ApplicantEmailVerifyComponent } from './features/new-application/applicant-email/applicant-email-verify.component';
+import { ApplicantGenerateNewSecurityCodeComponent } from './features/new-application/applicant-email/applicant-email-generate-new-security-code';
 
 const routes = new HseRoutes([
   HseRoute.protected(SampleComponent.route, SampleComponent, SampleComponent.title),
@@ -34,9 +35,9 @@ const routes = new HseRoutes([
   HseRoute.forLoadChildren(ApplicationModule.baseRoute, () => import('./features/application/application.module').then(m => m.ApplicationModule)),
   HseRoute.unsafe(NotFoundComponent.route, NotFoundComponent, undefined, NotFoundComponent.title),
   HseRoute.protected(ReturningApplicationComponent.route, ReturningApplicationComponent, ReturningApplicationComponent.title),
-  HseRoute.protected(ReturningApplicationComponent.route, ReturningApplicationComponent, ReturningApplicationComponent.title),
   HseRoute.protected(ApplicantEmailComponent.route, ApplicantEmailComponent, ApplicantEmailComponent.title),
   HseRoute.protected(ApplicantEmailVerifyComponent.route, ApplicantEmailVerifyComponent, ApplicantEmailVerifyComponent.title),
+  HseRoute.protected(ApplicantGenerateNewSecurityCodeComponent.route, ApplicantGenerateNewSecurityCodeComponent, ApplicantGenerateNewSecurityCodeComponent.title),
   //HseRoute.unsafe('**', undefined, NotFoundComponent.route)
 ]);
 
@@ -54,6 +55,7 @@ const routes = new HseRoutes([
     ReturningApplicationEnterDataComponent,
     ReturningApplicationResendCodeComponent,
     ReturningApplicationVerifyComponent,
+    ApplicantGenerateNewSecurityCodeComponent,
     SampleComponent,
   ],
   imports: [

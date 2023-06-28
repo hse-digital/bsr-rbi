@@ -34,7 +34,7 @@ const routes = new HseRoutes([
   HseRoute.protected(ApplicantSummaryComponent.route, ApplicantSummaryComponent, ApplicantSummaryComponent.title),
   HseRoute.protected(PersonalDetailsPlaceholderComponent.route, PersonalDetailsPlaceholderComponent, PersonalDetailsPlaceholderComponent.title),
   // HseRoute.protected(ApplicantEmailVerifyComponent.route, ApplicantEmailVerifyComponent, ApplicantEmailVerifyComponent.title),
-  HseRoute.protected(ApplicantGenerateNewSecurityCodeComponent.route, ApplicantGenerateNewSecurityCodeComponent, ApplicantGenerateNewSecurityCodeComponent.title),
+  //HseRoute.protected(ApplicantGenerateNewSecurityCodeComponent.route, ApplicantGenerateNewSecurityCodeComponent, ApplicantGenerateNewSecurityCodeComponent.title),
 ]);
 
 @NgModule({
@@ -50,7 +50,7 @@ const routes = new HseRoutes([
     ApplicantSummaryComponent,
     PersonalDetailsPlaceholderComponent,
     // ApplicantEmailVerifyComponent,
-    ApplicantGenerateNewSecurityCodeComponent,
+    //ApplicantGenerateNewSecurityCodeComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
