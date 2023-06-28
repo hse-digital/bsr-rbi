@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { environment } from '../../../../../environments/environment';
-import { PageComponent } from '../../../../helpers/page.component';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService } from '../../../../services/application.service';
-import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
-import { ApplicantSummaryComponent } from '../applicant-summary/applicant-summary.component';
+import { environment } from '../../../../environments/environment';
+import { PageComponent } from '../../../helpers/page.component';
+import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
+import { ApplicationService } from '../../../services/application.service';
+import { ApplicantAddressComponent } from '../../application/1-personal-details/applicant-address/applicant-address.component';
+import { ApplicantSummaryComponent } from '../../application/1-personal-details/applicant-summary/applicant-summary.component';
 import { ApplicantEmailVerifyComponent } from './applicant-email-verify.component';
 
 @Component({
@@ -27,7 +27,7 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<str
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = applicationService.model.personalDetails?.applicantEmail ?? '';
+    this.model = applicationService.model.PersonalDetails?.ApplicantEmail ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -35,7 +35,7 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<str
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return !!applicationService.model.personalDetails?.applicantEmail
+    return !!applicationService.model.PersonalDetails?.ApplicantEmail
   }
 
 

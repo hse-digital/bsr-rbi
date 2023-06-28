@@ -49,24 +49,22 @@ export class ReturningApplicationEnterDataComponent {
       this.titleService.setTitleError();
     }
 
-    this.onContinue.emit({ emailAddress: this.emailAddress!, applicationNumber: this.applicationNumber! });
-
     this.sendingRequest = false;
   }
 
   async isApplicationNumberValid() {
     this.errors.applicationNumber.hasError = true;
-     if (!this.applicationNumber) {
+    if (!this.applicationNumber) {
       this.errors.applicationNumber.errorText = 'Enter the application number';
     } else if (this.applicationNumber.length != 12) {
       this.errors.applicationNumber.errorText = 'Application number must be 12 characters';
-/*     } else if (!(await this.doesApplicationNumberMatchEmail())) {
-      this.errors.applicationNumber.errorText = 'Application number doesn\'t match this email address. Enter the correct application number'; */  //TODO re-enable this
+    } else if (!(await this.doesApplicationNumberMatchEmail())) {
+      this.errors.applicationNumber.errorText = 'Application number doesn\'t match this email address. Enter the correct application number';
     } else {
       this.errors.applicationNumber.hasError = false;
     }
-    return true;
   }
+
 
   isEmailAddressValid() {
     this.errors.emailAddress.hasError = false;
@@ -74,11 +72,9 @@ export class ReturningApplicationEnterDataComponent {
       this.errors.emailAddress.errorText = 'Enter your email address';
       this.errors.emailAddress.hasError = true;
     }
-    return true
   }
 
   async doesApplicationNumberMatchEmail(): Promise<boolean> {
-    return true;
-    //return await this.applicationService.isApplicationNumberValid(this.emailAddress!, this.applicationNumber!); //TODO re-enable this
+    return await this.applicationService.isApplicationNumberValid(this.emailAddress!, this.applicationNumber!);
   }
 }

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { environment } from '../../../../../environments/environment';
-import { PageComponent } from '../../../../helpers/page.component';
-import { EmailValidator } from '../../../../helpers/validators/email-validator';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService } from '../../../../services/application.service';
-import { ApplicantProofOfIdentityComponent } from '../applicant-proof-of-identity/applicant-proof-of-identity.component';
-import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { environment } from '../../../../environments/environment';
+import { PageComponent } from '../../../helpers/page.component';
+import { EmailValidator } from '../../../helpers/validators/email-validator';
+import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
+import { ApplicationService } from '../../../services/application.service';
+import { ApplicantProofOfIdentityComponent } from '../../application/1-personal-details/applicant-proof-of-identity/applicant-proof-of-identity.component';
+import { ApplicationTaskListComponent } from '../../application/task-list/task-list.component';
 
 @Component({
   selector: 'hse-applicant-email',
@@ -27,15 +27,15 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    if(!applicationService.model.personalDetails)
+    if(!applicationService.model.PersonalDetails)
     {
-      applicationService.model.personalDetails = {};
+      applicationService.model.PersonalDetails = {};
     }
-    this.model = applicationService.model.personalDetails?.applicantEmail ?? '';
+    this.model = applicationService.model.PersonalDetails?.ApplicantEmail ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.personalDetails!.applicantEmail = this.model;
+    applicationService.model.PersonalDetails!.ApplicantEmail = this.model;
     await applicationService.sendVerificationEmail(this.model!)
   }
 

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 
-import { environment } from '../../../../../environments/environment';
-import { NotFoundComponent } from '../../../../components/not-found/not-found.component';
-import { PageComponent } from '../../../../helpers/page.component';
-import { EmailValidator } from '../../../../helpers/validators/email-validator';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService } from '../../../../services/application.service';
+import { environment } from '../../../../environments/environment';
+import { NotFoundComponent } from '../../../components/not-found/not-found.component';
+import { PageComponent } from '../../../helpers/page.component';
+import { EmailValidator } from '../../../helpers/validators/email-validator';
+import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
+import { ApplicationService } from '../../../services/application.service';
 
 @Component({
   selector: 'hse-applicant-email-verify',
@@ -25,7 +25,9 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   isOtpNotNumber = false;
   isOtpInvalidLength = false;
   isOtpEmpty = false;
+  dataSyncError = false;
   email?: string;
+
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -33,10 +35,11 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   ) {
     super(activatedRoute);
     this.updateOnSave = false;
+
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.email = applicationService.model.personalDetails?.applicantEmail;
+    this.email = applicationService.model.PersonalDetails?.ApplicantEmail;
   }
 
   override canAccess(
@@ -44,13 +47,15 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
     return FieldValidations.IsNotNullOrWhitespace(
-      applicationService.model.personalDetails?.applicantEmail
+      applicationService.model.PersonalDetails?.ApplicantEmail
     );
   }
 
   override async onSave(
     applicationService: ApplicationService
-  ): Promise<void> {}
+  ): Promise<void> {
+
+  }
 
   override isValid(): boolean {
     return !this.hasErrors;
@@ -79,6 +84,14 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
           this.focusAndUpdateErrors();
           throw error;
         }
+        try {
+          await this.applicationService.registerNewBuildingProfessionApplication();
+        } catch (error) {
+          this.dataSyncError = true;
+          this.hasErrors = true;
+          this.focusAndUpdateErrors();
+          throw error;
+        }
     }
     else
     {
@@ -89,7 +102,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   }
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigate('application/task-list');
+    return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
   }
 
   getOtpError() {

@@ -214,15 +214,19 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     name: 'Integrations__PaymentAmount'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--PaymentAmount)'
                 }
-                                {
+                {
                     name: 'Integrations__NotificationServiceApiKey'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--NotificationServiceApiKey)'
+                }                
+                {
+                    name: 'Integrations__NotificationsAPIEndpoint'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--NotificationsAPIEndpoint)'
                 }
-                                {
+                {
                     name: 'Integrations__NotificationServiceOTPEmailTemplateId'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--NotificationServiceOTPEmailTemplateId)'
                 }
-                                                {
+                {
                     name: 'Swa__Url'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=SQUAD3--Swa--Url)'
                 }

@@ -30,7 +30,7 @@ export class BuildingInspectorClassPlaceholderComponent extends PageComponent<st
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.applicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
+    applicationService.model.ApplicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {

@@ -23,6 +23,8 @@ import { ReturningApplicationComponent } from './features/returning-application/
 import { ReturningApplicationEnterDataComponent } from './features/returning-application/enterdata.component';
 import { ReturningApplicationResendCodeComponent } from './features/returning-application/resend.component';
 import { ReturningApplicationVerifyComponent } from './features/returning-application/verify.component';
+import { ApplicantEmailComponent } from './features/new-application/applicant-email/applicant-email.component';
+import { ApplicantEmailVerifyComponent } from './features/new-application/applicant-email/applicant-email-verify.component';
 
 const routes = new HseRoutes([
   HseRoute.protected(SampleComponent.route, SampleComponent, SampleComponent.title),
@@ -31,7 +33,10 @@ const routes = new HseRoutes([
   HseRoute.forLoadChildren(HelpPagesModule.baseRoute, () => import('./components/footer/help-pages.module').then(m => m.HelpPagesModule)),
   HseRoute.forLoadChildren(ApplicationModule.baseRoute, () => import('./features/application/application.module').then(m => m.ApplicationModule)),
   HseRoute.unsafe(NotFoundComponent.route, NotFoundComponent, undefined, NotFoundComponent.title),
-  HseRoute.unsafe(ReturningApplicationComponent.route, ReturningApplicationComponent, undefined, ReturningApplicationComponent.title),
+  HseRoute.protected(ReturningApplicationComponent.route, ReturningApplicationComponent, ReturningApplicationComponent.title),
+  HseRoute.protected(ReturningApplicationComponent.route, ReturningApplicationComponent, ReturningApplicationComponent.title),
+  HseRoute.protected(ApplicantEmailComponent.route, ApplicantEmailComponent, ApplicantEmailComponent.title),
+  HseRoute.protected(ApplicantEmailVerifyComponent.route, ApplicantEmailVerifyComponent, ApplicantEmailVerifyComponent.title),
   //HseRoute.unsafe('**', undefined, NotFoundComponent.route)
 ]);
 
@@ -44,6 +49,8 @@ const routes = new HseRoutes([
     HomeComponent,
     ApplicationSelectorComponent,
     ReturningApplicationComponent,
+    ApplicantEmailComponent,
+    ApplicantEmailVerifyComponent,
     ReturningApplicationEnterDataComponent,
     ReturningApplicationResendCodeComponent,
     ReturningApplicationVerifyComponent,

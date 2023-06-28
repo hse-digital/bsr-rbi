@@ -41,6 +41,5 @@ const routes = new HseRoutes([
   providers: [HttpClient, ApplicationService, CookiesBannerService, ...routes.getProviders()]
 })
 export class ApplicationModule {
-  static baseRoute: string = 'application';
-
+  static baseRoute: string = 'application/:id';
 }

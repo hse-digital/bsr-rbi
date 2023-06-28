@@ -30,7 +30,7 @@ export class CompetencyPlaceholderComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.applicationStatus = ApplicationStatus.CompetencyComplete;
+    applicationService.model.ApplicationStatus = ApplicationStatus.CompetencyComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {

@@ -8,7 +8,7 @@ import {
 import { GovukErrorSummaryComponent } from 'hse-angular';
 import {
   ApplicationService,
-  BuildingInspectorModel,
+  BuildingProfessionalModel,
   ApplicationStatus /* PaymentStatus */,
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
@@ -28,17 +28,18 @@ import { environment } from 'src/environments/environment';
 @Component({
   templateUrl: './task-list.component.html',
 })
-export class ApplicationTaskListComponent extends PageComponent<BuildingInspectorModel> {
+export class ApplicationTaskListComponent extends PageComponent<BuildingProfessionalModel> {
 
 
-  static route: string = 'task-list';
+  static route: string = '';
   static title: string =
     'Register as a building inspector - Register a high-rise building - GOV.UK';
   paymentStatus: any;
   paymentEnum: any;
-  applicationStatus = ApplicationStatus;
+  ApplicationStatus = ApplicationStatus;
   completedSections: number = 0;
   checkingStatus = true;
+  ApplicationId!: String;
   production: boolean = environment.production;
 
 
@@ -48,15 +49,14 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingInspecto
   ) {
     super(activatedRoute);
     this.updateOnSave = false;
+    this.activatedRoute.params.subscribe(params => {
+      this.ApplicationId=params['id']
+    })
   }
 
   override onInit(applicationService: ApplicationService): void {
     this.model = applicationService.model;
-    if (!applicationService.model.applicationStatus) {
-      applicationService.model.applicationStatus = ApplicationStatus.None;
-    }
 
-    console.log(applicationService.model.applicationStatus)
 
 /*     if (this.containsFlag(ApplicationStatus.PersonalDetailsComplete)) this.completedSections++;
     if (this.containsFlag(ApplicationStatus.BuildingInspectorClassComplete)) this.completedSections++;
@@ -87,8 +87,10 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingInspecto
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
 
-    return !this.model?.personalDetails?.applicantEmail;
+    return true;
   }
+
+
   override isValid(): boolean {
     throw new Error('Method not implemented.');
   }
@@ -102,26 +104,26 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingInspecto
   // paymentStatus?: PaymentStatus;
 
   containsFlag(flag: ApplicationStatus) {
-    return (this.model!.applicationStatus & flag) == flag;
+    return (this.model!.ApplicationStatus & flag) == flag;
   }
 
   navigateToPersonalDetails() {
-    return this.navigationService.navigateRelative(`/personal-details/${PersonalDetailsPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ApplicationId}/personal-details/${PersonalDetailsPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToBuildingInspectorClass() {
-    return this.navigationService.navigateRelative(`building-inspector-class/${BuildingInspectorClassPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ApplicationId}/building-inspector-class/${BuildingInspectorClassPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToCompetency() {
-    return this.navigationService.navigateRelative(`competency/${CompetencyPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ApplicationId}/competency/${CompetencyPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToProfessionalActivity() {
-    return this.navigationService.navigateRelative(`professional-activity/${ProfessionalActivityPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ApplicationId}/professional-activity/${ProfessionalActivityPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToApplicationOverview() {
-    return this.navigationService.navigateRelative(`application-overview/${ApplicationOverviewPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ApplicationId}/application-overview/${ApplicationOverviewPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToPayAndSubmit() {
-    return this.navigationService.navigateRelative(`pay-and-submit/${PayAndSubmitPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ApplicationId}/pay-and-submit/${PayAndSubmitPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToPap() {
     throw new Error('Method not implemented.');

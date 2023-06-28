@@ -39,9 +39,7 @@ export class ReturningApplicationVerifyComponent implements OnInit {
     this.sendingRequest = true;
 
     this.errors.securityCode.hasError = true;
-
     if (!this.securityCode) {
-
       this.errors.securityCode.errorText = 'Enter the security code';
     } else if (!Number(this.securityCode) || this.securityCode.length != 6) {
       this.errors.securityCode.errorText = 'Security code must be a 6 digit number';
@@ -67,20 +65,22 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
   private async doesSecurityCodeMatch(): Promise<boolean> {
     try {
-      //return this.navigationService.navigate("application/task-list");;
-
       await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress);
       await this.applicationService.continueApplication(this.applicationNumber, this.emailAddress, this.securityCode!);
 
-      /*var applicationStatus = this.applicationService.model.applicationStatus;
-       if ((applicationStatus & BuildingApplicationStatus.PaymentComplete) == BuildingApplicationStatus.PaymentComplete) {
-        this.navigationService.navigate(`application/${this.applicationNumber}/payment/confirm`);
-      } else {
-        this.navigationService.navigate(`application/${this.applicationNumber}`);
-      } */
-      //TODO re-enable this
+      //var applicationStatus = this.applicationService.model.ApplicationStatus;
+      // if ((applicationStatus & BuildingApplicationStatus.KbiSubmitComplete) == BuildingApplicationStatus.KbiSubmitComplete) {
+      //   this.navigationService.navigate(`application/${this.applicationNumber}/kbi/submit/information-submitted`);
+      // } else if ((applicationStatus & BuildingApplicationStatus.PaymentComplete) == BuildingApplicationStatus.PaymentComplete) {
+      //   this.navigationService.navigate(`application/${this.applicationNumber}/kbi`);
+      // } else {
+      //   this.navigationService.navigate(`application/${this.applicationNumber}`);
+      // }
 
-      return this.navigationService.navigate('application/task-list');
+      this.navigationService.navigate(`application/${this.applicationNumber}`);
+
+
+      return true;
     } catch {
       return false;
     }

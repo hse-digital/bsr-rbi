@@ -14,7 +14,7 @@
                 class="govuk-!-margin-bottom-5"
                 (onKeyupEnter)="validateAndContinue()" />
 
-  <govuk-input id="application-number" label="Application number" labelClass="govuk-label--s"
+  <govuk-input id="application-number" label="Application number" labelClass="govuk-label--s" [maxlength]="12"
                 hint="Find this in the email we sent to you when you began your application. For example, '000123456789'."
                 [(model)]="applicationNumber" class="govuk-input--width-20"
                 (modelChange)="applicationNumberChange.emit(applicationNumber)"

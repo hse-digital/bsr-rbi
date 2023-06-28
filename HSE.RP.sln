@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_infrastructure", "_infrast
 		infraestructure\main.bicep = infraestructure\main.bicep
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSE.RP.Domain", "HSE.RP.Domain\HSE.RP.Domain.csproj", "{FB1F6DC2-0DC1-4775-9D2B-DD2BEB70A011}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{C95BBE79-60DD-4E19-A973-C007F460E121}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C95BBE79-60DD-4E19-A973-C007F460E121}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C95BBE79-60DD-4E19-A973-C007F460E121}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB1F6DC2-0DC1-4775-9D2B-DD2BEB70A011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB1F6DC2-0DC1-4775-9D2B-DD2BEB70A011}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB1F6DC2-0DC1-4775-9D2B-DD2BEB70A011}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB1F6DC2-0DC1-4775-9D2B-DD2BEB70A011}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

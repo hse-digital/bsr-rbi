@@ -1,14 +1,24 @@
-﻿using System.Text.Json;
-using Microsoft.Azure.Functions;
-using Microsoft.Azure.Functions.Worker.Http;
+﻿using System.Collections.Specialized;
 using System.Net;
+using System.Text.Json;
 using HSE.RP.API.Models;
-using System.Collections.Specialized;
+using HSE.RP.API.Functions;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HSE.RP.API.Extensions;
 
 public static class HttpRequestDataExtensions
 {
+    public static async Task<T> ReadAsJsonAsync<T>(this HttpRequestData httpRequestData)
+    {
+        return await JsonSerializer.DeserializeAsync<T>(httpRequestData.Body);
+    }
+
+    public static async Task<T> ReadAsJsonAsync<T>(this HttpResponseData httpRequestData)
+    {
+        return await JsonSerializer.DeserializeAsync<T>(httpRequestData.Body);
+    }
+
     public static async Task<HttpResponseData> CreateObjectResponseAsync<T>(this HttpRequestData httpRequestData, T @object)
     {
         var stream = new MemoryStream();
@@ -21,16 +31,6 @@ public static class HttpRequestDataExtensions
         response.Body = stream;
 
         return response;
-    }
-
-    public static async Task<T> ReadAsJsonAsync<T>(this HttpRequestData httpRequestData)
-    {
-         return await JsonSerializer.DeserializeAsync<T>(httpRequestData.Body);
-    }
-
-    public static async Task<T> ReadAsJsonAsync<T>(this HttpResponseData httpRequestData)
-    {
-        return await JsonSerializer.DeserializeAsync<T>(httpRequestData.Body);
     }
 
     public static async Task<CustomHttpResponseData> BuildValidationErrorResponseDataAsync(this HttpRequestData httpRequestData, ValidationSummary validationSummary)
@@ -54,6 +54,4 @@ public static class HttpRequestDataExtensions
     {
         return System.Web.HttpUtility.ParseQueryString(request.Url.Query);
     }
-
-
 }

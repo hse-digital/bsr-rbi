@@ -6,7 +6,7 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { PhoneNumberValidator } from '../../../../helpers/validators/phone-number-validator';
 import {
   ApplicationService,
-  BuildingInspectorModel,
+  BuildingProfessionalModel,
 } from '../../../../services/application.service';
 import { ApplicantAlternativeEmailComponent } from '../applicant-alternative-email/applicant-alternative-email.component';
 
@@ -32,7 +32,7 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
 
   override onInit(applicationService: ApplicationService): void {
     this.model =
-      applicationService.model.personalDetails?.applicantAlternativePhone?.toString() ??
+      applicationService.model.PersonalDetails?.ApplicantAlternativePhone?.toString() ??
       '';
   }
 
