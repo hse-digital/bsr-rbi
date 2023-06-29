@@ -9,15 +9,24 @@ import { ApplicationService } from '../../../services/application.service';
 import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { BuildingInspectorClassPlaceholderComponent } from './building-inspector-class-placeholder/building-inspector-class-placeholder.component';
+import { BuildingInspectorClassSelectionComponent } from './class-selection/building-inspector-class-selection.component';
+import { BuildingInspectorCountryComponent } from './country/building-inspector-country.component';
+import { BuildingInspectorSummaryComponent } from './building-inspector-summary/building-inspector-summary.component';
 
 
 const routes = new HseRoutes([
   HseRoute.protected(BuildingInspectorClassPlaceholderComponent.route, BuildingInspectorClassPlaceholderComponent, BuildingInspectorClassPlaceholderComponent.title),
+  HseRoute.protected(BuildingInspectorClassSelectionComponent.route, BuildingInspectorClassSelectionComponent, BuildingInspectorClassSelectionComponent.title),
+  HseRoute.protected(BuildingInspectorCountryComponent.route, BuildingInspectorCountryComponent, BuildingInspectorCountryComponent.title),
+  HseRoute.protected(BuildingInspectorSummaryComponent.route, BuildingInspectorSummaryComponent, BuildingInspectorSummaryComponent.title),
 ]);
 
 @NgModule({
   declarations: [
     BuildingInspectorClassPlaceholderComponent,
+    BuildingInspectorClassSelectionComponent,
+    BuildingInspectorCountryComponent,
+    BuildingInspectorSummaryComponent,
 
   ],
   imports: [

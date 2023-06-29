@@ -18,8 +18,8 @@ import { BuildingInspectorClassPlaceholderComponent } from '../2-building-inspec
 import { CompetencyPlaceholderComponent } from '../3-competency/competency-placeholder/competency-placeholder.component';
 import { ProfessionalActivityPlaceholderComponent } from '../4-professional-activity/professional-activity-placeholder/professional-activity-placeholder.component';
 import { ApplicationOverviewPlaceholderComponent } from '../5-application-overview/application-overview-placeholder/application-overview-placeholder.component';
-import { PayAndSubmitPlaceholderComponent } from '../6-pay-and-submit/pay-and-submit-placeholder/pay-and-submit-placeholder.component';
 import { environment } from 'src/environments/environment';
+import { PayAndSubmitPlaceholderComponent } from '../6-pay-and-submit/pay-and-submit-placeholder/pay-and-submit-placeholder.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -126,9 +126,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   }
   navigateToPayAndSubmit() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/pay-and-submit/${PayAndSubmitPlaceholderComponent.route}`, this.activatedRoute);
-  }
-  navigateToPap() {
-    throw new Error('Method not implemented.');
   }
   navigateToPayment() {
     throw new Error('Method not implemented.');

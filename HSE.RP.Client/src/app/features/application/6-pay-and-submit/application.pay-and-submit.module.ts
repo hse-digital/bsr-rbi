@@ -9,15 +9,18 @@ import { ApplicationService } from '../../../services/application.service';
 import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { PayAndSubmitPlaceholderComponent } from './pay-and-submit-placeholder/pay-and-submit-placeholder.component';
+import { PayAndSubmitComponent } from './pay-and-submit-application/pay-and-submit.component';
 
 
 const routes = new HseRoutes([
   HseRoute.protected(PayAndSubmitPlaceholderComponent.route, PayAndSubmitPlaceholderComponent, PayAndSubmitPlaceholderComponent.title),
+  HseRoute.protected(PayAndSubmitComponent.route, PayAndSubmitComponent, PayAndSubmitComponent.title),
 ]);
 
 @NgModule({
   declarations: [
-  PayAndSubmitPlaceholderComponent
+  PayAndSubmitPlaceholderComponent,
+  PayAndSubmitComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

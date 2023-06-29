@@ -13,8 +13,8 @@ import { ApplicationPersonalDetailsModule } from './1-personal-details/applicati
 import { BuildingInspectorClassModule } from './2-building-inspector-class/application.building-inspector-class.module';
 import { CompetencyModule } from './3-competency/application.competency.module';
 import { ProfessionalActivityModule } from './4-professional-activity/application.professional-activity.module';
-import { ApplicationOverviewModule } from './5-application-overview/application.application-overview.module';
 import { PayAndSubmitModule } from './6-pay-and-submit/application.pay-and-submit.module';
+import { ApplicationOverviewModule } from './5-application-overview/application.application-overview.module';
 
 const routes = new HseRoutes([
   HseRoute.protected(ApplicationTaskListComponent.route, ApplicationTaskListComponent, ApplicationTaskListComponent.title),

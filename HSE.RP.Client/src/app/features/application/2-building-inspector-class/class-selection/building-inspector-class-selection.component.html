@@ -1,0 +1,12 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+
+  <h1 class="govuk-heading-l">Building inspector country</h1>
+  <govuk-body>
+  Please enter country details
+ </govuk-body>
+</govuk-formpage>
+
