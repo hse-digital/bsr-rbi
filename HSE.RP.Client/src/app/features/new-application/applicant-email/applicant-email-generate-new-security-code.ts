@@ -44,7 +44,7 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<str
   }
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative('applicant-email-verify', this.activatedRoute);
+    return this.navigationService.navigateRelative(ApplicantEmailVerifyComponent.route, this.activatedRoute);
   }
 
 }

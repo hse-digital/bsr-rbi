@@ -56,7 +56,7 @@ namespace HSE.RP.API.Functions
                 return await request.BuildValidationErrorResponseDataAsync(validation);
             }
 
-            var otpToken = otpService.GenerateToken(phoneVerificationModel.EmailAddress);
+            var otpToken = otpService.GenerateToken(phoneVerificationModel.PhoneNumber);
             await notificationService.SendOTPSms(phoneVerificationModel.PhoneNumber, otpToken: otpToken);
 
             return new CustomHttpResponseData

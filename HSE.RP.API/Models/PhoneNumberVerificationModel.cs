@@ -12,15 +12,11 @@ using System.Text.RegularExpressions;
 
 namespace HSE.RP.API.Models
 {
-    public record PhoneNumberVerificationModel(string EmailAddress, [DataType(DataType.PhoneNumber)] string PhoneNumber) : IValidatableModel
+    public record PhoneNumberVerificationModel(string PhoneNumber) : IValidatableModel
     {
         public ValidationSummary Validate()
         {
             var errors = new List<string>();
-            if (string.IsNullOrEmpty(EmailAddress) || !MailAddress.TryCreate(EmailAddress, out _))
-            {
-                errors.Add("You must enter an email address in the correct format, like name@example.com");
-            }
             if (string.IsNullOrEmpty(PhoneNumber) || !IsPhoneNumber(PhoneNumber))
             {
                 errors.Add("You must enter a phone number in the correct format");

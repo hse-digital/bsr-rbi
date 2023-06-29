@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { environment } from '../../../../../environments/environment';
-import { PageComponent } from '../../../../helpers/page.component';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicantName, ApplicationService} from '../../../../services/application.service';
-import { ApplicantPhotoComponent } from '../applicant-photo/applicant-photo.component';
+import { environment } from '../../../../environments/environment';
+import { PageComponent } from '../../../helpers/page.component';
+import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
+import { ApplicantName, ApplicationService} from '../../../services/application.service';
+import { ApplicantPhotoComponent } from '../../application/1-personal-details/applicant-photo/applicant-photo.component';
+import { ApplicantEmailComponent } from '../applicant-email/applicant-email.component';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -52,7 +53,7 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantPhotoComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(ApplicantEmailComponent.route, this.activatedRoute);
   }
 }
 

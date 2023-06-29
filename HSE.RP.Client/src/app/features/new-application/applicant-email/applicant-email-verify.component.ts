@@ -84,14 +84,14 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
           this.focusAndUpdateErrors();
           throw error;
         }
-        try {
-          await this.applicationService.registerNewBuildingProfessionApplication();
-        } catch (error) {
-          this.dataSyncError = true;
-          this.hasErrors = true;
-          this.focusAndUpdateErrors();
-          throw error;
-        }
+        // try {
+        //   await this.applicationService.registerNewBuildingProfessionApplication();
+        // } catch (error) {
+        //   this.dataSyncError = true;
+        //   this.hasErrors = true;
+        //   this.focusAndUpdateErrors();
+        //   throw error;
+        // }
     }
     else
     {
@@ -102,7 +102,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   }
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
+    return this.navigationService.navigateRelative('applicant-email-verify', this.activatedRoute);
   }
 
   getOtpError() {

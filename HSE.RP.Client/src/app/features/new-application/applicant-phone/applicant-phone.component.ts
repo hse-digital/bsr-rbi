@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { environment } from '../../../../../environments/environment';
-import { PageComponent } from '../../../../helpers/page.component';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { PhoneNumberValidator } from '../../../../helpers/validators/phone-number-validator';
+import { environment } from '../../../../environments/environment';
+import { PageComponent } from '../../../helpers/page.component';
+import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
+import { PhoneNumberValidator } from '../../../helpers/validators/phone-number-validator';
 import {
   ApplicationService,
   BuildingProfessionalModel,
-} from '../../../../services/application.service';
-import { ApplicantAlternativeEmailComponent } from '../applicant-alternative-email/applicant-alternative-email.component';
+} from '../../../services/application.service';
+import { ApplicationTaskListComponent } from '../../application/task-list/task-list.component';
 
 @Component({
   selector: 'hse-applicant-phone',
@@ -58,7 +58,7 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
-      ApplicantAlternativeEmailComponent.route,
+      ApplicationTaskListComponent.route,
       this.activatedRoute
     );
   }
