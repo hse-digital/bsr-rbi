@@ -7,6 +7,7 @@ import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../services/application.service';
+import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
 
 @Component({
   selector: 'hse-applicant-email-verify',
@@ -102,7 +103,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   }
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative('applicant-email-verify', this.activatedRoute);
+    return this.navigationService.navigateRelative(ApplicantPhoneComponent.route, this.activatedRoute);
   }
 
   getOtpError() {
