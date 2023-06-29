@@ -20,6 +20,8 @@ import { PersonalDetailsPlaceholderComponent } from './personal-details-placehol
 // import { ApplicantEmailComponent } from '../../new-application/applicant-email/applicant-email.component';
 import { ApplicantEmailVerifyComponent } from '../../new-application/applicant-email/applicant-email-verify.component';
 import { ApplicantGenerateNewSecurityCodeComponent } from '../../new-application/applicant-email/applicant-email-generate-new-security-code';
+import { ApplicantNationalInsuranceNumberComponent } from './applicant-national-insurance-number/applicant-national-insurance-number.component';
+import { ApplicantDateOfBirthComponent } from './applicant-date-of-birth/applicant-date-of-birth.component';
 
 
 const routes = new HseRoutes([
@@ -33,6 +35,8 @@ const routes = new HseRoutes([
   HseRoute.protected(ApplicantProofOfIdentityComponent.route, ApplicantProofOfIdentityComponent, ApplicantProofOfIdentityComponent.title),
   HseRoute.protected(ApplicantSummaryComponent.route, ApplicantSummaryComponent, ApplicantSummaryComponent.title),
   HseRoute.protected(PersonalDetailsPlaceholderComponent.route, PersonalDetailsPlaceholderComponent, PersonalDetailsPlaceholderComponent.title),
+  HseRoute.protected(ApplicantNationalInsuranceNumberComponent.route, ApplicantNationalInsuranceNumberComponent, ApplicantNationalInsuranceNumberComponent.title),
+  HseRoute.protected(ApplicantDateOfBirthComponent.route, ApplicantDateOfBirthComponent, ApplicantDateOfBirthComponent.title),
   // HseRoute.protected(ApplicantEmailVerifyComponent.route, ApplicantEmailVerifyComponent, ApplicantEmailVerifyComponent.title),
   //HseRoute.protected(ApplicantGenerateNewSecurityCodeComponent.route, ApplicantGenerateNewSecurityCodeComponent, ApplicantGenerateNewSecurityCodeComponent.title),
 ]);
@@ -49,6 +53,8 @@ const routes = new HseRoutes([
     ApplicantProofOfIdentityComponent,
     ApplicantSummaryComponent,
     PersonalDetailsPlaceholderComponent,
+    ApplicantNationalInsuranceNumberComponent,
+    ApplicantDateOfBirthComponent
     // ApplicantEmailVerifyComponent,
     //ApplicantGenerateNewSecurityCodeComponent,
   ],

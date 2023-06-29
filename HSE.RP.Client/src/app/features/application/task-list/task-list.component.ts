@@ -17,9 +17,9 @@ import { PersonalDetailsPlaceholderComponent } from '../1-personal-details/perso
 import { BuildingInspectorClassPlaceholderComponent } from '../2-building-inspector-class/building-inspector-class-placeholder/building-inspector-class-placeholder.component';
 import { CompetencyPlaceholderComponent } from '../3-competency/competency-placeholder/competency-placeholder.component';
 import { ProfessionalActivityPlaceholderComponent } from '../4-professional-activity/professional-activity-placeholder/professional-activity-placeholder.component';
-import { ApplicationOverviewPlaceholderComponent } from '../5-application-overview/application-overview-placeholder/application-overview-placeholder.component';
-import { PayAndSubmitPlaceholderComponent } from '../6-pay-and-submit/pay-and-submit-placeholder/pay-and-submit-placeholder.component';
+import { ApplicationSubmissionPlaceholderComponent } from '../5-application-submission/application-submission-placeholder/application-submission-placeholder.component';
 import { environment } from 'src/environments/environment';
+import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -122,13 +122,10 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/professional-activity/${ProfessionalActivityPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToApplicationOverview() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-overview/${ApplicationOverviewPlaceholderComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/${ApplicationSubmissionPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToPayAndSubmit() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/pay-and-submit/${PayAndSubmitPlaceholderComponent.route}`, this.activatedRoute);
-  }
-  navigateToPap() {
-    throw new Error('Method not implemented.');
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/${PayAndSubmitComponent.route}`, this.activatedRoute);
   }
   navigateToPayment() {
     throw new Error('Method not implemented.');

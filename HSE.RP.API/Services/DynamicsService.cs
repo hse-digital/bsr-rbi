@@ -67,7 +67,7 @@ namespace HSE.RP.API.Services
                                       ); ;
             var dynamicsContact = modelDefinition.BuildDynamicsEntity(contact);
 
-            var existingContact = await FindExistingContactAsync(contact.FirstName, contact.LastName, contact.Email); //TODO add back phone number in next sprint
+            var existingContact = await FindExistingContactAsync(/*contact.FirstName, contact.LastName, */contact.Email); //TODO add back phone number in next sprint
             if (existingContact == null)
             {
                 var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsContact);
@@ -92,7 +92,7 @@ namespace HSE.RP.API.Services
         }
 
 
-        private async Task<DynamicsContact> FindExistingContactAsync(string firstName, string lastName, string email)
+        private async Task<DynamicsContact> FindExistingContactAsync(/*string firstName, string lastName, */string email)
         {
             /*            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
                         {
@@ -103,7 +103,7 @@ namespace HSE.RP.API.Services
 
             var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
 {
-                        ("$filter", $"firstname eq '{firstName.EscapeSingleQuote()}' and lastname eq '{lastName.EscapeSingleQuote()}' and emailaddress1 eq '{email.EscapeSingleQuote()}'"),
+                        ("$filter", $"emailaddress1 eq '{email.EscapeSingleQuote()}'"),
                         ("$expand", "bsr_contacttype_contact") //TODO add back phone in next sprint
 
                     });
