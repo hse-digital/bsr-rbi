@@ -17,6 +17,8 @@ import { ApplicantSummaryComponent } from './applicant-summary/applicant-summary
 import { ApplicantAlternativePhoneComponent } from './applicant-alternative-phone/applicant-alternative-phone.component';
 import { PersonalDetailsPlaceholderComponent } from './personal-details-placeholder/personal-details-placeholder.component';
 // import { ApplicantEmailComponent } from '../../new-application/applicant-email/applicant-email.component';
+import { ApplicantNationalInsuranceNumberComponent } from './applicant-national-insurance-number/applicant-national-insurance-number.component';
+import { ApplicantDateOfBirthComponent } from './applicant-date-of-birth/applicant-date-of-birth.component';
 
 const routes = new HseRoutes([
   HseRoute.protected(ApplicantAlternativePhoneComponent.route, ApplicantAlternativePhoneComponent, ApplicantAlternativePhoneComponent.title),
@@ -27,6 +29,8 @@ const routes = new HseRoutes([
   HseRoute.protected(ApplicantProofOfIdentityComponent.route, ApplicantProofOfIdentityComponent, ApplicantProofOfIdentityComponent.title),
   HseRoute.protected(ApplicantSummaryComponent.route, ApplicantSummaryComponent, ApplicantSummaryComponent.title),
   HseRoute.protected(PersonalDetailsPlaceholderComponent.route, PersonalDetailsPlaceholderComponent, PersonalDetailsPlaceholderComponent.title),
+  HseRoute.protected(ApplicantNationalInsuranceNumberComponent.route, ApplicantNationalInsuranceNumberComponent, ApplicantNationalInsuranceNumberComponent.title),
+  HseRoute.protected(ApplicantDateOfBirthComponent.route, ApplicantDateOfBirthComponent, ApplicantDateOfBirthComponent.title),
 ]);
 
 @NgModule({
@@ -38,8 +42,9 @@ const routes = new HseRoutes([
     ApplicantProofOfIdentityComponent,
     ApplicantSummaryComponent,
     PersonalDetailsPlaceholderComponent,
-    // ApplicantEmailVerifyComponent,
-    //ApplicantGenerateNewSecurityCodeComponent,
+    ApplicantNationalInsuranceNumberComponent,
+    ApplicantDateOfBirthComponent
+    // ,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

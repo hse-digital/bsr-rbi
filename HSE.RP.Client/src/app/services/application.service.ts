@@ -100,6 +100,6 @@ export enum ApplicationStatus {
   BuildingInspectorClassComplete = 4,
   CompetencyComplete = 8,
   ProfessionalActivityComplete = 16,
-  ApplicationOverviewComplete = 32,
+  ApplicationSubmissionComplete = 32,
   PayAndSubmitComplete = 64,
 }

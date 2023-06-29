@@ -6,15 +6,16 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { CompetencyCertificateCodeComponent } from '../certificate-code/competency-certificate-code.component';
 
 @Component({
-  selector: 'hse-pay-and-submit-placeholder',
-  templateUrl: './pay-and-submit-placeholder.component.html',
+  selector: 'hse-independent-competency-status',
+  templateUrl: './independent-competency-status.component.html',
 })
-export class PayAndSubmitPlaceholderComponent extends PageComponent<string> {
+export class CompetencyIndependentStatusComponent extends PageComponent<string> {
 
-  public static route: string = "pay-and-submit-placeholder";
-  static title: string = "Pay and submit - Register as a building inspector - GOV.UK";
+  public static route: string = "independent-competency-status";
+  static title: string = "Competency - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
@@ -30,7 +31,7 @@ export class PayAndSubmitPlaceholderComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.PayAndSubmitComplete;
+    applicationService.model.ApplicationStatus = ApplicationStatus.CompetencyComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -48,7 +49,7 @@ export class PayAndSubmitPlaceholderComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(CompetencyCertificateCodeComponent.route, this.activatedRoute);
   }
 
 }

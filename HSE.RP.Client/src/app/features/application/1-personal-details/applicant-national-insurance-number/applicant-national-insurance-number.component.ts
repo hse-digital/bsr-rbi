@@ -4,17 +4,19 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
+import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { ApplicantSummaryComponent } from '../applicant-summary/applicant-summary.component';
 
 @Component({
-  selector: 'hse-application-overview-placeholder',
-  templateUrl: './application-overview-placeholder.component.html',
+  selector: 'hse-applicant-national-insurance-number',
+  templateUrl: './applicant-national-insurance-number.component.html',
 })
-export class ApplicationOverviewPlaceholderComponent extends PageComponent<string> {
+export class ApplicantNationalInsuranceNumberComponent extends PageComponent<string> {
 
-  public static route: string = "application-overview-placeholder";
-  static title: string = "Application overview - Register as a building inspector - GOV.UK";
+  public static route: string = "applicant-national-insurance-number";
+  static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
@@ -30,7 +32,7 @@ export class ApplicationOverviewPlaceholderComponent extends PageComponent<strin
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.ApplicationOverviewComplete;
+    applicationService.model.ApplicationStatus = ApplicationStatus.PersonalDetailsComplete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -48,7 +50,7 @@ export class ApplicationOverviewPlaceholderComponent extends PageComponent<strin
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(ApplicantSummaryComponent.route, this.activatedRoute);
   }
 
 }
