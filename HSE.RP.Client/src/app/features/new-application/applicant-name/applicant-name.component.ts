@@ -17,6 +17,7 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   production: boolean = environment.production;
   FirstNameValid: boolean = false;
   LastNameValid: boolean = false;
+
   override model: ApplicantName = new ApplicantName;
 
 
@@ -26,6 +27,10 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override onInit(applicationService: ApplicationService): void {
+    if(!applicationService.model.PersonalDetails)
+    {
+      applicationService.model.PersonalDetails = {};
+    }
     if(applicationService.model.PersonalDetails?.ApplicantName == null)
     {
       applicationService.model.PersonalDetails!.ApplicantName = new ApplicantName();
@@ -40,7 +45,6 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    //return FieldValidations.IsNotNullOrWhitespace(applicationService.model.personalDetails!.applicantName?.firstName) && FieldValidations.IsNotNullOrWhitespace(applicationService.model.personalDetails!.applicantName?.lastName);
     return true;
   }
 
@@ -49,6 +53,12 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   override isValid(): boolean {
     this.FirstNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.FirstName)
     this.LastNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.LastName)
+
+    if(!this.FirstNameValid && !this.LastNameValid)
+    {
+
+    }
+
     return this.FirstNameValid && this.LastNameValid;
   }
 

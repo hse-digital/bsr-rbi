@@ -11,13 +11,19 @@
     title="There is a problem"
     #summaryError
   >
+
+      <govuk-error-link
+      *ngIf="!FirstNameValid && !LastNameValid"
+      anchorId="input-first-name"
+      message="Enter your first and last name"
+    />
     <govuk-error-link
-      *ngIf="!FirstNameValid"
+      *ngIf="!FirstNameValid && LastNameValid"
       anchorId="input-first-name"
       message="Enter your first name"
     />
     <govuk-error-link
-      *ngIf="!LastNameValid"
+      *ngIf="!LastNameValid && FirstNameValid"
       anchorId="input-last-name"
       message="Enter your last name"
     />
