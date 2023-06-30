@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from 
 import { TitleService } from 'src/app/services/title.service';
 import { GovukErrorSummaryComponent } from "hse-angular";
 import { ApplicationService } from "src/app/services/application.service";
+import { EmailValidator } from '../../helpers/validators/email-validator';
 
 @Component({
   selector: 'application-enterdata',
@@ -55,11 +56,11 @@ export class ReturningApplicationEnterDataComponent {
   async isApplicationNumberValid() {
     this.errors.applicationNumber.hasError = true;
     if (!this.applicationNumber) {
-      this.errors.applicationNumber.errorText = 'Enter the application number';
+      this.errors.applicationNumber.errorText = 'You must enter your 12 digit application code';
     } else if (this.applicationNumber.length != 12) {
-      this.errors.applicationNumber.errorText = 'Application number must be 12 characters';
+      this.errors.applicationNumber.errorText = 'You must enter your 12 digit application code';
     } else if (!(await this.doesApplicationNumberMatchEmail())) {
-      this.errors.applicationNumber.errorText = 'Application number doesn\'t match this email address. Enter the correct application number';
+      this.errors.applicationNumber.errorText = 'Application number does not match this email address. Enter the correct 12 digit application code';
     } else {
       this.errors.applicationNumber.hasError = false;
     }
@@ -70,9 +71,15 @@ export class ReturningApplicationEnterDataComponent {
     this.errors.emailAddress.hasError = false;
     if (!this.emailAddress) {
       this.errors.emailAddress.errorText = 'Enter your email address';
+            this.errors.emailAddress.hasError = true;
+    }
+    else if(!EmailValidator.isValid(this.emailAddress!))
+    {
+      this.errors.emailAddress.errorText = "Enter a real email address";
       this.errors.emailAddress.hasError = true;
     }
   }
+
 
   async doesApplicationNumberMatchEmail(): Promise<boolean> {
     return await this.applicationService.isApplicationNumberValid(this.emailAddress!, this.applicationNumber!);
