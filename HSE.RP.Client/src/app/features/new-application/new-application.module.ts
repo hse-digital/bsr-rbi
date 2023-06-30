@@ -9,7 +9,7 @@ import { ApplicationService } from '../../services/application.service';
 import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../services/cookies-banner.service';
 import { ApplicantEmailComponent } from './applicant-email/applicant-email.component';
-import { ApplicantNameComponent } from './applicant-name/applicant-name.component';
+import { NewApplicantNameComponent } from './new-applicant-name/new-applicant-name.component';
 import { ApplicantEmailVerifyComponent } from './applicant-email/applicant-email-verify.component';
 import { ApplicantGenerateNewSecurityCodeComponent } from './applicant-email/applicant-email-generate-new-security-code';
 import { ApplicantPhoneComponent } from './applicant-phone/applicant-phone.component';
@@ -17,7 +17,7 @@ import { ApplicantPhoneComponent } from './applicant-phone/applicant-phone.compo
 
 const routes = new HseRoutes([
   HseRoute.protected(ApplicantPhoneComponent.route, ApplicantPhoneComponent, ApplicantPhoneComponent.title),
-  HseRoute.protected(ApplicantNameComponent.route, ApplicantNameComponent, ApplicantNameComponent.title),
+  HseRoute.protected(NewApplicantNameComponent.route, NewApplicantNameComponent, NewApplicantNameComponent.title),
   HseRoute.protected(ApplicantEmailComponent.route, ApplicantEmailComponent, ApplicantEmailComponent.title),
   HseRoute.protected(ApplicantEmailVerifyComponent.route, ApplicantEmailVerifyComponent, ApplicantEmailVerifyComponent.title),
   HseRoute.protected(ApplicantGenerateNewSecurityCodeComponent.route, ApplicantGenerateNewSecurityCodeComponent, ApplicantGenerateNewSecurityCodeComponent.title),
@@ -26,7 +26,7 @@ const routes = new HseRoutes([
 @NgModule({
   declarations: [
     ApplicantEmailComponent,
-    ApplicantNameComponent,
+    NewApplicantNameComponent,
     ApplicantEmailVerifyComponent,
     ApplicantGenerateNewSecurityCodeComponent,
     ApplicantPhoneComponent

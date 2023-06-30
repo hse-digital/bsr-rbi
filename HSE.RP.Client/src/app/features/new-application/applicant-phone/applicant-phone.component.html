@@ -4,7 +4,7 @@
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="!modelValid" anchorId="input-sample-field" message="Enter your telephone number" />
+    <govuk-error-link *ngIf="!modelValid" anchorId="input-applicant-phone" message="Enter your telephone number" />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Your telephone number</h1>

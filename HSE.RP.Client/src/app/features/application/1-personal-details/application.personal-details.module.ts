@@ -9,7 +9,6 @@ import { ApplicationService } from '../../../services/application.service';
 import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { ApplicantPhotoComponent } from './applicant-photo/applicant-photo.component';
-import { ApplicantNameComponent } from '../../new-application/applicant-name/applicant-name.component';
 import { ApplicantAlternativeEmailComponent } from './applicant-alternative-email/applicant-alternative-email.component';
 import { ApplicantAddressComponent } from './applicant-address/applicant-address.component';
 import { ApplicantProofOfIdentityComponent } from './applicant-proof-of-identity/applicant-proof-of-identity.component';
@@ -22,7 +21,6 @@ import { ApplicantDateOfBirthComponent } from './applicant-date-of-birth/applica
 
 const routes = new HseRoutes([
   HseRoute.protected(ApplicantAlternativePhoneComponent.route, ApplicantAlternativePhoneComponent, ApplicantAlternativePhoneComponent.title),
-  HseRoute.protected(ApplicantNameComponent.route, ApplicantNameComponent, ApplicantNameComponent.title),
   HseRoute.protected(ApplicantAlternativeEmailComponent.route, ApplicantAlternativeEmailComponent, ApplicantAlternativeEmailComponent.title),
   HseRoute.protected(ApplicantPhotoComponent.route, ApplicantPhotoComponent, ApplicantPhotoComponent.title),
   HseRoute.protected(ApplicantAddressComponent.route, ApplicantAddressComponent, ApplicantAddressComponent.title),

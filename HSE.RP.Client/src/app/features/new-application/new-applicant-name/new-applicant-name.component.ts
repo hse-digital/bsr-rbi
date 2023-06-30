@@ -9,10 +9,10 @@ import { ApplicantEmailComponent } from '../applicant-email/applicant-email.comp
 
 @Component({
   selector: 'hse-applicant-name',
-  templateUrl: './applicant-name.component.html',
+  templateUrl: './new-applicant-name.component.html',
 })
-export class ApplicantNameComponent extends PageComponent<ApplicantName> {
-  public static route: string = "applicant-name";
+export class NewApplicantNameComponent extends PageComponent<ApplicantName> {
+  public static route: string = "new-applicant-name";
   static title: string = "Your Name - Apply for building control approval for a higher-risk building - GOV.UK";
   production: boolean = environment.production;
   FirstNameValid: boolean = false;
