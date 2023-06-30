@@ -102,6 +102,10 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
     this.saveAndContinue();
   }
 
+  navigateEnterPhoneNumber(): Promise<boolean> {
+    return this.navigationService.navigate(ApplicantPhoneComponent.route);
+  }
+
   navigateNext(): Promise<boolean> {
     return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
   }
