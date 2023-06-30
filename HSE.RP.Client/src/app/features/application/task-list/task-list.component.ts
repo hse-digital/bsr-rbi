@@ -108,7 +108,9 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   containsFlag(flag: ApplicationStatus) {
     return (this.model!.ApplicationStatus & flag) == flag;
   }
-
+  navigateToApplicantName() {
+    throw new Error('Method not implemented.');
+  }
   navigateToPersonalDetails() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${PersonalDetailsPlaceholderComponent.route}`, this.activatedRoute);
   }
