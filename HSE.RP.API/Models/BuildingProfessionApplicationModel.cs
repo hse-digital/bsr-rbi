@@ -20,6 +20,19 @@ namespace HSE.RP.API.Models
             {
                 errors.Add("Applicant email address is required");
             }
+            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantPhone))
+            {
+                errors.Add("Applicant phone number is required");
+            }
+            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantName.FirstName))
+            {
+                errors.Add("Applicant first name is required");
+            }
+            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantName.LastName))
+            {
+                errors.Add("Applicant last name is required");
+            }
+
 
             return new ValidationSummary(!errors.Any(), errors.ToArray());
         }
@@ -48,12 +61,13 @@ namespace HSE.RP.API.Models
     {
         None = 0,
         EmailVerified = 1,
-        PersonalDetailsComplete = 2,
-        BuildingInspectorClassComplete = 4,
-        CompetencyComplete = 8,
-        ProfessionalActivityComplete = 16,
-        ApplicationOverviewComplete = 32,
-        PayAndSumbitComplete = 64,
+        PhoneVerified = 2,
+        PersonalDetailsComplete = 4,
+        BuildingInspectorClassComplete = 8,
+        CompetencyComplete = 16,
+        ProfessionalActivityComplete = 32,
+        ApplicationSubmissionComplete = 64,
+        PayAndSubmitComplete = 128,
     }
 
     public record Submit();

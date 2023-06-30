@@ -71,7 +71,7 @@ namespace HSE.RP.API.Functions
         public async Task<CustomHttpResponseData> ValidateOTPToken([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
         {
             var otpValidationModel = await request.ReadAsJsonAsync<OTPValidationModel>();
-            var isTokenValid = otpValidationModel.Validate().IsValid && otpService.ValidateToken(otpValidationModel.OTPToken, otpValidationModel.EmailAddress);
+            var isTokenValid = otpValidationModel.Validate().IsValid && otpService.ValidateToken(otpValidationModel.OTPToken, otpValidationModel.Data);
 
             var returnStatusCode = HttpStatusCode.OK;
             if (!featureOptions.DisableOtpValidation && !isTokenValid)

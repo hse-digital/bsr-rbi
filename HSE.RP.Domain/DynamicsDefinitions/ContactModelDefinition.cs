@@ -13,6 +13,6 @@ public class ContactModelDefinition : DynamicsModelDefinition<Contact, DynamicsC
 
     public override Contact BuildEntity(DynamicsContact dynamicsEntity)
     {
-        throw new NotImplementedException();
+        return new Contact(FirstName: dynamicsEntity.firstname, LastName: dynamicsEntity.lastname, PhoneNumber: dynamicsEntity.telephone1, Email: dynamicsEntity.emailaddress1, Id: dynamicsEntity.contactid, jobRoleReferenceId: dynamicsEntity.jobRoleReferenceId);
     }
 }

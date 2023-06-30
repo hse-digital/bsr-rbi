@@ -32,15 +32,19 @@ export class ApplicationService {
     await firstValueFrom(this.httpClient.post('api/SendVerificationEmail', { "EmailAddress": EmailAddress }));
   }
 
-  async validateOTPToken(OTPToken: string, EmailAddress: string): Promise<void> {
+  async sendVerificationSms(PhoneNumber: string): Promise<void> {
+    await firstValueFrom(this.httpClient.post('api/SendVerificationSms', { "PhoneNumber": PhoneNumber }));
+  }
+
+  async validateOTPToken(OTPToken: string, Data: string): Promise<void> {
     await firstValueFrom(this.httpClient.post('api/ValidateOTPToken', {
       "OTPToken": OTPToken,
-      "EmailAddress": EmailAddress
+      "Data": Data
     }));
   }
 
   async registerNewBuildingProfessionApplication(): Promise<void> {
-    this.model.ApplicationStatus = ApplicationStatus.EmailVerified;
+    this.model.ApplicationStatus = ApplicationStatus.PhoneVerified;
     this.model = await firstValueFrom(this.httpClient.post<BuildingProfessionalModel>('api/NewBuildingProfessionalApplication', this.model));
     this.updateLocalStorage();
   }
@@ -53,16 +57,16 @@ export class ApplicationService {
     }
   }
 
-  async continueApplication(ApplicationNumber: string, EmailAddress: string, OTPToken: string): Promise<void> {
-    let application: BuildingProfessionalModel = await firstValueFrom(this.httpClient.get<BuildingProfessionalModel>(`api/GetApplication/${ApplicationNumber}/${EmailAddress}/${OTPToken}`));
+  async continueApplication(ApplicationNumber: string, PhoneNumber: string, OTPToken: string): Promise<void> {
+    let application: BuildingProfessionalModel = await firstValueFrom(this.httpClient.get<BuildingProfessionalModel>(`api/GetApplication/${ApplicationNumber}/${PhoneNumber}/${OTPToken}`));
     this.model = application;
     this.model.ReturningApplication = true;
     this.updateLocalStorage();
   }
 
-  async isApplicationNumberValid(emailAddress: string, applicationNumber: string): Promise<boolean> {
+  async isApplicationNumberValid(EmailAddress: string, ApplicationNumber: string): Promise<boolean> {
     try {
-      await firstValueFrom(this.httpClient.get(`api/ValidateApplicationNumber/${emailAddress.toLowerCase()}/${applicationNumber}`));
+      await firstValueFrom(this.httpClient.get(`api/ValidateApplicationNumber/${EmailAddress.toLowerCase()}/${ApplicationNumber}`));
       return true;
     } catch {
       return false;
@@ -79,13 +83,11 @@ export class BuildingProfessionalModel {
 
 export class PersonalDetails {
   ApplicantName?: ApplicantName = {};
-  ApplicantPhoto?: string //Blob
   ApplicantAddress?: AddressModel;
   ApplicantPhone?: string;
   ApplicantAlternativePhone?: string;
   ApplicantEmail?: string;
   ApplicantAlternativeEmail?: string;
-  ApplicantProofOfIdentity?: string; //Blob
 }
 
 export class ApplicantName {
@@ -96,10 +98,11 @@ export class ApplicantName {
 export enum ApplicationStatus {
   None = 0,
   EmailVerified = 1,
-  PersonalDetailsComplete = 2,
-  BuildingInspectorClassComplete = 4,
-  CompetencyComplete = 8,
-  ProfessionalActivityComplete = 16,
-  ApplicationSubmissionComplete = 32,
-  PayAndSubmitComplete = 64,
+  PhoneVerified = 2,
+  PersonalDetailsComplete = 4,
+  BuildingInspectorClassComplete = 8,
+  CompetencyComplete = 16,
+  ProfessionalActivityComplete = 23,
+  ApplicationSubmissionComplete = 64,
+  PayAndSubmitComplete = 128,
 }
