@@ -2,6 +2,7 @@ export class PhoneNumberValidator {
 
   private static _expectedPhonePatterns = [
     { prefix: '+44', length: 13 },
+    { prefix: '+353', length: 13 }, //Added for ireland so team can test
     { prefix: '0', length: 11 },
   ]
 

@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { environment } from '../../../../../environments/environment';
-import { PageComponent } from '../../../../helpers/page.component';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { PhoneNumberValidator } from '../../../../helpers/validators/phone-number-validator';
+import { environment } from '../../../../environments/environment';
+import { PageComponent } from '../../../helpers/page.component';
+import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
+import { PhoneNumberValidator } from '../../../helpers/validators/phone-number-validator';
 import {
   ApplicationService,
+  ApplicationStatus,
   BuildingProfessionalModel,
-} from '../../../../services/application.service';
-import { ApplicantAlternativeEmailComponent } from '../applicant-alternative-email/applicant-alternative-email.component';
+} from '../../../services/application.service';
+import { ApplicationTaskListComponent } from '../../application/task-list/task-list.component';
+import { ApplicantPhoneVerifyComponent } from './applicant-phone-verify.component';
 
 @Component({
   selector: 'hse-applicant-phone',
@@ -20,6 +22,7 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
   production: boolean = environment.production;
   modelValid: boolean = false;
   phoneNumberHasErrors = false;
+  phoneNumberErrorMessage = "Enter your telephone number";
   override model?: string;
 
   constructor(
@@ -31,22 +34,26 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model =
-      applicationService.model.PersonalDetails?.ApplicantPhone?.toString() ??
-      '';
+    if(!applicationService.model.PersonalDetails?.ApplicantPhone)
+    {
+      applicationService.model.PersonalDetails!.ApplicantPhone = "";
+    }
+    this.model = applicationService.model.PersonalDetails?.ApplicantPhone?.toString() ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    /*     applicationService.model.personalDetails?.applicantPhone? = this.model;
-     */
+
+        this.applicationService.model.PersonalDetails!.ApplicantPhone = this.model;
+        await applicationService.sendVerificationSms(this.model!)
+
+
   }
 
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return true;
-    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicantName?.lastName));
+    return FieldValidations.IsNotNullOrWhitespace(this.applicationService.model.PersonalDetails?.ApplicantEmail) && this.applicationService.model.ApplicationStatus >= ApplicationStatus.EmailVerified;
   }
 
   override isValid(): boolean {
@@ -58,7 +65,7 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
-      ApplicantAlternativeEmailComponent.route,
+      ApplicantPhoneVerifyComponent.route,
       this.activatedRoute
     );
   }

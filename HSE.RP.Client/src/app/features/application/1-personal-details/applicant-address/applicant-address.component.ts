@@ -5,7 +5,7 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAlternativeEmailComponent } from '../applicant-alternative-email/applicant-alternative-email.component';
-import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
+import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 
 @Component({
   selector: 'hse-applicant-address',
@@ -48,7 +48,7 @@ export class ApplicantAddressComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantPhoneComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(ApplicationTaskListComponent.route, this.activatedRoute);
   }
 
 }

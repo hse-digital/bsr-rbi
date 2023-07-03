@@ -6,15 +6,15 @@ import { NotFoundComponent } from '../../../components/not-found/not-found.compo
 import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus } from '../../../services/application.service';
+import { ApplicationService } from '../../../services/application.service';
 import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
 
 @Component({
-  selector: 'hse-applicant-email-verify',
-  templateUrl: './applicant-email-verify.component.html',
+  selector: 'hse-applicant-phone-verify',
+  templateUrl: './applicant-phone-verify.component.html',
 })
-export class ApplicantEmailVerifyComponent extends PageComponent<number> {
-  public static route: string = 'applicant-email-verify';
+export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
+  public static route: string = 'applicant-phone-verify';
   static title: string =
     'Apply for building control approval for a higher-risk building - GOV.UK';
   production: boolean = environment.production;
@@ -27,7 +27,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   isOtpInvalidLength = false;
   isOtpEmpty = false;
   dataSyncError = false;
-  email?: string;
+  PhoneNumber?: string;
 
 
   constructor(
@@ -40,7 +40,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.email = applicationService.model.PersonalDetails?.ApplicantEmail;
+    this.PhoneNumber = applicationService.model.PersonalDetails!.ApplicantPhone;
   }
 
   override canAccess(
@@ -48,7 +48,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
     return FieldValidations.IsNotNullOrWhitespace(
-      applicationService.model.PersonalDetails?.ApplicantEmail
+      applicationService.model.PersonalDetails!.ApplicantPhone
     );
   }
 
@@ -77,7 +77,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
         try {
           await this.applicationService.validateOTPToken(
             this.model?.toString() ?? '',
-            this.email ?? ''
+            this.PhoneNumber ?? ''
           );
         } catch (error) {
           this.otpError = true;
@@ -85,15 +85,14 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
           this.focusAndUpdateErrors();
           throw error;
         }
-        this.applicationService.model.ApplicationStatus = ApplicationStatus.EmailVerified;
-        // try {
-        //   await this.applicationService.registerNewBuildingProfessionApplication();
-        // } catch (error) {
-        //   this.dataSyncError = true;
-        //   this.hasErrors = true;
-        //   this.focusAndUpdateErrors();
-        //   throw error;
-        // }
+        try {
+          await this.applicationService.registerNewBuildingProfessionApplication();
+        } catch (error) {
+          this.dataSyncError = true;
+          this.hasErrors = true;
+          this.focusAndUpdateErrors();
+          throw error;
+        }
     }
     else
     {
@@ -104,7 +103,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   }
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantPhoneComponent.route, this.activatedRoute);
+    return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
   }
 
   getOtpError() {

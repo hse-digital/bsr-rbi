@@ -1,0 +1,36 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+  <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="!modelValid" anchorId="input-applicant-phone" message="Enter your telephone number" />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">Your telephone number</h1>
+  <govuk-body>
+    To secure your application and allow you to return to it later, we need to verify your telephone number. To do this, we will send you a 6-digit security code. You will be able to add a second telephone number later.
+  </govuk-body>
+
+  <govuk-body>
+    If you do not have a mobile telephone, <a href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm" class="govuk-link" target="_blank">contact us</a> to apply to register as a building inspector.
+  </govuk-body>
+
+  <govuk-body>
+    In addition to securing your application, we will use your telephone number only if we need to check your application with you.
+  </govuk-body>
+
+
+    <govuk-warning message="Your phone number will not be published." background="#0"></govuk-warning>
+
+  <govuk-input id="applicant-phone" label="Mobile telephone number  "
+               [(model)]="model"
+               labelClass="govuk-label--s"
+               hint="Enter a UK mobile number with or without spaces. For example, '01234567890' or '+447654321098'."
+               [errorText]="getErrorDescription(!modelValid, 'Enter your telephone number')"
+               hintClass="no-margin-top"
+               (onKeyupEnter)="saveAndContinue()" />
+
+</govuk-formpage>
+
+

@@ -59,15 +59,15 @@ namespace HSE.RP.API.Services
         private async Task<Contact> CreateContactAsync(BuildingProfessionApplicationModel model)
         {
             var modelDefinition = dynamicsModelDefinitionFactory.GetDefinitionFor<Contact, DynamicsContact>();
-            var contact = new Contact(/*FirstName: model.PersonalDetails.ApplicantName.FirstName ?? "",
+            var contact = new Contact(FirstName: model.PersonalDetails.ApplicantName.FirstName ?? "",
                                       LastName: model.PersonalDetails.ApplicantName.LastName ?? "",
-                                      PhoneNumber: model.PersonalDetails.ApplicantPhone ?? "",*/ //TODO Remove comments as fields become required
+                                      PhoneNumber: model.PersonalDetails.ApplicantPhone ?? "", //TODO Remove comments as fields become required
                                       Email: model.PersonalDetails.ApplicantEmail,
                                       jobRoleReferenceId: $"/bsr_jobroles({DynamicsJobRole.Ids["building_inspector"]})" 
                                       ); ;
             var dynamicsContact = modelDefinition.BuildDynamicsEntity(contact);
 
-            var existingContact = await FindExistingContactAsync(/*contact.FirstName, contact.LastName, */contact.Email); //TODO add back phone number in next sprint
+            var existingContact = await FindExistingContactAsync(contact.FirstName, contact.LastName, contact.Email, contact.PhoneNumber); 
             if (existingContact == null)
             {
                 var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsContact);
@@ -92,21 +92,16 @@ namespace HSE.RP.API.Services
         }
 
 
-        private async Task<DynamicsContact> FindExistingContactAsync(/*string firstName, string lastName, */string email)
+        private async Task<DynamicsContact> FindExistingContactAsync(string firstName, string lastName, string email, string phoneNumber)
         {
-            /*            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
+                       var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
                         {
                         ("$filter", $"firstname eq '{firstName.EscapeSingleQuote()}' and lastname eq '{lastName.EscapeSingleQuote()}' and emailaddress1 eq '{email.EscapeSingleQuote()}' and contains(telephone1, '{phoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')"),
-                        ("$expand", "bsr_contacttype_contact") //TODO add back phone in next sprint
-
-                    });*/
-
-            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
-{
-                        ("$filter", $"emailaddress1 eq '{email.EscapeSingleQuote()}'"),
-                        ("$expand", "bsr_contacttype_contact") //TODO add back phone in next sprint
+                        ("$expand", "bsr_contacttype_contact")
 
                     });
+
+
 
 
             return response.value.FirstOrDefault();

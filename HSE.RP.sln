@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSE.RP.API", "HSE.RP.API\HSE.RP.API.csproj", "{AE28FAA3-D6C0-46FC-8CA2-AD8A4BC47759}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "HSE.RP.Client", "HSE.RP.Client\HSE.RP.Client.esproj", "{C8C2A7A8-C17D-4BFF-A3D1-0A5A79B1B1CB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AE28FAA3-D6C0-46FC-8CA2-AD8A4BC47759} = {AE28FAA3-D6C0-46FC-8CA2-AD8A4BC47759}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSE.RP.API.IntegrationTests", "HSE.RP.API.IntegrationTests\HSE.RP.API.IntegrationTests.csproj", "{7A834A66-CB52-4930-B441-E110891E3E57}"
 EndProject

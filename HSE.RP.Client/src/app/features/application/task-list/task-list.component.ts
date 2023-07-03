@@ -9,7 +9,8 @@ import { GovukErrorSummaryComponent } from 'hse-angular';
 import {
   ApplicationService,
   BuildingProfessionalModel,
-  ApplicationStatus /* PaymentStatus */,
+  ApplicationStatus, /* PaymentStatus */
+  ApplicantDateOfBirth,
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PageComponent } from 'src/app/helpers/page.component';
@@ -20,6 +21,7 @@ import { ProfessionalActivityPlaceholderComponent } from '../4-professional-acti
 import { ApplicationSubmissionPlaceholderComponent } from '../5-application-submission/application-submission-placeholder/application-submission-placeholder.component';
 import { environment } from 'src/environments/environment';
 import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
+import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -107,6 +109,13 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   containsFlag(flag: ApplicationStatus) {
     return (this.model!.ApplicationStatus & flag) == flag;
+  }
+  navigateToApplicantName() {
+    throw new Error('Method not implemented.');
+  }
+
+  navigateToPersonalDetailsDateOfBirth() {
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantDateOfBirthComponent.route}`, this.activatedRoute);
   }
 
   navigateToPersonalDetails() {

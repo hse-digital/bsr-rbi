@@ -7,6 +7,7 @@ import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../services/application.service';
 import { ApplicantProofOfIdentityComponent } from '../../application/1-personal-details/applicant-proof-of-identity/applicant-proof-of-identity.component';
 import { ApplicationTaskListComponent } from '../../application/task-list/task-list.component';
+import { ApplicantEmailVerifyComponent } from './applicant-email-verify.component';
 
 @Component({
   selector: 'hse-applicant-email',
@@ -41,7 +42,7 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return true;
+    return FieldValidations.IsNotNullOrWhitespace(applicationService.model.PersonalDetails?.ApplicantName?.FirstName) && FieldValidations.IsNotNullOrWhitespace(applicationService.model.PersonalDetails?.ApplicantName?.LastName);
   }
 
 
@@ -60,7 +61,7 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
   }
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative('applicant-email-verify', this.activatedRoute);
+    return this.navigationService.navigateRelative(ApplicantEmailVerifyComponent.route, this.activatedRoute);
   }
 
 

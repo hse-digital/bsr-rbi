@@ -1,12 +1,22 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
+<govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
+  <govuk-error-link *ngFor="let error of validationErrors" anchorId="{{error.Anchor}}" message={{error.Text}} />
+</govuk-error-summary>
 
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
+  <h1 class="govuk-heading-l">Your date of birth</h1>
 
-  <h1 class="govuk-heading-l">Date of birth</h1>
   <govuk-body>
-  Please enter your date of birth
- </govuk-body>
+    We collect your date of birth to ensure you are of working age and to analyse the demographic of the building inspector profession.
+  </govuk-body>
+
+  <govuk-warning message="Your date of birth will not be published." background="#0"></govuk-warning>
+
+  <govuk-date-input hint="For example, 31 3 1980" [(model)]="model" id="dob-input" [errorText]="getFirstErrorDescription()">
+
+  </govuk-date-input>
+
 </govuk-formpage>
 

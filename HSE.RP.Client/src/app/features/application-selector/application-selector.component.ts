@@ -18,7 +18,6 @@ export class ApplicationSelectorComponent {
   production: boolean = environment.production;
 
   continue() {
-    console.log(this.continueLink);
     this.showError = !this.continueLink;
     if (!this.showError) {
       this.applicationService.newApplication();
