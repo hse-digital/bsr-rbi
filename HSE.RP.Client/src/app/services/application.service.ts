@@ -4,6 +4,8 @@ import { firstValueFrom } from "rxjs";
 import { LocalStorage } from "src/app/helpers/local-storage";
 import { AddressModel } from "./address.service";
 
+
+
 @Injectable()
 export class ApplicationService {
 
@@ -64,17 +66,9 @@ export class ApplicationService {
     this.updateLocalStorage();
   }
 
-  async isApplicationNumberValid(EmailAddress: string, ApplicationNumber: string): Promise<boolean> {
-    try {
-      await firstValueFrom(this.httpClient.get(`api/ValidateApplicationNumber/${EmailAddress.toLowerCase()}/${ApplicationNumber}`));
-      return true;
-    } catch {
-      return false;
-    }
+  async validateReturningApplicationDetails(EmailAddress: string, ApplicationNumber: string): Promise<{ isValidEmail: boolean, isValidApplicationNumber: boolean }> {
+    return await firstValueFrom(this.httpClient.get<{ isValidEmail: boolean, isValidApplicationNumber: boolean }>(`api/ValidateApplicationNumber/${EmailAddress.toLowerCase()}/${ApplicationNumber}`));
   }
-
-
-
 }
 
 export class BuildingProfessionalModel {
@@ -100,9 +94,9 @@ export class ApplicantName {
 }
 
 export class ApplicantDateOfBirth {
-   Day?: string;
-   Month?: string;
-   Year?: string;
+  Day?: string;
+  Month?: string;
+  Year?: string;
 }
 
 export enum ApplicationStatus {

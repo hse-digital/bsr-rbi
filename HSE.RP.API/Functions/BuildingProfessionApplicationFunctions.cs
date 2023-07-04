@@ -7,6 +7,7 @@ using HSE.RP.Domain.Entities;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Options;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HSE.RP.API.Functions;
 
@@ -42,20 +43,32 @@ public class BuildingProfessionApplicationFunctions
         };
     }
 
+
     [Function(nameof(ValidateApplicationNumber))]
-    public HttpResponseData ValidateApplicationNumber([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumber/{emailAddress}/{applicationNumber}")] HttpRequestData request,
-        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and StringEquals(c.PersonalDetails.ApplicantEmail, {emailAddress}, true)", Connection = "CosmosConnection")]
-        List<BuildingProfessionApplicationModel> buildingProfessionApplications)
+    public Task<HttpResponseData> ValidateApplicationNumber([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumber/{emailAddress}/{applicationNumber}")] HttpRequestData request,
+        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber}", Connection = "CosmosConnection")]
+        List<BuildingProfessionApplicationModel> applications,
+        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail, {emailAddress}, true)", Connection = "CosmosConnection")]
+        List<BuildingProfessionApplicationModel> emails)
     {
-        return request.CreateResponse(buildingProfessionApplications.Any() ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
+        if (applications.Any() && emails.Any(app => app.Id == applications[0].Id))
+        {
+            return request.CreateObjectResponseAsync(new { isValidEmail = true, isValidApplicationNumber = true });
+        }
+        else if (emails.Any())
+        {
+            return request.CreateObjectResponseAsync(new { isValidEmail = true, isValidApplicationNumber = false }); ;
+        }
+        else if (applications.Any())
+        {
+            return request.CreateObjectResponseAsync(new { isValidEmail = false, isValidApplicationNumber = true }); ;
+        }
+        else 
+        {
+            return request.CreateObjectResponseAsync(new { isValidEmail = false, isValidApplicationNumber = false }); ;
+        }
     }
 
-/*    [Function(nameof(GetSubmissionDate))]
-    public async Task<HttpResponseData> GetSubmissionDate([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetSubmissionDate/{applicationNumber}")] HttpRequestData request, string applicationNumber)
-    {
-        string submissionDate = await dynamicsService.GetSubmissionDate(applicationNumber);
-        return await request.CreateObjectResponseAsync(submissionDate);
-    }*/
 
     [Function(nameof(GetApplication))]
     public async Task<HttpResponseData> GetApplication([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetApplication/{applicationNumber}/{emailAddress}/{otpToken}")] HttpRequestData request,

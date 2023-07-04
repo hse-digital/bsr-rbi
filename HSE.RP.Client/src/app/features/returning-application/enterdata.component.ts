@@ -54,34 +54,31 @@ export class ReturningApplicationEnterDataComponent {
   }
 
   async isApplicationNumberValid() {
-    this.errors.applicationNumber.hasError = true;
-    if (!this.applicationNumber) {
+    this.errors.applicationNumber.errorText = ''
+    if (!this.applicationNumber || this.applicationNumber.length != 12) {
       this.errors.applicationNumber.errorText = 'You must enter your 12 digit application code';
-    } else if (this.applicationNumber.length != 12) {
-      this.errors.applicationNumber.errorText = 'You must enter your 12 digit application code';
-    } else if (!(await this.doesApplicationNumberMatchEmail())) {
-      this.errors.applicationNumber.errorText = 'Application number does not match this email address. Enter the correct 12 digit application code';
     } else {
-      this.errors.applicationNumber.hasError = false;
+      var result = await this.applicationService.validateReturningApplicationDetails(this.emailAddress!, this.applicationNumber!);
+      if (result.isValidApplicationNumber && result.isValidEmail) {
+        // Do nothing, this is a valid condition
+      } else if (result.isValidEmail) {
+        this.errors.applicationNumber.errorText = 'Your email does not match this application. Enter the correct email address';
+      } else {
+        this.errors.applicationNumber.errorText = 'Application number does not match this email address. Enter the correct 12 digit application code';
+      }
     }
+    this.errors.applicationNumber.hasError = this.errors.applicationNumber.errorText != '';
   }
-
 
   isEmailAddressValid() {
     this.errors.emailAddress.hasError = false;
     if (!this.emailAddress) {
       this.errors.emailAddress.errorText = 'Enter your email address';
-            this.errors.emailAddress.hasError = true;
+      this.errors.emailAddress.hasError = true;
     }
-    else if(!EmailValidator.isValid(this.emailAddress!))
-    {
+    else if (!EmailValidator.isValid(this.emailAddress!)) {
       this.errors.emailAddress.errorText = "Enter a real email address";
       this.errors.emailAddress.hasError = true;
     }
-  }
-
-
-  async doesApplicationNumberMatchEmail(): Promise<boolean> {
-    return await this.applicationService.isApplicationNumberValid(this.emailAddress!, this.applicationNumber!);
   }
 }
