@@ -58,11 +58,13 @@ export class ReturningApplicationEnterDataComponent {
     if (!this.applicationNumber || this.applicationNumber.length != 12) {
       this.errors.applicationNumber.errorText = 'You must enter your 12 digit application code';
     } else {
-      var result = await this.applicationService.validateReturningApplicationDetails(this.emailAddress!, this.applicationNumber!);
+      var result = await this.applicationService.validateReturningApplicationDetails(this.emailAddress!, this.applicationNumber!);      
       if (result.isValidApplicationNumber && result.isValidEmail) {
         // Do nothing, this is a valid condition
-      } else if (result.isValidEmail) {
-        this.errors.applicationNumber.errorText = 'Your email does not match this application. Enter the correct email address';
+      } else if (!result.isValidApplicationNumber && result.isValidEmail) {
+        this.errors.applicationNumber.errorText = 'Application number does not match this email address. Enter the correct 12 digit application code';
+      } else if (result.isValidApplicationNumber && !result.isValidEmail) {
+        this.errors.applicationNumber.errorText = 'Your email does not match this application. Enter the correct email address'
       } else {
         this.errors.applicationNumber.errorText = 'Application number does not match this email address. Enter the correct 12 digit application code';
       }
@@ -77,7 +79,7 @@ export class ReturningApplicationEnterDataComponent {
       this.errors.emailAddress.hasError = true;
     }
     else if (!EmailValidator.isValid(this.emailAddress!)) {
-      this.errors.emailAddress.errorText = "Enter a real email address";
+      this.errors.emailAddress.errorText = "Enter a valid email address";
       this.errors.emailAddress.hasError = true;
     }
   }
