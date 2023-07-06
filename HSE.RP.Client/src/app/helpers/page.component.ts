@@ -63,7 +63,6 @@ export abstract class PageComponent<T> implements OnInit {
 
     async saveAndComeBack(): Promise<void> {
         this.processing = true;
-
         let canSave = this.requiredFieldsAreEmpty() || this.isValid();
         this.hasErrors = !canSave;
         if (!this.hasErrors) {
@@ -112,7 +111,7 @@ export abstract class PageComponent<T> implements OnInit {
     }
 
     private navigateBack(): Promise<boolean> {
-        return this.navigationService.navigate('route');
+        return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
     }
 
     private async saveAndUpdate(): Promise<void> {
