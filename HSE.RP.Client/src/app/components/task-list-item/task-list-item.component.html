@@ -1,0 +1,28 @@
+<li class="app-task-list__item">
+    <span class="app-task-list__task-name">
+        <ng-container *ngIf="canStart">
+            <a task class="govuk-link" tabindex="0" 
+                (keyup.enter)="linkClicked()" 
+                (click)="linkClicked()" 
+                role="link"
+            >
+                {{title}}
+            </a>
+        </ng-container>
+        <ng-container *ngIf="!canStart">
+            {{title}}
+        </ng-container>
+    </span>
+    <govuk-tag tag class="govuk-tag--grey" *ngIf="!canStart">
+        CANNOT START YET
+    </govuk-tag>
+    <govuk-tag tag class="govuk-tag--grey" *ngIf="canStart && !inProgress && !isComplete">
+        NOT STARTED YET
+    </govuk-tag>
+    <govuk-tag tag class="govuk-tag--darkblue" *ngIf="inProgress && !isComplete">
+        IN PROGRESS
+    </govuk-tag>
+    <govuk-tag tag class="govuk-tag--darkblue" *ngIf="isComplete">
+        COMPLETED
+    </govuk-tag>
+</li>
