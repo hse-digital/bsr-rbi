@@ -84,6 +84,13 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     this.checkingStatus = false;
   } */
 
+  checkKeyExistsAndNotNull(obj: any, key: any) {
+    if (obj.hasOwnProperty(key) && obj[key] !== null) {
+      return true;
+    }
+    return false;
+  }
+
   override onSave(applicationService: ApplicationService): Promise<void> {
     throw new Error('Method not implemented.');
   }
@@ -102,7 +109,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   override navigateNext(): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
-
 
 
   // paymentEnum = PaymentStatus;
