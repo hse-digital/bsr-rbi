@@ -55,7 +55,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
     this.emailHasErrors = false;
     if(this.selectedOption === "") {
       this.emailHasErrors = true
-      this.emailErrorMessage = "Select an option"
+      this.emailErrorMessage = "Select yes if you want to provide an alternative email address"
     } 
     else if (this.selectedOption === "no") {
       return !this.emailHasErrors
