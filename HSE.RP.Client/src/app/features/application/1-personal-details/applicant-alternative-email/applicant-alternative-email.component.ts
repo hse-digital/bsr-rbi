@@ -27,11 +27,11 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = applicationService.model.PersonalDetails?.ApplicantAlternativeEmail ?? '';
-    if (this.model !== "") {
-      this.selectedOption = "yes"
-    } else {
+    this.model = applicationService.model.PersonalDetails?.ApplicantAlternativeEmail;
+    if (this.model === "") {
       this.selectedOption = "no"
+    } else if (this.model) {
+      this.selectedOption = "yes"
     }
   }
 
