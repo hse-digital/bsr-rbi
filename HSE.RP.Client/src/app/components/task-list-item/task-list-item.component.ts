@@ -7,7 +7,7 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
 export class TaskListItemComponent {
     @Input() title?: string;
     @Input() canStart: boolean = false;
-    @Input() inProgress: boolean = true;
+    @Input() inProgress: boolean = false;
     @Input() isComplete: boolean = false;
     @Output() navigate = new EventEmitter();
 
