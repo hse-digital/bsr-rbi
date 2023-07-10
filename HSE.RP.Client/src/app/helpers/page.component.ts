@@ -112,7 +112,7 @@ export abstract class PageComponent<T> implements OnInit {
     }
 
     private navigateBack(): Promise<boolean> {
-        return this.navigationService.navigate('route');
+        return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
     }
 
     private async saveAndUpdate(): Promise<void> {
