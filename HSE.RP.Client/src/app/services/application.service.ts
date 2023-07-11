@@ -86,6 +86,7 @@ export class PersonalDetails {
   ApplicantAlternativePhone?: string;
   ApplicantEmail?: string;
   ApplicantAlternativeEmail?: string;
+  ApplicantNationalInsuranceNumber?: string;
 }
 
 export class ApplicantName {

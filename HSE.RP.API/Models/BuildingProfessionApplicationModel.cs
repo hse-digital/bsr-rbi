@@ -53,7 +53,8 @@ namespace HSE.RP.API.Models
         string ApplicantAlternativePhone = null,
         string ApplicantEmail = null,
         string ApplicantAlternativeEmail = null,
-        string ApplicantProofOfIdentity = null
+        string ApplicantProofOfIdentity = null,
+        string ApplicantNationalInsuranceNumber = null
     );
 
     [Flags]

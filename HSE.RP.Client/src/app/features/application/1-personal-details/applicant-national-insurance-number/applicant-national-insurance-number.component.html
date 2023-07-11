@@ -1,12 +1,28 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
 
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
 
   <h1 class="govuk-heading-l">National Insurance number</h1>
   <govuk-body>
-  Please enter your National Insurance number
- </govuk-body>
+    We collect your National Insurance Number to confirm that you are eligible to work in the UK, and as a unique identifier to cross-check and confirm your independent assessment.
+  </govuk-body>
+
+  <govuk-warning message="Your Nation Insurance Number will not be published." background="#0"></govuk-warning>
+
+  <govuk-input 
+               id="nsi-input"
+               label=""
+               [(model)]="model"
+               labelClass="govuk-label--s"
+               hint="It's on your Nation Insurance card, benefit letter, payslip or P60'. For example, 'QQ 12 34 56 C'."
+               [errorText]="getErrorDescription(nsiHasErrors, 'Enter a valid national insurance number in the format of QQ 12 34 56 C')"
+               hintClass="no-margin-top"
+               (onKeyupEnter)="saveAndContinue() " />
+
+
+
+
 </govuk-formpage>
 
