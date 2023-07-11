@@ -22,6 +22,7 @@ import { ApplicationSubmissionPlaceholderComponent } from '../5-application-subm
 import { environment } from 'src/environments/environment';
 import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
+import { ApplicantAlternativeEmailComponent } from '../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
 import { ApplicantAlternativePhoneComponent } from '../1-personal-details/applicant-alternative-phone/applicant-alternative-phone.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
@@ -84,6 +85,13 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     this.checkingStatus = false;
   } */
 
+  checkKeyExistsAndNotNull(obj: any, key: any) {
+    if (obj.hasOwnProperty(key) && obj[key] !== null) {
+      return true;
+    }
+    return false;
+  }
+
   override onSave(applicationService: ApplicationService): Promise<void> {
     throw new Error('Method not implemented.');
   }
@@ -104,7 +112,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   }
 
 
-
   // paymentEnum = PaymentStatus;
   // paymentStatus?: PaymentStatus;
 
@@ -119,6 +126,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantDateOfBirthComponent.route}`, this.activatedRoute);
   }
 
+
+  navigateToPersonalDetailsAlternativeEmailAddress() {
+    this.containsFlag(ApplicationStatus.PhoneVerified)
+  }
+  
   navigateToPersonalDetailsAlternativePhone() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAlternativePhoneComponent.route}`, this.activatedRoute)
   }

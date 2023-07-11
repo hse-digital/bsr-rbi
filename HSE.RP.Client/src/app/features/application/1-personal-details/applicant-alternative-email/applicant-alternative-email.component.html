@@ -1,32 +1,33 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-
-<govuk-formpage saveAndContinueText="Send Verification Email" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
-
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=true>
+  
   <govuk-error-summary *ngIf="emailHasErrors" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="!modelValid" anchorId="input-sample-field" message="Enter your email address" />
+    <govuk-error-link *ngIf="!modelValid" anchorId="applicant-email" message={{emailErrorMessage}} />
   </govuk-error-summary>
 
-  <h1 class="govuk-heading-l">Your email address</h1>
+  <h1 class="govuk-heading-l">Do you want to add an alternative email address?</h1>
 
+  <govuk-warning message="Your alternative email address will not be published." background="#0"></govuk-warning>
 
-  <govuk-body>
-    To secure your application and allow you to return to it later, we need to verify your email address. To do this, we will send you a 6-digit security code.
-  </govuk-body>
+  <govuk-radio-group hintText="Select one option." id="radios-alternative-email" [(model)]="selectedOption">
+    <govuk-radio label="Yes" value="yes" id="yes" [model]="selectedOption">
+      <govuk-input 
+      *ngIf="selectedOption === 'yes'"
+        id="applicant-alternative-email" 
+        label="Alternative email address"
+        [(model)]="model" [maxlength]=100
+        labelClass="govuk-label--s"
+        hint="We will use this to contact you about this application."
+        [errorText]="getErrorDescription(!modelValid, emailErrorMessage)"
+        hintClass="no-margin-top"
+        class="govuk-!-margin-bottom-1"
+        (onKeyupEnter)="saveAndContinue()"
+        />
+    
+    </govuk-radio>
+    <govuk-radio label="No" value="no" id="no"  [model]="selectedOption"></govuk-radio>
 
-  <govuk-body>
-    If you do not have an email address, contact us to apply for building control approval for a higher-risk building.
-  </govuk-body>
-
-  <govuk-input id="applicant-alternative-email" label="Enter your email address"
-               [(model)]="model" [maxlength]=100
-               labelClass="govuk-label--s"
-               hint="We will use this to contact you about this application."
-               [errorText]="getErrorDescription(!modelValid, 'Enter an email address in the correct format')"
-               hintClass="no-margin-top"
-               class="govuk-!-margin-bottom-1"
-               (onKeyupEnter)="saveAndContinue()" />
+  </govuk-radio-group>
 
 </govuk-formpage>
-
-
