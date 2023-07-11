@@ -24,6 +24,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
+    this.updateOnSave = true;
   }
 
   override onInit(applicationService: ApplicationService): void {

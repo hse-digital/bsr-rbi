@@ -20,6 +20,8 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   nsiHasErrors: boolean = false;
+  nsiIsNullOrWhiteSpace: boolean = false;
+  nsiIsInvalidFormat: boolean = false;
   override model?: string;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
@@ -32,8 +34,7 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    var s: string | undefined = this.model;
-    this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber = s;
+    this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber = this.model;
 
    }
 
@@ -41,11 +42,21 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
     return this.applicationService.model.ApplicationStatus >= ApplicationStatus.PhoneVerified && this.applicationService.model.id != null;
   }
 
+  getErrorMessage(): string {
+    if (this.nsiIsNullOrWhiteSpace) {
+      return "You must enter your National Insurance number to proceed.";
+    }
+    if (this.nsiIsInvalidFormat) {
+      return "Please enter a properly formated National Insurance number";
+    }
+    return "";
+  }
 
   override isValid(): boolean {
-    this.nsiHasErrors = !NationalInsuranceNumberValidator.isValid(this.model?.toString() ?? '');
+    this.nsiIsNullOrWhiteSpace = !FieldValidations.IsNotNullOrWhitespace(this.model);
+    this.nsiIsInvalidFormat = !NationalInsuranceNumberValidator.isValid(this.model ?? '');
+    this.nsiHasErrors = this.nsiIsNullOrWhiteSpace || this.nsiIsInvalidFormat;
     return !this.nsiHasErrors; 
-
   }
 
   override navigateNext(): Promise<boolean> {

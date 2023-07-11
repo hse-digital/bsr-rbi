@@ -30,7 +30,7 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
     applicationService: ApplicationService
   ) {
     super(activatedRoute);
-    this.updateOnSave = false;
+    this.updateOnSave = true;
   }
 
   override onInit(applicationService: ApplicationService): void {    
