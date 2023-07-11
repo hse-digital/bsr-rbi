@@ -61,7 +61,7 @@ namespace HSE.RP.API.Services
             var modelDefinition = dynamicsModelDefinitionFactory.GetDefinitionFor<Contact, DynamicsContact>();
             var contact = new Contact(FirstName: model.PersonalDetails.ApplicantName.FirstName ?? "",
                                       LastName: model.PersonalDetails.ApplicantName.LastName ?? "",
-                                      PhoneNumber: model.PersonalDetails.ApplicantPhone ?? "", //TODO Remove comments as fields become required
+                                      PhoneNumber: model.PersonalDetails.ApplicantPhone ?? "",
                                       Email: model.PersonalDetails.ApplicantEmail,
                                       jobRoleReferenceId: $"/bsr_jobroles({DynamicsJobRole.Ids["building_inspector"]})" 
                                       ); ;

@@ -51,4 +51,5 @@ export class ApplicantAddressComponent extends PageComponent<string> {
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(ApplicantAlternativePhoneComponent.route, this.activatedRoute);
   }
+
 }
