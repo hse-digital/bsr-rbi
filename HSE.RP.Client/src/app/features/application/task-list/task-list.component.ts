@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 import { ApplicantAlternativeEmailComponent } from '../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
+import { ApplicantAlternativePhoneComponent } from '../1-personal-details/applicant-alternative-phone/applicant-alternative-phone.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -125,11 +126,15 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantDateOfBirthComponent.route}`, this.activatedRoute);
   }
 
+
   navigateToPersonalDetailsAlternativeEmailAddress() {
     this.containsFlag(ApplicationStatus.PhoneVerified)
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAlternativeEmailComponent.route}`, this.activatedRoute);
   }
   
+  navigateToPersonalDetailsAlternativePhone() {
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAlternativePhoneComponent.route}`, this.activatedRoute)
+  }
+
   navigateToPersonalDetails() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${PersonalDetailsPlaceholderComponent.route}`, this.activatedRoute);
   }
