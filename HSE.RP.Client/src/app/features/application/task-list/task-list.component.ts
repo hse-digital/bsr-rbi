@@ -125,10 +125,9 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   navigateToPersonalDetailsDateOfBirth() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantDateOfBirthComponent.route}`, this.activatedRoute);
   }
-
-
+ 
   navigateToPersonalDetailsAlternativeEmailAddress() {
-    this.containsFlag(ApplicationStatus.PhoneVerified)
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAlternativeEmailComponent.route}`, this.activatedRoute);
   }
   
   navigateToPersonalDetailsAlternativePhone() {
