@@ -41,6 +41,7 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return this.applicationService.model.ApplicationStatus >= ApplicationStatus.PhoneVerified && this.applicationService.model.id != null;
+    
   }
 
   getErrorMessage(): string {
