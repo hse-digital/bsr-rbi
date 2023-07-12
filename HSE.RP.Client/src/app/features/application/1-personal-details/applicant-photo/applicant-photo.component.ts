@@ -5,6 +5,7 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
+import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-photo',
@@ -12,7 +13,7 @@ import { ApplicantAddressComponent } from '../applicant-address/applicant-addres
 })
 export class ApplicantPhotoComponent extends PageComponent<string> {
 
-  public static route: string = "applicant-photo";
+  public static route: string = PersonalDetailRoutes.PROOF_OF_ID;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;

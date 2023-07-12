@@ -9,6 +9,7 @@ import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ApplicantSummaryComponent } from '../applicant-summary/applicant-summary.component';
 import { NationalInsuranceNumberValidator } from '../../../../helpers/validators/national-insurance-number-validator';
+import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-national-insurance-number',
@@ -16,7 +17,7 @@ import { NationalInsuranceNumberValidator } from '../../../../helpers/validators
 })
 export class ApplicantNationalInsuranceNumberComponent extends PageComponent<string> {
 
-  public static route: string = "applicant-national-insurance-number";
+  public static route: string = PersonalDetailRoutes.NATIONAL_INS_NUMBER;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   nsiHasErrors: boolean = false;

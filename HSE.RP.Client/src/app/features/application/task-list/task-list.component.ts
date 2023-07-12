@@ -25,6 +25,7 @@ import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-d
 import { ApplicantAlternativeEmailComponent } from '../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
 import { ApplicantAlternativePhoneComponent } from '../1-personal-details/applicant-alternative-phone/applicant-alternative-phone.component';
 import { ApplicantNationalInsuranceNumberComponent } from '../1-personal-details/applicant-national-insurance-number/applicant-national-insurance-number.component';
+import { ApplicantNameComponent } from '../1-personal-details/applicant-name/applicant-name.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -123,7 +124,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     return (this.model!.ApplicationStatus & flag) == flag;
   }
   navigateToApplicantName() {
-    throw new Error('Method not implemented.');
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantNameComponent.route}`, this.activatedRoute);
   }
 
   navigateToNationalInsuranceNumber() {

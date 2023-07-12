@@ -7,14 +7,17 @@ import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { NavigationService } from 'src/app/services/navigation.service';
+import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-summary',
   templateUrl: './applicant-summary.component.html',
 })
 export class ApplicantSummaryComponent extends PageComponent<string> {
+  PersonalDetailRoutes = PersonalDetailRoutes;
 
-  public static route: string = "applicant-summary";
+  public static route: string = PersonalDetailRoutes.SUMMARY;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
@@ -52,4 +55,7 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
     return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
   }
 
+  public navigateTo(route: string) {
+    return this.navigationService.navigateRelative(`${route}`, this.activatedRoute);
+  }
 }

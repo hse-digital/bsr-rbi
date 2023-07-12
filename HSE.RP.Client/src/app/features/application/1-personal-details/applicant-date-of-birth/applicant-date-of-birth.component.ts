@@ -7,6 +7,7 @@ import { ApplicantDateOfBirth, ApplicationService, ApplicationStatus } from '../
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
 
 type DateInputControlDate = {
   day?: string;
@@ -26,7 +27,7 @@ type DobValidationItem = {
 export class ApplicantDateOfBirthComponent extends PageComponent<DateInputControlDate>
 {
 
-  public static route: string = "applicant-date-of-birth";
+  public static route: string = PersonalDetailRoutes.DATE_OF_BIRTH;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;

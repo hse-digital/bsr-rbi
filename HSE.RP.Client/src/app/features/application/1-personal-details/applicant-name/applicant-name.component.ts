@@ -5,13 +5,14 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicantName, ApplicationService} from '../../../../services/application.service';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-name',
   templateUrl: './applicant-name.component.html',
 })
 export class ApplicantNameComponent extends PageComponent<ApplicantName> {
-  public static route: string = "applicant-name";
+  public static route: string = PersonalDetailRoutes.NAME;
   static title: string = "Your Name - Apply for building control approval for a higher-risk building - GOV.UK";
   production: boolean = environment.production;
   FirstNameValid: boolean = false;

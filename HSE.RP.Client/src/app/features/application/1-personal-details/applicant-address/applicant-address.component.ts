@@ -7,6 +7,7 @@ import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAlternativeEmailComponent } from '../applicant-alternative-email/applicant-alternative-email.component';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-phone/applicant-alternative-phone.component';
+import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-address',
@@ -14,7 +15,7 @@ import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-pho
 })
 export class ApplicantAddressComponent extends PageComponent<string> {
 
-  public static route: string = "applicant-address";
+  public static route: string = PersonalDetailRoutes.ADDRESS;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;

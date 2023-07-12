@@ -4,9 +4,18 @@
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
 
-  <h1 class="govuk-heading-l">Summary of your details</h1>
   <govuk-body>
-  Please see a summary of your details below
- </govuk-body>
+    <h1 class="govuk-heading-xl">Summary of your personal details below</h1>
+    <govuk-summary-list>
+      <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.NAME)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.NAME)" key="Name"  [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantName?.FirstName}} {{applicationService.model.PersonalDetails?.ApplicantName?.LastName}}</govuk-summary-list-row>
+      <govuk-summary-list-row key="Email address" [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantEmail}}</govuk-summary-list-row>
+      <govuk-summary-list-row key="Telephone number" [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantPhone}}</govuk-summary-list-row>
+      <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.DATE_OF_BIRTH)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.DATE_OF_BIRTH)" key="Date of birth" [showAction]=true>TODO</govuk-summary-list-row>
+      <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.ADDRESS)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.ADDRESS)" key="Home address" [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantAddress}}</govuk-summary-list-row>
+      <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.ALT_PHONE)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.ALT_PHONE)" key="Alternative telephone number" [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantAlternativePhone}}</govuk-summary-list-row>
+      <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.ALT_EMAIL)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.ALT_EMAIL)" key="Alternative email address" [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantAlternativeEmail}}</govuk-summary-list-row>
+      <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.NATIONAL_INS_NUMBER)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.NATIONAL_INS_NUMBER)" key="National Insurance Number" [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantNationalInsuranceNumber}}</govuk-summary-list-row>
+    </govuk-summary-list>
+  </govuk-body>
 </govuk-formpage>
 

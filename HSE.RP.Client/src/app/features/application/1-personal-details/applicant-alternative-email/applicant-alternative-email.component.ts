@@ -6,6 +6,7 @@ import { EmailValidator } from '../../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
 import { ApplicantProofOfIdentityComponent } from '../applicant-proof-of-identity/applicant-proof-of-identity.component';
+import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-alternative-email',
@@ -13,7 +14,7 @@ import { ApplicantProofOfIdentityComponent } from '../applicant-proof-of-identit
 })
 export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
 
-  public static route: string = "applicant-alternative-email";
+  public static route: string = PersonalDetailRoutes.ALT_EMAIL;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   emailHasErrors: boolean = false;
