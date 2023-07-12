@@ -24,6 +24,7 @@ import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submi
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 import { ApplicantAlternativeEmailComponent } from '../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
 import { ApplicantAlternativePhoneComponent } from '../1-personal-details/applicant-alternative-phone/applicant-alternative-phone.component';
+import { ApplicantNationalInsuranceNumberComponent } from '../1-personal-details/applicant-national-insurance-number/applicant-national-insurance-number.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -111,6 +112,9 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     throw new Error('Method not implemented.');
   }
 
+  isNullOrEmpty(s: string | null | undefined): boolean {
+    return s === null || s === undefined || s.length === 0;
+  }
 
   // paymentEnum = PaymentStatus;
   // paymentStatus?: PaymentStatus;
@@ -121,6 +125,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   navigateToApplicantName() {
     throw new Error('Method not implemented.');
   }
+
+  navigateToNationalInsuranceNumber() {
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantNationalInsuranceNumberComponent.route}`, this.activatedRoute);
+  }
+
 
   navigateToPersonalDetailsDateOfBirth() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantDateOfBirthComponent.route}`, this.activatedRoute);

@@ -8,6 +8,7 @@ import { ApplicantAddressComponent } from '../applicant-address/applicant-addres
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ApplicantSummaryComponent } from '../applicant-summary/applicant-summary.component';
+import { NationalInsuranceNumberValidator } from '../../../../helpers/validators/national-insurance-number-validator';
 
 @Component({
   selector: 'hse-applicant-national-insurance-number',
@@ -18,35 +19,44 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
   public static route: string = "applicant-national-insurance-number";
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
-  modelValid: boolean = false;
-  photoHasErrors = false;
+  nsiHasErrors: boolean = false;
+  nsiIsNullOrWhiteSpace: boolean = false;
+  nsiIsInvalidFormat: boolean = false;
   override model?: string;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
-    this.updateOnSave = false;
+    this.updateOnSave = true;
   }
 
   override onInit(applicationService: ApplicationService): void {
-    //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
+    this.model = applicationService.model.PersonalDetails?.ApplicantNationalInsuranceNumber ?? '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.PersonalDetailsComplete;
+    this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber = this.model;
+
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return true;
-    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
-
+    return this.applicationService.model.ApplicationStatus >= ApplicationStatus.PhoneVerified && this.applicationService.model.id != null;
   }
 
+  getErrorMessage(): string {
+    if (this.nsiIsNullOrWhiteSpace) {
+      return "You must enter your National Insurance number to proceed.";
+    }
+    if (this.nsiIsInvalidFormat) {
+      return "Please enter a properly formated National Insurance number";
+    }
+    return "";
+  }
 
   override isValid(): boolean {
-    return true;
-/*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
-    return !this.phoneNumberHasErrors; */
-
+    this.nsiIsNullOrWhiteSpace = !FieldValidations.IsNotNullOrWhitespace(this.model);
+    this.nsiIsInvalidFormat = !NationalInsuranceNumberValidator.isValid(this.model ?? '');
+    this.nsiHasErrors = this.nsiIsNullOrWhiteSpace || this.nsiIsInvalidFormat;
+    return !this.nsiHasErrors; 
   }
 
   override navigateNext(): Promise<boolean> {
