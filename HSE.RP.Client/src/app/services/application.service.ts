@@ -69,6 +69,19 @@ export class ApplicationService {
   async validateReturningApplicationDetails(EmailAddress: string, ApplicationNumber: string): Promise<{ isValidEmail: boolean, isValidApplicationNumber: boolean }> {
     return await firstValueFrom(this.httpClient.get<{ isValidEmail: boolean, isValidApplicationNumber: boolean }>(`api/ValidateApplicationNumber/${EmailAddress.toLowerCase()}/${ApplicationNumber}`));
   }
+
+  async syncPayment(): Promise<void> {
+    await firstValueFrom(this.httpClient.post(`api/SyncPayment`, this.model));
+  }
+
+  async getApplicationPayments(): Promise<any[]> {
+    return await firstValueFrom(this.httpClient.get<any[]>(`api/GetApplicationPaymentStatus/${this.model.id}`));
+  }
+
+  async syncDeclaration(): Promise<void> {
+    await firstValueFrom(this.httpClient.post(`api/SyncDeclaration`, this.model));
+  }
+
 }
 
 export class BuildingProfessionalModel {
@@ -109,6 +122,30 @@ export enum ApplicationStatus {
   CompetencyComplete = 16,
   ProfessionalActivityComplete = 23,
   ApplicationSubmissionComplete = 64,
-  PayAndSubmitComplete = 128,
+  PaymentInProgress = 128,
+  PaymentComplete = 256,
 }
 
+
+export class PaymentModel {
+  CreatedDate?: string;
+  Status?: string;
+  Finished?: boolean;
+  PaymentLink!: string;
+  Amount?: number;
+  Email?: string;
+  Reference?: string;
+  Description?: string;
+  ReturnURL?: string;
+  PaymentId?: string;
+  PaymentProvider?: string;
+  ProviderId?: string;
+  ReconciliationStatus?: number;
+}
+
+export enum PaymentStatus {
+  Started,
+  Pending,
+  Success,
+  Failed
+}

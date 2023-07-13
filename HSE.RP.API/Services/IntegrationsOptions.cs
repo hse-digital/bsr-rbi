@@ -9,5 +9,8 @@ public class IntegrationsOptions
     public string NotificationServiceOTPEmailTemplateId { get; set; }
     public string NotificationServiceOTPSmsTemplateId { get; set; }
     public string NotificationServiceReplyToId { get; set; }
+    public string PaymentEndpoint { get; set; }
+    public string PaymentApiKey { get; set; }
+    public double PaymentAmount { get; set; }
 
 }

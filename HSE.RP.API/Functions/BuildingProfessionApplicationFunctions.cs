@@ -105,7 +105,7 @@ public class BuildingProfessionApplicationFunctions
         };
     }
 
-/*    [Function(nameof(GetApplicationPaymentStatus))]
+    [Function(nameof(GetApplicationPaymentStatus))]
     public async Task<HttpResponseData> GetApplicationPaymentStatus([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{nameof(GetApplicationPaymentStatus)}/{{applicationNumber}}")] HttpRequestData request,
         string applicationNumber)
     {
@@ -119,9 +119,9 @@ public class BuildingProfessionApplicationFunctions
             payment.bsr_transactionid,
             payment.bsr_timeanddateoftransaction
         });
-        
+
         return await request.CreateObjectResponseAsync(payments);
-    }*/
+    }
 }
 
 public class CustomHttpResponseData

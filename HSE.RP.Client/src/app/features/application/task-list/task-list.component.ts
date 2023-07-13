@@ -14,20 +14,15 @@ import {
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PageComponent } from 'src/app/helpers/page.component';
-import { PersonalDetailsPlaceholderComponent } from '../1-personal-details/personal-details-placeholder/personal-details-placeholder.component';
-import { BuildingInspectorClassPlaceholderComponent } from '../2-building-inspector-class/building-inspector-class-placeholder/building-inspector-class-placeholder.component';
-import { CompetencyPlaceholderComponent } from '../3-competency/competency-placeholder/competency-placeholder.component';
-import { ProfessionalActivityPlaceholderComponent } from '../4-professional-activity/professional-activity-placeholder/professional-activity-placeholder.component';
-import { ApplicationSubmissionPlaceholderComponent } from '../5-application-submission/application-submission-placeholder/application-submission-placeholder.component';
 import { environment } from 'src/environments/environment';
-import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 import { ApplicantAlternativeEmailComponent } from '../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
 import { ApplicantAlternativePhoneComponent } from '../1-personal-details/applicant-alternative-phone/applicant-alternative-phone.component';
 import { ApplicantNationalInsuranceNumberComponent } from '../1-personal-details/applicant-national-insurance-number/applicant-national-insurance-number.component';
-import { ApplicantNameComponent } from '../1-personal-details/applicant-name/applicant-name.component';
+
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../1-personal-details/PersonalDetailRoutes';
 
+import { PaymentDeclarationComponent } from '../5-application-submission/payment/payment-declaration/payment-declaration.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -147,12 +142,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.DATE_OF_BIRTH);
   }
 
-
   navigateToPersonalDetailsAlternativeEmailAddress() {
     this.containsFlag(ApplicationStatus.PhoneVerified)
     return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.ALT_EMAIL);
   }
-  
+
   navigateToPersonalDetailsAlternativePhone() {
     return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.ALT_PHONE);
   }
@@ -160,20 +154,21 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   navigateToSummaryPage() {
     return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.SUMMARY);
   }
+
   navigateToBuildingInspectorClass() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/building-inspector-class/${BuildingInspectorClassPlaceholderComponent.route}`, this.activatedRoute);
+    throw new Error('Method not implemented.');
   }
   navigateToCompetency() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/competency/${CompetencyPlaceholderComponent.route}`, this.activatedRoute);
+    throw new Error('Method not implemented.');
   }
   navigateToProfessionalActivity() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/professional-activity/${ProfessionalActivityPlaceholderComponent.route}`, this.activatedRoute);
+    throw new Error('Method not implemented.');
   }
   navigateToApplicationOverview() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/${ApplicationSubmissionPlaceholderComponent.route}`, this.activatedRoute);
+    throw new Error('Method not implemented.');
   }
   navigateToPayAndSubmit() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/${PayAndSubmitComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/payment/${PaymentDeclarationComponent.route}`, this.activatedRoute);
   }
   navigateToPayment() {
     throw new Error('Method not implemented.');

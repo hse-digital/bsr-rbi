@@ -13,7 +13,8 @@ public record DynamicsBuildingProfessionApplication(
     [property: JsonPropertyName("bsr_applicantid_contact@odata.bind")]
     string bsr_applicantid = null,
     BuildingProfessionType? bsr_buildingprofessiontypecode = null,
-    string bsr_buildingproappid = null
+    string bsr_buildingproappid = null,
+    string bsr_buildingprofessionapplicationid = null
 ) : DynamicsEntity<BuildingProfessionApplication>;
 
 public enum BuildingProfessionType

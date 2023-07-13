@@ -8,7 +8,7 @@ public class BuildingProfessionApplicationModelDefinition : DynamicsModelDefinit
 
     public override DynamicsBuildingProfessionApplication BuildDynamicsEntity(BuildingProfessionApplication entity)
     {
-        return new DynamicsBuildingProfessionApplication(bsr_applicantid: $"/contacts({entity.ContactId})", bsr_buildingprofessiontypecode: entity.BuildingProfessionTypeCode);
+        return new DynamicsBuildingProfessionApplication(bsr_applicantid: $"/contacts({entity.ContactId})", bsr_buildingprofessiontypecode: entity.BuildingProfessionTypeCode, bsr_buildingprofessionapplicationid: entity.Id);
     }
 
     public override BuildingProfessionApplication BuildEntity(DynamicsBuildingProfessionApplication dynamicsEntity)

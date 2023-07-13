@@ -8,7 +8,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ApplicationService } from '../../../services/application.service';
 import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../../services/cookies-banner.service';
-import { ProfessionalActivityPlaceholderComponent } from './professional-activity-placeholder/professional-activity-placeholder.component';
 import { ProfessionalBodyMembershipsComponent } from './professional-body-memberships/professional-body-memberships.component';
 import { ProfessionalActivityEmploymentTypeComponent } from './employment-type/professional-activity-employment-type.component';
 import { ProfessionalActivityEmploymentDetailsComponent } from './employment-details/professional-activity-employment-details.component';
@@ -16,7 +15,6 @@ import { ProfessionalActivitySummaryComponent } from './professional-activity-su
 
 
 const routes = new HseRoutes([
-  HseRoute.protected(ProfessionalActivityPlaceholderComponent.route, ProfessionalActivityPlaceholderComponent, ProfessionalActivityPlaceholderComponent.title),
   HseRoute.protected(ProfessionalBodyMembershipsComponent.route, ProfessionalBodyMembershipsComponent, ProfessionalBodyMembershipsComponent.title),
   HseRoute.protected(ProfessionalActivityEmploymentTypeComponent.route, ProfessionalActivityEmploymentTypeComponent, ProfessionalActivityEmploymentTypeComponent.title),
   HseRoute.protected(ProfessionalActivityEmploymentDetailsComponent.route, ProfessionalActivityEmploymentDetailsComponent, ProfessionalActivityEmploymentDetailsComponent.title),
@@ -25,7 +23,6 @@ const routes = new HseRoutes([
 
 @NgModule({
   declarations: [
-ProfessionalActivityPlaceholderComponent,
 ProfessionalBodyMembershipsComponent,
 ProfessionalActivityEmploymentTypeComponent,
 ProfessionalActivityEmploymentDetailsComponent,

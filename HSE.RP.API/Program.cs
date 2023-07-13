@@ -6,6 +6,7 @@ using Flurl.Http.Configuration;
 using HSE.RP.API.Models;
 using HSE.RP.API.Services;
 using HSE.RP.Domain.DynamicsDefinitions;
+using HSEPortal.API.Models.Payment;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -33,16 +34,17 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
     serviceCollection.AddTransient<DynamicsApi>();
     serviceCollection.AddTransient<OTPService>();
     serviceCollection.AddTransient<NotificationService>();
-}
 
-/*    serviceCollection.AddSingleton(_ => new MapperConfiguration(config =>
+    serviceCollection.AddSingleton(_ => new MapperConfiguration(config =>
     {
-        config.AddProfile<OrdnanceSurveyPostcodeResponseProfile>();
-        config.AddProfile<CompaniesHouseSearchResponseProfile>();
-        config.AddProfile<LocalAuthoritiesSearchResponseProfile>();
+        //config.AddProfile<OrdnanceSurveyPostcodeResponseProfile>();
+        //config.AddProfile<CompaniesHouseSearchResponseProfile>();
+        //config.AddProfile<LocalAuthoritiesSearchResponseProfile>();
         config.AddProfile<PaymentProfile>();
     }).CreateMapper());
-}*/
+}
+
+
 
 public class SystemTextJsonSerializer : ISerializer
 {

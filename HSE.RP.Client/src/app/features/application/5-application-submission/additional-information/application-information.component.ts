@@ -6,7 +6,7 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
-import { PayAndSubmitComponent } from '../pay-and-submit-application/pay-and-submit.component';
+import { PaymentDeclarationComponent } from '../payment/payment-declaration/payment-declaration.component';
 
 @Component({
   selector: 'hse-application-information',
@@ -49,7 +49,7 @@ export class ApplicationAdditionalInformationComponent extends PageComponent<str
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(PayAndSubmitComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(PaymentDeclarationComponent.route, this.activatedRoute);
   }
 
 }
