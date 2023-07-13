@@ -8,7 +8,7 @@ import { ApplicantAddressComponent } from '../applicant-address/applicant-addres
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { NavigationService } from 'src/app/services/navigation.service';
-import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 import { AddressModel } from '../../../../services/address.service';
 
 @Component({
@@ -23,13 +23,17 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
+  private personalDetailRouter: PersonalDetailRouter;
   override model?: string;
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
+    this.personalDetailRouter = personalDetailRouter;
     this.updateOnSave = false;
-    //this.SetupTestModel();
-
+    this.SetupTestModel();
   }
   /// <summary>
   /// Sets up a test model for the applicant summary page. Just used during Development
@@ -85,7 +89,8 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.TASK_LIST);
+    //return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
   }
 
   public navigateTo(route: string) {

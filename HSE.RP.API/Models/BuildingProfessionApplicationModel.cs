@@ -48,7 +48,7 @@ namespace HSE.RP.API.Models
     (
         ApplicantName ApplicantName = null,
         string ApplicantPhoto = null,
-        string ApplicantAddress = null,
+        ApplicantAddress ApplicantAddress = null,
         string ApplicantPhone = null,
         string ApplicantAlternativePhone = null,
         string ApplicantEmail = null,
@@ -56,6 +56,16 @@ namespace HSE.RP.API.Models
         string ApplicantProofOfIdentity = null,
         string ApplicantNationalInsuranceNumber = null
     );
+
+    public record ApplicantAddress
+    {
+        bool IsManual = false;
+        string Address = null;
+        string AddressLineTwo = null;
+        string Town = null;
+        string AdministrativeArea = null;
+        string Postcode = null;
+    }
 
     [Flags]
     public enum ApplicationStatus
