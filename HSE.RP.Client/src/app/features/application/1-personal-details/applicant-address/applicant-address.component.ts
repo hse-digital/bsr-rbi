@@ -7,7 +7,7 @@ import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAlternativeEmailComponent } from '../applicant-alternative-email/applicant-alternative-email.component';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-phone/applicant-alternative-phone.component';
-import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-address',
@@ -22,7 +22,10 @@ export class ApplicantAddressComponent extends PageComponent<string> {
   photoHasErrors = false;
   override model?: string;
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
@@ -32,7 +35,7 @@ export class ApplicantAddressComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    throw new Error('Method not implemented.');
+    //throw new Error('Method not implemented.');
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -50,7 +53,7 @@ export class ApplicantAddressComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantAlternativePhoneComponent.route, this.activatedRoute);
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.ALT_PHONE);
   }
 
 }

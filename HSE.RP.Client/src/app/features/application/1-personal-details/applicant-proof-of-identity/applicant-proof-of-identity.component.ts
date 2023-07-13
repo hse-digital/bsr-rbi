@@ -6,7 +6,7 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { ApplicantSummaryComponent } from '../applicant-summary/applicant-summary.component';
-import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-proof-of-identity',
@@ -21,7 +21,10 @@ export class ApplicantProofOfIdentityComponent extends PageComponent<string> {
   photoHasErrors = false;
   override model?: string;
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = false;
   }
@@ -49,7 +52,7 @@ export class ApplicantProofOfIdentityComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantSummaryComponent.route, this.activatedRoute);
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.SUMMARY)
   }
 
 }

@@ -70,7 +70,7 @@
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
                 <span task *ngIf="model!.ApplicationStatus < ApplicationStatus.PersonalDetailsComplete">Home address</span>
-                <a task  *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-link" (keyup.enter)="navigateToPersonalDetails()" (click)="navigateToPersonalDetails()" tabindex="0" role="link">Home address</a>
+                <a task  *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-link" (keyup.enter)="navigateToSummary()" (click)="navigateToSummary()" tabindex="0" role="link">Home address</a>
               </span>
               <govuk-tag tag *ngIf="model!.ApplicationStatus < ApplicationStatus.PersonalDetailsComplete" class="govuk-tag--grey">NOT STARTED</govuk-tag>
               <govuk-tag tag *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
@@ -80,7 +80,7 @@
               <span class="app-task-list__task-name">
                 <span task *ngIf="model!.ApplicationStatus < ApplicationStatus.PersonalDetailsComplete">Telephone number</span>
 
-                <a task  *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-link" (keyup.enter)="navigateToPersonalDetails()" (click)="navigateToPersonalDetails()" tabindex="0" role="link">Telephone number</a>
+                <a task  *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-link" (keyup.enter)="navigateToSummary()" (click)="navigateToSummary()" tabindex="0" role="link">Telephone number</a>
               </span>
               <govuk-tag tag *ngIf="model!.ApplicationStatus < ApplicationStatus.PersonalDetailsComplete" class="govuk-tag--grey">NOT STARTED</govuk-tag>
               <govuk-tag tag *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
@@ -128,7 +128,7 @@
 
             <li *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <a task  *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-link" (keyup.enter)="navigateToPersonalDetails()" (click)="navigateToPersonalDetails()" tabindex="0" role="link">Summary</a>
+                <a task  *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-link" (keyup.enter)="navigateToSummaryPage()" (click)="navigateToSummaryPage()" tabindex="0" role="link">Summary</a>
               </span>
             </li>
 

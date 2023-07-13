@@ -5,7 +5,7 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicantName, ApplicationService} from '../../../../services/application.service';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
-import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-name',
@@ -21,7 +21,10 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   override model: ApplicantName = new ApplicantName;
 
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
@@ -63,7 +66,7 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.TASK_LIST)
   }
 }
 

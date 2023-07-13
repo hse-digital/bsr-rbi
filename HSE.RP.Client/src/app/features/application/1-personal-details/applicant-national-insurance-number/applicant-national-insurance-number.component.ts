@@ -9,7 +9,7 @@ import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ApplicantSummaryComponent } from '../applicant-summary/applicant-summary.component';
 import { NationalInsuranceNumberValidator } from '../../../../helpers/validators/national-insurance-number-validator';
-import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-national-insurance-number',
@@ -25,7 +25,10 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
   nsiIsInvalidFormat: boolean = false;
   override model?: string;
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
@@ -62,7 +65,7 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantSummaryComponent.route, this.activatedRoute);
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.SUMMARY)
   }
 
 }

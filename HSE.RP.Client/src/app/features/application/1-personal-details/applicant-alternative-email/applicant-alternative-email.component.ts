@@ -6,7 +6,7 @@ import { EmailValidator } from '../../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
 import { ApplicantProofOfIdentityComponent } from '../applicant-proof-of-identity/applicant-proof-of-identity.component';
-import { PersonalDetailRoutes } from '../PersonalDetailRoutes'
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-alternative-email',
@@ -23,7 +23,10 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
   selectedOption: string = "";
   override model?: string;
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
@@ -76,7 +79,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
 
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantProofOfIdentityComponent.route, this.activatedRoute)
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.ALT_PHONE);
   }
 
 }

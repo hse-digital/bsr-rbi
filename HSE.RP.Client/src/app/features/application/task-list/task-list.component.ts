@@ -26,6 +26,8 @@ import { ApplicantAlternativeEmailComponent } from '../1-personal-details/applic
 import { ApplicantAlternativePhoneComponent } from '../1-personal-details/applicant-alternative-phone/applicant-alternative-phone.component';
 import { ApplicantNationalInsuranceNumberComponent } from '../1-personal-details/applicant-national-insurance-number/applicant-national-insurance-number.component';
 import { ApplicantNameComponent } from '../1-personal-details/applicant-name/applicant-name.component';
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../1-personal-details/PersonalDetailRoutes';
+
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -35,6 +37,8 @@ import { ApplicantNameComponent } from '../1-personal-details/applicant-name/app
   templateUrl: './task-list.component.html',
 })
 export class ApplicationTaskListComponent extends PageComponent<BuildingProfessionalModel> {
+  public PersonalDetailRouter: PersonalDetailRouter;
+  PersonalDetailRoutes = PersonalDetailRoutes;
 
 
   static route: string = '';
@@ -52,14 +56,16 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   constructor(
     activatedRoute: ActivatedRoute,
-    applicationService: ApplicationService
+    applicationService: ApplicationService,
+    private personalDetailsRouter: PersonalDetailRouter,
   ) {
     super(activatedRoute);
     this.updateOnSave = false;
     this.activatedRoute.params.subscribe(params => {
       this.QueryApplicationId=params['id']
     })
-    this.ModelApplicationId=applicationService.model.id!;
+    this.ModelApplicationId = applicationService.model.id!;
+    this.PersonalDetailRouter = personalDetailsRouter;
   }
 
   override onInit(applicationService: ApplicationService): void {
@@ -123,17 +129,22 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   containsFlag(flag: ApplicationStatus) {
     return (this.model!.ApplicationStatus & flag) == flag;
   }
+
+  navigateToSummary() : Promise<boolean> {
+    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.SUMMARY);
+  }
+
   navigateToApplicantName() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantNameComponent.route}`, this.activatedRoute);
+    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.NAME);
   }
 
   navigateToNationalInsuranceNumber() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantNationalInsuranceNumberComponent.route}`, this.activatedRoute);
+    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.NATIONAL_INS_NUMBER);
   }
 
 
   navigateToPersonalDetailsDateOfBirth() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantDateOfBirthComponent.route}`, this.activatedRoute);
+    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.DATE_OF_BIRTH);
   }
 
 
@@ -142,11 +153,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   }
   
   navigateToPersonalDetailsAlternativePhone() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAlternativePhoneComponent.route}`, this.activatedRoute)
+    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.ALT_PHONE);
   }
 
-  navigateToPersonalDetails() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${PersonalDetailsPlaceholderComponent.route}`, this.activatedRoute);
+  navigateToSummaryPage() {
+    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.SUMMARY);
   }
   navigateToBuildingInspectorClass() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/building-inspector-class/${BuildingInspectorClassPlaceholderComponent.route}`, this.activatedRoute);
