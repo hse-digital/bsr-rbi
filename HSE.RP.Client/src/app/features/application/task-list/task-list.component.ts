@@ -150,6 +150,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   navigateToPersonalDetailsAlternativeEmailAddress() {
     this.containsFlag(ApplicationStatus.PhoneVerified)
+    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.ALT_EMAIL);
   }
   
   navigateToPersonalDetailsAlternativePhone() {

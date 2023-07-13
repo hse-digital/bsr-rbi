@@ -32,8 +32,8 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
     personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.personalDetailRouter = personalDetailRouter;
-    this.updateOnSave = false;
-    this.SetupTestModel();
+    this.updateOnSave = true;
+  //  this.SetupTestModel();
   }
   /// <summary>
   /// Sets up a test model for the applicant summary page. Just used during Development
@@ -71,7 +71,8 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    //
+    this.applicationService.model.ApplicationStatus = ApplicationStatus.PersonalDetailsComplete;
+
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
