@@ -1,6 +1,6 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Save and Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=true>
   
   <govuk-error-summary *ngIf="emailHasErrors" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="!modelValid" anchorId="applicant-email" message={{emailErrorMessage}} />
