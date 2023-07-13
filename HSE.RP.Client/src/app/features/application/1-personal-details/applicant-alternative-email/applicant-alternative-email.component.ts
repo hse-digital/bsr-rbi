@@ -5,7 +5,7 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { EmailValidator } from '../../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
-import { ApplicantProofOfIdentityComponent } from '../applicant-proof-of-identity/applicant-proof-of-identity.component';
+import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-phone/applicant-alternative-phone.component';
 
 @Component({
   selector: 'hse-applicant-alternative-email',
@@ -75,7 +75,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
 
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantProofOfIdentityComponent.route, this.activatedRoute)
+    return this.navigationService.navigateRelative(ApplicantAlternativePhoneComponent.route, this.activatedRoute)
   }
 
 }
