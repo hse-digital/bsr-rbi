@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HSE.API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,11 +45,12 @@ namespace HSE.RP.API.Models
      string LastName = null
     );
 
+
     public record PersonalDetails
     (
         ApplicantName ApplicantName = null,
         string ApplicantPhoto = null,
-        string ApplicantAddress = null,
+        BuildingAddress ApplicantAddress = null,
         string ApplicantPhone = null,
         string ApplicantAlternativePhone = null,
         string ApplicantEmail = null,
@@ -68,7 +70,8 @@ namespace HSE.RP.API.Models
         CompetencyComplete = 16,
         ProfessionalActivityComplete = 32,
         ApplicationSubmissionComplete = 64,
-        PayAndSubmitComplete = 128,
+        PaymentInProgress = 128,
+        PaymentComplete = 256,
     }
 
     public record Submit();

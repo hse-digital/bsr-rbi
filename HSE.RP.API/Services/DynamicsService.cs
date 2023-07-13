@@ -10,6 +10,8 @@ using Flurl.Util;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Model;
 using HSE.RP.API.Models;
+using HSE.RP.API.Models.DynamicsSynchronisation;
+using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSE.RP.Domain.Entities;
 using Microsoft.Extensions.Options;
@@ -124,6 +126,94 @@ namespace HSE.RP.API.Services
                 contactTypeReferenceId = $"{dynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_contacttypes({contactTypeId})"
             });
         }
+
+        public async Task<DynamicsPayment> GetPaymentByReference(string reference)
+        {
+            var payments = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"bsr_transactionid eq '{reference}'"));
+            return payments.value.FirstOrDefault();
+        }
+
+        public async Task NewPayment(string applicationId, PaymentResponseModel payment)
+        {
+            var application = await GetBuildingProfessionApplicationUsingId(applicationId);
+            await CreatePayment(new BuildingProfessionApplicationPayment(application.bsr_buildingprofessionapplicationid, payment));
+        }
+
+        public async Task<DynamicsBuildingProfessionApplication> GetBuildingProfessionApplicationUsingId(string applicationId)
+        {
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
+            {
+            ("$filter", $"bsr_buildingproappid eq '{applicationId}'")/*,
+            ("$expand", "bsr_Building,bsr_RegistreeId")*/
+            });
+
+            return response.value.FirstOrDefault();
+        }
+
+        public async Task CreatePayment(BuildingProfessionApplicationPayment buildingProfessionApplicationPayment)
+        {
+            var payment = buildingProfessionApplicationPayment.Payment;
+            var existingPayment = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"bsr_service eq 'Regulating Profession Application' and bsr_transactionid eq '{payment.Reference}'"));
+            if (!existingPayment.value.Any())
+            {
+                await dynamicsApi.Create("bsr_payments", new DynamicsPayment
+                {
+                    buildingProfessionApplicationReferenceId = $"/bsr_buildingprofessionapplications({buildingProfessionApplicationPayment.BuildingProfessionApplicationId})",
+                    bsr_lastfourdigitsofcardnumber = payment.LastFourDigitsCardNumber,
+                    bsr_timeanddateoftransaction = payment.CreatedDate,
+                    bsr_transactionid = payment.Reference,
+                    bsr_service = "Regulating Profession Application",
+                    bsr_cardexpirydate = payment.CardExpiryDate,
+                    bsr_billingaddress = string.Join(", ", new[] { payment.AddressLineOne, payment.AddressLineTwo, payment.Postcode, payment.City, payment.Country }.Where(x => !string.IsNullOrWhiteSpace(x))),
+                    bsr_cardbrandegvisa = payment.CardBrand,
+                    bsr_cardtypecreditdebit = payment.CardType == "debit" ? DynamicsPaymentCardType.Debit : DynamicsPaymentCardType.Credit,
+                    bsr_amountpaid = Math.Round((float)payment.Amount / 100, 2),
+                    bsr_govukpaystatus = payment.Status,
+                    bsr_govukpaymentid = payment.PaymentId
+                });
+            }
+            else
+            {
+                var dynamicsPayment = existingPayment.value[0];
+                await dynamicsApi.Update($"bsr_payments({dynamicsPayment.bsr_paymentid})", new DynamicsPayment
+                {
+                    bsr_timeanddateoftransaction = payment.CreatedDate,
+                    bsr_govukpaystatus = payment.Status,
+                    bsr_cardexpirydate = payment.CardExpiryDate,
+                    bsr_billingaddress = string.Join(", ", new[] { payment.AddressLineOne, payment.AddressLineTwo, payment.Postcode, payment.City, payment.Country }.Where(x => !string.IsNullOrWhiteSpace(x))),
+                    bsr_cardbrandegvisa = payment.CardBrand,
+                    bsr_cardtypecreditdebit = payment.CardType == "debit" ? DynamicsPaymentCardType.Debit : DynamicsPaymentCardType.Credit,
+                    bsr_lastfourdigitsofcardnumber = payment.LastFourDigitsCardNumber,
+                    bsr_amountpaid = Math.Round((float)payment.Amount / 100, 2)
+                });
+            }
+        }
+
+        public async Task UpdateBuildingProfessionApplication(DynamicsBuildingProfessionApplication dynamicsBuildingProfessionApplication, DynamicsBuildingProfessionApplication buildingProfessionApplication)
+        {
+            try
+            {
+                var result = await dynamicsApi.Update($"bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid})", buildingProfessionApplication);
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }   
+
+        }
+
+        public async Task<List<DynamicsPayment>> GetPayments(string applicationNumber)
+        {
+            var buildingProfessionApplication = await GetBuildingProfessionApplicationUsingId(applicationNumber);
+            if (buildingProfessionApplication == null)
+                return new List<DynamicsPayment>();
+
+            var payments = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"_bsr_buildingprofessionapplicationid_value eq '{buildingProfessionApplication.bsr_buildingproappid}'"));
+
+            return payments.value;
+        }
+
 
     }
 

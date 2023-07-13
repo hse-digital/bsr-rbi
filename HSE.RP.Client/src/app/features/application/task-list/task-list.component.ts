@@ -20,11 +20,11 @@ import { CompetencyPlaceholderComponent } from '../3-competency/competency-place
 import { ProfessionalActivityPlaceholderComponent } from '../4-professional-activity/professional-activity-placeholder/professional-activity-placeholder.component';
 import { ApplicationSubmissionPlaceholderComponent } from '../5-application-submission/application-submission-placeholder/application-submission-placeholder.component';
 import { environment } from 'src/environments/environment';
-import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 import { ApplicantAlternativeEmailComponent } from '../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
 import { ApplicantAlternativePhoneComponent } from '../1-personal-details/applicant-alternative-phone/applicant-alternative-phone.component';
 import { ApplicantNationalInsuranceNumberComponent } from '../1-personal-details/applicant-national-insurance-number/applicant-national-insurance-number.component';
+import { PaymentDeclarationComponent } from '../5-application-submission/payment/payment-declaration/payment-declaration.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -134,11 +134,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   navigateToPersonalDetailsDateOfBirth() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantDateOfBirthComponent.route}`, this.activatedRoute);
   }
- 
+
   navigateToPersonalDetailsAlternativeEmailAddress() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAlternativeEmailComponent.route}`, this.activatedRoute);
   }
-  
+
   navigateToPersonalDetailsAlternativePhone() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAlternativePhoneComponent.route}`, this.activatedRoute)
   }
@@ -159,7 +159,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/${ApplicationSubmissionPlaceholderComponent.route}`, this.activatedRoute);
   }
   navigateToPayAndSubmit() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/${PayAndSubmitComponent.route}`, this.activatedRoute);
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/payment/${PaymentDeclarationComponent.route}`, this.activatedRoute);
   }
   navigateToPayment() {
     throw new Error('Method not implemented.');

@@ -28,6 +28,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
   isOtpEmpty = false;
   dataSyncError = false;
   PhoneNumber?: string;
+  override processing = false;
 
 
   constructor(
@@ -63,6 +64,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
   }
 
   async validateOTP() {
+    this.processing=true;
     this.otpError = false;
     this.isOtpNotNumber = false;
     this.isOtpInvalidLength = false;
@@ -82,6 +84,8 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
         } catch (error) {
           this.otpError = true;
           this.hasErrors = true;
+          this.processing=false;
+
           this.focusAndUpdateErrors();
           throw error;
         }
@@ -90,6 +94,8 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
         } catch (error) {
           this.dataSyncError = true;
           this.hasErrors = true;
+          this.processing=false;
+
           this.focusAndUpdateErrors();
           throw error;
         }
@@ -97,8 +103,10 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
     else
     {
       this.hasErrors = true;
-    }
+      this.processing=false;
 
+    }
+    this.processing=false;
     this.saveAndContinue();
   }
 

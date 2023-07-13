@@ -58,10 +58,10 @@
               <govuk-tag tag *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
             </li> -->
 
-            <hse-task-list-item 
-              title="Date of birth" 
-              [canStart]="model!.ApplicationStatus >= ApplicationStatus.PhoneVerified" 
-              (navigate)="navigateToPersonalDetailsDateOfBirth()" 
+            <hse-task-list-item
+              title="Date of birth"
+              [canStart]="model!.ApplicationStatus >= ApplicationStatus.PhoneVerified"
+              (navigate)="navigateToPersonalDetailsDateOfBirth()"
               [isComplete]="checkKeyExistsAndNotNull(model!.PersonalDetails, 'ApplicantDateOfBirth')"
             >
             </hse-task-list-item>
@@ -95,10 +95,10 @@
               <govuk-tag tag *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
             </li> -->
 
-            <hse-task-list-item 
-              title="Alternative email address" 
-              [canStart]="model!.ApplicationStatus >= ApplicationStatus.PhoneVerified" 
-              (navigate)="navigateToPersonalDetailsAlternativeEmailAddress()" 
+            <hse-task-list-item
+              title="Alternative email address"
+              [canStart]="model!.ApplicationStatus >= ApplicationStatus.PhoneVerified"
+              (navigate)="navigateToPersonalDetailsAlternativeEmailAddress()"
               [isComplete]="checkKeyExistsAndNotNull(model!.PersonalDetails, 'ApplicantAlternativeEmail')"
             >
             </hse-task-list-item>
@@ -106,7 +106,7 @@
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
                 <span task *ngIf="model!.ApplicationStatus < ApplicationStatus.PhoneVerified">Alternative telephone number</span>
-                  <a task  *ngIf="model!.ApplicationStatus >= ApplicationStatus.PhoneVerified" class="govuk-link" (keyup.enter)="navigateToPersonalDetailsAlternativePhone()" 
+                  <a task  *ngIf="model!.ApplicationStatus >= ApplicationStatus.PhoneVerified" class="govuk-link" (keyup.enter)="navigateToPersonalDetailsAlternativePhone()"
                     (click)="navigateToPersonalDetailsAlternativePhone()" tabindex="0" role="link"
                   >
                     Alternative telephone number
@@ -287,12 +287,14 @@
 
             <li class="app-task-list__item">
               <span class="app-task-list__task-name">
-                <span task *ngIf="model!.ApplicationStatus < ApplicationStatus.ProfessionalActivityComplete">Pay your fee and submit your application</span>
+                <!-- <span task *ngIf="model!.ApplicationStatus < ApplicationStatus.ProfessionalActivityComplete">Pay your fee and submit your application</span> -->
+                <!-- <a task class="govuk-link" *ngIf="model!.ApplicationStatus >= ApplicationStatus.ProfessionalActivityComplete" (keyup.enter)="navigateToPayAndSubmit()" (click)="navigateToPayAndSubmit()" tabindex="0" role="link">Pay your fee and submit your application</a> -->
                 <a task class="govuk-link" *ngIf="model!.ApplicationStatus >= ApplicationStatus.ProfessionalActivityComplete" (keyup.enter)="navigateToPayAndSubmit()" (click)="navigateToPayAndSubmit()" tabindex="0" role="link">Pay your fee and submit your application</a>
               </span>
-              <govuk-tag tag *ngIf="model!.ApplicationStatus < ApplicationStatus.ApplicationSubmissionComplete" class="govuk-tag--grey">CANNOT START YET</govuk-tag>
-              <govuk-tag tag *ngIf="model!.ApplicationStatus == ApplicationStatus.ApplicationSubmissionComplete" class="govuk-tag--grey">NOT STARTED</govuk-tag>
-              <govuk-tag tag *ngIf="model!.ApplicationStatus >= ApplicationStatus.PayAndSubmitComplete" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
+              <!-- <govuk-tag tag *ngIf="model!.ApplicationStatus < ApplicationStatus.ApplicationSubmissionComplete" class="govuk-tag--grey">CANNOT START YET</govuk-tag> -->
+              <!-- <govuk-tag tag *ngIf="model!.ApplicationStatus == ApplicationStatus.ApplicationSubmissionComplete" class="govuk-tag--grey">NOT STARTED</govuk-tag> -->
+              <govuk-tag tag *ngIf="model!.ApplicationStatus != ApplicationStatus.PaymentComplete" class="govuk-tag--grey">NOT STARTED</govuk-tag>
+              <govuk-tag tag *ngIf="model!.ApplicationStatus >= ApplicationStatus.PaymentComplete" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
             </li>
           </ul>
         </li>

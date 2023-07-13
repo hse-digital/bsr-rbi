@@ -11,14 +11,14 @@ import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { ApplicationSummaryComponent } from './application-summary/application-summary.component';
 import { ApplicationAdditionalInformationComponent } from './additional-information/application-information.component';
 import { ApplicationSubmissionPlaceholderComponent } from './application-submission-placeholder/application-submission-placeholder.component';
-import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
+import { PaymentModule } from './payment/payment.module';
 
 
 const routes = new HseRoutes([
   HseRoute.protected(ApplicationSubmissionPlaceholderComponent.route, ApplicationSubmissionPlaceholderComponent, ApplicationSubmissionPlaceholderComponent.title),
   HseRoute.protected(ApplicationSummaryComponent.route, ApplicationSummaryComponent, ApplicationSummaryComponent.title),
   HseRoute.protected(ApplicationAdditionalInformationComponent.route, ApplicationAdditionalInformationComponent, ApplicationAdditionalInformationComponent.title),
-  HseRoute.protected(PayAndSubmitComponent.route, PayAndSubmitComponent, PayAndSubmitComponent.title),
+  HseRoute.forLoadChildren(PaymentModule.baseRoute, () => import('./payment/payment.module').then(m => m.PaymentModule)),
 
 ]);
 
@@ -27,7 +27,6 @@ const routes = new HseRoutes([
   ApplicationSubmissionPlaceholderComponent,
   ApplicationSummaryComponent,
   ApplicationAdditionalInformationComponent,
-  PayAndSubmitComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

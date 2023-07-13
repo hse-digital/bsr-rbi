@@ -1,0 +1,48 @@
+<i class="fa fa-spinner fa-spin loading" *ngIf="!shouldRender"></i>
+
+<ng-container *ngIf="shouldRender">
+  <div class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <govuk-panel
+          class="govuk-panel--confirmation"
+          title="Application received"
+        >
+          <div class="govuk-panel__body">
+            <p>
+              We have received your application to register as a building
+              inspector with the Building Safety Regulator
+            </p>
+          </div>
+          <div class="govuk-panel__body">
+            <p>Your application reference number is:</p>
+          </div>
+          <div class="govuk-panel__body">
+            <p><strong>{{ applicationService.model.id }}</strong></p>
+          </div>
+          <div class="govuk-panel__body">
+            <p>Your payment reference number is:</p>
+          </div>
+          <div class="govuk-panel__body">
+            <p><strong>{{ paymentReference }}</strong></p>
+          </div>
+        </govuk-panel>
+
+        <govuk-body
+          >We will send an email to the address you gave us confirming that
+          we've received your application.</govuk-body
+        >
+        <govuk-body
+          >Your application will be examined by BSR.We will tell you the outcome
+          of your application by email. This process may take up to XX
+          days.</govuk-body
+        >
+        <govuk-body
+          >If you are unhappy with BSR's decision, the details of the appeal
+          process will be in the email telling you whether your application has
+          been successful or not.</govuk-body
+        >
+      </div>
+    </div>
+  </div>
+</ng-container>
