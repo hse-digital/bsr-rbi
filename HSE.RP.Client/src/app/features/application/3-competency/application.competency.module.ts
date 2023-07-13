@@ -8,7 +8,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ApplicationService } from '../../../services/application.service';
 import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../../services/cookies-banner.service';
-import { CompetencyPlaceholderComponent } from './competency-placeholder/competency-placeholder.component';
 import { CompetencyIndependentStatusComponent } from './independent-competency-status/independent-competency-status.component';
 import { CompetencyCertificateCodeComponent } from './certificate-code/competency-certificate-code.component';
 import { CompetencyAssessmentOrganisationComponent } from './assesesment-organisation/competency-assesesment-organisation.component';
@@ -17,7 +16,6 @@ import { CompetencySummaryComponent } from './competency-summary/competency-summ
 
 
 const routes = new HseRoutes([
-  HseRoute.protected(CompetencyPlaceholderComponent.route, CompetencyPlaceholderComponent, CompetencyPlaceholderComponent.title),
   HseRoute.protected(CompetencyIndependentStatusComponent.route, CompetencyIndependentStatusComponent, CompetencyIndependentStatusComponent.title),
   HseRoute.protected(CompetencyCertificateCodeComponent.route, CompetencyCertificateCodeComponent, CompetencyCertificateCodeComponent.title),
   HseRoute.protected(CompetencyAssessmentOrganisationComponent.route, CompetencyAssessmentOrganisationComponent, CompetencyAssessmentOrganisationComponent.title),
@@ -27,7 +25,6 @@ const routes = new HseRoutes([
 
 @NgModule({
   declarations: [
-CompetencyPlaceholderComponent,
 CompetencyIndependentStatusComponent,
 CompetencyCertificateCodeComponent,
 CompetencyAssessmentOrganisationComponent,

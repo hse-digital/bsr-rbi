@@ -14,11 +14,6 @@ import {
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PageComponent } from 'src/app/helpers/page.component';
-import { PersonalDetailsPlaceholderComponent } from '../1-personal-details/personal-details-placeholder/personal-details-placeholder.component';
-import { BuildingInspectorClassPlaceholderComponent } from '../2-building-inspector-class/building-inspector-class-placeholder/building-inspector-class-placeholder.component';
-import { CompetencyPlaceholderComponent } from '../3-competency/competency-placeholder/competency-placeholder.component';
-import { ProfessionalActivityPlaceholderComponent } from '../4-professional-activity/professional-activity-placeholder/professional-activity-placeholder.component';
-import { ApplicationSubmissionPlaceholderComponent } from '../5-application-submission/application-submission-placeholder/application-submission-placeholder.component';
 import { environment } from 'src/environments/environment';
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 import { ApplicantAlternativeEmailComponent } from '../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
@@ -144,19 +139,20 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   }
 
   navigateToPersonalDetails() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${PersonalDetailsPlaceholderComponent.route}`, this.activatedRoute);
+    throw new Error('Method not implemented.');
   }
+
   navigateToBuildingInspectorClass() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/building-inspector-class/${BuildingInspectorClassPlaceholderComponent.route}`, this.activatedRoute);
+    throw new Error('Method not implemented.');
   }
   navigateToCompetency() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/competency/${CompetencyPlaceholderComponent.route}`, this.activatedRoute);
+    throw new Error('Method not implemented.');
   }
   navigateToProfessionalActivity() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/professional-activity/${ProfessionalActivityPlaceholderComponent.route}`, this.activatedRoute);
+    throw new Error('Method not implemented.');
   }
   navigateToApplicationOverview() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/${ApplicationSubmissionPlaceholderComponent.route}`, this.activatedRoute);
+    throw new Error('Method not implemented.');
   }
   navigateToPayAndSubmit() {
     return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/payment/${PaymentDeclarationComponent.route}`, this.activatedRoute);

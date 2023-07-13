@@ -289,7 +289,7 @@
               <span class="app-task-list__task-name">
                 <!-- <span task *ngIf="model!.ApplicationStatus < ApplicationStatus.ProfessionalActivityComplete">Pay your fee and submit your application</span> -->
                 <!-- <a task class="govuk-link" *ngIf="model!.ApplicationStatus >= ApplicationStatus.ProfessionalActivityComplete" (keyup.enter)="navigateToPayAndSubmit()" (click)="navigateToPayAndSubmit()" tabindex="0" role="link">Pay your fee and submit your application</a> -->
-                <a task class="govuk-link" *ngIf="model!.ApplicationStatus >= ApplicationStatus.ProfessionalActivityComplete" (keyup.enter)="navigateToPayAndSubmit()" (click)="navigateToPayAndSubmit()" tabindex="0" role="link">Pay your fee and submit your application</a>
+                <a task class="govuk-link" (keyup.enter)="navigateToPayAndSubmit()" (click)="navigateToPayAndSubmit()" tabindex="0" role="link">Pay your fee and submit your application</a>
               </span>
               <!-- <govuk-tag tag *ngIf="model!.ApplicationStatus < ApplicationStatus.ApplicationSubmissionComplete" class="govuk-tag--grey">CANNOT START YET</govuk-tag> -->
               <!-- <govuk-tag tag *ngIf="model!.ApplicationStatus == ApplicationStatus.ApplicationSubmissionComplete" class="govuk-tag--grey">NOT STARTED</govuk-tag> -->
