@@ -48,7 +48,7 @@ namespace HSE.RP.API.Models
     (
         ApplicantName ApplicantName = null,
         string ApplicantPhoto = null,
-        ApplicantAddress ApplicantAddress = null,
+        BuildingAddress ApplicantAddress = null,
         string ApplicantPhone = null,
         string ApplicantAlternativePhone = null,
         string ApplicantEmail = null,
@@ -57,15 +57,23 @@ namespace HSE.RP.API.Models
         string ApplicantNationalInsuranceNumber = null
     );
 
-    public record ApplicantAddress
+    public record BuildingAddress
     {
-        bool IsManual = false;
-        string Address = null;
-        string AddressLineTwo = null;
-        string Town = null;
-        string AdministrativeArea = null;
-        string Postcode = null;
+        public string UPRN { get; init; }
+        public string USRN { get; init; }
+        public string Address { get; init; }
+        public string AddressLineTwo { get; init; }
+        public string BuildingName { get; init; }
+        public string Number { get; init; }
+        public string Street { get; init; }
+        public string Town { get; init; }
+        public string Country { get; init; }
+        public string AdministrativeArea { get; init; }
+        public string Postcode { get; init; }
+        public bool IsManual { get; init; }
+        public string ClassificationCode { get; init; }
     }
+
 
     [Flags]
     public enum ApplicationStatus
