@@ -49,6 +49,13 @@ public class DynamicsSynchronisationFunctions
         return request.CreateResponse();
     }
 
+    [Function(nameof(SyncPersonalDetails))]
+    public async Task<HttpResponseData> SyncPersonalDetails([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    {
+        var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchronisePersonalDetails), buildingProfessionApplication);
+        return request.CreateResponse();
+    }
 
     [Function(nameof(SynchroniseDeclaration))]
     public async Task SynchroniseDeclaration([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
@@ -82,7 +89,7 @@ public class DynamicsSynchronisationFunctions
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdatePayment), new BuildingProfessionApplicationPayment(dynamicsBuildingProfessionApplication.bsr_buildingproappid, paymentResponse));
                     if (paymentResponse.Status == "success"/* && dynamicsBuildingProfessionApplication.bsr_applicationstage != BuildingApplicationStage.ApplicationSubmitted*/)
                     {
-                        await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingToSubmitted), dynamicsBuildingProfessionApplication);
+                        await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplicationToSubmitted), dynamicsBuildingProfessionApplication);
                     }
                 }
 
@@ -93,10 +100,75 @@ public class DynamicsSynchronisationFunctions
         }
     }
 
+    [Function(nameof(SynchronisePersonalDetails))]
+    public async Task SynchronisePersonalDetails([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
+    {
+        var buildingProfessionApplicationModel = orchestrationContext.GetInput<BuildingProfessionApplicationModel>();
+
+        var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
+        if (dynamicsBuildingProfessionApplication != null)
+        {
+            var dynamicsContact = await orchestrationContext.CallActivityAsync<DynamicsContact>(nameof(GetContactUsingId), dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid);
+
+            if (dynamicsContact != null)
+            {
+                var contact = new Contact
+                {
+                    Id = dynamicsContact.contactid,
+                    FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName,
+                    LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName,
+                    Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail,
+                    AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail,
+                    PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail,
+                    AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail,
+                    Address = new BuildingAddress 
+                    {
+                        Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Address,
+                        AddressLineTwo = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.AddressLineTwo,
+                        Town = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Town,
+                        Postcode = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Postcode,
+                        Country = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Country
+                    },
+                    NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber,
+                };
+
+                //await orchestrationContext.CallActivityAsync(nameof(UpdateContact), contact);
+            }
+
+                var buildingProfessionApplicationWrapper = new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication);
+
+/*            await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), buildingProfessionApplicationWrapper);
+
+            var payments = await orchestrationContext.CallActivityAsync<List<DynamicsPayment>>(nameof(GetDynamicsPayments), buildingProfessionApplicationModel.Id);
+            var paymentSyncTasks = payments.Select(async payment =>
+            {
+                var paymentResponse = await orchestrationContext.CallActivityAsync<PaymentResponseModel>(nameof(GetPaymentStatus), payment.bsr_govukpaymentid);
+                if (paymentResponse != null)
+                {
+                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdatePayment), new BuildingProfessionApplicationPayment(dynamicsBuildingProfessionApplication.bsr_buildingproappid, paymentResponse));
+                    if (paymentResponse.Status == "success"*//* && dynamicsBuildingProfessionApplication.bsr_applicationstage != BuildingApplicationStage.ApplicationSubmitted*//*)
+                    {
+                        await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplicationToSubmitted), dynamicsBuildingProfessionApplication);
+                    }
+                }
+
+                return paymentResponse;
+            }).ToArray();
+
+            await Task.WhenAll(paymentSyncTasks);*/
+        }
+    }
+
     [Function(nameof(GetBuildingProfessionApplicationUsingId))]
     public Task<DynamicsBuildingProfessionApplication> GetBuildingProfessionApplicationUsingId([ActivityTrigger] string applicationId)
     {
         return dynamicsService.GetBuildingProfessionApplicationUsingId(applicationId);
+    }
+
+    [Function(nameof(GetContactUsingId))]
+    public Task<DynamicsContact> GetContactUsingId([ActivityTrigger] string contactId)
+    {
+        return dynamicsService.GetContactUsingId(contactId);
     }
 
     [Function(nameof(UpdateBuildingProfessionApplication))]
@@ -110,8 +182,8 @@ public class DynamicsSynchronisationFunctions
         });
     }
 
-    [Function(nameof(UpdateBuildingToSubmitted))]
-    public Task UpdateBuildingToSubmitted([ActivityTrigger] DynamicsBuildingProfessionApplication buildingProfessionApplication)
+    [Function(nameof(UpdateBuildingProfessionApplicationToSubmitted))]
+    public Task UpdateBuildingProfessionApplicationToSubmitted([ActivityTrigger] DynamicsBuildingProfessionApplication buildingProfessionApplication)
     {
         return dynamicsService.UpdateBuildingProfessionApplication(buildingProfessionApplication, new DynamicsBuildingProfessionApplication
         {

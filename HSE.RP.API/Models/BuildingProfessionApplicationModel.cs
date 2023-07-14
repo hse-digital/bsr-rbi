@@ -49,7 +49,7 @@ namespace HSE.RP.API.Models
     public record PersonalDetails
     (
         ApplicantName ApplicantName = null,
-        string ApplicantPhoto = null,
+        ApplicantDateOfBirth ApplicantDateOfBirth = null,
         BuildingAddress ApplicantAddress = null,
         string ApplicantPhone = null,
         string ApplicantAlternativePhone = null,
@@ -58,6 +58,13 @@ namespace HSE.RP.API.Models
         string ApplicantProofOfIdentity = null,
         string ApplicantNationalInsuranceNumber = null
     );
+
+    public record ApplicantDateOfBirth
+    {
+        string Day = null;
+        string Month = null;
+        string Year = null;
+    }
 
     [Flags]
     public enum ApplicationStatus

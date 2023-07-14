@@ -143,12 +143,20 @@ namespace HSE.RP.API.Services
         {
             var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
             {
-            ("$filter", $"bsr_buildingproappid eq '{applicationId}'")/*,
-            ("$expand", "bsr_Building,bsr_RegistreeId")*/
+            ("$filter", $"bsr_buildingproappid eq '{applicationId}'"),
+            ("$expand", "bsr_applicantid_contact")
             });
 
             return response.value.FirstOrDefault();
         }
+
+        public async Task<DynamicsContact> GetContactUsingId(string contactId)
+        {
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>($"bsr_buildingprofessionapplications({contactId})");
+
+            return response.value.FirstOrDefault();
+        }
+
 
         public async Task CreatePayment(BuildingProfessionApplicationPayment buildingProfessionApplicationPayment)
         {
