@@ -22,19 +22,15 @@ export const PersonalDetailRoutes = {
 export class PersonalDetailRouter {
   constructor(private navigationService: NavigationService) {
   }
-  public navigateTo(model: BuildingProfessionalModel | undefined, component: string): Promise<boolean>  {
-    if (model !== undefined && model.id !== undefined) {
-      // This initial will bring the user to the task list.
-      var absoluteRoute = `application/${model.id}`;
-      // If a component is specified then we will navigate to that component.
-      if (FieldValidations.IsNotNullOrWhitespace(component)) {
-        absoluteRoute += `/personal-details/${component}`;
-      }
+  public navigateTo(model: BuildingProfessionalModel, component: string): Promise<boolean>  {
+    // This initial will bring the user to the task list.
+    const taskListRoute: string = `application/${model.id}`;
+    var useRoute = taskListRoute;
+    // If a component is specified then we will navigate to that component.
+    if (FieldValidations.IsNotNullOrWhitespace(component)) {
+      useRoute += `/personal-details/${component}`;
+    }
 
-      return this.navigationService.navigate(absoluteRoute);
-    }
-    else {
-      return this.navigationService.navigate(`application`);
-    }
+    return this.navigationService.navigate(useRoute);
   };
 }

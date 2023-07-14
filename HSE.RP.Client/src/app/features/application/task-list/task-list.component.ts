@@ -63,6 +63,15 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     this.PersonalDetailRouter = personalDetailsRouter;
   }
 
+  private GetModel(): BuildingProfessionalModel {
+    if (this.model !== undefined) {
+      return this.model;
+    }
+    else {
+      return new BuildingProfessionalModel();
+    }
+  }
+
   override onInit(applicationService: ApplicationService): void {
     this.model = applicationService.model;
 
@@ -126,33 +135,33 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   }
 
   navigateToSummary() : Promise<boolean> {
-    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.SUMMARY);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.SUMMARY);
   }
 
   navigateToApplicantName() {
-    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.NAME);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.NAME);
   }
 
   navigateToNationalInsuranceNumber() {
-    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.NATIONAL_INS_NUMBER);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.NATIONAL_INS_NUMBER);
   }
 
 
   navigateToPersonalDetailsDateOfBirth() {
-    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.DATE_OF_BIRTH);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.DATE_OF_BIRTH);
   }
 
   navigateToPersonalDetailsAlternativeEmailAddress() {
     this.containsFlag(ApplicationStatus.PhoneVerified)
-    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.ALT_EMAIL);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.ALT_EMAIL);
   }
 
   navigateToPersonalDetailsAlternativePhone() {
-    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.ALT_PHONE);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.ALT_PHONE);
   }
 
   navigateToSummaryPage() {
-    return this.PersonalDetailRouter.navigateTo(this.model, PersonalDetailRoutes.SUMMARY);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.SUMMARY);
   }
 
   navigateToBuildingInspectorClass() {

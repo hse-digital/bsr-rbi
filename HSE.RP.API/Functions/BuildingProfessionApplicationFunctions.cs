@@ -90,7 +90,6 @@ public class BuildingProfessionApplicationFunctions
     [Function(nameof(UpdateApplication))]
     public async Task<CustomHttpResponseData> UpdateApplication([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "UpdateApplication/{applicationNumber}")] HttpRequestData request)
     {
-        //var bodyContent  = await request.ReadAsStringAsync();
         var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
         var validation = buildingProfessionApplicationModel.Validate();
         if (!validation.IsValid)

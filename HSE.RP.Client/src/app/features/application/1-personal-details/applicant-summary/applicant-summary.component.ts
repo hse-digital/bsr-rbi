@@ -10,6 +10,7 @@ import { ApplicationTaskListComponent } from '../../task-list/task-list.componen
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 import { AddressModel } from '../../../../services/address.service';
+import { DateFormatHelper } from '../../../../helpers/date-format-helper';
 
 @Component({
   selector: 'hse-applicant-summary',
@@ -99,41 +100,10 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   public GetFormattedDateofBirth(): string {
-    let year: number = 0;
-    let month: number = 0;
-    let day: number = 0;
-    if (this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Year !== undefined) {
-      if (FieldValidations.IsNotNullOrWhitespace(this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Year)) {
-        year = parseInt(this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Year);
-      }
-    }
-    if (this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Month !== undefined) {
-      if (FieldValidations.IsNotNullOrWhitespace(this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Month)) {
-        month = parseInt(this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Month);
-      }
-    }
-    if (this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Day !== undefined) {
-      if (FieldValidations.IsNotNullOrWhitespace(this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Day)) {
-        day = parseInt(this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Day);
-      }
-    }
-
-    if (year === 0 || month === 0 || day === 0)
-    {
-      return "";
-    }
-
-    // Don't know why but the month is always one less than it should be.  So we need to subtract 1 from the month
-    let date: Date = new Date(year,month-1,day);
-    let options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    };
-
-    let formattedDate = new Intl.DateTimeFormat("en-GB", options).format(date);
-    return formattedDate;
+    return DateFormatHelper.LongMonthFormat(
+      this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Year,
+      this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Month,
+      this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Day
+    );
   }
-
-
 }
