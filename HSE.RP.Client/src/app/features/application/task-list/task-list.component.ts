@@ -20,6 +20,9 @@ import { ApplicantAlternativeEmailComponent } from '../1-personal-details/applic
 import { ApplicantAlternativePhoneComponent } from '../1-personal-details/applicant-alternative-phone/applicant-alternative-phone.component';
 import { ApplicantNameComponent } from '../1-personal-details/applicant-name/applicant-name.component';
 import { ApplicantNationalInsuranceNumberComponent } from '../1-personal-details/applicant-national-insurance-number/applicant-national-insurance-number.component';
+
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../1-personal-details/PersonalDetailRoutes';
+
 import { PaymentDeclarationComponent } from '../5-application-submission/payment/payment-declaration/payment-declaration.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
@@ -30,6 +33,8 @@ import { PaymentDeclarationComponent } from '../5-application-submission/payment
   templateUrl: './task-list.component.html',
 })
 export class ApplicationTaskListComponent extends PageComponent<BuildingProfessionalModel> {
+  public PersonalDetailRouter: PersonalDetailRouter;
+  PersonalDetailRoutes = PersonalDetailRoutes;
 
 
   static route: string = '';
@@ -47,14 +52,25 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   constructor(
     activatedRoute: ActivatedRoute,
-    applicationService: ApplicationService
+    applicationService: ApplicationService,
+    private personalDetailsRouter: PersonalDetailRouter,
   ) {
     super(activatedRoute);
     this.updateOnSave = false;
     this.activatedRoute.params.subscribe(params => {
       this.QueryApplicationId=params['id']
     })
-    this.ModelApplicationId=applicationService.model.id!;
+    this.ModelApplicationId = applicationService.model.id!;
+    this.PersonalDetailRouter = personalDetailsRouter;
+  }
+
+  private GetModel(): BuildingProfessionalModel {
+    if (this.model !== undefined) {
+      return this.model;
+    }
+    else {
+      return new BuildingProfessionalModel();
+    }
   }
 
   override onInit(applicationService: ApplicationService): void {
@@ -118,29 +134,35 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   containsFlag(flag: ApplicationStatus) {
     return (this.model!.ApplicationStatus & flag) == flag;
   }
+
+  navigateToSummary() : Promise<boolean> {
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.SUMMARY);
+  }
+
   navigateToApplicantName() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantNameComponent.route}`, this.activatedRoute);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.NAME);
   }
 
   navigateToNationalInsuranceNumber() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantNationalInsuranceNumberComponent.route}`, this.activatedRoute);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.NATIONAL_INS_NUMBER);
   }
 
 
   navigateToPersonalDetailsDateOfBirth() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantDateOfBirthComponent.route}`, this.activatedRoute);
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.DATE_OF_BIRTH);
   }
 
   navigateToPersonalDetailsAlternativeEmailAddress() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAlternativeEmailComponent.route}`, this.activatedRoute);
+    this.containsFlag(ApplicationStatus.PhoneVerified)
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.ALT_EMAIL);
   }
 
   navigateToPersonalDetailsAlternativePhone() {
-    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAlternativePhoneComponent.route}`, this.activatedRoute)
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.ALT_PHONE);
   }
 
-  navigateToPersonalDetails() {
-    throw new Error('Method not implemented.');
+  navigateToSummaryPage() {
+    return this.PersonalDetailRouter.navigateTo(this.GetModel(), PersonalDetailRoutes.SUMMARY);
   }
 
   navigateToBuildingInspectorClass() {

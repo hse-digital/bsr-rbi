@@ -5,7 +5,8 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { EmailValidator } from '../../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
-import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-phone/applicant-alternative-phone.component';
+import { ApplicantProofOfIdentityComponent } from '../applicant-proof-of-identity/applicant-proof-of-identity.component';
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-alternative-email',
@@ -13,7 +14,7 @@ import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-pho
 })
 export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
 
-  public static route: string = "applicant-alternative-email";
+  public static route: string = PersonalDetailRoutes.ALT_EMAIL;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   emailHasErrors: boolean = false;
@@ -22,7 +23,10 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
   selectedOption: string = "";
   override model?: string;
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
@@ -75,7 +79,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
 
 
   navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantAlternativePhoneComponent.route, this.activatedRoute)
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.ALT_PHONE);
   }
 
 }

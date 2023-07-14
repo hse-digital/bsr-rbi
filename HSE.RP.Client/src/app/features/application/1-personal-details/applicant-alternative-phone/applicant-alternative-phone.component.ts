@@ -9,13 +9,14 @@ import {
   BuildingProfessionalModel,
 } from '../../../../services/application.service';
 import { ApplicantNationalInsuranceNumberComponent } from '../applicant-national-insurance-number/applicant-national-insurance-number.component';
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-alternative-phone',
   templateUrl: './applicant-alternative-phone.component.html',
 })
 export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
-  public static route: string = 'applicant-alternative-phone';
+  public static route: string = PersonalDetailRoutes.ALT_PHONE;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
@@ -27,8 +28,8 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
 
   constructor(
     activatedRoute: ActivatedRoute,
-    applicationService: ApplicationService
-  ) {
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
@@ -77,9 +78,6 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(
-      ApplicantNationalInsuranceNumberComponent.route,
-      this.activatedRoute
-    );
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.NATIONAL_INS_NUMBER);
   }
 }
