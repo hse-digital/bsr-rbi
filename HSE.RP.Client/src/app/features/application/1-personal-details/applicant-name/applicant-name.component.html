@@ -12,22 +12,26 @@
     #summaryError
   >
     <govuk-error-link
-      *ngIf="!FirstNameValid"
+      *ngIf="!FirstNameValid && LastNameValid"
       anchorId="input-first-name"
       message="Enter your first name"
     />
     <govuk-error-link
-      *ngIf="!LastNameValid"
+      *ngIf="!LastNameValid && FirstNameValid"
       anchorId="input-last-name"
       message="Enter your last name"
+    />
+    <govuk-error-link
+      *ngIf="!FirstNameValid && !LastNameValid"
+      anchorId="input-first-name"
+      message="Enter your first and last name"
     />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Your Name</h1>
 
   <govuk-body>
-    We collect personal information so we can contact you if required and to
-    verify your identity.
+    We collect personal information so we can contact you if required.
   </govuk-body>
 
   <govuk-inset-text>
@@ -37,7 +41,7 @@
     </govuk-body>
   </govuk-inset-text>
 
-  <govuk-body> Your name will be published in the public register. </govuk-body>
+  <govuk-warning message="Your name will be published in the public register." background="#0"></govuk-warning>
 
   <div class="govuk-form-group">
 
