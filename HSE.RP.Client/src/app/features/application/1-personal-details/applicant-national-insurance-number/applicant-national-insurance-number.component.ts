@@ -49,10 +49,10 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
 
   getErrorMessage(): string {
     if (this.nsiIsNullOrWhiteSpace) {
-      return "You must enter your National Insurance number to proceed.";
+      return "Enter your National Insurance number";
     }
     if (this.nsiIsInvalidFormat) {
-      return "Please enter a properly formated National Insurance number";
+      return "Enter a National Insurance number in the correct format";
     }
     return "";
   }
