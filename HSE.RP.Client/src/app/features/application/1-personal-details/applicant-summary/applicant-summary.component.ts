@@ -106,4 +106,13 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
       this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Day
     );
   }
+
+  public getAlternativePhone(): string {
+    return this.applicationService.model.PersonalDetails?.ApplicantAlternativePhone || 'none';
+  }
+
+  public getAlternativeEmail(): string {
+    return this.applicationService.model.PersonalDetails?.ApplicantAlternativeEmail || 'none';
+  }
+
 }
