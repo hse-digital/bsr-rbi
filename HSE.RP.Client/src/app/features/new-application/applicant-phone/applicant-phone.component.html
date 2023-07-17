@@ -1,9 +1,10 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
+
 <govuk-formpage saveAndContinueText="Send verification text" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="!modelValid" anchorId="input-applicant-phone" message="Enter your telephone number" />
+    <govuk-error-link *ngIf="!modelValid" anchorId="input-applicant-phone" message="Enter a valid telephone number" />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Your mobile telephone number</h1>
@@ -30,7 +31,7 @@
                [(model)]="model"
                labelClass="govuk-label--s"
                hint="Enter a UK telephone or mobile number without spaces. For example, 01234567890 or +447654321098"
-               [errorText]="getErrorDescription(!modelValid, 'Enter your telephone number')"
+               [errorText]="getErrorDescription(!modelValid, 'Enter a valid telephone number')"
                hintClass="no-margin-top"
                (onKeyupEnter)="saveAndContinue()" />
 
