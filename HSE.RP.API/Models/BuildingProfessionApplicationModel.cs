@@ -1,4 +1,5 @@
-﻿using HSE.API.Models;
+﻿using HSE.RP.API.Models;
+using HSE.RP.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,31 +41,31 @@ namespace HSE.RP.API.Models
     }
 
     public record ApplicantName
-    (
-     string FirstName = null,
-     string LastName = null
-    );
-
-
-    public record PersonalDetails
-    (
-        ApplicantName ApplicantName = null,
-        ApplicantDateOfBirth ApplicantDateOfBirth = null,
-        BuildingAddress ApplicantAddress = null,
-        string ApplicantPhone = null,
-        string ApplicantAlternativePhone = null,
-        string ApplicantEmail = null,
-        string ApplicantAlternativeEmail = null,
-        string ApplicantProofOfIdentity = null,
-        string ApplicantNationalInsuranceNumber = null
-    );
+    {
+        public string FirstName { get; set; }
+        public  string LastName { get; set; }
+    };
 
     public record ApplicantDateOfBirth
     {
-        string Day = null;
-        string Month = null;
-        string Year = null;
+        public string Day  { get; set; }
+        public string Month  { get; set; }
+        public string Year  { get; set; }
     }
+
+
+    public record PersonalDetails
+    {
+        public ApplicantName ApplicantName { get; set; }
+        public ApplicantDateOfBirth ApplicantDateOfBirth { get; set; }
+        public BuildingAddress ApplicantAddress { get; set; }
+        public string ApplicantPhone { get; set; }
+        public string ApplicantAlternativePhone { get; set; }
+        public string ApplicantEmail { get; set; }
+        public string ApplicantAlternativeEmail { get; set; }
+        public string ApplicantNationalInsuranceNumber { get; set; }
+    };
+
 
     [Flags]
     public enum ApplicationStatus

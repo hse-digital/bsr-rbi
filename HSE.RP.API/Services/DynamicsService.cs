@@ -15,6 +15,7 @@ using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSE.RP.Domain.Entities;
 using Microsoft.Extensions.Options;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HSE.RP.API.Services
 {
@@ -152,7 +153,10 @@ namespace HSE.RP.API.Services
 
         public async Task<DynamicsContact> GetContactUsingId(string contactId)
         {
-            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>($"bsr_buildingprofessionapplications({contactId})");
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
+            {
+            ("$filter", $"contactid eq '{contactId}'")
+            });
 
             return response.value.FirstOrDefault();
         }
@@ -215,8 +219,7 @@ namespace HSE.RP.API.Services
         {
             try
             {
-                var result = await dynamicsApi.Update($"contacts({dynamicsContact.Id})", contact);
-
+                var result = await dynamicsApi.Update($"contacts({dynamicsContact.contactid})", contact);
             }
             catch (Exception ex)
             {

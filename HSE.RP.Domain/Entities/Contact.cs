@@ -12,18 +12,18 @@ public record Contact(
     string AlternativeEmail = null,
     string NationalInsuranceNumber = null,
     BuildingAddress Address = null,
+    DateOnly? birthdate = null,
     string buildingProfessionApplicationReferenceId = null,
     string jobRoleReferenceId = null
     ) : Entity(Id);
 
 public record DynamicsContact(
-    string Id = null,
     string firstname = null, 
     string lastname = null, 
     string telephone1 = null, 
     string telephone2 = null, 
+    string emailaddress2 = null, 
     string emailaddress1 = null, 
-    string emailaddress = null, 
     string contactid = null,
     string address1_line1 = null, 
     string address1_line2 = null, 
@@ -40,7 +40,7 @@ public record DynamicsContact(
     [property: JsonPropertyName("bsr_buildingprofessionapplicationid@odata.bind")]
     string bsr_buildingprofessionapplicationid = null,
     string bsr_nationalinsuranceno = null,
-    string birthdate = null
+    DateOnly? birthdate = null
     ) : DynamicsEntity<Contact>;
 
 public record DynamicsContactType(
@@ -79,21 +79,4 @@ public static class DynamicsCountryCodes
         ["E"] = "65eeb151-30b8-ed11-b597-0022481b5e4f",
         ["W"] = "ab22b657-30b8-ed11-b597-0022481b5e4f",
     };
-}
-
-public class BuildingAddress
-{
-    public string UPRN { get; init; }
-    public string USRN { get; init; }
-    public string Address { get; init; }
-    public string AddressLineTwo { get; init; }
-    public string BuildingName { get; init; }
-    public string Number { get; init; }
-    public string Street { get; init; }
-    public string Town { get; init; }
-    public string Country { get; init; }
-    public string AdministrativeArea { get; init; }
-    public string Postcode { get; init; }
-    public bool IsManual { get; init; }
-    public string ClassificationCode { get; init; }
 }

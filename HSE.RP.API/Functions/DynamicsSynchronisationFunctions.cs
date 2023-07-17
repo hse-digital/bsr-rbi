@@ -114,28 +114,24 @@ public class DynamicsSynchronisationFunctions
             {
                 var contact = new Contact
                 {
-                    Id = dynamicsContact.contactid,
-                    FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName,
-                    LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName,
-                    Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail,
-                    AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail,
-                    PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail,
-                    AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail,
-                    Address = new BuildingAddress 
-                    {
-                        Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Address,
-                        AddressLineTwo = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.AddressLineTwo,
-                        Town = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Town,
-                        Postcode = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Postcode,
-                        Country = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Country
-                    },
-                    NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber,
+                    Id = dynamicsContact.contactid ?? "",
+                    FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName ?? "",
+                    LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName ?? "",
+                    Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail ?? "",
+                    AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail ?? "",
+                    PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone ?? "",
+                    AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone ?? "",
+                    Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress ?? new BuildingAddress { },
+                    birthdate = new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year ?? "1990"),
+                                             int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month ?? "01"),
+                                             int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day ?? "01")),
+                    NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber ?? "",
                 };
 
                 var contactWrapper = new ContactWrapper(contact, dynamicsContact);
 
 
-                await orchestrationContext.CallActivityAsync(nameof(UpdateContact), contact);
+                await orchestrationContext.CallActivityAsync(nameof(UpdateContact), contactWrapper);
             }
         }
     }
@@ -171,15 +167,15 @@ public class DynamicsSynchronisationFunctions
         {
             firstname = contactWrapper.Model.FirstName,
             lastname = contactWrapper.Model.LastName,
-            emailaddress = contactWrapper.Model.Email,
-            emailaddress1 = contactWrapper.Model.AlternativeEmail,
+            emailaddress1 = contactWrapper.Model.Email,
+            emailaddress2 = contactWrapper.Model.AlternativeEmail,
             telephone1 = contactWrapper.Model.PhoneNumber,
             telephone2 = contactWrapper.Model.AlternativePhoneNumber,
             address1_line1 = contactWrapper.Model.Address.Address,
             address1_line2 = contactWrapper.Model.Address.AddressLineTwo,
             address1_city = contactWrapper.Model.Address.Town,
             address1_postalcode = contactWrapper.Model.Address.Postcode,
-            address1_country = contactWrapper.Model.Address.Country,
+            birthdate = contactWrapper.Model.birthdate,
             bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber,
         });
     }
