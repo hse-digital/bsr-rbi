@@ -17,6 +17,7 @@ public record Contact(
     ) : Entity(Id);
 
 public record DynamicsContact(
+    string Id = null,
     string firstname = null, 
     string lastname = null, 
     string telephone1 = null, 

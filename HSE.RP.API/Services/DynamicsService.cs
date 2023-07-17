@@ -211,6 +211,20 @@ namespace HSE.RP.API.Services
 
         }
 
+        public async Task UpdateContact(DynamicsContact dynamicsContact, DynamicsContact contact)
+        {
+            try
+            {
+                var result = await dynamicsApi.Update($"contacts({dynamicsContact.Id})", contact);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
         public async Task<List<DynamicsPayment>> GetPayments(string applicationNumber)
         {
             var buildingProfessionApplication = await GetBuildingProfessionApplicationUsingId(applicationNumber);

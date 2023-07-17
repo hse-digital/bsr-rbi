@@ -7,5 +7,5 @@ public record BuildingProfessionApplicationWrapper(BuildingProfessionApplication
 
 public record BuildingProfessionApplicationPayment(string BuildingProfessionApplicationId, PaymentResponseModel Payment);
 
-public record ContactWrapper(BuildingProfessionApplicationModel Model, DynamicsContact DynamicsContact);
+public record ContactWrapper(Contact Model, DynamicsContact DynamicsContact);
 

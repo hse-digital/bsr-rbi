@@ -132,30 +132,11 @@ public class DynamicsSynchronisationFunctions
                     NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber,
                 };
 
-                //await orchestrationContext.CallActivityAsync(nameof(UpdateContact), contact);
+                var contactWrapper = new ContactWrapper(contact, dynamicsContact);
+
+
+                await orchestrationContext.CallActivityAsync(nameof(UpdateContact), contact);
             }
-
-                var buildingProfessionApplicationWrapper = new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication);
-
-/*            await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), buildingProfessionApplicationWrapper);
-
-            var payments = await orchestrationContext.CallActivityAsync<List<DynamicsPayment>>(nameof(GetDynamicsPayments), buildingProfessionApplicationModel.Id);
-            var paymentSyncTasks = payments.Select(async payment =>
-            {
-                var paymentResponse = await orchestrationContext.CallActivityAsync<PaymentResponseModel>(nameof(GetPaymentStatus), payment.bsr_govukpaymentid);
-                if (paymentResponse != null)
-                {
-                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdatePayment), new BuildingProfessionApplicationPayment(dynamicsBuildingProfessionApplication.bsr_buildingproappid, paymentResponse));
-                    if (paymentResponse.Status == "success"*//* && dynamicsBuildingProfessionApplication.bsr_applicationstage != BuildingApplicationStage.ApplicationSubmitted*//*)
-                    {
-                        await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplicationToSubmitted), dynamicsBuildingProfessionApplication);
-                    }
-                }
-
-                return paymentResponse;
-            }).ToArray();
-
-            await Task.WhenAll(paymentSyncTasks);*/
         }
     }
 
@@ -179,6 +160,27 @@ public class DynamicsSynchronisationFunctions
         {
             //bsr_applicationstage = stage,
             //bsr_declarationconfirmed = buildingProfessionApplicationWrapper.Stage is BuildingApplicationStage.ApplicationSubmitted or BuildingApplicationStage.PayAndApply,
+        });
+    }
+
+    [Function(nameof(UpdateContact))]
+    public Task UpdateContact([ActivityTrigger] ContactWrapper contactWrapper)
+    {
+        //var stage = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_applicationstage == BuildingApplicationStage.ApplicationSubmitted ? BuildingApplicationStage.ApplicationSubmitted : buildingProfessionApplicationWrapper.Stage;
+        return dynamicsService.UpdateContact(contactWrapper.DynamicsContact, new DynamicsContact
+        {
+            firstname = contactWrapper.Model.FirstName,
+            lastname = contactWrapper.Model.LastName,
+            emailaddress = contactWrapper.Model.Email,
+            emailaddress1 = contactWrapper.Model.AlternativeEmail,
+            telephone1 = contactWrapper.Model.PhoneNumber,
+            telephone2 = contactWrapper.Model.AlternativePhoneNumber,
+            address1_line1 = contactWrapper.Model.Address.Address,
+            address1_line2 = contactWrapper.Model.Address.AddressLineTwo,
+            address1_city = contactWrapper.Model.Address.Town,
+            address1_postalcode = contactWrapper.Model.Address.Postcode,
+            address1_country = contactWrapper.Model.Address.Country,
+            bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber,
         });
     }
 
