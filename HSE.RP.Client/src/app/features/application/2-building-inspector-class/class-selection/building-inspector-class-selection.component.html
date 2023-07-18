@@ -1,12 +1,44 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()"
+  [hideBackButton]=true>
 
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+  <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-alternative-phone" [message]="errorMessage" />
+  </govuk-error-summary>
 
+  <h1 class="govuk-heading-l">What class of building inspector are you applying for?</h1>
 
-  <h1 class="govuk-heading-l">Building inspector country</h1>
+  <govuk-radio-group hintText="Select one option." id="radios-alternative-phone" [(model)]="selectedOption" [errorText]="errorMessage">
+    <govuk-radio 
+      label="Class 1 building inspector"
+      value="1"
+      id="1"
+      [model]="selectedOption" 
+      [hint]="'A class 1 building inspector is an unqualified trainee and must work under the supervision of a registered building inspector.'">
+    </govuk-radio>
+
+    <govuk-radio 
+      label="Class 2 building inspector"
+      value="2"
+      id="2"
+      [model]="selectedOption"
+      [hint]="'A class 2 building inspector is competent to work without supervision on standard buildings.'">
+    </govuk-radio>
+
+    <govuk-radio 
+      label="Class 3 building inspector"
+      value="3"
+      id="3"
+      [model]="selectedOption"
+      [hint]="'A class 3 building inspector is competent to work without supervision on all building types including non-standard or high-risk buildings or both.'">
+    </govuk-radio>
+  </govuk-radio-group>
+
+  <br>
+
   <govuk-body>
-  Please enter country details
- </govuk-body>
-</govuk-formpage>
+    If you select class 2 or 3, we will ask later if you also intent to register as a class 4 technical manager.
+  </govuk-body>
 
+</govuk-formpage>
