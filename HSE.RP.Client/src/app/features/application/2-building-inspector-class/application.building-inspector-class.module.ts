@@ -11,6 +11,7 @@ import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { BuildingInspectorClassSelectionComponent } from './class-selection/building-inspector-class-selection.component';
 import { BuildingInspectorCountryComponent } from './country/building-inspector-country.component';
 import { BuildingInspectorSummaryComponent } from './building-inspector-summary/building-inspector-summary.component';
+import { BuildingInspectorRegulatedActivitiesComponent } from './regulated-activities/building-inspector-regulated-activities.component';
 
 
 const routes = new HseRoutes([
@@ -24,6 +25,7 @@ const routes = new HseRoutes([
     BuildingInspectorClassSelectionComponent,
     BuildingInspectorCountryComponent,
     BuildingInspectorSummaryComponent,
+    BuildingInspectorRegulatedActivitiesComponent
 
   ],
   imports: [

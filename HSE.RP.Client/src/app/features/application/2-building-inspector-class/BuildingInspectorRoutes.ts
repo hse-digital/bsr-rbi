@@ -2,7 +2,7 @@ import { BuildingProfessionalModel } from '../../../services/application.service
 import { NavigationService } from 'src/app/services/navigation.service';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
 import { Injectable } from '@angular/core';
-
+import { BuildingInspectorClassModule } from './application.building-inspector-class.module';
 export const BuildingInspectorRoutes = {
   CLASS_SELECTION: 'building-inspector-class-selection',
   REGULATED_ACTIVITIES: 'building-inspector-regulated-activities',
@@ -23,7 +23,7 @@ export class BuildingInspectorRouter {
     var useRoute = taskListRoute;
     // If a component is specified then we will navigate to that component.
     if (FieldValidations.IsNotNullOrWhitespace(component)) {
-      useRoute += `/building-inspector/${component}`;
+      useRoute += `/${BuildingInspectorClassModule.baseRoute}/${component}`;
     }
 
     return this.navigationService.navigate(useRoute);

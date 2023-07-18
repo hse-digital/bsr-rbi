@@ -4,7 +4,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, BuildingInspectorClass, BuildingInspectorRegulatedActivies } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, BuildingInspectorClass, BuildingInspectorRegulatedActivies, ComponentCompletionState } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
@@ -15,8 +15,12 @@ import { BuildingInspectorRoutes, BuildingInspectorRouter } from '../BuildingIns
   templateUrl: './building-inspector-regulated-activities.component.html',
 })
 export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent<BuildingInspectorRegulatedActivies> {
+  DerivedIsComplete(value: boolean): void {
+    this.DemandModel().CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
 
-  public static route: string = "building-inspector-country";
+  }
+
+  public static route: string = BuildingInspectorRoutes.REGULATED_ACTIVITIES;
   public id: string = BuildingInspectorSummaryComponent.route;
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
