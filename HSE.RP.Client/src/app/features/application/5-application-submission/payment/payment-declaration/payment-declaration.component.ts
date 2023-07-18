@@ -20,6 +20,9 @@ import { TitleService } from 'src/app/services/title.service';
   templateUrl: './payment-declaration.component.html',
 })
 export class PaymentDeclarationComponent extends PageComponent<BuildingProfessionalModel> {
+  DerivedIsComplete(value: boolean): void {
+
+  }
   static route: string = 'declaration';
   static title: string =
     'Register as a building inspector - GOV.UK';

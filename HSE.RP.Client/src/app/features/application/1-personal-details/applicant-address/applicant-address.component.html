@@ -1,11 +1,7 @@
-<govuk-back-link *ngIf="!production">Back</govuk-back-link>
-
-
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
-
-
-  <h1 class="govuk-heading-l">Your home address</h1>
-  <govuk-body>
-<!--     We will use this if we need to check anything you have told us in this application.
- -->  </govuk-body>
-</govuk-formpage>
+<hse-address [addressName]="'Your Address'"
+             [selfAddress]="true"
+             [address]="model"
+             [searchMode]="searchMode"
+             (onAddressConfirmed)="addressConfirmed($event)"
+             (onChangeStep)="changeStep($event)" />
+<div>no one here but us chickens</div>

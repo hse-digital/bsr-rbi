@@ -13,6 +13,9 @@ import { ApplicantEmailVerifyComponent } from './applicant-email-verify.componen
   templateUrl: './applicant-email-generate-new-security-code.component.html',
 })
 export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+
+  }
 
   public static route: string = "applicant-email-generate-new-security-code";
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
@@ -27,7 +30,8 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<str
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = applicationService.model.PersonalDetails?.ApplicantEmail ?? '';
+    this.model = applicationService.model.PersonalDetails?.ApplicantEmail?.Email
+;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -35,7 +39,7 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<str
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return !!applicationService.model.PersonalDetails?.ApplicantEmail
+    return !!applicationService.model.PersonalDetails?.ApplicantEmail?.Email
   }
 
 

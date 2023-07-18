@@ -68,7 +68,7 @@ public class PaymentFunctions
         var paymentModel = new PaymentRequestModel
         {
             Reference = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray())[..22], @"\W", "0"),
-            Email = applicationModel.PersonalDetails.ApplicantEmail,
+            Email = applicationModel.PersonalDetails.ApplicantEmail.Email,
             CardHolderDetails = new CardHolderDetails
             {
                 Name = $"{applicationModel.PersonalDetails.ApplicantName.FirstName} {applicationModel.PersonalDetails.ApplicantName.LastName}",

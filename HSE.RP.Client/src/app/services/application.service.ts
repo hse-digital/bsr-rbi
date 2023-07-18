@@ -4,8 +4,6 @@ import { firstValueFrom } from "rxjs";
 import { LocalStorage } from "src/app/helpers/local-storage";
 import { AddressModel } from "./address.service";
 
-
-
 @Injectable()
 export class ApplicationService {
 
@@ -83,35 +81,74 @@ export class ApplicationService {
   }
 
 }
+export enum ComponentCompletionState {
+  NotStarted = 0,
+  InProgress = 1,
+  Complete = 2
+}
 
-export class BuildingProfessionalModel {
+export interface IComponentModel {
+  CompletionState?: ComponentCompletionState
+}
+
+export class StringModel implements IComponentModel {
+  stringValue?: string;
+  CompletionState?: ComponentCompletionState;
+}
+
+export class NumberModel implements IComponentModel {
+  numberValue?: number;
+  CompletionState?: ComponentCompletionState;
+}
+
+export class BuildingProfessionalModel implements IComponentModel {
   id?: String;
   PersonalDetails?: PersonalDetails = {};
   InspectorClass?: BuildingInspectorClass = {};
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
   ReturningApplication: boolean = false;
+  get CompletionState(): ComponentCompletionState {
+    return this!.ApplicationStatus! == ApplicationStatus.ApplicationSubmissionComplete ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
+  }
 }
 
 export class PersonalDetails {
   ApplicantName?: ApplicantName = {};
   ApplicantDateOfBirth?: ApplicantDateOfBirth = {};
   ApplicantAddress?: AddressModel;
-  ApplicantPhone?: string;
-  ApplicantAlternativePhone?: string;
-  ApplicantEmail?: string;
-  ApplicantAlternativeEmail?: string;
-  ApplicantNationalInsuranceNumber?: string;
+  ApplicantPhone?: ApplicantPhone;
+  ApplicantAlternativePhone?: ApplicantPhone;
+  ApplicantEmail?: ApplicantEmail;
+  ApplicantAlternativeEmail?: ApplicantEmail;
+  ApplicantNationalInsuranceNumber?: ApplicantNationalInsuranceNumber;
 }
 
-export class ApplicantName {
+export class ApplicantPhone implements IComponentModel {
+  PhoneNumber?: string
+  CompletionState?: ComponentCompletionState
+}
+
+export class ApplicantEmail implements IComponentModel {
+  Email?: string
+  CompletionState?: ComponentCompletionState
+}
+
+export class ApplicantNationalInsuranceNumber implements IComponentModel {
+  NationalInsuranceNumber?: string
+  CompletionState?: ComponentCompletionState
+}
+
+export class ApplicantName implements IComponentModel {
   FirstName?: string
   LastName?: string
+  CompletionState?: ComponentCompletionState
 }
 
-export class ApplicantDateOfBirth {
+export class ApplicantDateOfBirth implements IComponentModel {
   Day?: string;
   Month?: string;
   Year?: string;
+  CompletionState?: ComponentCompletionState
 }
 
 export enum ApplicationStatus {

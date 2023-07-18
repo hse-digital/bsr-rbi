@@ -1,0 +1,21 @@
+<div class="govuk-form-group">
+
+  <govuk-error-summary *ngIf="postcodeHasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link anchorId="input-postcode" message="{{postcodeErrorText}}" />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">Your home address</h1>
+
+  <govuk-body>We collect your home address so we can write to you independently of any employer if required.</govuk-body>
+  <govuk-warning message="{{warningMessage()}}" background="#0"/>
+  <!--<govuk-warning message="We have sent your application number and instructions on how to return to {{model!.PersonalDetails!.ApplicantEmail}}" background="#0"></govuk-warning>-->
+
+  <govuk-input id="postcode" label="Postcode"
+               hint="For example, AA3 1AB."
+               [(model)]="searchModel.postcode"
+               [errorText]="getErrorDescription(postcodeHasErrors, postcodeErrorText)"
+               class="govuk-!-margin-bottom-5 govuk-input--width-10"
+               (onKeyupEnter)="findAddress()" />
+
+  <govuk-button [isLoading]="loading" loadingText="Searching..." [disabled]="loading" (onClick)="findAddress()">Find address</govuk-button>
+</div>

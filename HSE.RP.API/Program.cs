@@ -48,12 +48,40 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
 
 public class SystemTextJsonSerializer : ISerializer
 {
+    public class JsonStringEnumConverter : JsonConverter<ComponentCompletionState>
+    {
+        public override ComponentCompletionState Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
+        {
+            string enumString = reader.GetString();
+
+            // Try parsing the enum string
+            if (System.Enum.TryParse(enumString, out ComponentCompletionState enumValue))
+            {
+                return enumValue;
+            }
+            else
+            {
+                return default;
+            }
+        }
+
+        public override void Write(Utf8JsonWriter writer, ComponentCompletionState value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString());
+        }
+    }
+
     private readonly JsonSerializerOptions serializerOptions = new()
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-        PropertyNameCaseInsensitive = true
+        PropertyNameCaseInsensitive = true,
     };
 
+    public SystemTextJsonSerializer()
+    {
+        serializerOptions.Converters.Add(new JsonStringEnumConverter());
+
+    }
     public string Serialize(object obj)
     {
         return JsonSerializer.Serialize(obj, serializerOptions);

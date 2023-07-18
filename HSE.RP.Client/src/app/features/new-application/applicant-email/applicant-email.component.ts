@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService } from '../../../services/application.service';
+import { ApplicantEmail, ApplicationService, ComponentCompletionState } from '../../../services/application.service';
 import { ApplicantProofOfIdentityComponent } from '../../application/1-personal-details/applicant-proof-of-identity/applicant-proof-of-identity.component';
 import { ApplicationTaskListComponent } from '../../application/task-list/task-list.component';
 import { ApplicantEmailVerifyComponent } from './applicant-email-verify.component';
@@ -21,7 +21,6 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
   emailHasErrors: boolean = false;
   emailErrorMessage: string = "Enter a valid email address";
   modelValid: boolean = false;
-  override model?: string;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
@@ -29,22 +28,24 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    if(!applicationService.model.PersonalDetails)
-    {
-      applicationService.model.PersonalDetails = {};
+    if (!applicationService.model.PersonalDetails?.ApplicantEmail) {
+      applicationService.model.PersonalDetails!.ApplicantEmail = new ApplicantEmail();
     }
-    this.model = applicationService.model.PersonalDetails?.ApplicantEmail ?? '';
+    this.model = applicationService.model.PersonalDetails?.ApplicantEmail?.Email
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.PersonalDetails!.ApplicantEmail = this.model;
+    applicationService.model.PersonalDetails!.ApplicantEmail!.Email = this.model;
     await applicationService.sendVerificationEmail(this.model!)
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return FieldValidations.IsNotNullOrWhitespace(applicationService.model.PersonalDetails?.ApplicantName?.FirstName) && FieldValidations.IsNotNullOrWhitespace(applicationService.model.PersonalDetails?.ApplicantName?.LastName);
+    return applicationService.model.PersonalDetails?.ApplicantName?.CompletionState == ComponentCompletionState.Complete;
   }
 
+  override DerivedIsComplete(value: boolean) : void {
+    this.applicationService.model.PersonalDetails!.ApplicantEmail!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
+  }
 
   override isValid(): boolean {
     this.emailHasErrors = false;
@@ -63,6 +64,4 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
   navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(ApplicantEmailVerifyComponent.route, this.activatedRoute);
   }
-
-
 }
