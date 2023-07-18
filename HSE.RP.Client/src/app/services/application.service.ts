@@ -149,3 +149,21 @@ export enum PaymentStatus {
   Success,
   Failed
 }
+
+export class BuildingInspectorClass {
+  Class?: BuildingInspectorClassType;
+  Activities?: BuildingInspectorRegulatedActivies = {};
+}
+
+export enum BuildingInspectorClassType {
+  ClassNone = 0,
+  Class1 = 1,
+  Class2 = 2,
+  Class3 = 3
+}
+
+export class BuildingInspectorRegulatedActivies {
+  AssessingPlans?: boolean;
+  Inspection?: boolean;
+
+}
