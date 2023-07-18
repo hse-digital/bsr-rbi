@@ -143,8 +143,10 @@
           <ul class="app-task-list__items">
             <li class="app-task-list__item firstItem">
               <span class="app-task-list__task-name">
-                <span task *ngIf="model!.ApplicationStatus < ApplicationStatus.PersonalDetailsComplete">Class selection</span>
-                <a task *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-link" (keyup.enter)="navigateToBuildingInspectorClass()" (click)="navigateToBuildingInspectorClass()" tabindex="0" role="link">Class selection</a>
+                <!-- //! need to uncomment this when done -->
+                <!-- <span task *ngIf="model!.ApplicationStatus < ApplicationStatus.PersonalDetailsComplete">Class selection</span> -->
+                <!-- <a task *ngIf="model!.ApplicationStatus >= ApplicationStatus.PersonalDetailsComplete" class="govuk-link" (keyup.enter)="navigateToBuildingInspectorClass()" (click)="navigateToBuildingInspectorClass()" tabindex="0" role="link">Class selection</a> -->
+                <a task class="govuk-link" (keyup.enter)="navigateToBuildingInspectorClass()" (click)="navigateToBuildingInspectorClass()" tabindex="0" role="link">Class selection</a>
               </span>
                 <govuk-tag tag *ngIf="model!.ApplicationStatus < ApplicationStatus.PersonalDetailsComplete" class="govuk-tag--grey">CANNOT START YET</govuk-tag>
                 <govuk-tag tag *ngIf="model!.ApplicationStatus == ApplicationStatus.PersonalDetailsComplete" class="govuk-tag--grey">NOT STARTED</govuk-tag>

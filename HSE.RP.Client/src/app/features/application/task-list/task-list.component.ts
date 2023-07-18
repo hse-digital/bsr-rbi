@@ -24,6 +24,7 @@ import { ApplicantNationalInsuranceNumberComponent } from '../1-personal-details
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../1-personal-details/PersonalDetailRoutes';
 
 import { PaymentDeclarationComponent } from '../5-application-submission/payment/payment-declaration/payment-declaration.component';
+import { BuildingInspectorClassSelectionComponent } from '../2-building-inspector-class/class-selection/building-inspector-class-selection.component';
 // import { PaymentDeclarationComponent } from "../payment/payment-declaration/payment-declaration.component";
 // import { PaymentModule } from "../payment/payment.module";
 // import { BuildingSummaryNavigation } from "src/app/features/application/building-summary/building-summary.navigation";
@@ -166,7 +167,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   }
 
   navigateToBuildingInspectorClass() {
-    throw new Error('Method not implemented.');
+    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`, this.activatedRoute)
   }
   navigateToCompetency() {
     throw new Error('Method not implemented.');
