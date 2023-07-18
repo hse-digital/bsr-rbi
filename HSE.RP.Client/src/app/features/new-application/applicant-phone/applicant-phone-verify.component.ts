@@ -6,7 +6,7 @@ import { NotFoundComponent } from '../../../components/not-found/not-found.compo
 import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService } from '../../../services/application.service';
+import { ApplicationService, NumberModel } from '../../../services/application.service';
 import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
 
 @Component({
@@ -14,13 +14,14 @@ import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.comp
   templateUrl: './applicant-phone-verify.component.html',
 })
 export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
+  DerivedIsComplete(value: boolean): void {
+  }
   public static route: string = 'applicant-phone-verify';
   static title: string =
     'Apply for building control approval for a higher-risk building - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
 
-  override model!: number;
   otpToken = '';
   otpError = false;
   isOtpNotNumber = false;
@@ -41,7 +42,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.PhoneNumber = applicationService.model.PersonalDetails!.ApplicantPhone;
+    this.PhoneNumber = applicationService.model.PersonalDetails!.ApplicantPhone?.PhoneNumber;
   }
 
   override canAccess(
@@ -49,7 +50,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
     return FieldValidations.IsNotNullOrWhitespace(
-      applicationService.model.PersonalDetails!.ApplicantPhone
+      applicationService.model.PersonalDetails!.ApplicantPhone?.PhoneNumber
     );
   }
 
@@ -74,7 +75,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
     var otp = this.model?.toString() ?? '';
     this.isOtpEmpty = otp.length == 0;
     this.isOtpInvalidLength = otp.trim().length < 6 || otp.trim().length > 6;
-    this.isOtpNotNumber = isNaN(this.model);
+    this.isOtpNotNumber = isNaN(this.model!);
     if (!(this.isOtpNotNumber || this.isOtpInvalidLength || this.isOtpEmpty)) {
         try {
           await this.applicationService.validateOTPToken(

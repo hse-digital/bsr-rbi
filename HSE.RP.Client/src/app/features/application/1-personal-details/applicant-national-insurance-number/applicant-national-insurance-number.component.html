@@ -1,7 +1,7 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
 
-<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()"  [hideBackButton]=true>
 
 
   <h1 class="govuk-heading-l">National Insurance number</h1>
@@ -16,7 +16,7 @@
                label=""
                [(model)]="model"
                labelClass="govuk-label--s"
-               hint="It's on your Nation Insurance card, benefit letter, payslip or P60'. For example, 'QQ 12 34 56 C'."
+               hint="It's on your National Insurance card, benefit letter, payslip or P60'. For example, 'QQ 12 34 56 C'."
                [errorText]="getErrorDescription(nsiHasErrors, getErrorMessage())"
                hintClass="no-margin-top"
                (onKeyupEnter)="saveAndContinue()" />

@@ -13,6 +13,8 @@ import { BuildingInspectorSummaryComponent } from '../building-inspector-summary
   templateUrl: './building-inspector-country.component.html',
 })
 export class BuildingInspectorCountryComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+  }
 
   public static route: string = "building-inspector-country";
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";

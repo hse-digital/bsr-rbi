@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HseRoute, HseRoutes } from '../../helpers/hse.route';
 import { RouterModule } from '@angular/router';
@@ -15,7 +15,8 @@ import { CompetencyModule } from './3-competency/application.competency.module';
 import { ProfessionalActivityModule } from './4-professional-activity/application.professional-activity.module';
 import { ApplicationSubmissionModule } from './5-application-submission/application.application-submission.module';
 
-const routes = new HseRoutes([
+
+const routes = new HseRoutes([//NewApplicationTaskListComponent
   HseRoute.protected(ApplicationTaskListComponent.route, ApplicationTaskListComponent, ApplicationTaskListComponent.title),
   HseRoute.forLoadChildren(ApplicationPersonalDetailsModule.baseRoute, () => import('./1-personal-details/application.personal-details.module').then(m => m.ApplicationPersonalDetailsModule)),
   HseRoute.forLoadChildren(BuildingInspectorClassModule.baseRoute, () => import('./2-building-inspector-class/application.building-inspector-class.module').then(m => m.BuildingInspectorClassModule)),
@@ -27,6 +28,7 @@ const routes = new HseRoutes([
 @NgModule({
   declarations: [
     ApplicationTaskListComponent,
+    //NewApplicationTaskListComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
@@ -36,7 +38,9 @@ const routes = new HseRoutes([
     FormsModule,
     HttpClientModule
   ],
-  providers: [HttpClient, ApplicationService, CookiesBannerService, ...routes.getProviders()]
+  providers: [HttpClient, ApplicationService, CookiesBannerService, ...routes.getProviders()],
+
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ApplicationModule {
   static baseRoute: string = 'application/:id';

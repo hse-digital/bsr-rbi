@@ -13,6 +13,9 @@ import { PaymentDeclarationComponent } from '../payment/payment-declaration/paym
   templateUrl: './application-information.component.html',
 })
 export class ApplicationAdditionalInformationComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+
+  }
 
   public static route: string = "application-information";
   static title: string = "Application additional information - Register as a building inspector - GOV.UK";

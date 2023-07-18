@@ -38,6 +38,10 @@ export class NewApplicantNameComponent extends PageComponent<ApplicantName> {
     this.model.LastName = applicationService.model.PersonalDetails?.ApplicantName?.LastName ?? '';
   }
 
+  override DerivedIsComplete(value: boolean) {
+    this.applicationService.model.PersonalDetails!.ApplicantName!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
+  }
+
   override async onSave(applicationService: ApplicationService): Promise<void> {
     applicationService.model.PersonalDetails!.ApplicantName!.FirstName = this.model.FirstName;
     applicationService.model.PersonalDetails!.ApplicantName!.LastName = this.model.LastName;

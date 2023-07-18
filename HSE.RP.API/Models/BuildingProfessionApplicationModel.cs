@@ -1,9 +1,9 @@
-﻿using HSE.RP.API.Models;
-using HSE.RP.Domain.Entities;
+﻿using HSE.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -18,11 +18,11 @@ namespace HSE.RP.API.Models
         public ValidationSummary Validate()
         {
             var errors = new List<string>();
-            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantEmail))
+            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantEmail.Email))
             {
                 errors.Add("Applicant email address is required");
             }
-            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantPhone))
+            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantPhone.PhoneNumber))
             {
                 errors.Add("Applicant phone number is required");
             }
@@ -39,13 +39,25 @@ namespace HSE.RP.API.Models
             return new ValidationSummary(!errors.Any(), errors.ToArray());
         }
     }
+    public enum ComponentCompletionState
+    {
+        NotStarted = 0,
+        InProgress = 1,
+        Complete = 2
+    }
 
     public record ApplicantName
-    {
-        public string FirstName { get; set; }
-        public  string LastName { get; set; }
-    };
+    (
+        string FirstName = null,
+        string LastName = null,
+        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
+    );
 
+    public record ApplicantPhone
+    (
+        string PhoneNumber = null,
+        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
+    );
     public record ApplicantDateOfBirth
     {
         public string Day  { get; set; }
@@ -53,19 +65,30 @@ namespace HSE.RP.API.Models
         public string Year  { get; set; }
     }
 
+    public record ApplicantEmail
+    (
+        string Email = null,
+        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
+    );
+
+    public record ApplicantNationalInsuranceNumber
+    (
+        string NationalInsuranceNumber = null,
+        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
+    );
 
     public record PersonalDetails
-    {
-        public ApplicantName ApplicantName { get; set; }
-        public ApplicantDateOfBirth ApplicantDateOfBirth { get; set; }
-        public BuildingAddress ApplicantAddress { get; set; }
-        public string ApplicantPhone { get; set; }
-        public string ApplicantAlternativePhone { get; set; }
-        public string ApplicantEmail { get; set; }
-        public string ApplicantAlternativeEmail { get; set; }
-        public string ApplicantNationalInsuranceNumber { get; set; }
-    };
-
+    (
+        ApplicantName ApplicantName = null,
+        string ApplicantPhoto = null,
+        BuildingAddress ApplicantAddress = null,
+        ApplicantPhone ApplicantPhone = null,
+        ApplicantPhone ApplicantAlternativePhone = null,
+        ApplicantEmail ApplicantEmail = null,
+        ApplicantEmail ApplicantAlternativeEmail = null,
+        string ApplicantProofOfIdentity = null,
+        ApplicantNationalInsuranceNumber ApplicantNationalInsuranceNumber = null
+    );
 
     [Flags]
     public enum ApplicationStatus
@@ -81,10 +104,7 @@ namespace HSE.RP.API.Models
         PaymentInProgress = 128,
         PaymentComplete = 256,
     }
-
     public record Submit();
-
-
 
 
 }
