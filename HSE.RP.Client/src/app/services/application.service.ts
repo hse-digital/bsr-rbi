@@ -191,6 +191,7 @@ export enum PaymentStatus {
 export class BuildingInspectorClass {
   Class?: BuildingInspectorClassType;
   Activities?: BuildingInspectorRegulatedActivies = {};
+  Categories?: BuildingAssessingPlansCategories = {};
 }
 
 export enum BuildingInspectorClassType {
@@ -206,4 +207,14 @@ export class BuildingInspectorRegulatedActivies {
   Inspection?: boolean;
   CompletionState?: ComponentCompletionState
 
+}
+
+
+export class BuildingAssessingPlansCategories {
+  CategoryA?: boolean;
+  CategoryB?: boolean;
+  CategoryC?: boolean;
+  CategoryD?: boolean;
+  CategoryE?: boolean;
+  CategoryF?: boolean;
 }

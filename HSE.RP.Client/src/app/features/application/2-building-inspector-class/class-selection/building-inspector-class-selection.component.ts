@@ -8,6 +8,7 @@ import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
 import { BuildingInspectorRoutes, BuildingInspectorRouter } from '../BuildingInspectorRoutes'; 
+import { BuildingAssessingPlansCategoriesComponent } from '../assessing-plans/building-assessing-plans-categories.component';
 
 @Component({
   selector: 'hse-building-inspector-class-selection',
@@ -51,7 +52,8 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<stri
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(BuildingInspectorCountryComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(BuildingAssessingPlansCategoriesComponent.route, this.activatedRoute);
+    // return this.navigationService.navigateRelative(BuildingInspectorCountryComponent.route, this.activatedRoute);
   }
 
 }
