@@ -10,7 +10,6 @@ import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { ApplicantAlternativeEmailComponent } from './applicant-alternative-email/applicant-alternative-email.component';
 import { ApplicantAddressComponent } from './applicant-address/applicant-address.component';
-import { ApplicantProofOfIdentityComponent } from './applicant-proof-of-identity/applicant-proof-of-identity.component';
 import { ApplicantSummaryComponent } from './applicant-summary/applicant-summary.component';
 import { ApplicantAlternativePhoneComponent } from './applicant-alternative-phone/applicant-alternative-phone.component';
 import { ApplicantNationalInsuranceNumberComponent } from './applicant-national-insurance-number/applicant-national-insurance-number.component';
@@ -21,7 +20,6 @@ const routes = new HseRoutes([
   HseRoute.protected(ApplicantAlternativePhoneComponent.route, ApplicantAlternativePhoneComponent, ApplicantAlternativePhoneComponent.title),
   HseRoute.protected(ApplicantAlternativeEmailComponent.route, ApplicantAlternativeEmailComponent, ApplicantAlternativeEmailComponent.title),
   HseRoute.protected(ApplicantAddressComponent.route, ApplicantAddressComponent, ApplicantAddressComponent.title),
-  HseRoute.protected(ApplicantProofOfIdentityComponent.route, ApplicantProofOfIdentityComponent, ApplicantProofOfIdentityComponent.title),
   HseRoute.protected(ApplicantSummaryComponent.route, ApplicantSummaryComponent, ApplicantSummaryComponent.title),
   HseRoute.protected(ApplicantNationalInsuranceNumberComponent.route, ApplicantNationalInsuranceNumberComponent, ApplicantNationalInsuranceNumberComponent.title),
   HseRoute.protected(ApplicantDateOfBirthComponent.route, ApplicantDateOfBirthComponent, ApplicantDateOfBirthComponent.title),
@@ -33,7 +31,6 @@ const routes = new HseRoutes([
     ApplicantAlternativeEmailComponent,
     ApplicantAlternativePhoneComponent,
     ApplicantAddressComponent,
-    ApplicantProofOfIdentityComponent,
     ApplicantSummaryComponent,
     ApplicantNationalInsuranceNumberComponent,
     ApplicantDateOfBirthComponent,

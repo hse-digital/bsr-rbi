@@ -117,15 +117,15 @@ public class DynamicsSynchronisationFunctions
                     Id = dynamicsContact.contactid ?? "",
                     FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName ?? "",
                     LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName ?? "",
-                    Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail ?? "",
-                    AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail ?? "",
-                    PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone ?? "",
-                    AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone ?? "",
+                    Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email ?? "",
+                    AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email ?? "",
+                    PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? "",
+                    AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
                     Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress ?? new BuildingAddress { },
                     birthdate = new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year ?? "1990"),
                                              int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month ?? "01"),
                                              int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day ?? "01")),
-                    NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber ?? "",
+                    NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber ?? "",
                 };
 
                 var contactWrapper = new ContactWrapper(contact, dynamicsContact);

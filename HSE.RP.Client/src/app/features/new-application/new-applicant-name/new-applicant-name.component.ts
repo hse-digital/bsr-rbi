@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicantName, ApplicationService} from '../../../services/application.service';
+import { ApplicantName, ApplicationService, ComponentCompletionState} from '../../../services/application.service';
 import { ApplicantEmailComponent } from '../applicant-email/applicant-email.component';
 
 @Component({
