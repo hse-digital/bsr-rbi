@@ -87,6 +87,7 @@ export class ApplicationService {
 export class BuildingProfessionalModel {
   id?: String;
   PersonalDetails?: PersonalDetails = {};
+  InspectorClass?: BuildingInspectorClass = {};
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
   ReturningApplication: boolean = false;
 }

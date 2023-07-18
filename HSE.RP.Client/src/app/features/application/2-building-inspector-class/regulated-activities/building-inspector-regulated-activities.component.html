@@ -1,0 +1,19 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+
+  <h1 class="govuk-heading-l">What BSR-regulated activities will you do?</h1>
+  <govuk-body>
+    <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()" [id]="id"
+                    [model]="model"
+                    text="Assessing plans" value="AssessingPlans" (onClicked)="optionClicked()"
+                    hint="Select all that apply" />
+    <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()" [id]="id"
+                    [model]="model"
+                    text="Assessing plans" value="Inspection" (onClicked)="optionClicked()"
+                    hint="Select all that apply" />
+  </govuk-body>
+</govuk-formpage>
+

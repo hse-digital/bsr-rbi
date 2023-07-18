@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 
 export const BuildingInspectorRoutes = {
   CLASS_SELECTION: 'building-inspector-class-selection',
-  REGULATED_ACTIVITIES = 'building-inspector-regulated-activities',
+  REGULATED_ACTIVITIES: 'building-inspector-regulated-activities',
   SUMMARY: 'building-inspector-summary',
   TASK_LIST: ''
 }

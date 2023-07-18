@@ -11,7 +11,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\HSE.RP.Client</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\app\features\application\2-building-inspector-class\regulated-activities\" />
     <Folder Include="src\app\services\" />
   </ItemGroup>
 </Project>
