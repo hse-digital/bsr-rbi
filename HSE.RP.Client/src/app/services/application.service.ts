@@ -201,6 +201,7 @@ export enum BuildingInspectorClassType {
 }
 
 export class BuildingInspectorRegulatedActivies {
+  [key: string]: any;
   AssessingPlans?: boolean;
   Inspection?: boolean;
   CompletionState?: ComponentCompletionState

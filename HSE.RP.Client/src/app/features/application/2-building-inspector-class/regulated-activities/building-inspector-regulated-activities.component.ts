@@ -30,7 +30,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   public errorText: string = "";
 
   override model?: BuildingInspectorRegulatedActivies;
-  public selections : string[] = [];
+  public selections: string[] = [];
 
   @Output() onClicked = new EventEmitter();
   @Output() onKeyupEnter = new EventEmitter();
@@ -52,10 +52,20 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
       applicationService.model.InspectorClass.Activities = new BuildingInspectorRegulatedActivies();
     }
     this.model = applicationService.model.InspectorClass?.Activities;
+    if (this.DemandModel().AssessingPlans === true)
+      this.selections.push("AssessingPlans");
+    if (this.DemandModel().Inspection === true)
+      this.selections.push("Inspection");
+
+
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.InspectorClass!.Activities = this.DemandModel();
+    this.DemandModel().AssessingPlans = false;
+    this.DemandModel().Inspection = false;
+    this.selections.forEach((value: any) => {
+      this.DemandModel()[value] = true;
+    });
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -68,18 +78,9 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   //}
 
   override isValid(): boolean {
-    var validityState: boolean = false;
-    if (this.model !== undefined) {
-      if (this.model.AssessingPlans !== undefined && this.model.AssessingPlans === true) {
-        validityState = true;
-      }
-      if (this.model.Inspection !== undefined && this.model.Inspection === true) {
-        validityState = true;
-      }
-    }
-
-
-    return validityState;
+    if (this.selections.length == 0)
+      this.errorText = "You must select at least one option";
+    return this.selections.length > 0;
   }
 
   override navigateNext(): Promise<boolean> {
