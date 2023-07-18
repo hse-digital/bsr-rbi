@@ -1,5 +1,5 @@
 //BuildingInspectorRegulatedActivies
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
@@ -26,7 +26,15 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
+  public hint: string = "Select all that apply";
+  public errorText: string = "";
+
   override model?: BuildingInspectorRegulatedActivies;
+  public selections : string[] = [];
+
+  @Output() onClicked = new EventEmitter();
+  @Output() onKeyupEnter = new EventEmitter();
+
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -47,7 +55,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-  //  applicationService.model.ApplicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
+    this.applicationService.model.InspectorClass!.Activities = this.DemandModel();
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -55,7 +63,9 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
     //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
 
   }
-
+  //override async saveAndContinue(): Promise<void> {
+  //  await super.saveAndContinue();
+  //}
 
   override isValid(): boolean {
     var validityState: boolean = false;
@@ -75,5 +85,9 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   override navigateNext(): Promise<boolean> {
     return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.SUMMARY);
   }
+
+  optionClicked() {
+  }
+
 }
 

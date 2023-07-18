@@ -18,6 +18,7 @@ const routes = new HseRoutes([
   HseRoute.protected(BuildingInspectorClassSelectionComponent.route, BuildingInspectorClassSelectionComponent, BuildingInspectorClassSelectionComponent.title),
   HseRoute.protected(BuildingInspectorCountryComponent.route, BuildingInspectorCountryComponent, BuildingInspectorCountryComponent.title),
   HseRoute.protected(BuildingInspectorSummaryComponent.route, BuildingInspectorSummaryComponent, BuildingInspectorSummaryComponent.title),
+  HseRoute.protected(BuildingInspectorRegulatedActivitiesComponent.route, BuildingInspectorRegulatedActivitiesComponent, BuildingInspectorRegulatedActivitiesComponent.title),
 ]);
 
 @NgModule({
