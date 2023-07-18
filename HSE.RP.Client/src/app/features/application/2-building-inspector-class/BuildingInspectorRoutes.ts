@@ -23,7 +23,7 @@ export class BuildingInspectorRouter {
     var useRoute = taskListRoute;
     // If a component is specified then we will navigate to that component.
     if (FieldValidations.IsNotNullOrWhitespace(component)) {
-      useRoute += `/personal-details/${component}`;
+      useRoute += `/building-inspector/${component}`;
     }
 
     return this.navigationService.navigate(useRoute);
