@@ -1,8 +1,10 @@
-﻿using HSE.API.Models;
+﻿using Google.Protobuf.WellKnownTypes;
+using HSE.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -17,11 +19,11 @@ namespace HSE.RP.API.Models
         public ValidationSummary Validate()
         {
             var errors = new List<string>();
-            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantEmail))
+            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantEmail.Email))
             {
                 errors.Add("Applicant email address is required");
             }
-            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantPhone))
+            if (string.IsNullOrWhiteSpace(PersonalDetails.ApplicantPhone.PhoneNumber))
             {
                 errors.Add("Applicant phone number is required");
             }
@@ -38,25 +40,49 @@ namespace HSE.RP.API.Models
             return new ValidationSummary(!errors.Any(), errors.ToArray());
         }
     }
+    public enum ComponentCompletionState
+    {
+        NotStarted = 0,
+        InProgress = 1,
+        Complete = 2
+    }
 
     public record ApplicantName
     (
-     string FirstName = null,
-     string LastName = null
+        string FirstName = null,
+        string LastName = null,
+        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
     );
 
+    public record ApplicantPhone
+    (
+        string PhoneNumber = null,
+        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
+    );
+
+    public record ApplicantEmail
+    (
+        string Email = null,
+        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
+    );
+
+    public record ApplicantNationalInsuranceNumber
+    (
+        string NationalInsuranceNumber = null,
+        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
+    );
 
     public record PersonalDetails
     (
         ApplicantName ApplicantName = null,
         string ApplicantPhoto = null,
         BuildingAddress ApplicantAddress = null,
-        string ApplicantPhone = null,
-        string ApplicantAlternativePhone = null,
-        string ApplicantEmail = null,
-        string ApplicantAlternativeEmail = null,
+        ApplicantPhone ApplicantPhone = null,
+        ApplicantPhone ApplicantAlternativePhone = null,
+        ApplicantEmail ApplicantEmail = null,
+        ApplicantEmail ApplicantAlternativeEmail = null,
         string ApplicantProofOfIdentity = null,
-        string ApplicantNationalInsuranceNumber = null
+        ApplicantNationalInsuranceNumber ApplicantNationalInsuranceNumber = null
     );
 
     public record BuildingAddress
@@ -72,8 +98,9 @@ namespace HSE.RP.API.Models
         public string Country { get; init; }
         public string AdministrativeArea { get; init; }
         public string Postcode { get; init; }
-        public bool IsManual { get; init; }
+        public bool? IsManual { get; init; }
         public string ClassificationCode { get; init; }
+        public ComponentCompletionState IsComplete {get; init;} 
     }
 
 
@@ -91,10 +118,7 @@ namespace HSE.RP.API.Models
         PaymentInProgress = 128,
         PaymentComplete = 256,
     }
-
     public record Submit();
-
-
 
 
 }

@@ -8,8 +8,8 @@
     <h1 class="govuk-heading-xl">Summary of your personal details</h1>
     <govuk-summary-list>
       <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.NAME)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.NAME)" key="Name"  [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantName?.FirstName}} {{applicationService.model.PersonalDetails?.ApplicantName?.LastName}}</govuk-summary-list-row>
-      <govuk-summary-list-row key="Email address" [showAction]=false>{{applicationService.model.PersonalDetails?.ApplicantEmail}}</govuk-summary-list-row>
-      <govuk-summary-list-row key="Telephone number" [showAction]=false>{{applicationService.model.PersonalDetails?.ApplicantPhone}}</govuk-summary-list-row>
+      <govuk-summary-list-row key="Email address" [showAction]=false>{{applicationService.model.PersonalDetails?.ApplicantEmail!.Email}}</govuk-summary-list-row>
+      <govuk-summary-list-row key="Telephone number" [showAction]=false>{{applicationService.model.PersonalDetails?.ApplicantPhone!.PhoneNumber}}</govuk-summary-list-row>
       <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.DATE_OF_BIRTH)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.DATE_OF_BIRTH)" key="Date of birth" [showAction]=true>{{GetFormattedDateofBirth()}}</govuk-summary-list-row>
       <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.ADDRESS)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.ADDRESS)" key="Home address" [showAction]=true>
         <div>
@@ -34,7 +34,7 @@
       >
         {{ getAlternativeEmail() }}
       </govuk-summary-list-row>
-      <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.NATIONAL_INS_NUMBER)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.NATIONAL_INS_NUMBER)" key="National Insurance Number" [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantNationalInsuranceNumber}}</govuk-summary-list-row>
+      <govuk-summary-list-row (onClick)="navigateTo(PersonalDetailRoutes.NATIONAL_INS_NUMBER)" (onKeyupEnter)="navigateTo(PersonalDetailRoutes.NATIONAL_INS_NUMBER)" key="National Insurance Number" [showAction]=true>{{applicationService.model.PersonalDetails?.ApplicantNationalInsuranceNumber?.NationalInsuranceNumber}}</govuk-summary-list-row>
     </govuk-summary-list>
   </govuk-body>
 </govuk-formpage>

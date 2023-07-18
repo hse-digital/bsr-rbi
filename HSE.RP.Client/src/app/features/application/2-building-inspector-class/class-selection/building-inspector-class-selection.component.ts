@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, StringModel } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
@@ -13,13 +13,14 @@ import { BuildingInspectorCountryComponent } from '../country/building-inspector
   templateUrl: './building-inspector-class-selection.component.html',
 })
 export class BuildingInspectorClassSelectionComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+  }
 
   public static route: string = "building-inspector-class-selection";
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: string;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);

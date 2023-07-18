@@ -13,6 +13,9 @@ import { CompetencyCertificateCodeComponent } from '../certificate-code/competen
   templateUrl: './independent-competency-status.component.html',
 })
 export class CompetencyIndependentStatusComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+
+  }
 
   public static route: string = "independent-competency-status";
   static title: string = "Competency - Register as a building inspector - GOV.UK";

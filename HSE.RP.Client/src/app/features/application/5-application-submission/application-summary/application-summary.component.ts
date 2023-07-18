@@ -13,6 +13,9 @@ import { PaymentConfirmationComponent } from '../payment/payment-confirmation/pa
   templateUrl: './application-summary.component.html',
 })
 export class ApplicationSummaryComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+
+  }
 
   public static route: string = "application-summary";
   static title: string = "Application summary - Register as a building inspector - GOV.UK";

@@ -21,6 +21,7 @@ public class BuildingAddress
     public string Country { get; init; }
     public string AdministrativeArea { get; init; }
     public string Postcode { get; init; }
-    public bool IsManual { get; init; }
+    public bool? IsManual { get; init; }
     public string ClassificationCode { get; init; }
+    public bool? IsComplete { get; init; }
 }

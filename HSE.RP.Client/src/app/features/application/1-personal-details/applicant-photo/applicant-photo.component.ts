@@ -13,6 +13,10 @@ import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRou
 })
 export class ApplicantPhotoComponent extends PageComponent<string> {
 
+  DerivedIsComplete(value: boolean): void {
+       
+  }
+
   public static route: string = PersonalDetailRoutes.PROOF_OF_ID;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
