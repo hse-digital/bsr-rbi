@@ -35,7 +35,13 @@ public class BuildingProfessionApplicationFunctions
         }
 
         buildingProfessionApplicationModel = await dynamicsService.RegisterNewBuildingProfessionApplicationAsync(buildingProfessionApplicationModel);
+        Console.WriteLine("line 38");
+
+        Console.WriteLine(buildingProfessionApplicationModel);
         var response = await request.CreateObjectResponseAsync(buildingProfessionApplicationModel);
+        Console.WriteLine("line 42");
+
+        Console.WriteLine(response.ToString());
         return new CustomHttpResponseData
         {
             Application = buildingProfessionApplicationModel,
@@ -78,6 +84,10 @@ public class BuildingProfessionApplicationFunctions
         if (buildingProfessionApplications.Any())
         {
             var application = buildingProfessionApplications[0];
+
+            Console.WriteLine("-------------------------------------------------------------------------------");
+            Console.WriteLine(application);
+
             if (otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantEmail) || featureOptions.DisableOtpValidation)
             {
                 return await request.CreateObjectResponseAsync(application);

@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 
 namespace HSE.RP.API.Models
 {
+    //! going to have to add building class record model here (same as personal details)
+
     public record BuildingProfessionApplicationModel
     (
         [property: JsonPropertyName("id")] string Id,
         PersonalDetails PersonalDetails = null,
+        //BuildingInspectorClass BuildingInspectorClass = null,
         ApplicationStatus ApplicationStatus = ApplicationStatus.None) : IValidatableModel
     {
         public ValidationSummary Validate()
@@ -76,6 +79,13 @@ namespace HSE.RP.API.Models
         public string ClassificationCode { get; init; }
     }
 
+    //! going to have to add building class record model here
+    //public record BuildingInspectorClass
+    //(
+    //    string ClassSelection = null,
+    //    string ClassDetails = null,
+    //    string Country = null
+    //);
 
     [Flags]
     public enum ApplicationStatus
