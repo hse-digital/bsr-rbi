@@ -1,55 +1,74 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
+import { ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, BuildingProfessionalModel, ComponentCompletionState } from '../../../../services/application.service';
 import { ApplicantAlternativeEmailComponent } from '../applicant-alternative-email/applicant-alternative-email.component';
+
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
-import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-phone/applicant-alternative-phone.component';
+import { AddressSearchMode } from "src/app/components/address/address.component";
+import { NotFoundComponent } from "src/app/components/not-found/not-found.component";
+import { AddressModel } from "src/app/services/address.service";
+import { NavigationService } from "src/app/services/navigation.service";
+import { TitleService } from "src/app/services/title.service";
+import { ApplicantAlternativePhoneComponent } from "../applicant-alternative-phone/applicant-alternative-phone.component";
+import { TaskStatus } from "../../task-list/task-list.component";
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes';
 
 @Component({
   selector: 'hse-applicant-address',
   templateUrl: './applicant-address.component.html',
 })
-export class ApplicantAddressComponent extends PageComponent<string> {
+export class ApplicantAddressComponent extends PageComponent<AddressModel> {
 
-  public static route: string = "applicant-address";
+  public static route: string = PersonalDetailRoutes.ADDRESS;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
-  photoHasErrors = false;
-  override model?: string;
+  searchMode = AddressSearchMode.HomeAddress;
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  @Input() addressName?: string;
+
+  constructor(applicationService: ApplicationService, navigationService: NavigationService, activatedRoute: ActivatedRoute, titleService: TitleService, private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
 
   override onInit(applicationService: ApplicationService): void {
-    //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
+    this.model = applicationService.model.PersonalDetails?.ApplicantAddress;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    throw new Error('Method not implemented.');
+    this.applicationService.model.PersonalDetails!.ApplicantAddress = this.model;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return true;
-    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
-
+    return this.applicationService.model.ApplicationStatus >= ApplicationStatus.PhoneVerified && this.applicationService.model.id != null;
   }
 
+  override DerivedIsComplete(value: boolean) {
+    this.applicationService.model.PersonalDetails!.ApplicantAddress!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
+  }
 
   override isValid(): boolean {
     return true;
-/*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
-    return !this.phoneNumberHasErrors; */
+  }
+  async addressConfirmed(address: AddressModel) {
+    this.applicationService.model.PersonalDetails!.ApplicantAddress = address
+    this.applicationService.model.PersonalDetails!.ApplicantAddress.CompletionState = ComponentCompletionState.Complete;
 
+    await this.applicationService.updateApplication();
+
+    this.navigationService.navigateRelative(ApplicantAlternativePhoneComponent.route, this.activatedRoute);
+  }
+
+  changeStep(event: any) {
+      return;
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantAlternativePhoneComponent.route, this.activatedRoute);
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.ALT_PHONE);
   }
-
 }

@@ -3,16 +3,17 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicantDateOfBirth, ApplicationService, ApplicationStatus } from '../../../../services/application.service';
+import { ApplicantDateOfBirth, ApplicationService, ApplicationStatus, BuildingProfessionalModel, ComponentCompletionState, IComponentModel } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
-type DateInputControlDate = {
+class DateInputControlDate {
   day?: string;
   month?: string;
   year?: string;
-} | undefined;
+};
 
 type DobValidationItem = {
   Text: string;
@@ -23,45 +24,48 @@ type DobValidationItem = {
   selector: 'hse-applicant-date-of-birth',
   templateUrl: './applicant-date-of-birth.component.html',
 })
+
 export class ApplicantDateOfBirthComponent extends PageComponent<DateInputControlDate>
 {
 
-  public static route: string = "applicant-date-of-birth";
+  public static route: string = PersonalDetailRoutes.DATE_OF_BIRTH;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
   validationErrors: DobValidationItem[] = [];
 
-  override model?: { day?: string | undefined; month?: string | undefined; year?: string | undefined; } | undefined;
-
-
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = { day: "", month: "", year: "" };
-    if (applicationService.model.PersonalDetails?.ApplicantDateOfBirth) {
-      this.model = {
-        day: applicationService.model.PersonalDetails.ApplicantDateOfBirth.Day,
-        month: applicationService.model.PersonalDetails.ApplicantDateOfBirth.Month,
-        year: applicationService.model.PersonalDetails.ApplicantDateOfBirth.Year,
-      };
+    if (!applicationService.model.PersonalDetails?.ApplicantDateOfBirth) {
+      applicationService.model.PersonalDetails!.ApplicantDateOfBirth = { Day: "", Month: "", Year: "", CompletionState: ComponentCompletionState.InProgress };
     }
+    this.model = {
+      day: applicationService.model.PersonalDetails!.ApplicantDateOfBirth.Day,
+      month: applicationService.model.PersonalDetails!.ApplicantDateOfBirth.Month,
+      year: applicationService.model.PersonalDetails!.ApplicantDateOfBirth.Year,
+    };
+
+  }
+
+  override DerivedIsComplete(value: boolean) {
+    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth = {
-      Day: this.model!.day,
-      Month: this.model!.month,
-      Year: this.model!.year,
-    }
+    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Day = this.model!.day;
+    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Month = this.model!.month;
+    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Year = this.model!.year;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-
     return this.applicationService.model.ApplicationStatus >= ApplicationStatus.PhoneVerified && this.applicationService.model.id != null;
   }
 
@@ -103,7 +107,7 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantAddressComponent.route, this.activatedRoute);
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.ADDRESS)
   }
 
   getDateOfBirth(): Date {

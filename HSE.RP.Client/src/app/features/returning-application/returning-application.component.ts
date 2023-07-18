@@ -9,6 +9,9 @@ import { PageComponent } from '../../helpers/page.component';
   templateUrl: './returning-application.component.html'
 })
 export class ReturningApplicationComponent extends PageComponent<string>{
+  DerivedIsComplete(value: boolean): void {
+
+  }
   onInit(applicationService: ApplicationService): void {
       //throw new Error('Method not implemented.');
   }

@@ -13,6 +13,9 @@ import { ProfessionalActivityEmploymentDetailsComponent } from '../employment-de
   templateUrl: './professional-activity-employment-type.component.html',
 })
 export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+
+  }
 
   public static route: string = "professional-activity-employment-type";
   static title: string = "Professional activity - Register as a building inspector - GOV.UK";

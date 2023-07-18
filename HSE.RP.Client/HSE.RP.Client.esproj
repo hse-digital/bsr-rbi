@@ -13,4 +13,16 @@
   <ItemGroup>
     <Folder Include="src\app\services\" />
   </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\app\features\application\task-list\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\app\features\application\task-list\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\app\features\application\task-list\task-list.component.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\app\features\application\task-list\task-list.component.html" />
+  </ItemGroup>
 </Project>

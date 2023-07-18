@@ -14,6 +14,9 @@ import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.comp
   templateUrl: './applicant-email-verify.component.html',
 })
 export class ApplicantEmailVerifyComponent extends PageComponent<number> {
+  DerivedIsComplete(value: boolean): void {
+
+  }
   public static route: string = 'applicant-email-verify';
   static title: string =
     'Apply for building control approval for a higher-risk building - GOV.UK';
@@ -40,7 +43,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.email = applicationService.model.PersonalDetails?.ApplicantEmail;
+    this.email = applicationService.model.PersonalDetails?.ApplicantEmail?.Email;
   }
 
   override canAccess(
@@ -48,7 +51,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
     return FieldValidations.IsNotNullOrWhitespace(
-      applicationService.model.PersonalDetails?.ApplicantEmail
+      applicationService.model.PersonalDetails?.ApplicantEmail?.Email
     );
   }
 

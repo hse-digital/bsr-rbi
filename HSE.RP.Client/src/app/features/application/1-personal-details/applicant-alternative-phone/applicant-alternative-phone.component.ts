@@ -4,18 +4,21 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { PhoneNumberValidator } from '../../../../helpers/validators/phone-number-validator';
 import {
+    ApplicantPhone,
   ApplicationService,
   ApplicationStatus,
   BuildingProfessionalModel,
+  ComponentCompletionState,
 } from '../../../../services/application.service';
 import { ApplicantNationalInsuranceNumberComponent } from '../applicant-national-insurance-number/applicant-national-insurance-number.component';
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-alternative-phone',
   templateUrl: './applicant-alternative-phone.component.html',
 })
 export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
-  public static route: string = 'applicant-alternative-phone';
+  public static route: string = PersonalDetailRoutes.ALT_PHONE;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
@@ -23,18 +26,20 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
   selectedOption: string = "";
   selectedOptionError: boolean = false;
   errorMessage: string = "";
-  override model?: string;
 
   constructor(
     activatedRoute: ActivatedRoute,
-    applicationService: ApplicationService
-  ) {
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
 
-  override onInit(applicationService: ApplicationService): void {    
-    this.model = applicationService.model.PersonalDetails?.ApplicantAlternativePhone;
+  override onInit(applicationService: ApplicationService): void {
+    if (!applicationService.model.PersonalDetails?.ApplicantAlternativePhone) {
+      applicationService.model.PersonalDetails!.ApplicantAlternativePhone = { PhoneNumber: '', CompletionState: ComponentCompletionState.InProgress };
+    }
+    this.model = applicationService.model.PersonalDetails?.ApplicantAlternativePhone?.PhoneNumber;
 
     if (this.model === "") {
       this.selectedOption = "no";
@@ -44,8 +49,12 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
     }
   }
 
+  override DerivedIsComplete(value: boolean) {
+    this.applicationService.model.PersonalDetails!.ApplicantAlternativePhone!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
+  }
+
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.PersonalDetails!.ApplicantAlternativePhone = this.model;
+    this.applicationService.model.PersonalDetails!.ApplicantAlternativePhone!.PhoneNumber = this.model;
   }
 
   override canAccess(
@@ -63,12 +72,14 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
       console.log("no option selected")
       return false;
     } else if (this.selectedOption === "no") {
-      this.model = ""; 
+      if (this.model) {
+        this.model = "";
+      }
       this.modelValid = true;
       return this.modelValid;
     } else { 
       this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(
-        this.model?.toString() ?? ''
+        this.model ?? ''
       );
       this.modelValid = false;
       this.errorMessage = "Enter a UK telephone number"
@@ -77,9 +88,6 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(
-      ApplicantNationalInsuranceNumberComponent.route,
-      this.activatedRoute
-    );
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.NATIONAL_INS_NUMBER);
   }
 }

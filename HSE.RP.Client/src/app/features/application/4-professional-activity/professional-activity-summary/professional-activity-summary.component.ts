@@ -12,6 +12,9 @@ import { ApplicationTaskListComponent } from '../../task-list/task-list.componen
   templateUrl: './professional-activity-summary.component.html',
 })
 export class ProfessionalActivitySummaryComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+      
+  }
 
   public static route: string = "professional-activity-summary";
   static title: string = "Professional activity - Register as a building inspector - GOV.UK";

@@ -63,8 +63,8 @@ namespace HSE.RP.API.Services
             var modelDefinition = dynamicsModelDefinitionFactory.GetDefinitionFor<Contact, DynamicsContact>();
             var contact = new Contact(FirstName: model.PersonalDetails.ApplicantName.FirstName ?? "",
                                       LastName: model.PersonalDetails.ApplicantName.LastName ?? "",
-                                      PhoneNumber: model.PersonalDetails.ApplicantPhone ?? "",
-                                      Email: model.PersonalDetails.ApplicantEmail,
+                                      PhoneNumber: model.PersonalDetails.ApplicantPhone.PhoneNumber ?? "",
+                                      Email: model.PersonalDetails.ApplicantEmail.Email,
                                       jobRoleReferenceId: $"/bsr_jobroles({DynamicsJobRole.Ids["building_inspector"]})" 
                                       ); ;
             var dynamicsContact = modelDefinition.BuildDynamicsEntity(contact);
@@ -162,7 +162,7 @@ namespace HSE.RP.API.Services
                     bsr_lastfourdigitsofcardnumber = payment.LastFourDigitsCardNumber,
                     bsr_timeanddateoftransaction = payment.CreatedDate,
                     bsr_transactionid = payment.Reference,
-                    bsr_service = "Regulating Profession Application",
+                    bsr_service = "RBI",
                     bsr_cardexpirydate = payment.CardExpiryDate,
                     bsr_billingaddress = string.Join(", ", new[] { payment.AddressLineOne, payment.AddressLineTwo, payment.Postcode, payment.City, payment.Country }.Where(x => !string.IsNullOrWhiteSpace(x))),
                     bsr_cardbrandegvisa = payment.CardBrand,

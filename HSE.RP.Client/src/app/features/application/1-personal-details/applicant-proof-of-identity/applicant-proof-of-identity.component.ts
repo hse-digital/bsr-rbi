@@ -6,21 +6,28 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { ApplicantSummaryComponent } from '../applicant-summary/applicant-summary.component';
+import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 
 @Component({
   selector: 'hse-applicant-proof-of-identity',
   templateUrl: './applicant-proof-of-identity.component.html',
 })
 export class ApplicantProofOfIdentityComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+       
+  }
 
-  public static route: string = "applicant-photo";
+  public static route: string = PersonalDetailRoutes.PROOF_OF_ID;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
   override model?: string;
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    private personalDetailRouter: PersonalDetailRouter) {
     super(activatedRoute);
     this.updateOnSave = false;
   }
@@ -48,7 +55,7 @@ export class ApplicantProofOfIdentityComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantSummaryComponent.route, this.activatedRoute);
+    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.SUMMARY)
   }
 
 }

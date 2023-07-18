@@ -21,7 +21,7 @@ export class AppComponent {
 
   appHeaderLink = environment.headerLink;
   govukLogoLink = environment.govukLogoLink;
-
+  title: string = "HSE.RP.Client";
   constructor(private applicationService: ApplicationService,
     private router: Router, private idleTimerService: IdleTimerService, private activatedRoute: ActivatedRoute, private cookiesBannerService: CookiesBannerService, private navigationService: NavigationService) {
     this.initTimer();

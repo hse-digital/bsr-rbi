@@ -11,7 +11,10 @@ public static class HttpRequestDataExtensions
 {
     public static async Task<T> ReadAsJsonAsync<T>(this HttpRequestData httpRequestData)
     {
-        return await JsonSerializer.DeserializeAsync<T>(httpRequestData.Body);
+        var reader = new StreamReader(httpRequestData.Body);
+        var json = await reader.ReadToEndAsync();
+
+        return JsonSerializer.Deserialize<T>(json);
     }
 
     public static async Task<T> ReadAsJsonAsync<T>(this HttpResponseData httpRequestData)
@@ -24,6 +27,20 @@ public static class HttpRequestDataExtensions
         var stream = new MemoryStream();
         await JsonSerializer.SerializeAsync(stream, @object);
 
+        stream.Flush();
+        stream.Seek(0, SeekOrigin.Begin);
+
+        var response = httpRequestData.CreateResponse(HttpStatusCode.OK);
+        response.Body = stream;
+
+        return response;
+    }
+
+    public static async Task<HttpResponseData> CreateObjectResponseFromStreamAsync(this HttpRequestData httpRequestData, Stream originalStream)
+    {
+        var stream = new MemoryStream();
+        await originalStream.CopyToAsync(stream);
+        
         stream.Flush();
         stream.Seek(0, SeekOrigin.Begin);
 
