@@ -71,7 +71,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
     }
     else if (this.model == null || this.model == '')
     {
-      this.emailErrorMessage = "Enter an email address";
+      this.emailErrorMessage = "Select yes if you want to provide an alternative email address";
       this.emailHasErrors = true;
     }
     else{
