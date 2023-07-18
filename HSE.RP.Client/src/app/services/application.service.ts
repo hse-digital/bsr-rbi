@@ -87,6 +87,7 @@ export class ApplicationService {
 export class BuildingProfessionalModel {
   id?: String;
   PersonalDetails?: PersonalDetails = {};
+  BuildingInspectorClass?: BuildingInspectorClass = {};
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
   ReturningApplication: boolean = false;
 }
@@ -111,6 +112,12 @@ export class ApplicantDateOfBirth {
   Day?: string;
   Month?: string;
   Year?: string;
+}
+
+export class BuildingInspectorClass {
+  ClassSelection?: string;
+  ClassDetails?: string;
+  Country?: string;
 }
 
 export enum ApplicationStatus {
