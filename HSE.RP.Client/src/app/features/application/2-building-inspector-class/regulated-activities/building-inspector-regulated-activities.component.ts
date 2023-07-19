@@ -60,8 +60,6 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
     if (!applicationService.model.InspectorClass.Activities) {
       applicationService.model.InspectorClass.Activities = new BuildingInspectorRegulatedActivies();
     }
-
-    applicationService.model.InspectorClass!.Class = BuildingInspectorClassType.Class2;
     this.model = applicationService.model.InspectorClass?.Activities;
     if (this.DemandModel().AssessingPlans === true)
       this.selections.push("AssessingPlans");
@@ -94,8 +92,9 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   //}
 
   override isValid(): boolean {
+    this.errorText = "";
     if (this.selections.length == 0)
-      this.errorText = "You must select at least one option";
+      this.errorText = "You must select at least one BSR-regulated activity";
     return this.selections.length > 0;
   }
 
