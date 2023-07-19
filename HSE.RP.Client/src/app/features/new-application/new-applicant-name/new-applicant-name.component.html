@@ -49,7 +49,7 @@
   <govuk-input
     id="first-name"
     label="First Name"
-    [(model)]="model.FirstName"
+    [(model)]="model.PersonalDetails!.ApplicantName!.FirstName"
     class="govuk-input--width-30"
     [errorText]="getErrorDescription(!FirstNameValid, 'Enter your first name')"
     hintClass="no-margin-top"
@@ -63,7 +63,7 @@
   <govuk-input
     id="last-name"
     label="Last Name"
-    [(model)]="model.LastName"
+    [(model)]="model.PersonalDetails!.ApplicantName!.LastName"
     class="govuk-input--width-30"
     [errorText]="getErrorDescription(!LastNameValid, 'Enter your last name')"
     hintClass="no-margin-top"

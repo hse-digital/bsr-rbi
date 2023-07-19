@@ -80,11 +80,20 @@ export class ApplicationService {
     await firstValueFrom(this.httpClient.post(`api/SyncDeclaration`, this.model));
   }
 
+  async syncPersonalDetails(): Promise<void> {
+    await firstValueFrom(this.httpClient.post(`api/SyncPersonalDetails`, this.model));
+  }
 }
+
 export enum ComponentCompletionState {
   NotStarted = 0,
   InProgress = 1,
   Complete = 2
+}
+
+export enum StageCompletionState {
+  Incomplete = 0,
+  Complete = 1
 }
 
 export interface IComponentModel {
@@ -106,6 +115,19 @@ export class BuildingProfessionalModel implements IComponentModel {
   PersonalDetails?: PersonalDetails = {};
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
+
+  //TODO test StageStatus and replace ApplicationStatus
+  StageStatus: Record<string, StageCompletionState> = {
+    "EmailVerification": StageCompletionState.Incomplete,
+    "PhoneVerification": StageCompletionState.Incomplete,
+    "PersonalDetails": StageCompletionState.Incomplete,
+    "BuildingInspectorClass": StageCompletionState.Incomplete,
+    "Competency": StageCompletionState.Incomplete,
+    "ProfessionalActivity": StageCompletionState.Incomplete,
+    "Declaration": StageCompletionState.Incomplete,
+    "Payment": StageCompletionState.Incomplete,
+  };
+
   ReturningApplication: boolean = false;
   get CompletionState(): ComponentCompletionState {
     return this!.ApplicationStatus! == ApplicationStatus.ApplicationSubmissionComplete ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
@@ -163,7 +185,6 @@ export enum ApplicationStatus {
   PaymentInProgress = 128,
   PaymentComplete = 256,
 }
-
 
 export class PaymentModel {
   CreatedDate?: string;

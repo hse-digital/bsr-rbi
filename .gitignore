@@ -360,6 +360,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/HSE.RP.API/local.settings.dev.json
+/HSE.RP.API/dev.local.settings.json
+/HSE.RP.API/dev.local.settings.json
 
 ## Apple Mac Specific
 .DS_Store
