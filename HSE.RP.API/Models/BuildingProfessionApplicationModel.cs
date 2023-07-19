@@ -108,7 +108,7 @@ namespace HSE.RP.API.Models
     {
         public BuildingInspectorClassType? Class { get; set; }
         public BuildingInspectorRegulatedActivies? Activities { get; set; }
-        public BuildingAssessingPlansCategories? Categories { get; set; }
+        public BuildingAssessingPlansCategories? BuildingPlanCategories { get; set; }
     }
         
     public enum BuildingInspectorClassType

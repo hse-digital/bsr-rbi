@@ -48,14 +48,14 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
       applicationService.model.InspectorClass = new BuildingInspectorClass();
     }
 
-    if (!applicationService.model.InspectorClass.Categories) {
-      applicationService.model.InspectorClass.Categories =
+    if (!applicationService.model.InspectorClass.BuildingPlanCategories) {
+      applicationService.model.InspectorClass.BuildingPlanCategories =
         new BuildingAssessingPlansCategories();
     }
 
     applicationService.model.InspectorClass!.Class =
       BuildingInspectorClassType.Class2;
-    this.model = applicationService.model.InspectorClass?.Categories;
+    this.model = applicationService.model.InspectorClass?.BuildingPlanCategories;
 
     const demandModel = this.DemandModel();
     const categoryKeys = [
