@@ -13,6 +13,9 @@ import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRou
   templateUrl: './applicant-proof-of-identity.component.html',
 })
 export class ApplicantProofOfIdentityComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+       
+  }
 
   public static route: string = PersonalDetailRoutes.PROOF_OF_ID;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";

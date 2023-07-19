@@ -13,6 +13,9 @@ import { CompetencyAssessmentDateComponent } from '../assesesment-date/competenc
   templateUrl: './competency-assesesment-organisation.component.html',
 })
 export class CompetencyAssessmentOrganisationComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+
+  }
 
   public static route: string = "competency-assesesment-organisation";
   static title: string = "Competency - Register as a building inspector - GOV.UK";

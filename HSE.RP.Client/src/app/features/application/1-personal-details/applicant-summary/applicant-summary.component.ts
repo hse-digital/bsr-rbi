@@ -10,13 +10,16 @@ import { ApplicationTaskListComponent } from '../../task-list/task-list.componen
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 import { AddressModel } from '../../../../services/address.service';
-import { DateFormatHelper } from '../../../../helpers/date-format-helper';
+import { DateFormatHelper } from 'src/app/helpers/date-format-helper';
 
 @Component({
   selector: 'hse-applicant-summary',
   templateUrl: './applicant-summary.component.html',
 })
 export class ApplicantSummaryComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+       
+  }
   PersonalDetailRoutes = PersonalDetailRoutes;
 
   public static route: string = PersonalDetailRoutes.SUMMARY;
@@ -56,14 +59,14 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
     this.applicationService.model.PersonalDetails.ApplicantAddress.Town = "Newbridge";
     this.applicationService.model.PersonalDetails.ApplicantAddress.AdministrativeArea = "Co. Kildare";
     this.applicationService.model.PersonalDetails.ApplicantAddress.Postcode = "W12 AB97";
-    this.applicationService.model.PersonalDetails.ApplicantAlternativeEmail = "N@EMAIL.COM";
-    this.applicationService.model.PersonalDetails.ApplicantAlternativePhone = "+44123456789";
-    this.applicationService.model.PersonalDetails.ApplicantEmail = "PADDY@CODEC.IE";
+    this.applicationService.model.PersonalDetails.ApplicantAlternativeEmail = {Email: "N@EMAIL.COM" };
+    this.applicationService.model.PersonalDetails.ApplicantAlternativePhone = { PhoneNumber: "+44123456789" };
+    this.applicationService.model.PersonalDetails.ApplicantEmail = { Email: "PADDY@CODEC.IE" };
     this.applicationService.model.PersonalDetails.ApplicantName = {};
     this.applicationService.model.PersonalDetails.ApplicantName.FirstName = "Paddy";
     this.applicationService.model.PersonalDetails.ApplicantName.LastName = "Wagon";
-    this.applicationService.model.PersonalDetails.ApplicantNationalInsuranceNumber = "AB 12 34 56 C";
-    this.applicationService.model.PersonalDetails.ApplicantPhone = "+353123456789";
+    this.applicationService.model.PersonalDetails.ApplicantNationalInsuranceNumber = { NationalInsuranceNumber: "AB 12 34 56 C" };
+    this.applicationService.model.PersonalDetails.ApplicantPhone = { PhoneNumber: "+353123456789" };
 
   }
 
@@ -108,11 +111,11 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   public getAlternativePhone(): string {
-    return this.applicationService.model.PersonalDetails?.ApplicantAlternativePhone || 'none';
+    return this.applicationService.model.PersonalDetails?.ApplicantAlternativePhone?.PhoneNumber || 'none';
   }
 
   public getAlternativeEmail(): string {
-    return this.applicationService.model.PersonalDetails?.ApplicantAlternativeEmail || 'none';
+    return this.applicationService.model.PersonalDetails?.ApplicantAlternativeEmail?.Email || 'none';
   }
 
 }

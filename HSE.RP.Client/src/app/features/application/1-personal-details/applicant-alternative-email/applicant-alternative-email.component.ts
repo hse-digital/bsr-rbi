@@ -4,9 +4,10 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { EmailValidator } from '../../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
 import { ApplicantProofOfIdentityComponent } from '../applicant-proof-of-identity/applicant-proof-of-identity.component';
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
+import { ApplicantEmail, ApplicationService, ApplicationStatus, ComponentCompletionState } from '../../../../services/application.service';
+import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-phone/applicant-alternative-phone.component';
 
 @Component({
   selector: 'hse-applicant-alternative-email',
@@ -21,7 +22,6 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
   emailErrorMessage: string = "";
   modelValid: boolean = false;
   selectedOption: string = "";
-  override model?: string;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -32,7 +32,10 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = applicationService.model.PersonalDetails?.ApplicantAlternativeEmail;
+    if (!applicationService.model.PersonalDetails?.ApplicantAlternativeEmail) {
+      applicationService.model.PersonalDetails!.ApplicantAlternativeEmail = { Email: '', CompletionState: ComponentCompletionState.InProgress };
+    }
+    this.model = applicationService.model.PersonalDetails?.ApplicantAlternativeEmail?.Email;
     if (this.model === "") {
       this.selectedOption = "no"
     } else if (this.model) {
@@ -40,21 +43,22 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
     }
   }
 
+  override DerivedIsComplete(value: boolean) {
+    if(value)
+      this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.CompletionState = ComponentCompletionState.Complete;
+  }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+    this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.Email = this.model; 
     if (this.selectedOption === "no") {
-      this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail = ""
-    } else {
-      this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail = this.model; 
+        this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.Email = ""
     }
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-
     return this.applicationService.model.ApplicationStatus >= ApplicationStatus.PhoneVerified && this.applicationService.model.id != null;
     // return true
   }
-
   
   override isValid(): boolean {
     this.emailHasErrors = false;
@@ -67,7 +71,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
     }
     else if (this.model == null || this.model == '')
     {
-      this.emailErrorMessage = "Enter an email address";
+      this.emailErrorMessage = "Select yes if you want to provide an alternative email address";
       this.emailHasErrors = true;
     }
     else{
@@ -76,7 +80,6 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
     }
     return !this.emailHasErrors;
   }
-
 
   navigateNext(): Promise<boolean> {
     return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.ALT_PHONE);

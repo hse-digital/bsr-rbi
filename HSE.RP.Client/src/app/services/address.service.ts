@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { ComponentCompletionState, IComponentModel } from './application.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class AddressResponseModel {
   Results: AddressModel[] = [];
 }
 
-export class AddressModel {
+export class AddressModel implements IComponentModel {
   IsManual: boolean = false;
   UPRN?: string;
   USRN?: string;
@@ -39,6 +40,8 @@ export class AddressModel {
   Number?: string;
   Street?: string;
   Town?: string;
+  Country?: string;
   AdministrativeArea?: string;
   Postcode?: string;
+  CompletionState?: ComponentCompletionState;
 }

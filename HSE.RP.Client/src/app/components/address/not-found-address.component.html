@@ -1,0 +1,11 @@
+<div class="govuk-form-group">
+
+  <h1 class="govuk-heading-l">Address not found</h1>
+
+  <govuk-body>No addresses found for <b>{{ searchModel.postcode }}</b></govuk-body>
+  
+  <govuk-body>
+    You can either <a class="govuk-link" (click)="onSearchAgain.emit()" (keyup.enter)="onSearchAgain.emit()" role="link" tabindex="0">search again</a> or
+    <a class="govuk-link" (click)="onEnterManualAddress.emit()" (keyup.enter)="onEnterManualAddress.emit()" role="link" tabindex="0">enter address manually</a>.
+  </govuk-body>
+</div>

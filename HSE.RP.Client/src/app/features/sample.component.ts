@@ -8,6 +8,9 @@ import { Component } from "@angular/core";
   templateUrl: './sample.component.html'
 })
 export class SampleComponent extends PageComponent<string> {
+  DerivedIsComplete(value: boolean): void {
+
+  }
   static route: string = 'sample';
   static title: string = 'page title';
 
