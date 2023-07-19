@@ -1,15 +1,15 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()"
-  [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndComeBack)="saveAndComeBack()" 
+  (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
   <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-alternative-phone" [message]="errorMessage" />
+    <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-bi-class-selection" [message]="errorMessage" />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">What class of building inspector are you applying for?</h1>
 
-  <govuk-radio-group hintText="Select one option." id="radios-alternative-phone" [(model)]="selectedOption" [errorText]="errorMessage">
+  <govuk-radio-group hintText="Select one option." id="radios-bi-class-selection" [(model)]="selectedOption" [errorText]="errorMessage">
     <govuk-radio 
       label="Class 1 building inspector"
       value="1"
@@ -27,11 +27,11 @@
     </govuk-radio>
 
     <govuk-radio 
-      label="Class 3 building inspector"
+      label="Class 3 specialist building inspector"
       value="3"
       id="3"
       [model]="selectedOption"
-      [hint]="'A class 3 building inspector is competent to work without supervision on all building types including non-standard or high-risk buildings or both.'">
+      [hint]="'A class 3 building inspector is competent to work without supervision on all building types including nonstandard or high-risk buildings or both.'">
     </govuk-radio>
   </govuk-radio-group>
 
