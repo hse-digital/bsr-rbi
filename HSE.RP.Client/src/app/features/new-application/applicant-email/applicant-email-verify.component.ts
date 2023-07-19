@@ -6,7 +6,7 @@ import { NotFoundComponent } from '../../../components/not-found/not-found.compo
 import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus } from '../../../services/application.service';
+import { ApplicationService, ApplicationStatus, StageCompletionState } from '../../../services/application.service';
 import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
 
 @Component({
@@ -14,12 +14,14 @@ import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.comp
   templateUrl: './applicant-email-verify.component.html',
 })
 export class ApplicantEmailVerifyComponent extends PageComponent<number> {
+
   DerivedIsComplete(value: boolean): void {
 
   }
+
   public static route: string = 'applicant-email-verify';
   static title: string =
-    'Apply for building control approval for a higher-risk building - GOV.UK';
+    'Verify email - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
 
@@ -38,7 +40,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
     applicationService: ApplicationService
   ) {
     super(activatedRoute);
-    this.updateOnSave = false;
+    this.updateOnSave = true;
 
   }
 
@@ -52,7 +54,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   ): boolean {
     return FieldValidations.IsNotNullOrWhitespace(
       applicationService.model.PersonalDetails?.ApplicantEmail?.Email
-    );
+     );
   }
 
   override async onSave(
@@ -89,6 +91,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
           throw error;
         }
         this.applicationService.model.ApplicationStatus = ApplicationStatus.EmailVerified;
+        this.applicationService.model.StageStatus['EmailVerification'] = StageCompletionState.Complete;
         // try {
         //   await this.applicationService.registerNewBuildingProfessionApplication();
         // } catch (error) {

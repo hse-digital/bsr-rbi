@@ -4,7 +4,6 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { EmailValidator } from '../../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicantProofOfIdentityComponent } from '../applicant-proof-of-identity/applicant-proof-of-identity.component';
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 import { ApplicantEmail, ApplicationService, ApplicationStatus, ComponentCompletionState } from '../../../../services/application.service';
 import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-phone/applicant-alternative-phone.component';
@@ -49,7 +48,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.Email = this.model; 
+    this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.Email = this.model;
     if (this.selectedOption === "no") {
         this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.Email = ""
     }
@@ -59,13 +58,13 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
     return this.applicationService.model.ApplicationStatus >= ApplicationStatus.PhoneVerified && this.applicationService.model.id != null;
     // return true
   }
-  
+
   override isValid(): boolean {
     this.emailHasErrors = false;
     if(this.selectedOption === "") {
       this.emailHasErrors = true
       this.emailErrorMessage = "Select yes if you want to provide an alternative email address"
-    } 
+    }
     else if (this.selectedOption === "no") {
       return !this.emailHasErrors
     }
