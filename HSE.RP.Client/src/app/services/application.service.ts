@@ -80,11 +80,20 @@ export class ApplicationService {
     await firstValueFrom(this.httpClient.post(`api/SyncDeclaration`, this.model));
   }
 
+  async syncPersonalDetails(): Promise<void> {
+    await firstValueFrom(this.httpClient.post(`api/SyncPersonalDetails`, this.model));
+  }
 }
+
 export enum ComponentCompletionState {
   NotStarted = 0,
   InProgress = 1,
   Complete = 2
+}
+
+export enum StageCompletionState {
+  Incomplete = 0,
+  Complete = 1
 }
 
 export interface IComponentModel {
@@ -106,6 +115,19 @@ export class BuildingProfessionalModel implements IComponentModel {
   PersonalDetails?: PersonalDetails = {};
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
+
+  //TODO test StageStatus and replace ApplicationStatus
+  StageStatus: Record<string, StageCompletionState> = {
+    "EmailVerification": StageCompletionState.Incomplete,
+    "PhoneVerification": StageCompletionState.Incomplete,
+    "PersonalDetails": StageCompletionState.Incomplete,
+    "BuildingInspectorClass": StageCompletionState.Incomplete,
+    "Competency": StageCompletionState.Incomplete,
+    "ProfessionalActivity": StageCompletionState.Incomplete,
+    "Declaration": StageCompletionState.Incomplete,
+    "Payment": StageCompletionState.Incomplete,
+  };
+
   ReturningApplication: boolean = false;
   get CompletionState(): ComponentCompletionState {
     return this!.ApplicationStatus! == ApplicationStatus.ApplicationSubmissionComplete ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
@@ -164,7 +186,6 @@ export enum ApplicationStatus {
   PaymentComplete = 256,
 }
 
-
 export class PaymentModel {
   CreatedDate?: string;
   Status?: string;
@@ -186,6 +207,48 @@ export enum PaymentStatus {
   Pending,
   Success,
   Failed
+}
+
+export class BuildingInspectorClass {
+  Class: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
+  Activities: BuildingInspectorRegulatedActivies = { AssessingPlans:false, Inspection:false, CompletionState:ComponentCompletionState.NotStarted};
+  BuildingPlanCategories?: BuildingAssessingPlansCategories = {};
+}
+
+export enum BuildingInspectorClassType {
+  ClassNone = 0,
+  Class1 = 1,
+  Class2 = 2,
+  Class3 = 3
+}
+
+export class BuildingInspectorRegulatedActivies {
+  [key: string]: any;
+  AssessingPlans?: boolean;
+  Inspection?: boolean;
+  CompletionState?: ComponentCompletionState
+
+}
+
+export class BuildingInspectorClass {
+  Class: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
+  Activities: BuildingInspectorRegulatedActivies = { AssessingPlans:false, Inspection:false, CompletionState:ComponentCompletionState.NotStarted};
+  BuildingPlanCategories?: BuildingAssessingPlansCategories = {};
+}
+
+export enum BuildingInspectorClassType {
+  ClassNone = 0,
+  Class1 = 1,
+  Class2 = 2,
+  Class3 = 3
+}
+
+export class BuildingInspectorRegulatedActivies {
+  [key: string]: any;
+  AssessingPlans?: boolean;
+  Inspection?: boolean;
+  CompletionState?: ComponentCompletionState
+
 }
 
 export class BuildingInspectorClass {
