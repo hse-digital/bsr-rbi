@@ -106,9 +106,15 @@ namespace HSE.RP.API.Models
 
     public record BuildingInspectorClass
     (
-        string ClassSelection = null,
+        ClassSelection ClassSelection = null,
         string ClassDetails = null,
         string Country = null
+    );
+
+    public record ClassSelection
+    (
+        string ClassType = null,
+        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
     );
 
     [Flags]

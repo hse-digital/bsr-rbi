@@ -171,7 +171,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   {
     prompt: "Building inspector class", number: "2.", relativeRoute: BuildingInspectorClassModule.baseRoute, children: [
       {
-        prompt: "Class selection", relativeRoute: BuildingInspectorClassSelectionComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.NotStarted
+        prompt: "Class selection", relativeRoute: BuildingInspectorClassSelectionComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.BuildingInspectorClass?.ClassSelection)
       },
       {
         prompt: "Class details", relativeRoute: BuildingInspectorClassSelectionComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart

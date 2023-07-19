@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, StringModel } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, StringModel, ComponentCompletionState } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
@@ -15,6 +15,7 @@ import { application } from 'express';
 })
 export class BuildingInspectorClassSelectionComponent extends PageComponent<string> {
   DerivedIsComplete(value: boolean): void {
+    // this.applicationService.model.BuildingInspectorClass!.ClassSelection!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
   }
 
   public static route: string = "building-inspector-class-selection";
@@ -22,7 +23,6 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<stri
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: string;
   selectedOption: string = "";
   selectedOptionError: boolean = false;
   errorMessage: string = "";
@@ -33,29 +33,31 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<stri
   }
 
   override onInit(applicationService: ApplicationService): void {
-    console.log(applicationService)
-    this.model = applicationService.model.BuildingInspectorClass?.ClassSelection; 
+    // if the user visits this page for the first time, set status to in progress until user saves and continues
+    if (!applicationService.model.BuildingInspectorClass?.ClassSelection) {
+      applicationService.model.BuildingInspectorClass!.ClassSelection = { ClassType: '', CompletionState: ComponentCompletionState.InProgress };
+    }
+
+    this.model = applicationService.model.BuildingInspectorClass!.ClassSelection!.ClassType; 
     
-    if (this.model === "1") {
-      this.selectedOption = "1"
-    }
-    if (this.model === "2") {
-      this.selectedOption = "2"
-    }
-    if (this.model === "3") {
-      this.selectedOption = "3"
-    }
+    if (this.model) { this.selectedOption = this.model; }
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.BuildingInspectorClass!.ClassSelection = this.model;
-    // applicationService.model.ApplicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
+    if (this.selectedOption === "1") {
+      this.applicationService.model.BuildingInspectorClass!.ClassSelection = { ClassType: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
+    }
+    else {
+      this.applicationService.model.BuildingInspectorClass!.ClassSelection = { ClassType: this.selectedOption, CompletionState: ComponentCompletionState.InProgress };
+    }
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return true;
-    //! uncomment this when done, but check if it is the correct way first
-    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
+    if (this.applicationService.model.ApplicationStatus === ApplicationStatus.PersonalDetailsComplete) {
+      return true;
+    }
+
+    return false;    
   }
 
   override isValid(): boolean {
@@ -70,18 +72,15 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<stri
   }
 
   override navigateNext(): Promise<boolean> {
-    console.log(this.model)
     if (this.selectedOption === "1") {
       return this.navigationService.navigateRelative(
         BuildingInspectorCountryComponent.route,
         this.activatedRoute
       );
     }
-
-    // if (this.selectedOption === "2" || "3") {
     else {
       return this.navigationService.navigateRelative(
-        //TODO the next page is missing so will have to create a shell for it then do navigation
+        //TODO replace this route with activities page when completed
         BuildingInspectorCountryComponent.route,
         this.activatedRoute
       )

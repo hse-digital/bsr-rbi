@@ -152,9 +152,14 @@ export class ApplicantDateOfBirth implements IComponentModel {
 }
 
 export class BuildingInspectorClass {
-  ClassSelection?: string;
+  ClassSelection?: ClassSelection;
   ClassDetails?: string;
   Country?: string;
+}
+
+export class ClassSelection implements IComponentModel {
+  ClassType?: string
+  CompletionState?: ComponentCompletionState
 }
 
 export enum ApplicationStatus {
