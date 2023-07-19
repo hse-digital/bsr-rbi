@@ -212,6 +212,7 @@ export enum PaymentStatus {
 export class BuildingInspectorClass {
   Class: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
   Activities: BuildingInspectorRegulatedActivies = { AssessingPlans:false, Inspection:false, CompletionState:ComponentCompletionState.NotStarted};
+  BuildingPlanCategories?: BuildingAssessingPlansCategories = {};
 }
 
 export enum BuildingInspectorClassType {
@@ -227,4 +228,15 @@ export class BuildingInspectorRegulatedActivies {
   Inspection?: boolean;
   CompletionState?: ComponentCompletionState
 
+}
+
+export class BuildingAssessingPlansCategories {
+  [key: string]: any;
+  CategoryA?: boolean;
+  CategoryB?: boolean;
+  CategoryC?: boolean;
+  CategoryD?: boolean;
+  CategoryE?: boolean;
+  CategoryF?: boolean;
+  CompletionState?: ComponentCompletionState
 }
