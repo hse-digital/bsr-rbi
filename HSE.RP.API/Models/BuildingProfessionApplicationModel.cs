@@ -15,6 +15,7 @@ namespace HSE.RP.API.Models
     (
         [property: JsonPropertyName("id")] string Id,
         PersonalDetails PersonalDetails = null,
+        BuildingInspectorClass InspectorClass = null,
         Dictionary<string, StageCompletionState> StageStatus = null,
         ApplicationStatus ApplicationStatus = ApplicationStatus.None) : IValidatableModel
     {
@@ -100,7 +101,36 @@ namespace HSE.RP.API.Models
         public ApplicantEmail ApplicantAlternativeEmail { get; set; }
         public ApplicantDateOfBirth ApplicantDateOfBirth { get; set; }
         public ApplicantNationalInsuranceNumber ApplicantNationalInsuranceNumber { get; set; }
-    };
+
+    }
+
+    public record BuildingInspectorClass
+    {
+        public BuildingInspectorClassType? Class { get; set; }
+        public BuildingInspectorRegulatedActivies? Activities { get; set; }
+    }
+
+    public enum BuildingInspectorClassType
+    {
+        ClassNone = 0,
+        Class1 = 1,
+        Class2 = 2,
+        Class3 = 3
+    }
+
+    public record BuildingInspectorRegulatedActivies
+    {
+        public bool? AssessingPlans { get; set; }
+        public bool? Inspection {get;set; }
+        public ComponentCompletionState CompletionState { get; set; }
+
+    }
+
+
+
+
+
+
 
     [Flags]
     public enum ApplicationStatus

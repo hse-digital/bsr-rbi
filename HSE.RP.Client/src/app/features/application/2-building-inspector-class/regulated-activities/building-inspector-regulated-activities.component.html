@@ -1,0 +1,24 @@
+<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
+
+  <h2 class="govuk-heading-m" style="color:gray">Class {{getClassType()}} building inspector</h2>
+  <h1 class="govuk-heading-l">What BSR-regulated activities will you do?</h1>
+  <govuk-body>
+    <govuk-checkbox-group [title]="" [hint]=hint [errorText]=errorText
+                          [(model)]="selections"
+                          [id]="id" #field [govukRequired]="field">
+      <!-- IMPORTANT: Make sure the names in the values property on the checkbox ,
+                      match the property names on the BuildingInspectorRegulatedActivies -->
+      <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()" [id]="id"
+                      [model]="selections"
+                      text="Assessing plans" value="AssessingPlans" (onClicked)="optionClicked()"
+                      hint="" />
+      <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()"
+                      [model]="selections"
+                      text="Inspection" value="Inspection" (onClicked)="optionClicked()" [id]="id"
+                      hint="" />
+
+    </govuk-checkbox-group>
+
+  </govuk-body>
+</govuk-formpage>
+
