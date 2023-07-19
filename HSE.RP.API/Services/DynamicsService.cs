@@ -55,8 +55,9 @@ namespace HSE.RP.API.Services
             });
 
             var dynamicsBuildingProfessionApplication = await dynamicsApi.Get<DynamicsBuildingProfessionApplication>($"bsr_buildingprofessionapplications({buildingProfessionApplication.Id})");
-
-            return buildingProfessionApplicationModel with { Id = dynamicsBuildingProfessionApplication.bsr_buildingproappid };
+            return buildingProfessionApplicationModel with { 
+                Id = dynamicsBuildingProfessionApplication.bsr_buildingproappid,
+            };
         }
 
         private async Task<Contact> CreateContactAsync(BuildingProfessionApplicationModel model)

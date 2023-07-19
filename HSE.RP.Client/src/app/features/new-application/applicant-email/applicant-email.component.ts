@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicantEmail, ApplicationService, ComponentCompletionState } from '../../../services/application.service';
+import { ApplicantEmail, ApplicationService, ComponentCompletionState, StageCompletionState } from '../../../services/application.service';
 import { ApplicationTaskListComponent } from '../../application/task-list/task-list.component';
 import { ApplicantEmailVerifyComponent } from './applicant-email-verify.component';
 

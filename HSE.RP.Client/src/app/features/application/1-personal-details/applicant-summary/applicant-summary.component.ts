@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, BuildingProfessionalModel } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, BuildingProfessionalModel, ComponentCompletionState, StageCompletionState } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
@@ -18,7 +18,7 @@ import { DateFormatHelper } from 'src/app/helpers/date-format-helper';
 })
 export class ApplicantSummaryComponent extends PageComponent<string> {
   DerivedIsComplete(value: boolean): void {
-       
+
   }
   PersonalDetailRoutes = PersonalDetailRoutes;
 
@@ -29,6 +29,7 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   photoHasErrors = false;
   private personalDetailRouter: PersonalDetailRouter;
   override model?: string;
+  override processing = false;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -75,6 +76,7 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+    this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
     this.applicationService.model.ApplicationStatus = ApplicationStatus.PersonalDetailsComplete;
 
    }
@@ -116,6 +118,21 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
 
   public getAlternativeEmail(): string {
     return this.applicationService.model.PersonalDetails?.ApplicantAlternativeEmail?.Email || 'none';
+  }
+
+  async SyncAndContinue() {
+    this.processing=true;
+
+    try {
+      await this.applicationService.syncPersonalDetails();
+    } catch (error) {
+      this.focusAndUpdateErrors();
+      throw error;
+    }
+    this.processing=false;
+    this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
+    this.saveAndContinue();
+
   }
 
 }

@@ -15,6 +15,7 @@ namespace HSE.RP.API.Models
     (
         [property: JsonPropertyName("id")] string Id,
         PersonalDetails PersonalDetails = null,
+        Dictionary<string, StageCompletionState> StageStatus = null,
         ApplicationStatus ApplicationStatus = ApplicationStatus.None) : IValidatableModel
     {
         public ValidationSummary Validate()
@@ -42,6 +43,13 @@ namespace HSE.RP.API.Models
         }
     }
     public enum ComponentCompletionState
+    {
+        NotStarted = 0,
+        InProgress = 1,
+        Complete = 2
+    }
+
+    public enum StageCompletionState
     {
         NotStarted = 0,
         InProgress = 1,
