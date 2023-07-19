@@ -4,7 +4,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, BuildingInspectorClass, BuildingInspectorRegulatedActivies, ComponentCompletionState } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, BuildingInspectorClass, BuildingInspectorClassType, BuildingInspectorRegulatedActivies, ComponentCompletionState } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
@@ -24,8 +24,6 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   public id: string = BuildingInspectorSummaryComponent.route;
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
-  modelValid: boolean = false;
-  photoHasErrors = false;
   public hint: string = "Select all that apply";
   public errorText: string = "";
 
@@ -35,27 +33,45 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   @Output() onClicked = new EventEmitter();
   @Output() onKeyupEnter = new EventEmitter();
 
+  public DemandModel(): BuildingInspectorRegulatedActivies {
+    if (this.model === undefined || this.model === null) {
+      throw new Error("Model is undefined");
+    }
+    return this.model;
+  }
+
+
+  public getClassType(): BuildingInspectorClassType
+  {
+    return this.applicationService?.model?.InspectorClass?.Class ?? 0;
+  }
 
   constructor(
     activatedRoute: ActivatedRoute,
     applicationService: ApplicationService,
     private buildingInspectorRouter : BuildingInspectorRouter) {
     super(activatedRoute);
-    this.updateOnSave = false;
-  }
-
-  override onInit(applicationService: ApplicationService): void {
+    this.updateOnSave = true;
+    if (applicationService.model?.InspectorClass)
+      applicationService.model.InspectorClass.Class = BuildingInspectorClassType.ClassNone;
     if (!applicationService.model?.InspectorClass) {
       applicationService.model.InspectorClass = new BuildingInspectorClass();
     }
     if (!applicationService.model.InspectorClass.Activities) {
       applicationService.model.InspectorClass.Activities = new BuildingInspectorRegulatedActivies();
     }
+
+    applicationService.model.InspectorClass!.Class = BuildingInspectorClassType.Class2;
     this.model = applicationService.model.InspectorClass?.Activities;
     if (this.DemandModel().AssessingPlans === true)
       this.selections.push("AssessingPlans");
     if (this.DemandModel().Inspection === true)
       this.selections.push("Inspection");
+    this.applicationService = applicationService;
+
+  }
+
+  override onInit(applicationService: ApplicationService): void {
 
 
   }
