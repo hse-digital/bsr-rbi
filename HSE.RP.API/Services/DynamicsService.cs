@@ -100,7 +100,7 @@ namespace HSE.RP.API.Services
         {
                        var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
                         {
-                        ("$filter", $"firstname eq '{firstName.EscapeSingleQuote()}' and lastname eq '{lastName.EscapeSingleQuote()}' and emailaddress1 eq '{email.EscapeSingleQuote()}' and contains(telephone1, '{phoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')"),
+                        ("$filter", $"firstname eq '{firstName.EscapeSingleQuote()}' and lastname eq '{lastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{email.EscapeSingleQuote()}' and contains(telephone1, '{phoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')"),
                         ("$expand", "bsr_contacttype_contact")
 
                     });

@@ -170,11 +170,16 @@ public class DynamicsSynchronisationFunctions
             emailaddress1 = contactWrapper.Model.Email,
             emailaddress2 = contactWrapper.Model.AlternativeEmail,
             telephone1 = contactWrapper.Model.PhoneNumber,
-            telephone2 = contactWrapper.Model.AlternativePhoneNumber,
+            business2 = contactWrapper.Model.AlternativePhoneNumber,
+            address1_addresstypecode = 3,
             address1_line1 = contactWrapper.Model.Address.Address,
             address1_line2 = contactWrapper.Model.Address.AddressLineTwo,
             address1_city = contactWrapper.Model.Address.Town,
             address1_postalcode = contactWrapper.Model.Address.Postcode,
+            bsr_address1uprn = contactWrapper.Model.Address.UPRN,
+            bsr_address1usrn = contactWrapper.Model.Address.USRN,
+            bsr_address1lacode = "", //TODO update after address lookup merge
+            bsr_address1ladescription = "", //TODO update after address lookup merge
             birthdate = contactWrapper.Model.birthdate,
             bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber,
         });
