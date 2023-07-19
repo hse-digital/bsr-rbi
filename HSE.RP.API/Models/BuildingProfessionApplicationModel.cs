@@ -16,7 +16,6 @@ namespace HSE.RP.API.Models
         [property: JsonPropertyName("id")] string Id,
         PersonalDetails PersonalDetails = null,
         BuildingInspectorClass InspectorClass = null,
-    ApplicationStatus ApplicationStatus = ApplicationStatus.None) : IValidatableModel
         Dictionary<string, StageCompletionState> StageStatus = null,
         ApplicationStatus ApplicationStatus = ApplicationStatus.None) : IValidatableModel
     {
@@ -94,20 +93,15 @@ namespace HSE.RP.API.Models
 
     public record PersonalDetails
     {
-        public string UPRN { get; init; }
-        public string USRN { get; init; }
-        public string Address { get; init; }
-        public string AddressLineTwo { get; init; }
-        public string BuildingName { get; init; }
-        public string Number { get; init; }
-        public string Street { get; init; }
-        public string Town { get; init; }
-        public string Country { get; init; }
-        public string AdministrativeArea { get; init; }
-        public string Postcode { get; init; }
-        public bool? IsManual { get; init; }
-        public string ClassificationCode { get; init; }
-        public ComponentCompletionState IsComplete {get; init;} 
+        public ApplicantName ApplicantName { get; set; }
+        public BuildingAddress ApplicantAddress { get; set; }
+        public ApplicantPhone ApplicantPhone { get; set; }
+        public ApplicantPhone ApplicantAlternativePhone { get; set; }
+        public ApplicantEmail ApplicantEmail { get; set; }
+        public ApplicantEmail ApplicantAlternativeEmail { get; set; }
+        public ApplicantDateOfBirth ApplicantDateOfBirth { get; set; }
+        public ApplicantNationalInsuranceNumber ApplicantNationalInsuranceNumber { get; set; }
+
     }
 
     public record BuildingInspectorClass
