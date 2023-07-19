@@ -81,6 +81,7 @@ export enum TaskStatus {
   InProgress = 2,
   CannotStart = 3,
   None = 4,
+  Immutable = 5
 }
 
 
@@ -96,6 +97,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   PersonalDetailRoutes = PersonalDetailRoutes;
 
   valueNotStarted(): TaskStatus { return TaskStatus.NotStarted; }
+  valueImmutable(): TaskStatus { return TaskStatus.Immutable; }
   valueComplete(): TaskStatus { return TaskStatus.Complete; }
   valueInProgress(): TaskStatus { return TaskStatus.InProgress; }
   valueCannotStart(): TaskStatus { return TaskStatus.CannotStart; }
@@ -166,12 +168,12 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     {
       prompt: "Email address", relativeRoute: (): TaskListRoute => {
         return { route: '' }
-      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Complete
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Immutable
     },
     {
       prompt: "Telephone number", relativeRoute: (): TaskListRoute => {
         return { route: ''}
-       } , getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Complete
+       } , getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Immutable
     },
     {
       prompt: "Date of birth", relativeRoute: (): TaskListRoute => {
