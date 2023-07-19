@@ -18,6 +18,7 @@ const routes = new HseRoutes([
   HseRoute.protected(ApplicationAdditionalInformationComponent.route, ApplicationAdditionalInformationComponent, ApplicationAdditionalInformationComponent.title),
   HseRoute.forLoadChildren(PaymentModule.baseRoute, () => import('./payment/payment.module').then(m => m.PaymentModule)),
 
+
 ]);
 
 @NgModule({

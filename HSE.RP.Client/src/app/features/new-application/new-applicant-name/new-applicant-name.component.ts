@@ -3,27 +3,26 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicantName, ApplicationService, ComponentCompletionState} from '../../../services/application.service';
-import { ApplicantPhotoComponent } from '../../application/1-personal-details/applicant-photo/applicant-photo.component';
+import { ApplicantName, ApplicationService, BuildingProfessionalModel, ComponentCompletionState, StageCompletionState} from '../../../services/application.service';
 import { ApplicantEmailComponent } from '../applicant-email/applicant-email.component';
 
 @Component({
   selector: 'hse-applicant-name',
   templateUrl: './new-applicant-name.component.html',
 })
-export class NewApplicantNameComponent extends PageComponent<ApplicantName> {
+export class NewApplicantNameComponent extends PageComponent<BuildingProfessionalModel> {
   public static route: string = "new-applicant-name";
   static title: string = "Your Name - Apply for building control approval for a higher-risk building - GOV.UK";
   production: boolean = environment.production;
   FirstNameValid: boolean = false;
   LastNameValid: boolean = false;
 
-  override model: ApplicantName = new ApplicantName;
+  override model: BuildingProfessionalModel = new BuildingProfessionalModel;
 
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
-    this.updateOnSave = false;
+    this.updateOnSave = true;
   }
 
   override onInit(applicationService: ApplicationService): void {
@@ -34,9 +33,24 @@ export class NewApplicantNameComponent extends PageComponent<ApplicantName> {
     if(applicationService.model.PersonalDetails?.ApplicantName == null)
     {
       applicationService.model.PersonalDetails!.ApplicantName = new ApplicantName();
+      applicationService.model.PersonalDetails!.ApplicantName.FirstName= '';
+      applicationService.model.PersonalDetails!.ApplicantName.LastName= '';
     }
-    this.model.FirstName = applicationService.model.PersonalDetails?.ApplicantName?.FirstName ?? '';
-    this.model.LastName = applicationService.model.PersonalDetails?.ApplicantName?.LastName ?? '';
+    if(applicationService.model.StageStatus == null)
+    {
+      applicationService.model.StageStatus = {
+        "EmailVerification": StageCompletionState.Incomplete,
+        "PhoneVerification": StageCompletionState.Incomplete,
+        "PersonalDetails": StageCompletionState.Incomplete,
+        "BuildingInspectorClass": StageCompletionState.Incomplete,
+        "Competency": StageCompletionState.Incomplete,
+        "ProfessionalActivity": StageCompletionState.Incomplete,
+        "Declaration": StageCompletionState.Incomplete,
+        "Payment": StageCompletionState.Incomplete,
+      };
+    }
+    this.model = applicationService.model;
+
   }
 
   override DerivedIsComplete(value: boolean) {
@@ -44,8 +58,8 @@ export class NewApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.PersonalDetails!.ApplicantName!.FirstName = this.model.FirstName;
-    applicationService.model.PersonalDetails!.ApplicantName!.LastName = this.model.LastName;
+    applicationService.model.PersonalDetails!.ApplicantName!.FirstName = this.model.PersonalDetails!.ApplicantName!.FirstName;
+    applicationService.model.PersonalDetails!.ApplicantName!.LastName = this.model.PersonalDetails!.ApplicantName!.LastName;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -55,8 +69,8 @@ export class NewApplicantNameComponent extends PageComponent<ApplicantName> {
 
 
   override isValid(): boolean {
-    this.FirstNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.FirstName)
-    this.LastNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.LastName)
+    this.FirstNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.PersonalDetails!.ApplicantName!.FirstName)
+    this.LastNameValid = FieldValidations.IsNotNullOrWhitespace(this.model.PersonalDetails!.ApplicantName!.LastName)
 
     if(!this.FirstNameValid && !this.LastNameValid)
     {

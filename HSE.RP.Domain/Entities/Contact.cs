@@ -2,11 +2,17 @@ using System.Text.Json.Serialization;
 
 namespace HSE.RP.Domain.Entities;
 
-public record Contact(string FirstName = null,
+public record Contact(
+    string Id = null,
+    string FirstName = null,
     string LastName = null,
     string PhoneNumber = null,
+    string AlternativePhoneNumber = null,
     string Email = null,
-    string Id = null,
+    string AlternativeEmail = null,
+    string NationalInsuranceNumber = null,
+    BuildingAddress Address = null,
+    DateOnly? birthdate = null,
     string buildingProfessionApplicationReferenceId = null,
     string jobRoleReferenceId = null
     ) : Entity(Id);
@@ -15,12 +21,21 @@ public record DynamicsContact(
     string firstname = null, 
     string lastname = null, 
     string telephone1 = null, 
+    string business2 = null, 
+    string emailaddress2 = null, 
     string emailaddress1 = null, 
     string contactid = null,
+    int? address1_addresstypecode = null,
     string address1_line1 = null, 
     string address1_line2 = null, 
     string address1_city = null, 
-    string address1_postalcode = null, 
+    string address1_county = null, 
+    string address1_country = null, 
+    string address1_postalcode = null,
+    string bsr_address1uprn = null,
+    string bsr_address1usrn = null,
+    string bsr_address1lacode = null,
+    string bsr_address1ladescription = null,
     YesNoOption? bsr_manualaddress = null,
     [property: JsonPropertyName("bsr_JobRole@odata.bind")]
     string jobRoleReferenceId = null,
@@ -28,7 +43,9 @@ public record DynamicsContact(
     [property: JsonPropertyName("bsr_Address1CountryCode@odata.bind")]
     string countryReferenceId = null,
     [property: JsonPropertyName("bsr_buildingprofessionapplicationid@odata.bind")]
-    string bsr_buildingprofessionapplicationid = null
+    string bsr_buildingprofessionapplicationid = null,
+    string bsr_nationalinsuranceno = null,
+    DateOnly? birthdate = null
     ) : DynamicsEntity<Contact>;
 
 public record DynamicsContactType(

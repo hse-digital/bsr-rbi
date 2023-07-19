@@ -6,7 +6,7 @@ import { NotFoundComponent } from '../../../components/not-found/not-found.compo
 import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService, NumberModel } from '../../../services/application.service';
+import { ApplicationService, NumberModel, StageCompletionState } from '../../../services/application.service';
 import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
 
 @Component({
@@ -18,7 +18,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
   }
   public static route: string = 'applicant-phone-verify';
   static title: string =
-    'Apply for building control approval for a higher-risk building - GOV.UK';
+    'Verify phone number - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
 
@@ -86,10 +86,10 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
           this.otpError = true;
           this.hasErrors = true;
           this.processing=false;
-
           this.focusAndUpdateErrors();
           throw error;
         }
+        this.applicationService.model.StageStatus['PhoneVerification'] = StageCompletionState.Complete;
         try {
           await this.applicationService.registerNewBuildingProfessionApplication();
         } catch (error) {
@@ -100,14 +100,14 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
           this.focusAndUpdateErrors();
           throw error;
         }
+        this.processing=false;
     }
     else
     {
       this.hasErrors = true;
       this.processing=false;
-
     }
-    this.processing=false;
+
     this.saveAndContinue();
   }
 

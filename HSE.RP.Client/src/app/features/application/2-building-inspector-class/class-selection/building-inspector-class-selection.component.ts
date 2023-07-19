@@ -7,6 +7,7 @@ import { ApplicationService, ApplicationStatus, StringModel, ComponentCompletion
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
+import { BuildingInspectorRoutes, BuildingInspectorRouter } from '../BuildingInspectorRoutes'; 
 import { application } from 'express';
 
 @Component({
@@ -18,7 +19,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<stri
     // this.applicationService.model.BuildingInspectorClass!.ClassSelection!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
   }
 
-  public static route: string = "building-inspector-class-selection";
+  public static route: string = BuildingInspectorRoutes.CLASS_SELECTION;
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;

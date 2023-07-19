@@ -15,6 +15,7 @@ using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSE.RP.Domain.Entities;
 using Microsoft.Extensions.Options;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HSE.RP.API.Services
 {
@@ -54,8 +55,9 @@ namespace HSE.RP.API.Services
             });
 
             var dynamicsBuildingProfessionApplication = await dynamicsApi.Get<DynamicsBuildingProfessionApplication>($"bsr_buildingprofessionapplications({buildingProfessionApplication.Id})");
-
-            return buildingProfessionApplicationModel with { Id = dynamicsBuildingProfessionApplication.bsr_buildingproappid };
+            return buildingProfessionApplicationModel with { 
+                Id = dynamicsBuildingProfessionApplication.bsr_buildingproappid,
+            };
         }
 
         private async Task<Contact> CreateContactAsync(BuildingProfessionApplicationModel model)
@@ -98,7 +100,7 @@ namespace HSE.RP.API.Services
         {
                        var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
                         {
-                        ("$filter", $"firstname eq '{firstName.EscapeSingleQuote()}' and lastname eq '{lastName.EscapeSingleQuote()}' and emailaddress1 eq '{email.EscapeSingleQuote()}' and contains(telephone1, '{phoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')"),
+                        ("$filter", $"firstname eq '{firstName.EscapeSingleQuote()}' and lastname eq '{lastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{email.EscapeSingleQuote()}' and contains(telephone1, '{phoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')"),
                         ("$expand", "bsr_contacttype_contact")
 
                     });
@@ -143,12 +145,23 @@ namespace HSE.RP.API.Services
         {
             var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
             {
-            ("$filter", $"bsr_buildingproappid eq '{applicationId}'")/*,
-            ("$expand", "bsr_Building,bsr_RegistreeId")*/
+            ("$filter", $"bsr_buildingproappid eq '{applicationId}'"),
+            ("$expand", "bsr_applicantid_contact")
             });
 
             return response.value.FirstOrDefault();
         }
+
+        public async Task<DynamicsContact> GetContactUsingId(string contactId)
+        {
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
+            {
+            ("$filter", $"contactid eq '{contactId}'")
+            });
+
+            return response.value.FirstOrDefault();
+        }
+
 
         public async Task CreatePayment(BuildingProfessionApplicationPayment buildingProfessionApplicationPayment)
         {
@@ -200,6 +213,19 @@ namespace HSE.RP.API.Services
             {
                 Console.WriteLine(ex.Message);
             }   
+
+        }
+
+        public async Task UpdateContact(DynamicsContact dynamicsContact, DynamicsContact contact)
+        {
+            try
+            {
+                var result = await dynamicsApi.Update($"contacts({dynamicsContact.contactid})", contact);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
         }
 
