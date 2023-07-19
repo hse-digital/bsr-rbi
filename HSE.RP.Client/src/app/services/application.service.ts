@@ -104,7 +104,7 @@ export class NumberModel implements IComponentModel {
 export class BuildingProfessionalModel implements IComponentModel {
   id?: String;
   PersonalDetails?: PersonalDetails = {};
-  InspectorClass?: BuildingInspectorClass = {};
+  InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
   ReturningApplication: boolean = false;
   get CompletionState(): ComponentCompletionState {
@@ -189,8 +189,8 @@ export enum PaymentStatus {
 }
 
 export class BuildingInspectorClass {
-  Class?: BuildingInspectorClassType;
-  Activities?: BuildingInspectorRegulatedActivies = {};
+  Class: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
+  Activities: BuildingInspectorRegulatedActivies = { AssessingPlans:false, Inspection:false, CompletionState:ComponentCompletionState.NotStarted};
   Categories?: BuildingAssessingPlansCategories = {};
 }
 

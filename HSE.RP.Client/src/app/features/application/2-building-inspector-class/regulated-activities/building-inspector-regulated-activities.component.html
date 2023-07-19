@@ -1,8 +1,9 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
 
-<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
-  <h2 class="govuk-heading-m" style="color:gray">Class 2 building inspector</h2>
+<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=true>
+
+  <h2 class="govuk-heading-m" style="color:gray">Class {{getClassType()}} building inspector</h2>
   <h1 class="govuk-heading-l">What BSR-regulated activities will you do?</h1>
   <govuk-body>
     <govuk-checkbox-group [title]="" [hint]=hint [errorText]=errorText

@@ -32,14 +32,6 @@ export abstract class PageComponent<T> implements OnInit {
 
   abstract DerivedIsComplete(value: boolean): void;
 
-  public DemandModel(): T {
-    if (this.model === undefined || this.model === null) {
-      throw new Error("Model is undefined");
-    }
-    return this.model;
-  }
-
-
   private _isComplete: boolean = false;
   public get IsComplete(): boolean {
     return this._isComplete;
