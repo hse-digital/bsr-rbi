@@ -48,31 +48,36 @@ public class BuildingProfessionApplicationFunctions
     public Task<HttpResponseData> ValidateApplicationNumber([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumber/{emailAddress}/{applicationNumber}")] HttpRequestData request,
         [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> applications,
-        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail, {emailAddress}, true)", Connection = "CosmosConnection")]
+        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail.Email, {emailAddress}, true)", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> emails)
+    
     {
-        if (applications.Any() && emails.Any(app => app.Id == applications[0].Id))
-        {
-            return request.CreateObjectResponseAsync(new { isValidEmail = true, isValidApplicationNumber = true });
-        }
-        else if (emails.Any())
-        {
-            return request.CreateObjectResponseAsync(new { isValidEmail = true, isValidApplicationNumber = false }); ;
-        }
-        else if (applications.Any())
-        {
-            return request.CreateObjectResponseAsync(new { isValidEmail = false, isValidApplicationNumber = true }); ;
-        }
-        else 
-        {
-            return request.CreateObjectResponseAsync(new { isValidEmail = false, isValidApplicationNumber = false }); ;
-        }
+
+
+            if (applications.Any() && emails.Any(app => app.Id == applications[0].Id))
+            {
+                return request.CreateObjectResponseAsync(new { isValidEmail = true, isValidApplicationNumber = true });
+            }
+            else if (emails.Any())
+            {
+                return request.CreateObjectResponseAsync(new { isValidEmail = true, isValidApplicationNumber = false }); ;
+            }
+            else if (applications.Any())
+            {
+                return request.CreateObjectResponseAsync(new { isValidEmail = false, isValidApplicationNumber = true }); ;
+            }
+            else
+            {
+                return request.CreateObjectResponseAsync(new { isValidEmail = false, isValidApplicationNumber = false }); ;
+            }
+        
+
     }
 
 
     [Function(nameof(GetApplication))]
     public async Task<HttpResponseData> GetApplication([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetApplication/{applicationNumber}/{emailAddress}/{otpToken}")] HttpRequestData request,
-        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and c.PersonalDetails.ApplicantEmail = {emailAddress}", PartitionKey = "{applicationNumber}", Connection = "CosmosConnection")]
+        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and c.PersonalDetails.ApplicantEmail.Email = {emailAddress}", PartitionKey = "{applicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> buildingProfessionApplications, string otpToken)
     {
         if (buildingProfessionApplications.Any())
