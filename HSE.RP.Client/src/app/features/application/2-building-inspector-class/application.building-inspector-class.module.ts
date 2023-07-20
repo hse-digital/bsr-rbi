@@ -11,6 +11,7 @@ import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { BuildingInspectorClassSelectionComponent } from './class-selection/building-inspector-class-selection.component';
 import { BuildingInspectorCountryComponent } from './country/building-inspector-country.component';
 import { BuildingInspectorSummaryComponent } from './building-inspector-summary/building-inspector-summary.component';
+import { BuildingAssessingPlansCategoriesComponent } from './assessing-plans/building-assessing-plans-categories.component';
 import { BuildingInspectorRegulatedActivitiesComponent } from './regulated-activities/building-inspector-regulated-activities.component';
 
 
@@ -19,6 +20,7 @@ const routes = new HseRoutes([
   HseRoute.protected(BuildingInspectorCountryComponent.route, BuildingInspectorCountryComponent, BuildingInspectorCountryComponent.title),
   HseRoute.protected(BuildingInspectorSummaryComponent.route, BuildingInspectorSummaryComponent, BuildingInspectorSummaryComponent.title),
   HseRoute.protected(BuildingInspectorRegulatedActivitiesComponent.route, BuildingInspectorRegulatedActivitiesComponent, BuildingInspectorRegulatedActivitiesComponent.title),
+  HseRoute.protected(BuildingAssessingPlansCategoriesComponent.route, BuildingAssessingPlansCategoriesComponent, BuildingAssessingPlansCategoriesComponent.title),
 ]);
 
 @NgModule({
@@ -26,8 +28,8 @@ const routes = new HseRoutes([
     BuildingInspectorClassSelectionComponent,
     BuildingInspectorCountryComponent,
     BuildingInspectorSummaryComponent,
-    BuildingInspectorRegulatedActivitiesComponent
-
+    BuildingInspectorRegulatedActivitiesComponent,
+    BuildingAssessingPlansCategoriesComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
