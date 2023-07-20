@@ -48,7 +48,6 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    console.log(applicationService.model)
     if (this.selectedOption === BuildingInspectorClassType.Class1) {      
       this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
     }
