@@ -3,6 +3,7 @@ import { TitleService } from 'src/app/services/title.service';
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
+  Params,
   Router,
 } from '@angular/router';
 import { GovukErrorSummaryComponent } from 'hse-angular';
@@ -12,6 +13,8 @@ import {
   ApplicationStatus, /* PaymentStatus */
   IComponentModel,
   ComponentCompletionState,
+  StageCompletionState,
+  PaymentStatus,
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PageComponent } from 'src/app/helpers/page.component';
@@ -53,6 +56,7 @@ import { PaymentConfirmationComponent } from '../5-application-submission/paymen
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../1-personal-details/PersonalDetailRoutes';
 
 import { PaymentDeclarationComponent } from '../5-application-submission/payment/payment-declaration/payment-declaration.component';
+import { Validators } from '@angular/forms';
 
 
 interface ITaskListParent {
@@ -63,8 +67,12 @@ interface ITaskListParent {
 }
 interface ITaskListChild {
   prompt: string;
-  relativeRoute: string;
+  relativeRoute(): TaskListRoute;
   getStatus(model: BuildingProfessionalModel): TaskStatus;
+}
+
+type TaskListRoute = {
+  route: string, queryParams?: Params
 }
 
 export enum TaskStatus {
@@ -73,7 +81,11 @@ export enum TaskStatus {
   InProgress = 2,
   CannotStart = 3,
   None = 4,
+  Immutable = 5
 }
+
+
+
 
 @Component({
   templateUrl: './task-list.component.html',
@@ -85,10 +97,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   PersonalDetailRoutes = PersonalDetailRoutes;
 
   valueNotStarted(): TaskStatus { return TaskStatus.NotStarted; }
+  valueImmutable(): TaskStatus { return TaskStatus.Immutable; }
   valueComplete(): TaskStatus { return TaskStatus.Complete; }
   valueInProgress(): TaskStatus { return TaskStatus.InProgress; }
   valueCannotStart(): TaskStatus { return TaskStatus.CannotStart; }
-  
+
   DerivedIsComplete(value: boolean): void {
     throw new Error('Method not implemented.');
   }
@@ -96,14 +109,15 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   static route: string = '';
   static title: string =
     'Register as a building inspector - Register a high-rise building - GOV.UK';
-  paymentStatus: any;
-  paymentEnum: any;
   ApplicationStatus = ApplicationStatus;
   completedSections: number = 0;
   checkingStatus = true;
   QueryApplicationId!: String;
   ModelApplicationId!: String;
   production: boolean = environment.production;
+  paymentEnum = PaymentStatus;
+  paymentStatus?: PaymentStatus;
+  paymentRoute?: TaskListRoute;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -115,13 +129,17 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     this.updateOnSave = false;
     this.activatedRoute.params.subscribe(params => {
       this.QueryApplicationId = params['id']
+
     })
+    this.getPaymentStatus();
     this.ModelApplicationId = applicationService.model.id!;
     this.PersonalDetailRouter = personalDetailRouter;
   }
 
-  override onInit(applicationService: ApplicationService): void {
+
+  override async onInit(applicationService: ApplicationService): Promise<void> {
     this.model = applicationService.model;
+    this.checkingStatus = false;
   }
 
   getModelStatus(model?: IComponentModel): TaskStatus {
@@ -140,100 +158,166 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   taskItems: ITaskListParent[] = [{
     prompt: "Personal details", number: "1.", relativeRoute: ApplicationPersonalDetailsModule.baseRoute, children: [{
-      prompt: "Name", relativeRoute: PersonalDetailRoutes.NAME, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Complete
+      prompt: "Name", relativeRoute: ():
+      TaskListRoute => {
+        return {
+          route: PersonalDetailRoutes.NAME
+        }
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Complete
     },
     {
-      prompt: "Email address", relativeRoute: '', getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Complete
+      prompt: "Email address", relativeRoute: (): TaskListRoute => {
+        return { route: '' }
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Immutable
     },
     {
-      prompt: "Telephone number", relativeRoute: '', getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Complete
+      prompt: "Telephone number", relativeRoute: (): TaskListRoute => {
+        return { route: ''}
+       } , getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.Immutable
     },
     {
-      prompt: "Date of birth", relativeRoute: PersonalDetailRoutes.DATE_OF_BIRTH, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantDateOfBirth)
+      prompt: "Date of birth", relativeRoute: (): TaskListRoute => {
+        return { route: PersonalDetailRoutes.DATE_OF_BIRTH}
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantDateOfBirth)
     },
     {
-      prompt: "Home address", relativeRoute: PersonalDetailRoutes.ADDRESS, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAddress)
+      prompt: "Home address", relativeRoute: (): TaskListRoute => {
+        return { route: PersonalDetailRoutes.ADDRESS}
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAddress)
     },
     {
-      prompt: "Alternative email address", relativeRoute: PersonalDetailRoutes.ALT_EMAIL, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAlternativeEmail)
+      prompt: "Alternative email address", relativeRoute: (): TaskListRoute => {
+        return { route: PersonalDetailRoutes.ALT_EMAIL}
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAlternativeEmail)
     },
     {
-      prompt: "Telephone number", relativeRoute: PersonalDetailRoutes.ALT_PHONE, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAlternativePhone)
+      prompt: "Telephone number", relativeRoute: (): TaskListRoute => {
+        return { route: PersonalDetailRoutes.ALT_PHONE}
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAlternativePhone)
     },
     {
-      prompt: "National Insurance number", relativeRoute: PersonalDetailRoutes.NATIONAL_INS_NUMBER, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantNationalInsuranceNumber)
+      prompt: "National Insurance number", relativeRoute: (): TaskListRoute => {
+        return { route: PersonalDetailRoutes.NATIONAL_INS_NUMBER}
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantNationalInsuranceNumber)
     },
     {
-      prompt: "Summary", relativeRoute: PersonalDetailRoutes.SUMMARY, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.None
+      prompt: "Summary", relativeRoute: (): TaskListRoute => {
+        return { route:  PersonalDetailRoutes.SUMMARY}
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.None
     },
     ]
   },
   {
     prompt: "Building inspector class", number: "2.", relativeRoute: BuildingInspectorClassModule.baseRoute, children: [
       {
-        prompt: "Class selection", relativeRoute: BuildingInspectorClassSelectionComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.InspectorClass?.ClassType)
+        prompt: "Class selection", relativeRoute: (): TaskListRoute => {
+          return { route: BuildingInspectorClassSelectionComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.NotStarted
       },
       {
-        prompt: "Class details", relativeRoute: BuildingInspectorClassSelectionComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        prompt: "Class details", relativeRoute: (): TaskListRoute => {
+          return { route: BuildingInspectorClassSelectionComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
       },
       {
-        prompt: "Country", relativeRoute: BuildingInspectorCountryComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        prompt: "Country", relativeRoute: (): TaskListRoute => {
+          return { route: BuildingInspectorCountryComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
       },
       {
-        prompt: "Summary", relativeRoute: BuildingInspectorSummaryComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.None
+        prompt: "Summary", relativeRoute: (): TaskListRoute => {
+          return { route: BuildingInspectorSummaryComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.None
       }]
   },
   {
-    prompt: "Competency", number: "3.", relativeRoute: CompetencyModule.baseRoute, children: [
+    prompt: "Competency", number: "3.", relativeRoute:  CompetencyModule.baseRoute, children: [
       {
-        prompt: "Independent assessment", relativeRoute: CompetencyIndependentStatusComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        prompt: "Independent assessment", relativeRoute: (): TaskListRoute => {
+          return { route: CompetencyIndependentStatusComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
       },
       {
-        prompt: "Certificate code", relativeRoute: CompetencyCertificateCodeComponent.route, getStatus: (): TaskStatus => TaskStatus.CannotStart
+        prompt: "Certificate code", relativeRoute: (): TaskListRoute => {
+          return { route: CompetencyCertificateCodeComponent.route}
+        }, getStatus: (): TaskStatus => TaskStatus.CannotStart
       },
       {
-        prompt: "Assessment organisation", relativeRoute: CompetencyAssessmentOrganisationComponent.route, getStatus: (): TaskStatus => TaskStatus.CannotStart
+        prompt: "Assessment organisation", relativeRoute: (): TaskListRoute => {
+          return { route: CompetencyAssessmentOrganisationComponent.route}
+        }, getStatus: (): TaskStatus => TaskStatus.CannotStart
       },
       {
-        prompt: "Date of assessment", relativeRoute: CompetencyAssessmentDateComponent.route, getStatus: (): TaskStatus => TaskStatus.CannotStart
+        prompt: "Date of assessment", relativeRoute: (): TaskListRoute => {
+          return { route: CompetencyAssessmentDateComponent.route}
+        }, getStatus: (): TaskStatus => TaskStatus.CannotStart
       },
       {
-        prompt: "Summary", relativeRoute: CompetencySummaryComponent.route, getStatus: (): TaskStatus => TaskStatus.None
+        prompt: "Summary", relativeRoute: (): TaskListRoute => {
+          return { route: CompetencySummaryComponent.route}
+        }, getStatus: (): TaskStatus => TaskStatus.None
       },
     ]
   },
   {
     prompt: "Professional Activity", number: "4.", relativeRoute: CompetencyModule.baseRoute, children: [
       {
-        prompt: "Professional body membership", relativeRoute: ProfessionalBodyMembershipsComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        prompt: "Professional body membership", relativeRoute: (): TaskListRoute => {
+          return { route: ProfessionalBodyMembershipsComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
       },
       {
-        prompt: "Employment type", relativeRoute: ProfessionalActivityEmploymentTypeComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        prompt: "Employment type", relativeRoute: (): TaskListRoute => {
+          return { route: ProfessionalActivityEmploymentTypeComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
       },
       {
-        prompt: "Employment details", relativeRoute: ProfessionalActivityEmploymentDetailsComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        prompt: "Employment details", relativeRoute: (): TaskListRoute => {
+          return { route: ProfessionalActivityEmploymentDetailsComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
       },
       {
-        prompt: "Summary", relativeRoute: ProfessionalActivitySummaryComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.None
+        prompt: "Summary", relativeRoute: (): TaskListRoute => {
+          return {
+            route: ProfessionalActivitySummaryComponent.route}
+          }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.None
       },
     ]
   },
   {
-    prompt: "Application summary", number: "5.", relativeRoute: CompetencyModule.baseRoute, children: [
+    prompt: "Application summary", number: "5.", relativeRoute: "application-submission/payment", children: [
       {
-        prompt: "Application summary", relativeRoute: ApplicationSummaryComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.None
+        prompt: "Application summary", relativeRoute: (): TaskListRoute => {
+        return {route: ApplicationSummaryComponent.route}
+      }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.None
       },
       {
-        prompt: "Pay your fee and submit your application", relativeRoute: PaymentConfirmationComponent.route, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        prompt: "Pay your fee and submit your application",
+        relativeRoute: (): TaskListRoute => this.paymentRoute!,
+        getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
+        {
+          if(this.paymentStatus == this.paymentEnum.Success)
+          {
+              return TaskStatus.Complete;
+          }
+          else if(this.paymentStatus == this.paymentEnum.Pending)
+          {
+              return TaskStatus.InProgress;
+          }
+          else
+          {
+            return TaskStatus.NotStarted;
+          }
+        }
       },
     ]
   }
   ];
 
   navigateTo(parent: ITaskListParent, child: ITaskListChild): void {
-    if (child.getStatus(this.model!) !== TaskStatus.CannotStart && child.relativeRoute != '')
+    if (child.getStatus(this.model!) !== TaskStatus.CannotStart && child.relativeRoute().route != '')
     {
-      this.navigationService.navigateRelative(`${this.ModelApplicationId}/${parent.relativeRoute}/${child.relativeRoute}`, this.activatedRoute);
+      this.navigationService.navigateRelative(`${this.ModelApplicationId}/${parent.relativeRoute}/${child.relativeRoute().route}`, this.activatedRoute, child.relativeRoute().queryParams);
     }
   }
 
@@ -245,10 +329,10 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
 
-    return true;
+    return this.applicationService.model?.StageStatus["EmailVerification"] == StageCompletionState.Complete &&
+           this.applicationService.model?.StageStatus["PhoneVerification"] == StageCompletionState.Complete &&
+           FieldValidations.IsNotNullOrWhitespace(this.applicationService.model.id)
   }
-
-
   override isValid(): boolean {
     throw new Error('Method not implemented.');
   }
@@ -258,12 +342,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
 
 
-  // paymentEnum = PaymentStatus;
-  // paymentStatus?: PaymentStatus;
-
-  containsFlag(flag: ApplicationStatus) {
-    return (this.model!.ApplicationStatus & flag) == flag;
-  }
 
   navigateToSummary() : Promise<boolean> {
     return this.PersonalDetailRouter.navigateTo(this.model!, PersonalDetailRoutes.SUMMARY);
@@ -273,33 +351,30 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     throw new Error('Method not implemented.');
   }
 
-//  navigateToPersonalDetailsAddress() {
-//    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantAddressComponent.route}`, this.activatedRoute);
-//  }
+  async getPaymentStatus(): Promise<void> {
+    var payments = await this.applicationService.getApplicationPayments();
 
-//  navigateToPersonalDetailsDateOfBirth() {
-//    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${ApplicantDateOfBirthComponent.route}`, this.activatedRoute);
-//  }
+    if (payments?.length > 0) {
+      var successfulPayments = payments.filter(x => x.bsr_govukpaystatus == 'success' || x.bsr_govukpaystatus == 'created');
 
-//  navigateToPersonalDetails() {
-//    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/personal-details/${PersonalDetailsPlaceholderComponent.route}`, this.activatedRoute);
-//  }
-//  navigateToBuildingInspectorClass() {
-//    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/building-inspector-class/${BuildingInspectorClassPlaceholderComponent.route}`, this.activatedRoute);
-//  }
-//  navigateToCompetency() {
-//    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/competency/${CompetencyPlaceholderComponent.route}`, this.activatedRoute);
-//  }
-//  navigateToProfessionalActivity() {
-//    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/professional-activity/${ProfessionalActivityPlaceholderComponent.route}`, this.activatedRoute);
-//  }
-//  navigateToApplicationOverview() {
-//    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/${ApplicationSubmissionPlaceholderComponent.route}`, this.activatedRoute);
-//  }
-//  navigateToPayAndSubmit() {
-//    return this.navigationService.navigateRelative(`${this.ModelApplicationId}/application-submission/${PayAndSubmitComponent.route}`, this.activatedRoute);
-//  }
-//  navigateToPayment() {
-//    throw new Error('Method not implemented.');
-//  }
+      if (successfulPayments?.length > 0) {
+        var successsfulpayment = successfulPayments.find(x => x.bsr_paymentreconciliationstatus !== 760_810_002 && x.bsr_paymentreconciliationstatus !== 760_810_003 && x.bsr_paymentreconciliationstatus !== 760_810_004);
+        this.paymentStatus = successsfulpayment ? PaymentStatus.Success : PaymentStatus.Failed;
+        this.paymentRoute = successsfulpayment ? {route: PaymentConfirmationComponent.route, queryParams: {reference: successsfulpayment?.bsr_transactionid}} : {route: PaymentDeclarationComponent.route};
+      } else {
+        this.paymentStatus = PaymentStatus.Failed;
+        this.paymentRoute = {route: PaymentDeclarationComponent.route};
+
+      }
+    } else if (this.model?.StageStatus["Declaration"] == StageCompletionState.Complete) {
+      this.paymentStatus = PaymentStatus.Started;
+      this.paymentRoute = {route: PaymentDeclarationComponent.route};
+    }
+    else {
+      this.paymentStatus = PaymentStatus.Pending;
+      this.paymentRoute = {route: PaymentDeclarationComponent.route};
+    }
+  }
+
+
 }

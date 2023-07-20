@@ -111,7 +111,7 @@ export class NumberModel implements IComponentModel {
 }
 
 export class BuildingProfessionalModel implements IComponentModel {
-  id?: String;
+  id?: string;
   PersonalDetails?: PersonalDetails = {};
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
