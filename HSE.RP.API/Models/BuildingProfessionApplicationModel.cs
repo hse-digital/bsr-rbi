@@ -126,6 +126,7 @@ namespace HSE.RP.API.Models
         public BuildingInspectorRegulatedActivies? Activities { get; set; }
         public BuildingAssessingPlansCategories? BuildingPlanCategories { get; set; }
         public string ClassTechnicalManager { get; set; } = string.Empty;
+        public BuildingInspectorCountryOfWork? InspectorCountryOfWork { get; set; }
     }
 
     public record BuildingAssessingPlansCategories
@@ -137,6 +138,12 @@ namespace HSE.RP.API.Models
         public bool? CategoryE { get; set; }
         public bool? CategoryF { get; set; }
         public ComponentCompletionState CompletionState { get; set; }
+    }
+
+    public record BuildingInspectorCountryOfWork
+    {
+        public bool? England { get; set; }
+        public bool? Wales { get; set; }
     }
 
     public record ClassSelection
