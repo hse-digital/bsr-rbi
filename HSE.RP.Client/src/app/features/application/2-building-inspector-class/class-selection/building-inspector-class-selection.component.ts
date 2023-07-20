@@ -26,7 +26,6 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   modelValid: boolean = false;
   photoHasErrors = false;
   BuildingInspectorClassType = BuildingInspectorClassType;
-  option: BuildingInspectorClassType = BuildingInspectorClassType.Class2;
   selectedOption: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
   testSelect = BuildingInspectorClassType;
   selectedOptionError: boolean = false;

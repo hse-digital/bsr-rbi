@@ -41,7 +41,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
     this.updateOnSave = true;
 
     if (applicationService.model?.InspectorClass)
-      applicationService.model.InspectorClass.Class =
+      applicationService.model.InspectorClass.ClassType.Class =
         BuildingInspectorClassType.ClassNone;
 
     if (!applicationService.model?.InspectorClass) {
@@ -53,7 +53,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
         new BuildingAssessingPlansCategories();
     }
 
-    applicationService.model.InspectorClass!.Class =
+    applicationService.model.InspectorClass!.ClassType.Class =
       BuildingInspectorClassType.Class2;
     this.model = applicationService.model.InspectorClass?.BuildingPlanCategories;
 
