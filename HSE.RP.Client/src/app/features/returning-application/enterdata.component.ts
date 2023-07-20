@@ -46,6 +46,7 @@ export class ReturningApplicationEnterDataComponent {
       await this.applicationService.sendVerificationEmail(this.emailAddress!);
       this.onContinue.emit({ emailAddress: this.emailAddress!, applicationNumber: this.applicationNumber! });
     } else {
+      this.sendingRequest
       this.summaryError?.first?.focus();
       this.titleService.setTitleError();
     }
@@ -58,7 +59,7 @@ export class ReturningApplicationEnterDataComponent {
     if (!this.applicationNumber || this.applicationNumber.length != 12) {
       this.errors.applicationNumber.errorText = 'You must enter your 12 digit application code';
     } else {
-      var result = await this.applicationService.validateReturningApplicationDetails(this.emailAddress!, this.applicationNumber!);      
+      var result = await this.applicationService.validateReturningApplicationDetails(this.emailAddress!, this.applicationNumber!);
       if (result.isValidApplicationNumber && result.isValidEmail) {
         // Do nothing, this is a valid condition
       } else if (!result.isValidApplicationNumber && result.isValidEmail) {
