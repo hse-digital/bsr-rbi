@@ -113,6 +113,7 @@ export class NumberModel implements IComponentModel {
 export class BuildingProfessionalModel implements IComponentModel {
   id?: string;
   PersonalDetails?: PersonalDetails = {};
+  InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
 
   //TODO test StageStatus and replace ApplicationStatus
@@ -206,4 +207,36 @@ export enum PaymentStatus {
   Pending,
   Success,
   Failed
+}
+
+export class BuildingInspectorClass {
+  Class: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
+  Activities: BuildingInspectorRegulatedActivies = { AssessingPlans:false, Inspection:false, CompletionState:ComponentCompletionState.NotStarted};
+  BuildingPlanCategories?: BuildingAssessingPlansCategories = {};
+}
+
+export enum BuildingInspectorClassType {
+  ClassNone = 0,
+  Class1 = 1,
+  Class2 = 2,
+  Class3 = 3
+}
+
+export class BuildingInspectorRegulatedActivies {
+  [key: string]: any;
+  AssessingPlans?: boolean;
+  Inspection?: boolean;
+  CompletionState?: ComponentCompletionState
+
+}
+
+export class BuildingAssessingPlansCategories {
+  [key: string]: any;
+  CategoryA?: boolean;
+  CategoryB?: boolean;
+  CategoryC?: boolean;
+  CategoryD?: boolean;
+  CategoryE?: boolean;
+  CategoryF?: boolean;
+  CompletionState?: ComponentCompletionState
 }
