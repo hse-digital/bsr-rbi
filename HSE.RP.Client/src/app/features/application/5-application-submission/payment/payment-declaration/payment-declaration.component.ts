@@ -10,6 +10,7 @@ import {
   ApplicationService,
   ApplicationStatus,
   BuildingProfessionalModel,
+  StageCompletionState,
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PaymentService } from 'src/app/services/payment.service';
@@ -39,14 +40,17 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
+
+
     this.applicationService.model.ApplicationStatus =
-      this.applicationService.model.ApplicationStatus |
-      ApplicationStatus.PaymentInProgress;
+      this.applicationService.model.ApplicationStatus | ApplicationStatus.PaymentInProgress;
     await this.applicationService.updateApplication();
   }
-  override onSave(applicationService: ApplicationService): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  override async onSave(applicationService: ApplicationService): Promise<void> {
+    this.applicationService.model.StageStatus['Declaration'] = StageCompletionState.Incomplete;
   }
+  
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
@@ -65,6 +69,7 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
     this.screenReaderNotification();
 
     await this.applicationService.syncDeclaration();
+    this.applicationService.model.StageStatus["Declaration"] = StageCompletionState.Complete;
     var paymentResponse = await this.paymentService.InitialisePayment(
       this.applicationService.model
     );
