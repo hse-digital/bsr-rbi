@@ -50,8 +50,57 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   override async onSave(applicationService: ApplicationService): Promise<void> {
     if (this.selectedOption === BuildingInspectorClassType.Class1) {      
       this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
+      // reset all other info to false
+      this.applicationService.model.InspectorClass!.Activities = {
+        AssessingPlans: false,
+        Inspection: false,
+        CompletionState: ComponentCompletionState.NotStarted,
+      };
+      this.applicationService.model.InspectorClass!.AssessingPlansClass3 = {
+        CategoryA: false,
+        CategoryB: false,
+        CategoryC: false,
+        CategoryD: false,
+        CategoryE: false,
+        CategoryF: false,
+        CategoryG: false,
+        CategoryH: false,
+      }
+      this.applicationService.model.InspectorClass!.BuildingPlanCategories = {
+        CategoryA: false,
+        CategoryB: false,
+        CategoryC: false,
+        CategoryD: false,
+        CategoryE: false,
+        CategoryF: false,
+      }
+      this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
     }
     else {
+      if (this.selectedOption === BuildingInspectorClassType.Class2) {
+        this.applicationService.model.InspectorClass!.AssessingPlansClass3 = {
+          CategoryA: false,
+          CategoryB: false,
+          CategoryC: false,
+          CategoryD: false,
+          CategoryE: false,
+          CategoryF: false,
+          CategoryG: false,
+          CategoryH: false,
+        }
+        this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
+      }
+      if (this.selectedOption === BuildingInspectorClassType.Class3) {
+        this.applicationService.model.InspectorClass!.BuildingPlanCategories = {
+          CategoryA: false,
+          CategoryB: false,
+          CategoryC: false,
+          CategoryD: false,
+          CategoryE: false,
+          CategoryF: false,
+        }
+        this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
+      }
       this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.InProgress };
     }
   }

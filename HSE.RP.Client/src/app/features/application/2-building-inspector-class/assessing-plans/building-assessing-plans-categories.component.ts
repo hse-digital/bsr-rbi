@@ -8,7 +8,7 @@ import {
   BuildingInspectorClassType,
   ComponentCompletionState,
 } from 'src/app/services/application.service';
-import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
+import { BuildingInspectorRouter, BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 import { environment } from 'src/environments/environment';
 import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
 
@@ -17,7 +17,7 @@ import { BuildingClassTechnicalManagerComponent } from '../class-technical-manag
   templateUrl: './building-assessing-plans-categories.component.html',
 })
 export class BuildingAssessingPlansCategoriesComponent extends PageComponent<BuildingAssessingPlansCategories> {
-  public static route: string = BuildingInspectorRoutes.PLANS_CATEGARIES;
+  public static route: string = BuildingInspectorRoutes.PLANS_CATEGORIES;
   public id: string = BuildingClassTechnicalManagerComponent.route;
   static title =
     'Building inspector class - Register as a building inspector - GOV.UK';
@@ -33,17 +33,12 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   @Output() onClicked = new EventEmitter();
   @Output() onKeyupEnter = new EventEmitter();
 
-  constructor(activatedRoute: ActivatedRoute) {
+  constructor(activatedRoute: ActivatedRoute, private buildingInspectorRouter : BuildingInspectorRouter) {
     super(activatedRoute);
   }
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-
-    if (applicationService.model?.InspectorClass)
-      applicationService.model.InspectorClass.ClassType.Class =
-        BuildingInspectorClassType.ClassNone;
-
     if (!applicationService.model?.InspectorClass) {
       applicationService.model.InspectorClass = new BuildingInspectorClass();
     }
@@ -103,10 +98,11 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(
-      BuildingClassTechnicalManagerComponent.route,
-      this.activatedRoute
-    );
+    if (this.applicationService.model.InspectorClass?.Activities.Inspection === false && this.applicationService.model.InspectorClass?.Activities.AssessingPlans === true) {
+      return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER);
+    }
+    // redirect to the Class 2 Inspection Categories once that page has been made
+    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.SUMMARY);
   }
 
   DerivedIsComplete(value: boolean): void {

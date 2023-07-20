@@ -274,6 +274,16 @@ export class BuildingInspectorClass {
     CategoryE: false,
     CategoryF: false,
   };
+  AssessingPlansClass3: BuidlingInspectorAssessingPlansClass3 = {
+    CategoryA: false,
+    CategoryB: false,
+    CategoryC: false,
+    CategoryD: false,
+    CategoryE: false,
+    CategoryF: false,
+    CategoryG: false,
+    CategoryH: false,
+  }
   ClassTechnicalManager?: string;
   InspectorCountryOfWork?: BuildingInspectorCountryOfWork = {England: false, Wales: false};
 }
@@ -306,6 +316,19 @@ export class BuildingAssessingPlansCategories {
   CategoryE?: boolean;
   CategoryF?: boolean;
   CompletionState?: ComponentCompletionState;
+}
+
+export class BuidlingInspectorAssessingPlansClass3 {
+  [key: string]: any;
+  CategoryA?: boolean;
+  CategoryB?: boolean;
+  CategoryC?: boolean;
+  CategoryD?: boolean;
+  CategoryE?: boolean;
+  CategoryF?: boolean;
+  CategoryG?: boolean;
+  CategoryH?: boolean;
+  CompletionState?: ComponentCompletionState
 }
 
 export class BuildingInspectorCountryOfWork {
