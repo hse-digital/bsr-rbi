@@ -1,0 +1,93 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="saveAndContinue()"
+  [hideBackButton]="true"
+>
+  <h2 class="govuk-heading-m" style="color: gray">
+    Class 2 building inspector
+  </h2>
+  <h1 class="govuk-heading-l">
+    Assessing plans: which category of building plans are you competent to
+    assess?
+  </h1>
+
+  <govuk-body>
+    Competent means you can assess building plans, drawings and associated
+    information (for example, material specifications, structural calculations
+    and fire strategies) to ensure they comply with building regulations.
+
+    <govuk-checkbox-group
+      [title]=""
+      [hint]="hint"
+      [errorText]="errorText"
+      [(model)]="selections"
+      [id]="id"
+      #field
+      [govukRequired]="field"
+    >
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [id]="id"
+        [model]="selections"
+        text="Category A"
+        value="CategoryA"
+        (onClicked)="optionClicked()"
+        hint=""
+      />
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [model]="selections"
+        text="Category B"
+        value="CategoryB"
+        (onClicked)="optionClicked()"
+        [id]="id"
+        hint=""
+      />
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [model]="selections"
+        text="Category C"
+        value="CategoryC"
+        (onClicked)="optionClicked()"
+        [id]="id"
+        hint=""
+      />
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [model]="selections"
+        text="Category D"
+        value="CategoryD"
+        (onClicked)="optionClicked()"
+        [id]="id"
+        hint=""
+      />
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [model]="selections"
+        text="Category E"
+        value="CategoryE"
+        (onClicked)="optionClicked()"
+        [id]="id"
+        hint=""
+      />
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [model]="selections"
+        text="Category F"
+        value="CategoryF"
+        (onClicked)="optionClicked()"
+        [id]="id"
+        hint=""
+      />
+    </govuk-checkbox-group>
+  </govuk-body>
+</govuk-formpage>

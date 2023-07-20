@@ -11,8 +11,10 @@ import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { BuildingInspectorClassSelectionComponent } from './class-selection/building-inspector-class-selection.component';
 import { BuildingInspectorCountryComponent } from './country/building-inspector-country.component';
 import { BuildingInspectorSummaryComponent } from './building-inspector-summary/building-inspector-summary.component';
+import { BuildingAssessingPlansCategoriesComponent } from './assessing-plans/building-assessing-plans-categories.component';
 import { BuildingInspectorRegulatedActivitiesComponent } from './regulated-activities/building-inspector-regulated-activities.component';
 import { BuildingInspectorAssessingPlansClass3Component } from './assessing-plans/building-inspector-assessing-plans-class3.component';
+import { BuildingClassTechnicalManagerComponent } from './class-technical-manager/building-class-technical-manager.component';
 
 
 const routes = new HseRoutes([
@@ -21,6 +23,8 @@ const routes = new HseRoutes([
   HseRoute.protected(BuildingInspectorSummaryComponent.route, BuildingInspectorSummaryComponent, BuildingInspectorSummaryComponent.title),
   HseRoute.protected(BuildingInspectorRegulatedActivitiesComponent.route, BuildingInspectorRegulatedActivitiesComponent, BuildingInspectorRegulatedActivitiesComponent.title),
   HseRoute.protected(BuildingInspectorAssessingPlansClass3Component.route, BuildingInspectorAssessingPlansClass3Component, BuildingInspectorAssessingPlansClass3Component.title),
+  HseRoute.protected(BuildingAssessingPlansCategoriesComponent.route, BuildingAssessingPlansCategoriesComponent, BuildingAssessingPlansCategoriesComponent.title),
+  HseRoute.protected(BuildingClassTechnicalManagerComponent.route, BuildingClassTechnicalManagerComponent, BuildingClassTechnicalManagerComponent.title),
 ]);
 
 @NgModule({
@@ -29,8 +33,9 @@ const routes = new HseRoutes([
     BuildingInspectorCountryComponent,
     BuildingInspectorSummaryComponent,
     BuildingInspectorRegulatedActivitiesComponent,
-    BuildingInspectorAssessingPlansClass3Component
-
+    BuildingInspectorAssessingPlansClass3Component,
+    BuildingAssessingPlansCategoriesComponent,
+    BuildingClassTechnicalManagerComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

@@ -43,7 +43,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
 
   public getClassType(): BuildingInspectorClassType
   {
-    return this.applicationService?.model?.InspectorClass?.Class ?? 0;
+    return this.applicationService?.model?.InspectorClass?.ClassType.Class ?? 0;
   }
 
   constructor(
@@ -53,7 +53,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
     super(activatedRoute);
     this.updateOnSave = true;
     if (applicationService.model?.InspectorClass)
-      applicationService.model.InspectorClass.Class = BuildingInspectorClassType.ClassNone;
+      applicationService.model.InspectorClass.ClassType.Class = BuildingInspectorClassType.ClassNone;
     if (!applicationService.model?.InspectorClass) {
       applicationService.model.InspectorClass = new BuildingInspectorClass();
     }

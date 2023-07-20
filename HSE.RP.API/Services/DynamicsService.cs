@@ -207,7 +207,6 @@ namespace HSE.RP.API.Services
             try
             {
                 var result = await dynamicsApi.Update($"bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid})", buildingProfessionApplication);
-
             }
             catch(Exception ex)
             {
@@ -235,7 +234,7 @@ namespace HSE.RP.API.Services
             if (buildingProfessionApplication == null)
                 return new List<DynamicsPayment>();
 
-            var payments = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"_bsr_buildingprofessionapplicationid_value eq '{buildingProfessionApplication.bsr_buildingproappid}'"));
+            var payments = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"_bsr_buildingprofessionapplicationid_value eq '{buildingProfessionApplication.bsr_buildingprofessionapplicationid}'"));
 
             return payments.value;
         }

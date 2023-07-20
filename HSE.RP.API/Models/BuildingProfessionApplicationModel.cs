@@ -104,13 +104,6 @@ namespace HSE.RP.API.Models
 
     }
 
-    public record BuildingInspectorClass
-    {
-        public BuildingInspectorClassType? Class { get; set; }
-        public BuildingInspectorRegulatedActivies? Activities { get; set; }
-        public BuidlingInspectorAssessingPlansClass3 AssessingPlansClass3 { get; set; }
-    }
-
     public enum BuildingInspectorClassType
     {
         ClassNone = 0,
@@ -127,6 +120,27 @@ namespace HSE.RP.API.Models
 
     }
 
+    public record BuildingInspectorClass
+    {
+        public ClassSelection ClassType { get; set; }
+        public BuildingInspectorRegulatedActivies? Activities { get; set; }
+        public BuildingAssessingPlansCategories? BuildingPlanCategories { get; set; }
+        public BuidlingInspectorAssessingPlansClass3 AssessingPlansClass3 { get; set; }
+        public string ClassTechnicalManager { get; set; } = string.Empty;
+    }
+
+
+    public record BuildingAssessingPlansCategories
+    {
+        public bool? CategoryA { get; set; }
+        public bool? CategoryB { get; set; }
+        public bool? CategoryC { get; set; }
+        public bool? CategoryD { get; set; }
+        public bool? CategoryE { get; set; }
+        public bool? CategoryF { get; set; }
+        public ComponentCompletionState CompletionState { get; set; }
+    }
+
     public record BuidlingInspectorAssessingPlansClass3
     {
         public bool? CategoryA { get; set; }
@@ -141,11 +155,11 @@ namespace HSE.RP.API.Models
         public ComponentCompletionState CompletionState { get; set; }
     }
 
-
-
-
-
-
+    public record ClassSelection
+    (
+        BuildingInspectorClassType Class = BuildingInspectorClassType.ClassNone,
+        ComponentCompletionState CompletionState = ComponentCompletionState.NotStarted
+    );
 
     [Flags]
     public enum ApplicationStatus
