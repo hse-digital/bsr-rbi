@@ -35,7 +35,9 @@ public class BuildingProfessionApplicationFunctions
         }
 
         buildingProfessionApplicationModel = await dynamicsService.RegisterNewBuildingProfessionApplicationAsync(buildingProfessionApplicationModel);
+
         var response = await request.CreateObjectResponseAsync(buildingProfessionApplicationModel);
+
         return new CustomHttpResponseData
         {
             Application = buildingProfessionApplicationModel,

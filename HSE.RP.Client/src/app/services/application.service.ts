@@ -257,7 +257,10 @@ export enum PaymentStatus {
 }
 
 export class BuildingInspectorClass {
-  Class: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
+  ClassType: ClassSelection = { 
+    Class: BuildingInspectorClassType.ClassNone,
+    CompletionState: ComponentCompletionState.NotStarted
+  };
   Activities: BuildingInspectorRegulatedActivies = {
     AssessingPlans: false,
     Inspection: false,
@@ -272,6 +275,11 @@ export class BuildingInspectorClass {
     CategoryF: false,
   };
   ClassTechnicalManager?: string;
+}
+
+export class ClassSelection implements IComponentModel {
+  Class?: BuildingInspectorClassType
+  CompletionState?: ComponentCompletionState
 }
 
 export enum BuildingInspectorClassType {
