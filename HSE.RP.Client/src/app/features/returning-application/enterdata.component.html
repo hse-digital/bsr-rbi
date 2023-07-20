@@ -1,28 +1,44 @@
 <div class="govuk-form-group">
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="errors.emailAddress.hasError" anchorId="input-email-address" message="{{errors.emailAddress.errorText}}" />
-    <govuk-error-link *ngIf="errors.applicationNumber.hasError" anchorId="input-application-number" message="{{errors.applicationNumber.errorText}}" />
+    <govuk-error-link *ngIf="errors.emailAddress.hasError" anchorId="input-email-address"
+      message="{{errors.emailAddress.errorText}}" />
+    <govuk-error-link *ngIf="errors.applicationNumber.hasError" anchorId="input-application-number"
+      message="{{errors.applicationNumber.errorText}}" />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Continue a saved application</h1>
 
-  <govuk-input id="email-address" label="Email address" labelClass="govuk-label--s"
-                hint="This is the email address you used when you began this application."
-                [(model)]="emailAddress" type="email" [maxlength]=100
-                (modelChange)="emailAddressChange.emit(emailAddress)"
-                [errorText]="getErrorDescription(errors.emailAddress.hasError, errors.emailAddress.errorText)"
-                class="govuk-!-margin-bottom-5"
-                (onKeyupEnter)="validateAndContinue()" />
-
   <govuk-input id="application-number" label="Application number" labelClass="govuk-label--s" [maxlength]="12"
-                hint="Find this in the email we sent to you when you began your application. For example, '000123456789'."
-                [(model)]="applicationNumber" class="govuk-input--width-20"
-                (modelChange)="applicationNumberChange.emit(applicationNumber)"
-                [errorText]="getErrorDescription(errors.applicationNumber.hasError, errors.applicationNumber.errorText)"
-                (onKeyupEnter)="validateAndContinue()" />
+    hint="Find this in the email we sent to you when you began your application. For example, '000123456789'."
+    [(model)]="applicationNumber" class="govuk-input--width-20"
+    (modelChange)="applicationNumberChange.emit(applicationNumber)"
+    [errorText]="getErrorDescription(errors.applicationNumber.hasError, errors.applicationNumber.errorText)"
+    (onKeyupEnter)="validateAndContinue()" />
 
-</div>
+  <govuk-body>Select how you want to recieve your 6-digit verification code</govuk-body>
 
-<govuk-body>If that email address or application number is no longer available to you, <a href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm" target="_blank" class="govuk-link" role="link">contact us</a>.</govuk-body>
+  <govuk-radio-group title="Select how you want to recieve your 6-digit verification code"
+  [(model)]="validationOption" #field [govukRequired]="field"
+  [errorText]="getErrorDescription(errors.applicationNumber.hasError, errors.applicationNumber.errorText)">
+  <govuk-body>This will be the email address or mobile phone number you supplied when you began your application.</govuk-body>
 
-<govuk-button (onClick)="validateAndContinue()" [isLoading]="sendingRequest" [disabled]="sendingRequest">Continue</govuk-button>
+  <govuk-radio [model]="validationOption" name="validation-option" id="phone-option" value="phone-option" label="via text message" (onKeyupEnter)="validateAndContinue" />
+  <div class="govuk-radios__divider">or</div>
+  <govuk-radio [model]="validationOption" name="email-option" id="email-opttion" value="no" label="via email" (onKeyupEnter)="validateAndContinue()">
+    <govuk-input id="email-address" label="Email address" labelClass="govuk-label--s"
+    hint="This is the email address you used when you began this application." [(model)]="emailAddress" type="email"
+    [maxlength]=100 (modelChange)="emailAddressChange.emit(emailAddress)"
+    [errorText]="getErrorDescription(errors.emailAddress.hasError, errors.emailAddress.errorText)"
+    class="govuk-!-margin-bottom-5" (onKeyupEnter)="validateAndContinue()" />
+  </govuk-radio>
+</govuk-radio-group>
+
+
+
+
+<govuk-body>If that email address or application number is no longer available to you, <a
+    href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm" target="_blank" class="govuk-link"
+    role="link">contact us</a>.</govuk-body>
+
+<govuk-button (onClick)="validateAndContinue()" [isLoading]="sendingRequest"
+  [disabled]="sendingRequest">Continue</govuk-button>

@@ -23,16 +23,24 @@ export class ReturningApplicationEnterDataComponent {
   @Input() applicationNumber: string | undefined;
   @Output() applicationNumberChange = new EventEmitter<string | undefined>();
 
+
+  @Input() phoneNumber: string | undefined;
+  @Output() phoneNumberChange = new EventEmitter<string | undefined>();
+
   @Output()
-  onContinue = new EventEmitter<{ emailAddress: string, applicationNumber: string }>();
+  onContinue = new EventEmitter<{ emailAddress: string, applicationNumber: string, phoneNumber: string }>();
 
   @ViewChildren("summaryError") summaryError?: QueryList<GovukErrorSummaryComponent>;
 
   constructor(private applicationService: ApplicationService, private titleService: TitleService) { }
 
+  validationOption?: string;
+
   getErrorDescription(showError: boolean, errorMessage: string): string | undefined {
     return this.hasErrors && showError ? errorMessage : undefined;
   }
+
+
 
   async validateAndContinue(): Promise<void> {
     this.sendingRequest = true;
@@ -44,7 +52,7 @@ export class ReturningApplicationEnterDataComponent {
 
     if (!this.hasErrors) {
       await this.applicationService.sendVerificationEmail(this.emailAddress!);
-      this.onContinue.emit({ emailAddress: this.emailAddress!, applicationNumber: this.applicationNumber! });
+      this.onContinue.emit({ emailAddress: this.emailAddress!, applicationNumber: this.applicationNumber!, phoneNumber: this.phoneNumber! });
     } else {
       this.sendingRequest
       this.summaryError?.first?.focus();
