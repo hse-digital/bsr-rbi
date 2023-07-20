@@ -3,18 +3,19 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, StringModel, ComponentCompletionState } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, StringModel, ComponentCompletionState, BuildingInspectorRegulatedActivies, ClassSelection, BuildingInspectorClassType, BuildingInspectorClass } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
-import { BuildingInspectorRoutes, BuildingInspectorRouter } from '../BuildingInspectorRoutes'; 
 import { application } from 'express';
+import { BuildingInspectorRegulatedActivitiesComponent } from '../regulated-activities/building-inspector-regulated-activities.component';
+import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 
 @Component({
   selector: 'hse-building-inspector-class-selection',
   templateUrl: './building-inspector-class-selection.component.html',
 })
-export class BuildingInspectorClassSelectionComponent extends PageComponent<string> {
+export class BuildingInspectorClassSelectionComponent extends PageComponent<ClassSelection> {
   DerivedIsComplete(value: boolean): void {
     // this.applicationService.model.BuildingInspectorClass!.ClassSelection!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
   }
@@ -24,9 +25,13 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<stri
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  selectedOption: string = "";
+  BuildingInspectorClassType = BuildingInspectorClassType;
+  option: BuildingInspectorClassType = BuildingInspectorClassType.Class2;
+  selectedOption: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
+  testSelect = BuildingInspectorClassType;
   selectedOptionError: boolean = false;
   errorMessage: string = "";
+  override model?: ClassSelection;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
@@ -34,31 +39,32 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<stri
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.model = applicationService.model.InspectorClass?.ClassType
     // if the user visits this page for the first time, set status to in progress until user saves and continues
-    if (!applicationService.model.BuildingInspectorClass?.ClassSelection) {
-      applicationService.model.BuildingInspectorClass!.ClassSelection = { ClassType: '', CompletionState: ComponentCompletionState.InProgress };
+    if (applicationService.model.InspectorClass?.ClassType.Class === BuildingInspectorClassType.ClassNone) {
+      applicationService.model.InspectorClass!.ClassType = { Class: BuildingInspectorClassType.ClassNone, CompletionState: ComponentCompletionState.InProgress };
     }
-
-    this.model = applicationService.model.BuildingInspectorClass!.ClassSelection!.ClassType; 
     
-    if (this.model) { this.selectedOption = this.model; }
+    if (this.model) { this.selectedOption = this.model.Class!; }
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    if (this.selectedOption === "1") {
-      this.applicationService.model.BuildingInspectorClass!.ClassSelection = { ClassType: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
+    console.log(applicationService.model)
+    if (this.selectedOption === BuildingInspectorClassType.Class1) {      
+      this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
     }
     else {
-      this.applicationService.model.BuildingInspectorClass!.ClassSelection = { ClassType: this.selectedOption, CompletionState: ComponentCompletionState.InProgress };
+      this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.InProgress };
     }
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    if (this.applicationService.model.ApplicationStatus === ApplicationStatus.PersonalDetailsComplete) {
-      return true;
-    }
+    // if (this.applicationService.model.ApplicationStatus === ApplicationStatus.PersonalDetailsComplete) {
+    //   return true;
+    // }
 
-    return false;    
+    // return false;    
+    return true
   }
 
   override isValid(): boolean {
@@ -68,12 +74,12 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<stri
       return false;
     }
 
-    this.model = this.selectedOption;
+    this.model!.Class = this.selectedOption;
     return true;
   }
 
   override navigateNext(): Promise<boolean> {
-    if (this.selectedOption === "1") {
+    if (this.selectedOption === BuildingInspectorClassType.Class1) {
       return this.navigationService.navigateRelative(
         BuildingInspectorCountryComponent.route,
         this.activatedRoute
@@ -81,8 +87,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<stri
     }
     else {
       return this.navigationService.navigateRelative(
-        //TODO replace this route with activities page when completed
-        BuildingInspectorCountryComponent.route,
+        BuildingInspectorRegulatedActivitiesComponent.route,
         this.activatedRoute
       )
     }

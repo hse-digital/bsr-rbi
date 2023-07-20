@@ -12,7 +12,7 @@
   <govuk-radio-group hintText="Select one option." id="radios-bi-class-selection" [(model)]="selectedOption" [errorText]="errorMessage">
     <govuk-radio 
       label="Class 1 building inspector"
-      value="1"
+      [value]="BuildingInspectorClassType.Class1"
       id="1"
       [model]="selectedOption" 
       [hint]="'A class 1 building inspector is an unqualified trainee and must work under the supervision of a registered building inspector.'">
@@ -20,7 +20,7 @@
 
     <govuk-radio 
       label="Class 2 building inspector"
-      value="2"
+      [value]="BuildingInspectorClassType.Class2"
       id="2"
       [model]="selectedOption"
       [hint]="'A class 2 building inspector is competent to work without supervision on standard buildings.'">
@@ -28,7 +28,7 @@
 
     <govuk-radio 
       label="Class 3 specialist building inspector"
-      value="3"
+      [value]="BuildingInspectorClassType.Class3"
       id="3"
       [model]="selectedOption"
       [hint]="'A class 3 building inspector is competent to work without supervision on all building types including nonstandard or high-risk buildings or both.'">

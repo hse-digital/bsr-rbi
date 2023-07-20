@@ -114,7 +114,6 @@ export class BuildingProfessionalModel implements IComponentModel {
   id?: String;
   PersonalDetails?: PersonalDetails = {};
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
-  //BuildingInspectorClass?: BuildingInspectorClass = {};
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None
 
   //TODO test StageStatus and replace ApplicationStatus
@@ -174,17 +173,6 @@ export class ApplicantDateOfBirth implements IComponentModel {
   CompletionState?: ComponentCompletionState
 }
 
-export class BuildingInspectorClass {
-  ClassSelection?: ClassSelection;
-  ClassDetails?: string;
-  Country?: string;
-}
-
-export class ClassSelection implements IComponentModel {
-  ClassType?: string
-  CompletionState?: ComponentCompletionState
-}
-
 export enum ApplicationStatus {
   None = 0,
   EmailVerified = 1,
@@ -222,8 +210,13 @@ export enum PaymentStatus {
 }
 
 export class BuildingInspectorClass {
-  Class: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
+  ClassType: ClassSelection = { Class: BuildingInspectorClassType.ClassNone, CompletionState: ComponentCompletionState.NotStarted }
   Activities: BuildingInspectorRegulatedActivies = { AssessingPlans:false, Inspection:false, CompletionState:ComponentCompletionState.NotStarted};
+}
+
+export class ClassSelection implements IComponentModel {
+  Class?: BuildingInspectorClassType
+  CompletionState?: ComponentCompletionState
 }
 
 export enum BuildingInspectorClassType {

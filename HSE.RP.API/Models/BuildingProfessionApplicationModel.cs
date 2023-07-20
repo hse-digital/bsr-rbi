@@ -106,7 +106,8 @@ namespace HSE.RP.API.Models
 
     public record BuildingInspectorClass
     {
-        public BuildingInspectorClassType? Class { get; set; }
+        public ClassSelection ClassType { get; set; }
+
         public BuildingInspectorRegulatedActivies? Activities { get; set; }
     }
 
@@ -126,23 +127,11 @@ namespace HSE.RP.API.Models
 
     }
 
-    public record BuildingInspectorClass
-    (
-        ClassSelection ClassSelection = null,
-        string ClassDetails = null,
-        string Country = null
-    );
-
     public record ClassSelection
     (
-        string ClassType = null,
-        ComponentCompletionState IsComplete = ComponentCompletionState.NotStarted
+        BuildingInspectorClassType Class = BuildingInspectorClassType.ClassNone,
+        ComponentCompletionState CompletionState = ComponentCompletionState.NotStarted
     );
-
-
-
-
-
 
     [Flags]
     public enum ApplicationStatus
