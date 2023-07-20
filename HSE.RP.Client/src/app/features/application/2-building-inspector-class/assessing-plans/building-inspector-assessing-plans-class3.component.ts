@@ -41,15 +41,12 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
   public selections: string[] = [];
 
 
-  constructor(activatedRoute: ActivatedRoute) {
+  constructor(activatedRoute: ActivatedRoute, private buildingInspectorRouter : BuildingInspectorRouter) {
     super(activatedRoute);
   }
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-    if (applicationService.model?.InspectorClass)
-      applicationService.model.InspectorClass.Class =
-        BuildingInspectorClassType.ClassNone;
     if (!applicationService.model?.InspectorClass) {
       applicationService.model.InspectorClass = new BuildingInspectorClass();
     }
@@ -57,7 +54,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
       applicationService.model.InspectorClass.AssessingPlansClass3 =
         new BuidlingInspectorAssessingPlansClass3();
     }
-    applicationService.model.InspectorClass!.Class =
+    applicationService.model.InspectorClass!.ClassType.Class =
       BuildingInspectorClassType.Class3;
     this.model = applicationService.model.InspectorClass?.AssessingPlansClass3;
     const demandModel = this.DemandModel();
@@ -114,7 +111,11 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(BuildingInspectorCountryComponent.route, this.activatedRoute);
+    if (this.applicationService.model.InspectorClass?.Activities.Inspection === false && this.applicationService.model.InspectorClass?.Activities.AssessingPlans === true) {
+      return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER);
+    }
+    // redirect to the Class 3 Inspection Categories once that page has been made
+    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.SUMMARY);
   }
 
 }
