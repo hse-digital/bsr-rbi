@@ -257,7 +257,6 @@ export enum PaymentStatus {
 }
 
 export class BuildingInspectorClass {
-  Class: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
   ClassType: ClassSelection = { 
     Class: BuildingInspectorClassType.ClassNone,
     CompletionState: ComponentCompletionState.NotStarted
