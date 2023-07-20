@@ -13,6 +13,7 @@ import { BuildingInspectorCountryComponent } from './country/building-inspector-
 import { BuildingInspectorSummaryComponent } from './building-inspector-summary/building-inspector-summary.component';
 import { BuildingAssessingPlansCategoriesComponent } from './assessing-plans/building-assessing-plans-categories.component';
 import { BuildingInspectorRegulatedActivitiesComponent } from './regulated-activities/building-inspector-regulated-activities.component';
+import { BuildingClassTechnicalManagerComponent } from './class-technical-manager/building-class-technical-manager.component';
 
 
 const routes = new HseRoutes([
@@ -21,6 +22,7 @@ const routes = new HseRoutes([
   HseRoute.protected(BuildingInspectorSummaryComponent.route, BuildingInspectorSummaryComponent, BuildingInspectorSummaryComponent.title),
   HseRoute.protected(BuildingInspectorRegulatedActivitiesComponent.route, BuildingInspectorRegulatedActivitiesComponent, BuildingInspectorRegulatedActivitiesComponent.title),
   HseRoute.protected(BuildingAssessingPlansCategoriesComponent.route, BuildingAssessingPlansCategoriesComponent, BuildingAssessingPlansCategoriesComponent.title),
+  HseRoute.protected(BuildingClassTechnicalManagerComponent.route, BuildingClassTechnicalManagerComponent, BuildingClassTechnicalManagerComponent.title),
 ]);
 
 @NgModule({
@@ -29,7 +31,8 @@ const routes = new HseRoutes([
     BuildingInspectorCountryComponent,
     BuildingInspectorSummaryComponent,
     BuildingInspectorRegulatedActivitiesComponent,
-    BuildingAssessingPlansCategoriesComponent
+    BuildingAssessingPlansCategoriesComponent,
+    BuildingClassTechnicalManagerComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

@@ -125,6 +125,7 @@ namespace HSE.RP.API.Models
         public ClassSelection ClassType { get; set; }
         public BuildingInspectorRegulatedActivies? Activities { get; set; }
         public BuildingAssessingPlansCategories? BuildingPlanCategories { get; set; }
+        public string ClassTechnicalManager { get; set; } = string.Empty;
     }
 
     public record BuildingAssessingPlansCategories
