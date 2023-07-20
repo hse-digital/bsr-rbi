@@ -12,6 +12,7 @@ import { BuildingInspectorClassSelectionComponent } from './class-selection/buil
 import { BuildingInspectorCountryComponent } from './country/building-inspector-country.component';
 import { BuildingInspectorSummaryComponent } from './building-inspector-summary/building-inspector-summary.component';
 import { BuildingInspectorRegulatedActivitiesComponent } from './regulated-activities/building-inspector-regulated-activities.component';
+import { BuildingInspectorAssessingPlansClass3Component } from './assessing-plans/building-inspector-assessing-plans-class3.component';
 
 
 const routes = new HseRoutes([
@@ -19,6 +20,7 @@ const routes = new HseRoutes([
   HseRoute.protected(BuildingInspectorCountryComponent.route, BuildingInspectorCountryComponent, BuildingInspectorCountryComponent.title),
   HseRoute.protected(BuildingInspectorSummaryComponent.route, BuildingInspectorSummaryComponent, BuildingInspectorSummaryComponent.title),
   HseRoute.protected(BuildingInspectorRegulatedActivitiesComponent.route, BuildingInspectorRegulatedActivitiesComponent, BuildingInspectorRegulatedActivitiesComponent.title),
+  HseRoute.protected(BuildingInspectorAssessingPlansClass3Component.route, BuildingInspectorAssessingPlansClass3Component, BuildingInspectorAssessingPlansClass3Component.title),
 ]);
 
 @NgModule({
@@ -26,7 +28,8 @@ const routes = new HseRoutes([
     BuildingInspectorClassSelectionComponent,
     BuildingInspectorCountryComponent,
     BuildingInspectorSummaryComponent,
-    BuildingInspectorRegulatedActivitiesComponent
+    BuildingInspectorRegulatedActivitiesComponent,
+    BuildingInspectorAssessingPlansClass3Component
 
   ],
   imports: [
