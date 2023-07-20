@@ -24,7 +24,7 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
   production: boolean = environment.production;
   modelValid: boolean = false;
   phoneNumberHasErrors = false;
-  phoneNumberErrorMessage = "Enter your telephone number";  
+  phoneNumberErrorMessage = "Enter your telephone number";
 
   constructor(
     activatedRoute: ActivatedRoute,
