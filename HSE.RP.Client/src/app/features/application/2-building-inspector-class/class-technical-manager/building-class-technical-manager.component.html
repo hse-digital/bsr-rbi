@@ -1,0 +1,45 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="saveAndContinue()"
+  [hideBackButton]="true"
+>
+  <govuk-error-summary
+    *ngIf="hasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="!modelValid"
+      anchorId="class-technical-manager"
+      message="{{ errorMessage }}"
+    />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">
+    Do you want to register as a class 4 technical manager?
+  </h1>
+
+  <govuk-body>
+    A class 4 technical manager is competent to supervise the BSR-regulated
+    activities (assessing plans and inspection) done by registered building
+    inspectors.
+
+    <govuk-radio-group
+      hintText=" "
+      id="radios-technical-manager"
+      [(model)]="selectedOption"
+    >
+      <govuk-radio label="Yes" value="yes" id="yes" [model]="selectedOption">
+      </govuk-radio>
+      <govuk-radio
+        label="No"
+        value="no"
+        id="no"
+        [model]="selectedOption"
+      ></govuk-radio>
+    </govuk-radio-group>
+  </govuk-body>
+</govuk-formpage>

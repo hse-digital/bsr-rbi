@@ -10,7 +10,7 @@ import {
 } from 'src/app/services/application.service';
 import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 import { environment } from 'src/environments/environment';
-import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
+import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
 
 @Component({
   selector: 'hse-building-assessing-plans-categories',
@@ -18,7 +18,7 @@ import { BuildingInspectorSummaryComponent } from '../building-inspector-summary
 })
 export class BuildingAssessingPlansCategoriesComponent extends PageComponent<BuildingAssessingPlansCategories> {
   public static route: string = BuildingInspectorRoutes.PLANS_CATEGARIES;
-  public id: string = BuildingInspectorSummaryComponent.route;
+  public id: string = BuildingClassTechnicalManagerComponent.route;
   static title =
     'Building inspector class - Register as a building inspector - GOV.UK';
   production = environment.production;
@@ -104,7 +104,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
-      BuildingInspectorSummaryComponent.route,
+      BuildingClassTechnicalManagerComponent.route,
       this.activatedRoute
     );
   }

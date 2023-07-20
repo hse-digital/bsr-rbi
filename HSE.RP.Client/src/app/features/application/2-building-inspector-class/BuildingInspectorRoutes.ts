@@ -7,6 +7,7 @@ export const BuildingInspectorRoutes = {
   CLASS_SELECTION: 'building-inspector-class-selection',
   REGULATED_ACTIVITIES: 'building-inspector-regulated-activities',
   PLANS_CATEGARIES: 'building-assessing-plans-categories',
+  CLASS_TECHNICAL_MANAGER: 'building-class-technical-manager',
   SUMMARY: 'building-inspector-summary',
   TASK_LIST: ''
 }
