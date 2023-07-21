@@ -118,13 +118,18 @@
 
       <!-- //! this row may not be needed -->
       <govuk-summary-list-row 
-        (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
-        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        (onClick)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"
         key="Country"
         [showAction]="true"
         [actionText]="'change'"
       >
-        Country
+        <div *ngIf="applicationService.model.InspectorClass?.InspectorCountryOfWork?.England">
+          England
+        </div>
+        <div *ngIf="applicationService.model.InspectorClass?.InspectorCountryOfWork?.Wales">
+          Wales
+        </div>    
       </govuk-summary-list-row>
     </govuk-summary-list>
   </div>
