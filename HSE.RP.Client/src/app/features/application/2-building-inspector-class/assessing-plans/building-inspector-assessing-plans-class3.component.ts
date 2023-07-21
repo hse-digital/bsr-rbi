@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, StringModel, BuidlingInspectorAssessingPlansClass3, BuildingInspectorClassType, BuildingInspectorClass, ComponentCompletionState } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, StringModel, BuildingAssessingPlansCategoriesClass3, BuildingInspectorClassType, BuildingInspectorClass, ComponentCompletionState } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
@@ -19,7 +19,7 @@ interface AssessingPlans {
   selector: 'hse-building-inspector-assessing-plans',
   templateUrl: './building-inspector-assessing-plans.component-class3.html',
 })
-export class BuildingInspectorAssessingPlansClass3Component extends PageComponent<BuidlingInspectorAssessingPlansClass3> {
+export class BuildingInspectorAssessingPlansClass3Component extends PageComponent<BuildingAssessingPlansCategoriesClass3> {
 
   public static route: string = BuildingInspectorRoutes.CLASS3_ACCESSING_PLANS_CATEGORIES;
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
@@ -37,7 +37,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
     {value: "CategoryH", hint: "Content to be finalised"},
   ]
 
-  override model?: BuidlingInspectorAssessingPlansClass3;
+  override model?: BuildingAssessingPlansCategoriesClass3;
   public selections: string[] = [];
 
 
@@ -52,7 +52,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
     }
     if (!applicationService.model.InspectorClass.BuidlingInspectorAssessingPlansClass3) {
       applicationService.model.InspectorClass.BuidlingInspectorAssessingPlansClass3 =
-        new BuidlingInspectorAssessingPlansClass3();
+        new BuildingAssessingPlansCategoriesClass3();
     }
     applicationService.model.InspectorClass!.ClassType.Class =
       BuildingInspectorClassType.Class3;
@@ -73,7 +73,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
     this.applicationService = applicationService;
   }
 
-  public DemandModel(): BuidlingInspectorAssessingPlansClass3 {
+  public DemandModel(): BuildingAssessingPlansCategoriesClass3 {
     if (this.model === undefined || this.model === null) {
       throw new Error('Model is undefined');
     }
@@ -115,7 +115,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
       return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER);
     }
     // redirect to the Class 3 Inspection Categories once that page has been made
-    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.SUMMARY);
+    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES);
   }
 
 }

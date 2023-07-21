@@ -102,7 +102,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
       return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER);
     }
     // redirect to the Class 2 Inspection Categories once that page has been made
-    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.SUMMARY);
+    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES);
   }
 
   DerivedIsComplete(value: boolean): void {
