@@ -1,12 +1,47 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="saveAndContinue()"
+  [hideBackButton]="true"
+>
+  <span class="govuk-caption-l" style="color: gray">
+    Class 2 building inspector
+  </span>
+  <h1 class="govuk-heading-l">Which countries will you work in?</h1>
 
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
-
-
-  <h1 class="govuk-heading-l">Building inspector class</h1>
   <govuk-body>
-  Please enter BI class details
- </govuk-body>
-</govuk-formpage>
+    <govuk-checkbox-group
+      [title]=""
+      [hint]="hint"
+      [errorText]="errorText"
+      [(model)]="selections"
+      [id]="id"
+      #field
+      [govukRequired]="field"
+    >
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [id]="id"
+        [model]="selections"
+        text="England"
+        value="England"
+        (onClicked)="optionClicked()"
+        hint=""
+      />
 
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [id]="id"
+        [model]="selections"
+        text="Wales"
+        value="Wales"
+        (onClicked)="optionClicked()"
+        hint=""
+      />
+    </govuk-checkbox-group>
+  </govuk-body>
+</govuk-formpage>

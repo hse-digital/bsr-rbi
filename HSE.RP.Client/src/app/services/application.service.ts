@@ -257,9 +257,9 @@ export enum PaymentStatus {
 }
 
 export class BuildingInspectorClass {
-  ClassType: ClassSelection = { 
+  ClassType: ClassSelection = {
     Class: BuildingInspectorClassType.ClassNone,
-    CompletionState: ComponentCompletionState.NotStarted
+    CompletionState: ComponentCompletionState.NotStarted,
   };
   Activities: BuildingInspectorRegulatedActivies = {
     AssessingPlans: false,
@@ -285,11 +285,12 @@ export class BuildingInspectorClass {
     CategoryH: false,
   }
   ClassTechnicalManager?: string;
+  InspectorCountryOfWork?: BuildingInspectorCountryOfWork = {England: false, Wales: false};
 }
 
 export class ClassSelection implements IComponentModel {
-  Class?: BuildingInspectorClassType
-  CompletionState?: ComponentCompletionState
+  Class?: BuildingInspectorClassType;
+  CompletionState?: ComponentCompletionState;
 }
 
 export enum BuildingInspectorClassType {
@@ -328,4 +329,11 @@ export class BuidlingInspectorAssessingPlansClass3 {
   CategoryG?: boolean;
   CategoryH?: boolean;
   CompletionState?: ComponentCompletionState
+}
+
+export class BuildingInspectorCountryOfWork {
+  [key: string]: any;
+  England?: boolean;
+  Wales?: boolean;
+  CompletionState?: ComponentCompletionState;
 }
