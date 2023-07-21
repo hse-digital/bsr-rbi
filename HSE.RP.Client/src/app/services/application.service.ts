@@ -266,8 +266,8 @@ export class BuildingInspectorClass {
     Inspection: false,
     CompletionState: ComponentCompletionState.NotStarted,
   };
-  BuildingAssessingPlansCategoriesClass2?: BuildingAssessingPlansCategoriesClass2 = new BuildingAssessingPlansCategoriesClass2();
-  BuildlingInspectorAssessingPlansClass3: BuildingAssessingPlansCategoriesClass3 = new BuildingAssessingPlansCategoriesClass3();
+  BuildingAssessingPlansCategoriesClass2: BuildingAssessingPlansCategoriesClass2 = new BuildingAssessingPlansCategoriesClass2();
+  BuildingAssessingPlansCategoriesClass3: BuildingAssessingPlansCategoriesClass3 = new BuildingAssessingPlansCategoriesClass3();
   ClassTechnicalManager?: string;
   InspectorCountryOfWork?: BuildingInspectorCountryOfWork = { England: false, Wales: false };
   Class2InspectBuildingCategories: Class2InspectBuildingCategories = new Class2InspectBuildingCategories();

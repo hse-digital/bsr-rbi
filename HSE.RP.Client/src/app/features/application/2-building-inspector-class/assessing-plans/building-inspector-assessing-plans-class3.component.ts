@@ -47,16 +47,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-    if (!applicationService.model?.InspectorClass) {
-      applicationService.model.InspectorClass = new BuildingInspectorClass();
-    }
-    if (!applicationService.model.InspectorClass.BuidlingInspectorAssessingPlansClass3) {
-      applicationService.model.InspectorClass.BuidlingInspectorAssessingPlansClass3 =
-        new BuildingAssessingPlansCategoriesClass3();
-    }
-    applicationService.model.InspectorClass!.ClassType.Class =
-      BuildingInspectorClassType.Class3;
-    this.model = applicationService.model.InspectorClass?.BuidlingInspectorAssessingPlansClass3;
+    this.model = applicationService.model.InspectorClass?.BuildingAssessingPlansCategoriesClass3;
     const demandModel = this.DemandModel();
     const categoryKeys = [
       'CategoryA',

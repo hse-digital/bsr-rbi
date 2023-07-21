@@ -42,17 +42,6 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
 
-    if (applicationService.model?.InspectorClass)
-      applicationService.model.InspectorClass.ClassType = new ClassSelection();
-    if (!applicationService.model?.InspectorClass) {
-      applicationService.model.InspectorClass = new BuildingInspectorClass();
-    }
-
-    if (!applicationService.model.InspectorClass.Class3InspectBuildingCategories) {
-      applicationService.model.InspectorClass.Class3InspectBuildingCategories =
-        new Class3InspectBuildingCategories();
-    }
-
     this.model = applicationService.model.InspectorClass?.Class3InspectBuildingCategories;
 
     const demandModel = this.DemandModel();

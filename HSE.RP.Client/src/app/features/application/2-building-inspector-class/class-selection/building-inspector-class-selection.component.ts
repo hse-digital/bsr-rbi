@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, StringModel, ComponentCompletionState, BuildingInspectorRegulatedActivies, ClassSelection, BuildingInspectorClassType, BuildingInspectorClass } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, StringModel, ComponentCompletionState, BuildingInspectorRegulatedActivies, ClassSelection, BuildingInspectorClassType, BuildingInspectorClass, BuildingAssessingPlansCategoriesClass3, BuildingAssessingPlansCategoriesClass2, Class2InspectBuildingCategories, Class3InspectBuildingCategories } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
@@ -34,7 +34,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
-    this.updateOnSave = false;
+    this.updateOnSave = true;
   }
 
   override onInit(applicationService: ApplicationService): void {
@@ -56,52 +56,24 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
         Inspection: false,
         CompletionState: ComponentCompletionState.NotStarted,
       };
-      this.applicationService.model.InspectorClass!.BuidlingInspectorAssessingPlansClass3 = {
-        CategoryA: false,
-        CategoryB: false,
-        CategoryC: false,
-        CategoryD: false,
-        CategoryE: false,
-        CategoryF: false,
-        CategoryG: false,
-        CategoryH: false,
-      }
-      this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass2 = {
-        CategoryA: false,
-        CategoryB: false,
-        CategoryC: false,
-        CategoryD: false,
-        CategoryE: false,
-        CategoryF: false,
-      }
+      this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass3 = new BuildingAssessingPlansCategoriesClass3();
+      this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass2 = new BuildingAssessingPlansCategoriesClass2();
+      this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
+      this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
       this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
     }
     else {
       if (this.selectedOption === BuildingInspectorClassType.Class2) {
-        this.applicationService.model.InspectorClass!.BuidlingInspectorAssessingPlansClass3 = {
-          CategoryA: false,
-          CategoryB: false,
-          CategoryC: false,
-          CategoryD: false,
-          CategoryE: false,
-          CategoryF: false,
-          CategoryG: false,
-          CategoryH: false,
-        }
+        this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass3 = new BuildingAssessingPlansCategoriesClass3();
+        this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
         this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
       }
       if (this.selectedOption === BuildingInspectorClassType.Class3) {
-        this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass2 = {
-          CategoryA: false,
-          CategoryB: false,
-          CategoryC: false,
-          CategoryD: false,
-          CategoryE: false,
-          CategoryF: false,
-        }
+        this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass2 = new BuildingAssessingPlansCategoriesClass2();
+        this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
         this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
       }
-      this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.InProgress };
+      this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
     }
   }
 

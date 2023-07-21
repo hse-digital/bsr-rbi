@@ -19,75 +19,77 @@
     submitted, assessed plans and associated information, and comply with
     building regulations.
 
-    <govuk-checkbox-group
-      [title]=""
-      [hint]="hint"
-      [errorText]="errorText"
-      [(model)]="selections"
-      [id]="id"
-      #field
-      [govukRequired]="field"
-    >
-      <govuk-checkbox
-        #checkbox
-        (onKeyupEnter)="onKeyupEnter.emit()"
-        [id]="id"
-        [model]="selections"
-        text="Category A"
-        value="CategoryA"
-        (onClicked)="optionClicked()"
-        hint=""
-      />
-      <govuk-checkbox
-        #checkbox
-        (onKeyupEnter)="onKeyupEnter.emit()"
-        [model]="selections"
-        text="Category B"
-        value="CategoryB"
-        (onClicked)="optionClicked()"
-        [id]="id"
-        hint=""
-      />
-      <govuk-checkbox
-        #checkbox
-        (onKeyupEnter)="onKeyupEnter.emit()"
-        [model]="selections"
-        text="Category C"
-        value="CategoryC"
-        (onClicked)="optionClicked()"
-        [id]="id"
-        hint=""
-      />
-      <govuk-checkbox
-        #checkbox
-        (onKeyupEnter)="onKeyupEnter.emit()"
-        [model]="selections"
-        text="Category D"
-        value="CategoryD"
-        (onClicked)="optionClicked()"
-        [id]="id"
-        hint=""
-      />
-      <govuk-checkbox
-        #checkbox
-        (onKeyupEnter)="onKeyupEnter.emit()"
-        [model]="selections"
-        text="Category E"
-        value="CategoryE"
-        (onClicked)="optionClicked()"
-        [id]="id"
-        hint=""
-      />
-      <govuk-checkbox
-        #checkbox
-        (onKeyupEnter)="onKeyupEnter.emit()"
-        [model]="selections"
-        text="Category F"
-        value="CategoryF"
-        (onClicked)="optionClicked()"
-        [id]="id"
-        hint=""
-      />
+    <govuk-checkbox-group [title]=""
+                          [hint]="hint"
+                          [errorText]="errorText"
+                          [(model)]="selections"
+                          [id]="id"
+                          #field
+                          [govukRequired]="field">
+      <govuk-checkbox #checkbox
+                      (onKeyupEnter)="onKeyupEnter.emit()"
+                      [id]="id"
+                      [model]="selections"
+                      text="Category A"
+                      value="CategoryA"
+                      (onClicked)="optionClicked()"
+                      hint="" />
+      <govuk-checkbox #checkbox
+                      (onKeyupEnter)="onKeyupEnter.emit()"
+                      [model]="selections"
+                      text="Category B"
+                      value="CategoryB"
+                      (onClicked)="optionClicked()"
+                      [id]="id"
+                      hint="" />
+      <govuk-checkbox #checkbox
+                      (onKeyupEnter)="onKeyupEnter.emit()"
+                      [model]="selections"
+                      text="Category C"
+                      value="CategoryC"
+                      (onClicked)="optionClicked()"
+                      [id]="id"
+                      hint="" />
+      <govuk-checkbox #checkbox
+                      (onKeyupEnter)="onKeyupEnter.emit()"
+                      [model]="selections"
+                      text="Category D"
+                      value="CategoryD"
+                      (onClicked)="optionClicked()"
+                      [id]="id"
+                      hint="" />
+      <govuk-checkbox #checkbox
+                      (onKeyupEnter)="onKeyupEnter.emit()"
+                      [model]="selections"
+                      text="Category E"
+                      value="CategoryE"
+                      (onClicked)="optionClicked()"
+                      [id]="id"
+                      hint="" />
+      <govuk-checkbox #checkbox
+                      (onKeyupEnter)="onKeyupEnter.emit()"
+                      [model]="selections"
+                      text="Category F"
+                      value="CategoryF"
+                      (onClicked)="optionClicked()"
+                      [id]="id"
+                      hint="" />
+      <govuk-checkbox #checkbox
+                      (onKeyupEnter)="onKeyupEnter.emit()"
+                      [model]="selections"
+                      text="Category G"
+                      value="CategoryG"
+                      (onClicked)="optionClicked()"
+                      [id]="id"
+                      hint="" />
+      <govuk-checkbox #checkbox
+                      (onKeyupEnter)="onKeyupEnter.emit()"
+                      [model]="selections"
+                      text="Category H"
+                      value="CategoryH"
+                      (onClicked)="optionClicked()"
+                      [id]="id"
+                      hint="" />
     </govuk-checkbox-group>
   </govuk-body>
 </govuk-formpage>
