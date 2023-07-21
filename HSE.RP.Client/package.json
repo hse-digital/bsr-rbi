@@ -24,12 +24,15 @@
     "@angular/platform-browser-dynamic": "^15.1.5",
     "@angular/platform-server": "^15.1.5",
     "@angular/router": "^15.1.5",
+    "@azure/static-web-apps-cli": "^1.1.4",
     "@nguniversal/express-engine": "^15.1.0",
     "express": "^4.15.2",
     "govuk-frontend": "^4.4.1",
     "hse-angular": "file:../packages/hse-angular-0.0.94.tgz",
     "rxjs": "~7.5.0",
+    "to": "^0.2.9",
     "tslib": "^2.3.0",
+    "update": "^0.7.4",
     "zone.js": "~0.12.0"
   },
   "devDependencies": {

@@ -7,8 +7,9 @@ export const BuildingInspectorRoutes = {
   CLASS_SELECTION: 'building-inspector-class-selection',
   REGULATED_ACTIVITIES: 'building-inspector-regulated-activities',
   PLANS_CATEGARIES: 'building-assessing-plans-categories',
+  CLASS3_ACCESSING_PLANS_CATEGARIES: 'building-class3-assessing-plans-categories',
   SUMMARY: 'building-inspector-summary',
-  TASK_LIST: ''
+  TASK_LIST: '' 
 }
 /// <summary>
 /// This class is used to navigate to the different components of

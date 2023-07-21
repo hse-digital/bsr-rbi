@@ -211,8 +211,13 @@ export enum PaymentStatus {
 
 export class BuildingInspectorClass {
   Class: BuildingInspectorClassType = BuildingInspectorClassType.ClassNone;
-  Activities: BuildingInspectorRegulatedActivies = { AssessingPlans:false, Inspection:false, CompletionState:ComponentCompletionState.NotStarted};
+  Activities: BuildingInspectorRegulatedActivies = {
+    AssessingPlans: false,
+    Inspection: false,
+    CompletionState: ComponentCompletionState.NotStarted
+  };
   BuildingPlanCategories?: BuildingAssessingPlansCategories = {};
+  Class3BuildingPlanCategories: Class3BuildingAssessingPlansCategories = new Class3BuildingAssessingPlansCategories();
 }
 
 export enum BuildingInspectorClassType {
@@ -224,9 +229,9 @@ export enum BuildingInspectorClassType {
 
 export class BuildingInspectorRegulatedActivies {
   [key: string]: any;
-  AssessingPlans?: boolean;
-  Inspection?: boolean;
-  CompletionState?: ComponentCompletionState
+  AssessingPlans: boolean = false;
+  Inspection: boolean = false;
+  CompletionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
 
 }
 
@@ -240,3 +245,16 @@ export class BuildingAssessingPlansCategories {
   CategoryF?: boolean;
   CompletionState?: ComponentCompletionState
 }
+
+export class Class3BuildingAssessingPlansCategories {
+  [key: string]: any;
+  CategoryA: boolean = false;
+  CategoryB: boolean = false;
+  CategoryC: boolean = false;
+  CategoryD: boolean = false;
+  CategoryE: boolean = false;
+  CategoryF: boolean = false;
+  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
+}
+
+
