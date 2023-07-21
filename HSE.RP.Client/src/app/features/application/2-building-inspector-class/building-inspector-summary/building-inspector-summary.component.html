@@ -41,6 +41,11 @@
       Summary of building inspector class
     </h1>
 
+    <!-- <a class="govuk-link" role="link" (click)="item.onClick.emit()" (keyup.enter)="item.onKeyupEnter.emit()" tabindex="0"> -->
+    <a class="govuk-link" role="link" tabindex="0">
+      {{"change"}}<span class="govuk-visually-hidden">{{"item.actionDetails"}}</span>
+    </a>
+
     <govuk-summary-list>
       <govuk-summary-list-row 
         (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
@@ -52,7 +57,8 @@
         Class {{applicationService.model.InspectorClass?.ClassType?.Class}} building inspector
       </govuk-summary-list-row>
 
-      <!-- <govuk-summary-list-row 
+      <govuk-summary-list-row 
+        *ngIf="applicationService.model.InspectorClass?.ClassTechnicalManager === 'yes'"
         (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
         (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
         [showAction]="true"
@@ -60,7 +66,7 @@
         key=" "
       >
         Class 4 building inspector
-      </govuk-summary-list-row> -->
+      </govuk-summary-list-row>
 
       <govuk-summary-list-row 
         (onClick)="navigateTo(BuildingInspectorRoutes.REGULATED_ACTIVITIES)"
@@ -78,18 +84,30 @@
       </govuk-summary-list-row>
 
       <govuk-summary-list-row 
-        (onClick)="navigateTo(BuildingInspectorRoutes.PLANS_CATEGARIES)"
-        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.PLANS_CATEGARIES)"
+        (onClick)="navigateTo(BuildingInspectorRoutes.PLANS_CATEGORIES)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.PLANS_CATEGORIES)"
         key="Categories"
         [showAction]="true"
         [actionText]="'change'"
       >
-        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryA && "Category A"}}
-        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryB && "Category B"}}
-        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryC && "Category C"}}
-        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryD && "Category D"}}
-        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryE && "Category E"}}
-        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryF && "Category F"}}
+        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryA">
+          Category A
+        </div>
+        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryB">
+          Category B
+        </div>
+        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryC">
+          Category C
+        </div>
+        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryD">
+          Category D
+        </div>
+        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryE">
+          Category E
+        </div>
+        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryF">
+          Category F
+        </div>
       </govuk-summary-list-row>
 
       <!-- //! this row may not be needed -->
