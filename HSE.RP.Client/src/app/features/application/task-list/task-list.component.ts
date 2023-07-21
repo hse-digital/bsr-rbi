@@ -57,6 +57,7 @@ import { PersonalDetailRoutes, PersonalDetailRouter } from '../1-personal-detail
 
 import { PaymentDeclarationComponent } from '../5-application-submission/payment/payment-declaration/payment-declaration.component';
 import { Validators } from '@angular/forms';
+import { PaymentReconciliationStatus } from 'src/app/services/payment.service';
 
 
 interface ITaskListParent {
@@ -156,6 +157,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     }
   };
 
+  //#9044 Pattern updated to allow routes to also include query params
   taskItems: ITaskListParent[] = [{
     prompt: "Personal details", number: "1.", relativeRoute: ApplicationPersonalDetailsModule.baseRoute, children: [{
       prompt: "Name", relativeRoute: ():
@@ -354,17 +356,20 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   async getPaymentStatus(): Promise<void> {
     var payments = await this.applicationService.getApplicationPayments();
 
+    //Check for all payments for application
     if (payments?.length > 0) {
+
+      //Filter for successful and newly created payments
       var successfulPayments = payments.filter(x => x.bsr_govukpaystatus == 'success' || x.bsr_govukpaystatus == 'created');
 
       if (successfulPayments?.length > 0) {
-        var successsfulpayment = successfulPayments.find(x => x.bsr_paymentreconciliationstatus !== 760_810_002 && x.bsr_paymentreconciliationstatus !== 760_810_003 && x.bsr_paymentreconciliationstatus !== 760_810_004);
+        //Check if these payments are not failed or refunded
+        var successsfulpayment = successfulPayments.find(x => x.bsr_paymentreconciliationstatus !== PaymentReconciliationStatus.FAILED_RECONCILIATION && x.bsr_paymentreconciliationstatus !== PaymentReconciliationStatus.FAILED_PAYMENT && x.bsr_paymentreconciliationstatus !== PaymentReconciliationStatus.REFUNDED);
         this.paymentStatus = successsfulpayment ? PaymentStatus.Success : PaymentStatus.Failed;
         this.paymentRoute = successsfulpayment ? {route: PaymentConfirmationComponent.route, queryParams: {reference: successsfulpayment?.bsr_transactionid}} : {route: PaymentDeclarationComponent.route};
       } else {
         this.paymentStatus = PaymentStatus.Failed;
         this.paymentRoute = {route: PaymentDeclarationComponent.route};
-
       }
     } else if (this.model?.StageStatus["Declaration"] == StageCompletionState.Complete) {
       this.paymentStatus = PaymentStatus.Started;
