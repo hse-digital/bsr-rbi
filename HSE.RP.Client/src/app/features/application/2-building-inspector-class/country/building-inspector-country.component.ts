@@ -1,57 +1,102 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
-import { takeLast } from 'rxjs';
-import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import {
+  ApplicationService,
+  ApplicationStatus,
+  BuildingInspectorCountryOfWork,
+} from '../../../../services/application.service';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
+import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
+import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 
 @Component({
   selector: 'hse-building-inspector-country',
   templateUrl: './building-inspector-country.component.html',
 })
-export class BuildingInspectorCountryComponent extends PageComponent<string> {
-  DerivedIsComplete(value: boolean): void {
-  }
-
-  public static route: string = "building-inspector-country";
-  static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
+export class BuildingInspectorCountryComponent extends PageComponent<BuildingInspectorCountryOfWork> {
+  static route: string = BuildingInspectorRoutes.INSPECTOR_COUNTRY;
+  public id: string = BuildingClassTechnicalManagerComponent.route;
+  static title: string =
+    'Building inspector class - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: string;
+  public hint = 'Select all that apply';
+  public errorText = '';
+  override model?: BuildingInspectorCountryOfWork;
+  public selections: string[] = [];
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  @Output() onClicked = new EventEmitter();
+  @Output() onKeyupEnter = new EventEmitter();
+
+  constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
-    this.updateOnSave = false;
   }
 
   override onInit(applicationService: ApplicationService): void {
-    //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
+    this.updateOnSave = true;
+
+    if (!applicationService.model.InspectorClass?.InspectorCountryOfWork) {
+      applicationService.model.InspectorClass!.InspectorCountryOfWork =
+        new BuildingInspectorCountryOfWork();
+    }
+
+    this.model =
+      applicationService.model.InspectorClass?.InspectorCountryOfWork;
+
+    const demandModel = this.DemandModel();
+    const countryKeys = ['England', 'Wales'];
+
+    this.selections.push(
+      ...countryKeys.filter((key) => demandModel[key] === true)
+    );
+
+    this.applicationService = applicationService;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
-   }
+    const demandModel = this.DemandModel();
+    demandModel.England = false;
+    demandModel.Wales = false;
 
-  override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return true;
-    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
+    this.selections.forEach((value: keyof typeof demandModel) => {
+      demandModel[value] = true;
+    });
 
+    applicationService.model.ApplicationStatus =
+      ApplicationStatus.BuildingInspectorClassComplete;
   }
 
+  override canAccess(
+    applicationService: ApplicationService,
+    routeSnapshot: ActivatedRouteSnapshot
+  ): boolean {
+    return true;
+  }
 
   override isValid(): boolean {
-    return true;
-/*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
-    return !this.phoneNumberHasErrors; */
-
+    if (this.selections.length == 0)
+      this.errorText = 'You must select at least one option';
+    return this.selections.length > 0;
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(BuildingInspectorSummaryComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(
+      BuildingInspectorSummaryComponent.route,
+      this.activatedRoute
+    );
   }
 
+  DerivedIsComplete(value: boolean): void {}
+
+  public DemandModel(): BuildingInspectorCountryOfWork {
+    if (this.model === undefined || this.model === null) {
+      throw new Error('Model is undefined');
+    }
+    return this.model;
+  }
+
+  optionClicked() {}
 }

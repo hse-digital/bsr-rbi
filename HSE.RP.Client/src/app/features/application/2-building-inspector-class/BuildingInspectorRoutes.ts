@@ -6,8 +6,12 @@ import { BuildingInspectorClassModule } from './application.building-inspector-c
 export const BuildingInspectorRoutes = {
   CLASS_SELECTION: 'building-inspector-class-selection',
   REGULATED_ACTIVITIES: 'building-inspector-regulated-activities',
+  PLANS_CATEGORIES: 'building-assessing-plans-categories',
+  CLASS_TECHNICAL_MANAGER: 'building-class-technical-manager',
+  INSPECTOR_COUNTRY: 'building-inspector-country',
   SUMMARY: 'building-inspector-summary',
-  TASK_LIST: ''
+  TASK_LIST: '',
+  ASSESSING_PLANS_CLASS_3: 'building-inspector-assessing-plans-class3'
 }
 /// <summary>
 /// This class is used to navigate to the different components of
