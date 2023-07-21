@@ -3,10 +3,11 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { PageComponent } from 'src/app/helpers/page.component';
 import {
   ApplicationService,
-  BuildingAssessingPlansCategories,
+  BuildingAssessingPlansCategoriesClass2,
   BuildingInspectorClass,
   BuildingInspectorClassType,
-  Class3BuildingAssessingPlansCategories,
+  Class2InspectBuildingCategories,
+  Class3InspectBuildingCategories,
   ClassSelection,
   ComponentCompletionState,
 } from 'src/app/services/application.service';
@@ -15,11 +16,11 @@ import { environment } from 'src/environments/environment';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
 
 @Component({
-  selector: 'hse-building-class3-assessing-plans-categories',
-  templateUrl: './building-class3-assessing-plans-categories.component.html',
+  selector: 'hse-building-class2-inspect-building-categories',
+  templateUrl: './building-class2-inspect-building-categories.component.html',
 })
-export class Class3BuildingAssessingPlansCategoriesComponent extends PageComponent<Class3BuildingAssessingPlansCategories> {
-  public static route: string = BuildingInspectorRoutes.CLASS3_ACCESSING_PLANS_CATEGARIES;
+export class Class2InspectBuildingCategoriesComponent extends PageComponent<Class2InspectBuildingCategories> {
+  public static route: string = BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES;
   public id: string = BuildingInspectorSummaryComponent.route;
   static title =
     'Building inspector class - Register as a building inspector - GOV.UK';
@@ -29,7 +30,7 @@ export class Class3BuildingAssessingPlansCategoriesComponent extends PageCompone
   public hint = 'Select all that apply';
   public errorText = '';
 
-  override model?: Class3BuildingAssessingPlansCategories;
+  override model?: Class2InspectBuildingCategories;
   public selections: string[] = [];
 
   @Output() onClicked = new EventEmitter();
@@ -42,18 +43,7 @@ export class Class3BuildingAssessingPlansCategoriesComponent extends PageCompone
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
 
-    if (applicationService.model?.InspectorClass)
-      applicationService.model.InspectorClass.ClassType = new ClassSelection();
-    if (!applicationService.model?.InspectorClass) {
-      applicationService.model.InspectorClass = new BuildingInspectorClass();
-    }
-
-    if (!applicationService.model.InspectorClass.BuildingPlanCategories) {
-      applicationService.model.InspectorClass.BuildingPlanCategories =
-        new BuildingAssessingPlansCategories();
-    }
-
-    this.model = applicationService.model.InspectorClass?.Class3BuildingPlanCategories;
+    this.model = applicationService.model.InspectorClass?.Class2InspectBuildingCategories;
 
     const demandModel = this.DemandModel();
     const categoryKeys = [
@@ -113,7 +103,7 @@ export class Class3BuildingAssessingPlansCategoriesComponent extends PageCompone
       : ComponentCompletionState.InProgress;
   }
 
-  public DemandModel(): BuildingAssessingPlansCategories {
+  public DemandModel(): Class2InspectBuildingCategories {
     if (this.model === undefined || this.model === null) {
       throw new Error('Model is undefined');
     }

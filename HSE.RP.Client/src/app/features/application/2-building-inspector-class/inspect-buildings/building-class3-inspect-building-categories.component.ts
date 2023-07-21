@@ -6,19 +6,21 @@ import {
   BuildingAssessingPlansCategoriesClass2,
   BuildingInspectorClass,
   BuildingInspectorClassType,
+  Class3InspectBuildingCategories,
+  ClassSelection,
   ComponentCompletionState,
 } from 'src/app/services/application.service';
-import { BuildingInspectorRouter, BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
+import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 import { environment } from 'src/environments/environment';
-import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
+import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
 
 @Component({
-  selector: 'hse-building-assessing-plans-categories',
-  templateUrl: './building-assessing-plans-categories.component.html',
+  selector: 'hse-building-class3-inspect-building-categories',
+  templateUrl: './building-class3-inspect-building-categories.component.html',
 })
-export class BuildingAssessingPlansCategoriesComponent extends PageComponent<BuildingAssessingPlansCategoriesClass2> {
-  public static route: string = BuildingInspectorRoutes.CLASS2_ACCESSING_PLANS_CATEGORIES;
-  public id: string = BuildingClassTechnicalManagerComponent.route;
+export class Class3InspectBuildingCategoriesComponent extends PageComponent<Class3InspectBuildingCategories> {
+  public static route: string = BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES;
+  public id: string = BuildingInspectorSummaryComponent.route;
   static title =
     'Building inspector class - Register as a building inspector - GOV.UK';
   production = environment.production;
@@ -27,30 +29,20 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   public hint = 'Select all that apply';
   public errorText = '';
 
-  override model?: BuildingAssessingPlansCategoriesClass2;
+  override model?: Class3InspectBuildingCategories;
   public selections: string[] = [];
 
   @Output() onClicked = new EventEmitter();
   @Output() onKeyupEnter = new EventEmitter();
 
-  constructor(activatedRoute: ActivatedRoute, private buildingInspectorRouter : BuildingInspectorRouter) {
+  constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
   }
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-    if (!applicationService.model?.InspectorClass) {
-      applicationService.model.InspectorClass = new BuildingInspectorClass();
-    }
 
-    if (!applicationService.model.InspectorClass.BuildingAssessingPlansCategoriesClass2) {
-      applicationService.model.InspectorClass.BuildingAssessingPlansCategoriesClass2 =
-        new BuildingAssessingPlansCategoriesClass2();
-    }
-
-    applicationService.model.InspectorClass!.ClassType.Class =
-      BuildingInspectorClassType.Class2;
-    this.model = applicationService.model.InspectorClass?.BuildingAssessingPlansCategoriesClass2;
+    this.model = applicationService.model.InspectorClass?.Class3InspectBuildingCategories;
 
     const demandModel = this.DemandModel();
     const categoryKeys = [
@@ -60,6 +52,8 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
       'CategoryD',
       'CategoryE',
       'CategoryF',
+      'CategoryG',
+      'CategoryH',
     ];
 
     this.selections.push(
@@ -78,6 +72,8 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
     demandModel.CategoryD = false;
     demandModel.CategoryE = false;
     demandModel.CategoryF = false;
+    demandModel.CategoryG = false;
+    demandModel.CategoryH = false;
 
     this.selections.forEach((value: keyof typeof demandModel) => {
       demandModel[value] = true;
@@ -98,11 +94,10 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   }
 
   override navigateNext(): Promise<boolean> {
-    if (this.applicationService.model.InspectorClass?.Activities.Inspection === false && this.applicationService.model.InspectorClass?.Activities.AssessingPlans === true) {
-      return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER);
-    }
-    // redirect to the Class 2 Inspection Categories once that page has been made
-    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES);
+    return this.navigationService.navigateRelative(
+      BuildingInspectorSummaryComponent.route,
+      this.activatedRoute
+    );
   }
 
   DerivedIsComplete(value: boolean): void {
@@ -111,7 +106,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
       : ComponentCompletionState.InProgress;
   }
 
-  public DemandModel(): BuildingAssessingPlansCategoriesClass2 {
+  public DemandModel(): Class3InspectBuildingCategories {
     if (this.model === undefined || this.model === null) {
       throw new Error('Model is undefined');
     }
