@@ -3,7 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, StringModel, BuidlingInspectorAssessingPlansClass3, BuildingInspectorClassType, BuildingInspectorClass, ComponentCompletionState } from '../../../../services/application.service';
+import { ApplicationService, ApplicationStatus, StringModel, BuildingAssessingPlansCategoriesClass3, BuildingInspectorClassType, BuildingInspectorClass, ComponentCompletionState } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
@@ -19,9 +19,9 @@ interface AssessingPlans {
   selector: 'hse-building-inspector-assessing-plans',
   templateUrl: './building-inspector-assessing-plans.component-class3.html',
 })
-export class BuildingInspectorAssessingPlansClass3Component extends PageComponent<BuidlingInspectorAssessingPlansClass3> {
+export class BuildingInspectorAssessingPlansClass3Component extends PageComponent<BuildingAssessingPlansCategoriesClass3> {
 
-  public static route: string = BuildingInspectorRoutes.ASSESSING_PLANS_CLASS_3;
+  public static route: string = BuildingInspectorRoutes.CLASS3_ACCESSING_PLANS_CATEGORIES;
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   public hint: string = "Select all that apply";
@@ -37,7 +37,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
     {value: "CategoryH", hint: "Content to be finalised"},
   ]
 
-  override model?: BuidlingInspectorAssessingPlansClass3;
+  override model?: BuildingAssessingPlansCategoriesClass3;
   public selections: string[] = [];
 
 
@@ -47,16 +47,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-    if (!applicationService.model?.InspectorClass) {
-      applicationService.model.InspectorClass = new BuildingInspectorClass();
-    }
-    if (!applicationService.model.InspectorClass.AssessingPlansClass3) {
-      applicationService.model.InspectorClass.AssessingPlansClass3 =
-        new BuidlingInspectorAssessingPlansClass3();
-    }
-    applicationService.model.InspectorClass!.ClassType.Class =
-      BuildingInspectorClassType.Class3;
-    this.model = applicationService.model.InspectorClass?.AssessingPlansClass3;
+    this.model = applicationService.model.InspectorClass?.BuildingAssessingPlansCategoriesClass3;
     const demandModel = this.DemandModel();
     const categoryKeys = [
       'CategoryA',
@@ -73,7 +64,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
     this.applicationService = applicationService;
   }
 
-  public DemandModel(): BuidlingInspectorAssessingPlansClass3 {
+  public DemandModel(): BuildingAssessingPlansCategoriesClass3 {
     if (this.model === undefined || this.model === null) {
       throw new Error('Model is undefined');
     }
@@ -88,6 +79,8 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
     demandModel.CategoryD = false;
     demandModel.CategoryE = false;
     demandModel.CategoryF = false;
+    demandModel.CategoryG = false;
+    demandModel.CategoryH = false;
     this.selections.forEach((value: keyof typeof demandModel) => {
       demandModel[value] = true;
     });
@@ -115,7 +108,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
       return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER);
     }
     // redirect to the Class 3 Inspection Categories once that page has been made
-    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.SUMMARY);
+    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES);
   }
 
 }

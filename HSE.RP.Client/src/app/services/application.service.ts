@@ -266,27 +266,12 @@ export class BuildingInspectorClass {
     Inspection: false,
     CompletionState: ComponentCompletionState.NotStarted,
   };
-  BuildingPlanCategories?: BuildingAssessingPlansCategories = {
-    CategoryA: false,
-    CategoryB: false,
-    CategoryC: false,
-    CategoryD: false,
-    CategoryE: false,
-    CategoryF: false,
-  };
-  AssessingPlansClass3: BuidlingInspectorAssessingPlansClass3 = {
-    CategoryA: false,
-    CategoryB: false,
-    CategoryC: false,
-    CategoryD: false,
-    CategoryE: false,
-    CategoryF: false,
-    CategoryG: false,
-    CategoryH: false,
-  }
+  BuildingAssessingPlansCategoriesClass2: BuildingAssessingPlansCategoriesClass2 = new BuildingAssessingPlansCategoriesClass2();
+  BuildingAssessingPlansCategoriesClass3: BuildingAssessingPlansCategoriesClass3 = new BuildingAssessingPlansCategoriesClass3();
   ClassTechnicalManager?: string;
-    InspectorCountryOfWork?: BuildingInspectorCountryOfWork = { England: false, Wales: false };
-    Class3BuildingPlanCategories: Class3BuildingAssessingPlansCategories = new Class3BuildingAssessingPlansCategories();
+  InspectorCountryOfWork?: BuildingInspectorCountryOfWork = { England: false, Wales: false };
+  Class2InspectBuildingCategories: Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
+  Class3InspectBuildingCategories: Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
 }
 
 export class ClassSelection implements IComponentModel {
@@ -307,31 +292,31 @@ export class BuildingInspectorRegulatedActivies {
   Inspection: boolean = false;
   CompletionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
 }
-export class BuildingAssessingPlansCategories {
+export class BuildingAssessingPlansCategoriesClass2 {
   [key: string]: any;
-  CategoryA?: boolean;
-  CategoryB?: boolean;
-  CategoryC?: boolean;
-  CategoryD?: boolean;
-  CategoryE?: boolean;
-  CategoryF?: boolean;
-  CompletionState?: ComponentCompletionState;
+  CategoryA?: boolean = false;
+  CategoryB?: boolean = false;
+  CategoryC?: boolean = false;
+  CategoryD?: boolean = false;
+  CategoryE?: boolean = false;
+  CategoryF?: boolean = false;
+  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
 }
 
-export class BuidlingInspectorAssessingPlansClass3 {
+export class BuildingAssessingPlansCategoriesClass3 {
   [key: string]: any;
-  CategoryA?: boolean;
-  CategoryB?: boolean;
-  CategoryC?: boolean;
-  CategoryD?: boolean;
-  CategoryE?: boolean;
-  CategoryF?: boolean;
-  CategoryG?: boolean;
-  CategoryH?: boolean;
-  CompletionState?: ComponentCompletionState
+  CategoryA?: boolean = false;
+  CategoryB?: boolean = false;
+  CategoryC?: boolean = false;
+  CategoryD?: boolean = false;
+  CategoryE?: boolean = false;
+  CategoryF?: boolean = false;
+  CategoryG?: boolean = false;
+  CategoryH?: boolean = false;
+  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
 }
 
-export class Class3BuildingAssessingPlansCategories {
+export class Class2InspectBuildingCategories {
   [key: string]: any;
   CategoryA: boolean = false;
   CategoryB: boolean = false;
@@ -339,6 +324,20 @@ export class Class3BuildingAssessingPlansCategories {
   CategoryD: boolean = false;
   CategoryE: boolean = false;
   CategoryF: boolean = false;
+  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
+}
+
+
+export class Class3InspectBuildingCategories {
+  [key: string]: any;
+  CategoryA: boolean = false;
+  CategoryB: boolean = false;
+  CategoryC: boolean = false;
+  CategoryD: boolean = false;
+  CategoryE: boolean = false;
+  CategoryF: boolean = false;
+  CategoryG: boolean = false;
+  CategoryH: boolean = false;
   CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
 }
 

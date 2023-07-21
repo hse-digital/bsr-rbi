@@ -15,7 +15,8 @@ import { BuildingAssessingPlansCategoriesComponent } from './assessing-plans/bui
 import { BuildingInspectorRegulatedActivitiesComponent } from './regulated-activities/building-inspector-regulated-activities.component';
 import { BuildingInspectorAssessingPlansClass3Component } from './assessing-plans/building-inspector-assessing-plans-class3.component';
 import { BuildingClassTechnicalManagerComponent } from './class-technical-manager/building-class-technical-manager.component';
-import { Class3BuildingAssessingPlansCategoriesComponent } from './class3-category-of-building-plans-to-access/building-class3-assessing-plans-categories.component';
+import { Class3InspectBuildingCategoriesComponent } from './inspect-buildings/building-class3-inspect-building-categories.component';
+import { Class2InspectBuildingCategoriesComponent } from './inspect-buildings/building-class2-inspect-building-categories.component';
 
 
 const routes = new HseRoutes([
@@ -26,7 +27,8 @@ const routes = new HseRoutes([
   HseRoute.protected(BuildingInspectorAssessingPlansClass3Component.route, BuildingInspectorAssessingPlansClass3Component, BuildingInspectorAssessingPlansClass3Component.title),
   HseRoute.protected(BuildingAssessingPlansCategoriesComponent.route, BuildingAssessingPlansCategoriesComponent, BuildingAssessingPlansCategoriesComponent.title),
   HseRoute.protected(BuildingClassTechnicalManagerComponent.route, BuildingClassTechnicalManagerComponent, BuildingClassTechnicalManagerComponent.title),
-  HseRoute.protected(Class3BuildingAssessingPlansCategoriesComponent.route, Class3BuildingAssessingPlansCategoriesComponent, Class3BuildingAssessingPlansCategoriesComponent.title),
+  HseRoute.protected(Class2InspectBuildingCategoriesComponent.route, Class2InspectBuildingCategoriesComponent, Class2InspectBuildingCategoriesComponent.title),
+  HseRoute.protected(Class3InspectBuildingCategoriesComponent.route, Class3InspectBuildingCategoriesComponent, Class3InspectBuildingCategoriesComponent.title),
 ]);
 
 @NgModule({
@@ -38,7 +40,8 @@ const routes = new HseRoutes([
     BuildingInspectorAssessingPlansClass3Component,
     BuildingAssessingPlansCategoriesComponent,
     BuildingClassTechnicalManagerComponent,
-    Class3BuildingAssessingPlansCategoriesComponent
+    Class2InspectBuildingCategoriesComponent,
+    Class3InspectBuildingCategoriesComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
