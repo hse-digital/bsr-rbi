@@ -13,7 +13,6 @@
         <govuk-warning message="We have sent your application number and instructions on how to return to {{model!.PersonalDetails!.ApplicantEmail?.Email}}" background="#0"></govuk-warning>
 
       </ng-container>
-
       <ol class="app-task-list">
         <li *ngFor="let parent of taskItems">
           <h2 class="app-task-list__section">
@@ -23,10 +22,10 @@
           <ul class="app-task-list__items">
             <li class="app-task-list__item firstItem" *ngFor="let child of parent.children">
               <span class="app-task-list__task-name">
-                <a *ngIf="child.getStatus(model!) != valueCannotStart()" class="govuk-link" (keyup.enter)="navigateTo(parent, child)" (click)="navigateTo(parent, child)" tabindex="0" role="link">{{child.prompt}}</a>
-                <span *ngIf="child.getStatus(model!) == valueCannotStart()">{{child.prompt}}</span>
+                <a *ngIf="child.getStatus(model!) != valueCannotStart() && child.getStatus(model!) != valueImmutable()" class="govuk-link" (keyup.enter)="navigateTo(parent, child)" (click)="navigateTo(parent, child)" tabindex="0" role="link">{{child.prompt}}</a>
+                <span *ngIf="child.getStatus(model!) == valueCannotStart() || child.getStatus(model!) == valueImmutable() ">{{child.prompt}}</span>
               </span>
-              <govuk-tag tag *ngIf="child.getStatus(model!) == valueComplete()" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
+              <govuk-tag tag *ngIf="child.getStatus(model!) == valueComplete() || child.getStatus(model!) == valueImmutable()" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
               <govuk-tag tag *ngIf="child.getStatus(model!) == valueNotStarted()" class="govuk-tag--grey">NOT STARTED</govuk-tag>
               <govuk-tag tag *ngIf="child.getStatus(model!) == valueInProgress()" class="govuk-tag--grey">IN PROGRESS</govuk-tag>
               <govuk-tag tag *ngIf="child.getStatus(model!) == valueCannotStart()" class="govuk-tag--grey">CANNOT START</govuk-tag>
