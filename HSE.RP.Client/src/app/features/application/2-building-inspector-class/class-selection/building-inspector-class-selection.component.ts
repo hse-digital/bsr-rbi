@@ -56,7 +56,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
         Inspection: false,
         CompletionState: ComponentCompletionState.NotStarted,
       };
-      this.applicationService.model.InspectorClass!.AssessingPlansClass3 = {
+      this.applicationService.model.InspectorClass!.BuidlingInspectorAssessingPlansClass3 = {
         CategoryA: false,
         CategoryB: false,
         CategoryC: false,
@@ -66,7 +66,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
         CategoryG: false,
         CategoryH: false,
       }
-      this.applicationService.model.InspectorClass!.BuildingPlanCategories = {
+      this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass2 = {
         CategoryA: false,
         CategoryB: false,
         CategoryC: false,
@@ -78,7 +78,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
     }
     else {
       if (this.selectedOption === BuildingInspectorClassType.Class2) {
-        this.applicationService.model.InspectorClass!.AssessingPlansClass3 = {
+        this.applicationService.model.InspectorClass!.BuidlingInspectorAssessingPlansClass3 = {
           CategoryA: false,
           CategoryB: false,
           CategoryC: false,
@@ -91,7 +91,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
         this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
       }
       if (this.selectedOption === BuildingInspectorClassType.Class3) {
-        this.applicationService.model.InspectorClass!.BuildingPlanCategories = {
+        this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass2 = {
           CategoryA: false,
           CategoryB: false,
           CategoryC: false,

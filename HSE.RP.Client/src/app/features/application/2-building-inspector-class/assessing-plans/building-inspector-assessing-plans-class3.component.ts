@@ -21,7 +21,7 @@ interface AssessingPlans {
 })
 export class BuildingInspectorAssessingPlansClass3Component extends PageComponent<BuidlingInspectorAssessingPlansClass3> {
 
-  public static route: string = BuildingInspectorRoutes.ASSESSING_PLANS_CLASS_3;
+  public static route: string = BuildingInspectorRoutes.CLASS3_ACCESSING_PLANS_CATEGORIES;
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   public hint: string = "Select all that apply";
@@ -50,13 +50,13 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
     if (!applicationService.model?.InspectorClass) {
       applicationService.model.InspectorClass = new BuildingInspectorClass();
     }
-    if (!applicationService.model.InspectorClass.AssessingPlansClass3) {
-      applicationService.model.InspectorClass.AssessingPlansClass3 =
+    if (!applicationService.model.InspectorClass.BuidlingInspectorAssessingPlansClass3) {
+      applicationService.model.InspectorClass.BuidlingInspectorAssessingPlansClass3 =
         new BuidlingInspectorAssessingPlansClass3();
     }
     applicationService.model.InspectorClass!.ClassType.Class =
       BuildingInspectorClassType.Class3;
-    this.model = applicationService.model.InspectorClass?.AssessingPlansClass3;
+    this.model = applicationService.model.InspectorClass?.BuidlingInspectorAssessingPlansClass3;
     const demandModel = this.DemandModel();
     const categoryKeys = [
       'CategoryA',
