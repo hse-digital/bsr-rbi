@@ -37,7 +37,7 @@ const routes = new HseRoutes([
     BuildingInspectorRegulatedActivitiesComponent,
     BuildingInspectorAssessingPlansClass3Component,
     BuildingAssessingPlansCategoriesComponent,
-    BuildingClassTechnicalManagerComponent
+    BuildingClassTechnicalManagerComponent,
     Class3BuildingAssessingPlansCategoriesComponent
   ],
   imports: [

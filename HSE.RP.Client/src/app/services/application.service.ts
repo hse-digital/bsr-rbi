@@ -306,7 +306,7 @@ export class BuildingInspectorRegulatedActivies {
   AssessingPlans: boolean = false;
   Inspection: boolean = false;
   CompletionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
-
+}
 export class BuildingAssessingPlansCategories {
   [key: string]: any;
   CategoryA?: boolean;

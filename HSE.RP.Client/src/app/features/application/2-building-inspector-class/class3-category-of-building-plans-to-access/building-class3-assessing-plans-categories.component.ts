@@ -7,6 +7,7 @@ import {
   BuildingInspectorClass,
   BuildingInspectorClassType,
   Class3BuildingAssessingPlansCategories,
+  ClassSelection,
   ComponentCompletionState,
 } from 'src/app/services/application.service';
 import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
@@ -42,9 +43,7 @@ export class Class3BuildingAssessingPlansCategoriesComponent extends PageCompone
     this.updateOnSave = true;
 
     if (applicationService.model?.InspectorClass)
-      applicationService.model.InspectorClass.Class =
-        BuildingInspectorClassType.ClassNone;
-
+      applicationService.model.InspectorClass.ClassType = new ClassSelection();
     if (!applicationService.model?.InspectorClass) {
       applicationService.model.InspectorClass = new BuildingInspectorClass();
     }
@@ -54,8 +53,6 @@ export class Class3BuildingAssessingPlansCategoriesComponent extends PageCompone
         new BuildingAssessingPlansCategories();
     }
 
-    applicationService.model.InspectorClass!.Class =
-      BuildingInspectorClassType.Class3;
     this.model = applicationService.model.InspectorClass?.Class3BuildingPlanCategories;
 
     const demandModel = this.DemandModel();
