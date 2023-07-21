@@ -1,12 +1,107 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()"
+  [hideBackButton]=true>
 
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+  <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class === 1">
+    <h2 class="govuk-heading-m" style="color:gray">Class 1 building inspector</h2>
+    <h1 class="govuk-heading-l">
+      Building inspector class
+    </h1>
+
+    <govuk-summary-list>
+      <govuk-summary-list-row 
+        (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        key="ClassSelection"
+        [showAction]="true"
+      >
+        Class 1 building inspector
+      </govuk-summary-list-row>
+
+      <!-- //! this row may not be needed -->
+      <govuk-summary-list-row 
+        (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        key="Country"
+        [showAction]="true"
+      >
+        Country
+      </govuk-summary-list-row>
+    </govuk-summary-list>
+  </div>
 
 
-  <h1 class="govuk-heading-l">Building inspector summary</h1>
-  <govuk-body>
-  Please see summary below
- </govuk-body>
+  <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class !== 1">
+    <!-- //! update this header with class 2 OR 3 -->
+    <h2 class="govuk-heading-m" style="color:gray">
+      Class {{applicationService.model.InspectorClass?.ClassType?.Class}} building inspector
+    </h2>
+    <h1 class="govuk-heading-l">
+      Summary of building inspector class
+    </h1>
+
+    <govuk-summary-list>
+      <govuk-summary-list-row 
+        (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        key="Type"
+        [showAction]="true"
+        [actionText]="'change'"
+      >
+        Class {{applicationService.model.InspectorClass?.ClassType?.Class}} building inspector
+      </govuk-summary-list-row>
+
+      <!-- <govuk-summary-list-row 
+        (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        [showAction]="true"
+        [actionText]="'change'"
+        key=" "
+      >
+        Class 4 building inspector
+      </govuk-summary-list-row> -->
+
+      <govuk-summary-list-row 
+        (onClick)="navigateTo(BuildingInspectorRoutes.REGULATED_ACTIVITIES)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.REGULATED_ACTIVITIES)"
+        key="Activity"
+        [showAction]="true"
+        [actionText]="'change'"
+      >
+        <div *ngIf="applicationService.model.InspectorClass?.Activities?.AssessingPlans">
+          Assess plans
+        </div>
+        <div *ngIf="applicationService.model.InspectorClass?.Activities?.Inspection">
+          Inspection
+        </div>
+      </govuk-summary-list-row>
+
+      <govuk-summary-list-row 
+        (onClick)="navigateTo(BuildingInspectorRoutes.PLANS_CATEGARIES)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.PLANS_CATEGARIES)"
+        key="Categories"
+        [showAction]="true"
+        [actionText]="'change'"
+      >
+        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryA && "Category A"}}
+        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryB && "Category B"}}
+        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryC && "Category C"}}
+        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryD && "Category D"}}
+        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryE && "Category E"}}
+        {{applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryF && "Category F"}}
+      </govuk-summary-list-row>
+
+      <!-- //! this row may not be needed -->
+      <govuk-summary-list-row 
+        (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        key="Country"
+        [showAction]="true"
+        [actionText]="'change'"
+      >
+        Country
+      </govuk-summary-list-row>
+    </govuk-summary-list>
+  </div>
 </govuk-formpage>
-
