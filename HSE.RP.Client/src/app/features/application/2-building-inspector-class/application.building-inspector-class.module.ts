@@ -15,6 +15,7 @@ import { BuildingAssessingPlansCategoriesComponent } from './assessing-plans/bui
 import { BuildingInspectorRegulatedActivitiesComponent } from './regulated-activities/building-inspector-regulated-activities.component';
 import { BuildingInspectorAssessingPlansClass3Component } from './assessing-plans/building-inspector-assessing-plans-class3.component';
 import { BuildingClassTechnicalManagerComponent } from './class-technical-manager/building-class-technical-manager.component';
+import { Class3BuildingAssessingPlansCategoriesComponent } from './class3-category-of-building-plans-to-access/building-class3-assessing-plans-categories.component';
 
 
 const routes = new HseRoutes([
@@ -25,6 +26,7 @@ const routes = new HseRoutes([
   HseRoute.protected(BuildingInspectorAssessingPlansClass3Component.route, BuildingInspectorAssessingPlansClass3Component, BuildingInspectorAssessingPlansClass3Component.title),
   HseRoute.protected(BuildingAssessingPlansCategoriesComponent.route, BuildingAssessingPlansCategoriesComponent, BuildingAssessingPlansCategoriesComponent.title),
   HseRoute.protected(BuildingClassTechnicalManagerComponent.route, BuildingClassTechnicalManagerComponent, BuildingClassTechnicalManagerComponent.title),
+  HseRoute.protected(Class3BuildingAssessingPlansCategoriesComponent.route, Class3BuildingAssessingPlansCategoriesComponent, Class3BuildingAssessingPlansCategoriesComponent.title),
 ]);
 
 @NgModule({
@@ -35,7 +37,8 @@ const routes = new HseRoutes([
     BuildingInspectorRegulatedActivitiesComponent,
     BuildingInspectorAssessingPlansClass3Component,
     BuildingAssessingPlansCategoriesComponent,
-    BuildingClassTechnicalManagerComponent
+    BuildingClassTechnicalManagerComponent,
+    Class3BuildingAssessingPlansCategoriesComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

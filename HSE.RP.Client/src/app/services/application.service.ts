@@ -285,7 +285,8 @@ export class BuildingInspectorClass {
     CategoryH: false,
   }
   ClassTechnicalManager?: string;
-  InspectorCountryOfWork?: BuildingInspectorCountryOfWork = {England: false, Wales: false};
+    InspectorCountryOfWork?: BuildingInspectorCountryOfWork = { England: false, Wales: false };
+    Class3BuildingPlanCategories: Class3BuildingAssessingPlansCategories = new Class3BuildingAssessingPlansCategories();
 }
 
 export class ClassSelection implements IComponentModel {
@@ -302,11 +303,10 @@ export enum BuildingInspectorClassType {
 
 export class BuildingInspectorRegulatedActivies {
   [key: string]: any;
-  AssessingPlans?: boolean;
-  Inspection?: boolean;
-  CompletionState?: ComponentCompletionState;
+  AssessingPlans: boolean = false;
+  Inspection: boolean = false;
+  CompletionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
 }
-
 export class BuildingAssessingPlansCategories {
   [key: string]: any;
   CategoryA?: boolean;
@@ -330,6 +330,20 @@ export class BuidlingInspectorAssessingPlansClass3 {
   CategoryH?: boolean;
   CompletionState?: ComponentCompletionState
 }
+
+export class Class3BuildingAssessingPlansCategories {
+  [key: string]: any;
+  CategoryA: boolean = false;
+  CategoryB: boolean = false;
+  CategoryC: boolean = false;
+  CategoryD: boolean = false;
+  CategoryE: boolean = false;
+  CategoryF: boolean = false;
+  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
+}
+
+
+
 
 export class BuildingInspectorCountryOfWork {
   [key: string]: any;
