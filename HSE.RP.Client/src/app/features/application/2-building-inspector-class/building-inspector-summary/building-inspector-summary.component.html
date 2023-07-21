@@ -9,31 +9,37 @@
       Building inspector class
     </h1>
 
+    <!-- class 1 summary list -->
     <govuk-summary-list>
       <govuk-summary-list-row 
         (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
         (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
         key="ClassSelection"
         [showAction]="true"
+        [actionText]="'change'"
       >
         Class 1 building inspector
       </govuk-summary-list-row>
 
-      <!-- //! this row may not be needed -->
       <govuk-summary-list-row 
-        (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
-        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+        (onClick)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"
+        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"
         key="Country"
         [showAction]="true"
+        [actionText]="'change'"
       >
-        Country
+        <div *ngIf="applicationService.model.InspectorClass?.InspectorCountryOfWork?.England">
+          England
+        </div>
+        <div *ngIf="applicationService.model.InspectorClass?.InspectorCountryOfWork?.Wales">
+          Wales
+        </div>
       </govuk-summary-list-row>
     </govuk-summary-list>
   </div>
 
-
+  <!-- class 2 or 3 summary list -->
   <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class !== 1">
-    <!-- //! update this header with class 2 OR 3 -->
     <h2 class="govuk-heading-m" style="color:gray">
       Class {{applicationService.model.InspectorClass?.ClassType?.Class}} building inspector
     </h2>
