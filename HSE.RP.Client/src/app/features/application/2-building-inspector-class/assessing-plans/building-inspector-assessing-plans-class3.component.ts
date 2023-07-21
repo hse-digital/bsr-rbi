@@ -79,6 +79,8 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
     demandModel.CategoryD = false;
     demandModel.CategoryE = false;
     demandModel.CategoryF = false;
+    demandModel.CategoryG = false;
+    demandModel.CategoryH = false;
     this.selections.forEach((value: keyof typeof demandModel) => {
       demandModel[value] = true;
     });
