@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Net;
+using System.Net.Mail;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Models;
 using HSE.RP.API.Services;
@@ -46,34 +47,60 @@ public class BuildingProfessionApplicationFunctions
     }
 
 
-    [Function(nameof(ValidateApplicationNumber))]
-    public Task<HttpResponseData> ValidateApplicationNumber([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumber/{emailAddress}/{applicationNumber}")] HttpRequestData request,
-        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber}", Connection = "CosmosConnection")]
+    [Function(nameof(ValidateApplicationNumberEmail))]
+    public Task<HttpResponseData> ValidateApplicationNumberEmail([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumberEmail/{emailAddress}/{applicationNumber}")] HttpRequestData request,
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> applications,
-        [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail.Email, {emailAddress}, true)", Connection = "CosmosConnection")]
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail.Email, {emailAddress}, true)", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> emails)
-    
+
     {
 
 
-            if (applications.Any() && emails.Any(app => app.Id == applications[0].Id))
-            {
-                return request.CreateObjectResponseAsync(new { isValidEmail = true, isValidApplicationNumber = true });
-            }
-            else if (emails.Any())
-            {
-                return request.CreateObjectResponseAsync(new { isValidEmail = true, isValidApplicationNumber = false }); ;
-            }
-            else if (applications.Any())
-            {
-                return request.CreateObjectResponseAsync(new { isValidEmail = false, isValidApplicationNumber = true }); ;
-            }
-            else
-            {
-                return request.CreateObjectResponseAsync(new { isValidEmail = false, isValidApplicationNumber = false }); ;
-            }
-        
+        if (applications.Any() && emails.Any(app => app.Id == applications[0].Id))
+        {
+            return request.CreateObjectResponseAsync(new { IsValidEmail = true, IsValidApplicationNumber = true, PhoneNumber = applications[0].PersonalDetails.ApplicantPhone, EmailAddress = "" });
+        }
+        else if (emails.Any())
+        {
+            return request.CreateObjectResponseAsync(new { IsValidEmail = true, IsValidApplicationNumber = false, PhoneNumber = "", EmailAddress = "" }); ;
+        }
+        else if (applications.Any())
+        {
+            return request.CreateObjectResponseAsync(new { IsValidEmail = false, IsValidApplicationNumber = true, PhoneNumber = applications[0].PersonalDetails.ApplicantPhone, EmailAddress = "" }); ;
+        }
+        else
+        {
+            return request.CreateObjectResponseAsync(new { IsValidEmail = false, isValiIsValidApplicationNumberdApplicationNumber = false, PhoneNumber = "", EmailAddress = "" }); ;
+        }
+    }
 
+    [Function(nameof(ValidateApplicationNumberPhone))]
+    public Task<HttpResponseData> ValidateApplicationNumberPhone([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumberPhone/{phoneNumber}/{applicationNumber}")] HttpRequestData request,
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber}", Connection = "CosmosConnection")]
+        List<BuildingProfessionApplicationModel> applications,
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantPhone.PhoneNumber, {phoneNumber}, true)", Connection = "CosmosConnection")]
+        List<BuildingProfessionApplicationModel> phoneNumbers)
+
+    {
+
+
+        if (applications.Any() && phoneNumbers.Any(app => app.Id == applications[0].Id))
+        {
+            return request.CreateObjectResponseAsync(new { IsValidEmail = true, IsValidApplicationNumber = true, EmailAddress = applications[0].PersonalDetails.ApplicantEmail.Email, PhoneNumber = "" });
+        }
+        else if (phoneNumbers.Any())
+        {
+            return request.CreateObjectResponseAsync(new { IsValidEmail = true, IsValidApplicationNumber = false, EmailAddress = "", PhoneNumber = "" }); ;
+        }
+        else if (applications.Any())
+        {
+            return request.CreateObjectResponseAsync(new { IsValidEmail = false, IsValidApplicationNumber = true, EmailAddress = applications[0].PersonalDetails.ApplicantEmail.Email, PhoneNumber = "" }); ;
+        }
+        else
+        {
+            return request.CreateObjectResponseAsync(new { IsValidEmail = false, IsValidApplicationNumber = false, EmailAddress = "", PhoneNumber = "" }); ;
+        }
     }
 
 

@@ -91,17 +91,55 @@ export class ApplicationService {
   }
 
   async validateReturningApplicationDetails(
-    EmailAddress: string,
-    ApplicationNumber: string
-  ): Promise<{ isValidEmail: boolean; isValidApplicationNumber: boolean }> {
-    return await firstValueFrom(
-      this.httpClient.get<{
-        isValidEmail: boolean;
-        isValidApplicationNumber: boolean;
-      }>(
-        `api/ValidateApplicationNumber/${EmailAddress.toLowerCase()}/${ApplicationNumber}`
-      )
-    );
+    ApplicationNumber: string,
+    ValidationOption: string,
+    EmailAddress?: string,
+    PhoneNumber?: string
+  ): Promise<{
+    IsValid: boolean;
+    IsValidApplicationNumber: boolean;
+    EmailAddress: string;
+    PhoneNumber: string;
+  }> {
+    try {
+      if ((ValidationOption = 'email-option')) {
+        return await firstValueFrom(
+          this.httpClient.get<{
+            IsValid: boolean;
+            IsValidApplicationNumber: boolean;
+            EmailAddress: string;
+            PhoneNumber: string;
+          }>(
+            `api/ValidateApplicationNumberPhone/${EmailAddress!.toLowerCase()}/${ApplicationNumber}`
+          )
+        );
+      } else if ((ValidationOption = 'phone-option')) {
+        return await firstValueFrom(
+          this.httpClient.get<{
+            IsValid: boolean;
+            IsValidApplicationNumber: boolean;
+            EmailAddress: string;
+            PhoneNumber: string;
+          }>(
+            `api/ValidateApplicationNumberEmail/${PhoneNumber!}/${ApplicationNumber}`
+          )
+        );
+      } else {
+        return {
+          IsValid: false,
+          IsValidApplicationNumber: false,
+          EmailAddress: '',
+          PhoneNumber: '',
+        };
+      }
+    } catch (error) {
+      return {
+        IsValid: false,
+        IsValidApplicationNumber: false,
+        EmailAddress: '',
+        PhoneNumber: '',
+      };
+    }
   }
 
   async syncPayment(): Promise<void> {
@@ -257,9 +295,9 @@ export enum PaymentStatus {
 }
 
 export class BuildingInspectorClass {
-  ClassType: ClassSelection = { 
+  ClassType: ClassSelection = {
     Class: BuildingInspectorClassType.ClassNone,
-    CompletionState: ComponentCompletionState.NotStarted
+    CompletionState: ComponentCompletionState.NotStarted,
   };
   Activities: BuildingInspectorRegulatedActivies = {
     AssessingPlans: false,
@@ -278,8 +316,8 @@ export class BuildingInspectorClass {
 }
 
 export class ClassSelection implements IComponentModel {
-  Class?: BuildingInspectorClassType
-  CompletionState?: ComponentCompletionState
+  Class?: BuildingInspectorClassType;
+  CompletionState?: ComponentCompletionState;
 }
 
 export enum BuildingInspectorClassType {

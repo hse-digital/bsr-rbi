@@ -2,7 +2,7 @@
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="errors.emailAddress.hasError" anchorId="input-email-address"
       message="{{errors.emailAddress.errorText}}" />
-    <govuk-error-link *ngIf="errors.applicationNumber.hasError" anchorId="input-application-number"
+    <govuk-error-link *ngIf="errors.applicationNumber.hasError" anchorId={{errors.applicationNumber.anchorId}}
       message="{{errors.applicationNumber.errorText}}" />
       <govuk-error-link *ngIf="errors.phoneNumber.hasError" anchorId="input-phone-number"
       message="{{errors.phoneNumber.errorText}}" />
@@ -30,8 +30,8 @@
     <govuk-body>To send 6-digit code to your mobile phone, enter your email address to verify your application</govuk-body>
     <govuk-input id="email-address" label="Email address" labelClass="govuk-label--s"
     [(model)]="emailAddress"
-    [maxlength]=100 (modelChange)="phoneNumberChange.emit(phoneNumber)"
-    [errorText]="getErrorDescription(errors.phoneNumber.hasError, errors.phoneNumber.errorText)"
+    [maxlength]=100 (modelChange)="emailAddressChange.emit(phoneNumber)"
+    [errorText]="getErrorDescription(errors.emailAddress.hasError, errors.emailAddress.errorText)"
     class="govuk-!-margin-bottom-5" (onKeyupEnter)="validateAndContinue()" />
   </govuk-radio>
 
@@ -41,8 +41,8 @@
     <govuk-body>To send 6-digit code to your email, enter your phone number to verify your application</govuk-body>
     <govuk-input id="phone-number" label="Mobile phone number" labelClass="govuk-label--s"
     [(model)]="phoneNumber"
-    [maxlength]=100 (modelChange)="emailAddressChange.emit(emailAddress)"
-    [errorText]="getErrorDescription(errors.emailAddress.hasError, errors.emailAddress.errorText)"
+    [maxlength]=100 (modelChange)="phoneNumberChange.emit(phoneNumber)"
+    [errorText]="getErrorDescription(errors.phoneNumber.hasError, errors.phoneNumber.errorText)"
     class="govuk-!-margin-bottom-5" (onKeyupEnter)="validateAndContinue()" />
   </govuk-radio>
 
