@@ -1,12 +1,3 @@
-import { ComponentCompletionState } from "./component-completion-state.enum";
+import { BuildingAssessingPlansBase } from "./building-assessing-plans-base.model";
 
-export class Class2InspectBuildingCategories {
-    [key: string]: any;
-    CategoryA: boolean = false;
-    CategoryB: boolean = false;
-    CategoryC: boolean = false;
-    CategoryD: boolean = false;
-    CategoryE: boolean = false;
-    CategoryF: boolean = false;
-    CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
-  }
+export class Class2InspectBuildingCategories extends BuildingAssessingPlansBase {}

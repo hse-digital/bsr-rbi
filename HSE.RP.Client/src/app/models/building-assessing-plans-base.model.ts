@@ -1,6 +1,6 @@
 import { ComponentCompletionState } from "./component-completion-state.enum";
 
-export class AssessingPlansBase {
+export class BuildingAssessingPlansBase {
     [key: string]: any;
     CategoryA?: boolean;
     CategoryB?: boolean;

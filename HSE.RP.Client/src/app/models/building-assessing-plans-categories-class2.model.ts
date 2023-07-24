@@ -1,3 +1,3 @@
-import { AssessingPlansBase } from './assessing-plans-base.model';
+import { BuildingAssessingPlansBase } from './building-assessing-plans-base.model';
 
-export class BuildingAssessingPlansCategories extends AssessingPlansBase {}
+export class BuildingAssessingPlansCategoriesClass2 extends BuildingAssessingPlansBase {}

@@ -4,15 +4,11 @@ import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
 import { PhoneNumberValidator } from '../../../helpers/validators/phone-number-validator';
-import {
-    ApplicantPhone,
-  ApplicationService,
-  ApplicationStatus,
-  BuildingProfessionalModel,
-  ComponentCompletionState,
-} from '../../../services/application.service';
+import { ApplicationService } from '../../../services/application.service';
 import { ApplicationTaskListComponent } from '../../application/task-list/task-list.component';
 import { ApplicantPhoneVerifyComponent } from './applicant-phone-verify.component';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
 
 @Component({
   selector: 'hse-applicant-phone',
@@ -20,11 +16,12 @@ import { ApplicantPhoneVerifyComponent } from './applicant-phone-verify.componen
 })
 export class ApplicantPhoneComponent extends PageComponent<string> {
   public static route: string = 'applicant-phone';
-  static title: string = "Personal details - Register as a building inspector - GOV.UK";
+  static title: string =
+    'Personal details - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   phoneNumberHasErrors = false;
-  phoneNumberErrorMessage = "Enter your telephone number";  
+  phoneNumberErrorMessage = 'Enter your telephone number';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -35,28 +32,40 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-    if(!applicationService.model.PersonalDetails?.ApplicantPhone)
-    {
-      applicationService.model.PersonalDetails!.ApplicantPhone = { PhoneNumber: '', CompletionState: ComponentCompletionState.InProgress };
+    if (!applicationService.model.PersonalDetails?.ApplicantPhone) {
+      applicationService.model.PersonalDetails!.ApplicantPhone = {
+        PhoneNumber: '',
+        CompletionState: ComponentCompletionState.InProgress,
+      };
     }
-    this.model = applicationService.model.PersonalDetails?.ApplicantPhone.PhoneNumber;
+    this.model =
+      applicationService.model.PersonalDetails?.ApplicantPhone.PhoneNumber;
   }
 
   override DerivedIsComplete(value: boolean): void {
-    this.applicationService.model.PersonalDetails!.ApplicantPhone!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
+    this.applicationService.model.PersonalDetails!.ApplicantPhone!.CompletionState =
+      value
+        ? ComponentCompletionState.Complete
+        : ComponentCompletionState.InProgress;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.PersonalDetails!.ApplicantPhone!.PhoneNumber = this.model;
-    await applicationService.sendVerificationSms(this.model!)
+    this.applicationService.model.PersonalDetails!.ApplicantPhone!.PhoneNumber =
+      this.model;
+    await applicationService.sendVerificationSms(this.model!);
   }
 
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return this.applicationService.model.PersonalDetails?.ApplicantEmail?.CompletionState === ComponentCompletionState.Complete
-      && (this.applicationService.model.ApplicationStatus >= ApplicationStatus.EmailVerified ?? false);
+    return (
+      this.applicationService.model.PersonalDetails?.ApplicantEmail
+        ?.CompletionState === ComponentCompletionState.Complete &&
+      (this.applicationService.model.ApplicationStatus >=
+        ApplicationStatus.EmailVerified ??
+        false)
+    );
   }
 
   override isValid(): boolean {

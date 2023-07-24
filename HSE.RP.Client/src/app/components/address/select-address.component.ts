@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { GovukErrorSummaryComponent } from 'hse-angular';
-import { AddressModel, AddressResponseModel } from 'src/app/services/address.service';
+import { AddressResponseModel } from 'src/app/models/address-response.model';
+import { AddressModel } from 'src/app/models/address.model';
 import { ApplicationService } from 'src/app/services/application.service';
 import { TitleService } from 'src/app/services/title.service';
 

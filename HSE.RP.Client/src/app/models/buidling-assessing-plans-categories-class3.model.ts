@@ -1,6 +1,6 @@
-import { AssessingPlansBase } from './assessing-plans-base.model';
+import { BuildingAssessingPlansBase } from './building-assessing-plans-base.model';
 
-export class BuildingAssessingPlansCategoriesClass3 extends AssessingPlansBase {
+export class BuildingAssessingPlansCategoriesClass3 extends BuildingAssessingPlansBase {
   CategoryG?: boolean;
   CategoryH?: boolean;
 }
