@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
 import { GovukErrorSummaryComponent } from "hse-angular";
-import { ApplicationService } from "src/app/services/application.service";
+import { ApplicationService, StageCompletionState } from "src/app/services/application.service";
 import { NavigationService } from "src/app/services/navigation.service";
 import { TitleService } from 'src/app/services/title.service';
 
@@ -71,13 +71,17 @@ export class ReturningApplicationVerifyComponent implements OnInit {
     try {
       if(this.verificationOption == "email-option"){
         await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress!);
-        await this.applicationService.continueApplication(this.applicationNumber, this.emailAddress!, this.securityCode!);
+        await this.applicationService.continueApplication( this.applicationNumber, this.securityCode!, this.verificationOption, this.emailAddress!, undefined);
+        this.applicationService.model.StageStatus["EmailVerification"] == StageCompletionState.Complete
+        this.applicationService.model.StageStatus["PhoneVerification"] == StageCompletionState.Complete
         this.navigationService.navigate(`application/${this.applicationNumber}`);
         return true;
       }
       else if(this.verificationOption == "phone-option"){
         await this.applicationService.validateOTPToken(this.securityCode!, this.phoneNumber!);
-        await this.applicationService.continueApplication(this.applicationNumber, this.phoneNumber!, this.securityCode!);
+        await this.applicationService.continueApplication(this.applicationNumber, this.securityCode!, this.verificationOption, undefined, this.phoneNumber!);
+        this.applicationService.model.StageStatus["EmailVerification"] == StageCompletionState.Complete
+        this.applicationService.model.StageStatus["PhoneVerification"] == StageCompletionState.Complete
         this.navigationService.navigate(`application/${this.applicationNumber}`);
         return true;
       }
