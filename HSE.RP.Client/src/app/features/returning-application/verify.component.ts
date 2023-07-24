@@ -16,7 +16,7 @@ export class ReturningApplicationVerifyComponent implements OnInit {
   @Input() applicationNumber!: string;
   @Input() verificationOption!: string;
   @Input() phoneNumber?: string;
-  
+
   @Output() onResendClicked = new EventEmitter();
 
   sendingRequest = false;
@@ -32,9 +32,6 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle(ReturningApplicationVerifyComponent.title);
-    console.log(this.verificationOption);
-    console.log(this.applicationNumber);
-    console.log(this.emailAddress);
 
   }
 

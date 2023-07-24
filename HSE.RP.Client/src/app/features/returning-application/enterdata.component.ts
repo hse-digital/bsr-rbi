@@ -11,6 +11,7 @@ import { GovukErrorSummaryComponent } from 'hse-angular';
 import { ApplicationService } from 'src/app/services/application.service';
 import { EmailValidator } from '../../helpers/validators/email-validator';
 import { PhoneNumberValidator } from 'src/app/helpers/validators/phone-number-validator';
+import { VerificationData } from './returning-application.component';
 
 @Component({
   selector: 'application-enterdata',
@@ -23,11 +24,12 @@ export class ReturningApplicationEnterDataComponent {
     emailAddress: { hasError: false, errorText: '', anchorId: '' },
     applicationNumber: { hasError: false, errorText: '', anchorId: '' },
     phoneNumber: { hasError: false, errorText: '', anchorId: '' },
-    validationOption: { hasError: false, errorText: '', anchorId: '' },
+    verificationOption: { hasError: false, errorText: '', anchorId: '' },
   };
 
-  verificationEmail?: string;
-  verificationPhone?: string;
+  verificationEmail: string = "";
+  verificationPhone: string = "";
+  VerificationData?: VerificationData;
 
   @Input() emailAddress: string | undefined;
   @Output() emailAddressChange = new EventEmitter<string | undefined>();
@@ -38,19 +40,13 @@ export class ReturningApplicationEnterDataComponent {
   @Input() phoneNumber: string | undefined;
   @Output() phoneNumberChange = new EventEmitter<string | undefined>();
 
-  @Input() validationOption: string | undefined;
-  @Output() validationOptionChange = new EventEmitter<string | undefined>();
-
-
-
+  @Input() verificationOption: string | undefined;
+  @Output() verificationOptionChange = new EventEmitter<string | undefined>();
 
   @Output()
-  onContinue = new EventEmitter<{
-    emailAddress?: string;
-    applicationNumber: string;
-    phoneNumber?: string;
-    validationOption: string;
-  }>();
+  onContinue = new EventEmitter<VerificationData>();
+
+
 
   @ViewChildren('summaryError')
   summaryError?: QueryList<GovukErrorSummaryComponent>;
@@ -71,24 +67,25 @@ export class ReturningApplicationEnterDataComponent {
     this.errors.emailAddress.hasError = false;
     this.errors.phoneNumber.hasError = false;
     this.errors.applicationNumber.hasError = false;
-    this.errors.validationOption.hasError = false;
+    this.errors.verificationOption.hasError = false;
 
     this.sendingRequest = true;
 
+
     await this.isApplicationNumberValid();
 
-    if (!this.validationOption && !this.applicationNumber) {
+    if (!this.verificationOption && !this.applicationNumber) {
       this.errors.applicationNumber.errorText =
         'Enter your 12-digit application reference number and select a verification option';
       this.errors.applicationNumber.anchorId = 'input-application-number';
-    } else if (!this.validationOption) {
-      this.errors.validationOption.hasError = true;
-      this.errors.validationOption.errorText =
+    } else if (!this.verificationOption) {
+      this.errors.verificationOption.hasError = true;
+      this.errors.verificationOption.errorText =
         'Select how you want to receive your 6-digit verification code, via text message or email';
     } else {
-      if (this.validationOption == 'phone-option') {
+      if (this.verificationOption == 'phone-option') {
         this.isEmailAddressValid();
-      } else if (this.validationOption == 'email-option') {
+      } else if (this.verificationOption == 'email-option') {
         this.isPhoneNumberValid();
       }
     }
@@ -97,18 +94,24 @@ export class ReturningApplicationEnterDataComponent {
       this.errors.emailAddress.hasError ||
       this.errors.applicationNumber.hasError ||
       this.errors.phoneNumber.hasError ||
-      this.errors.validationOption.hasError;
+      this.errors.verificationOption.hasError;
     if (!this.hasErrors) {
-      if(this.validationOption == 'phone-option')
+      if(this.verificationOption == 'phone-option')
       {
         await this.applicationService.sendVerificationSms(this.emailAddress!);
 
       }
-      else if(this.validationOption == 'email-option')
+      else if(this.verificationOption == 'email-option')
       {
         await this.applicationService.sendVerificationEmail(this.verificationEmail!);
       }
-      this.onContinue.emit({ emailAddress: this.verificationEmail, applicationNumber: this.applicationNumber!, phoneNumber: this.verificationPhone, validationOption: this.validationOption! });
+
+      this.VerificationData = {
+        verificationEmail: this.verificationEmail,
+        verificationPhone: this.verificationPhone
+      };
+
+      this.onContinue.emit(this.VerificationData);
     } else {
       this.sendingRequest = false;
       this.summaryError?.first?.focus();
@@ -128,14 +131,16 @@ export class ReturningApplicationEnterDataComponent {
       var result =
         await this.applicationService.validateReturningApplicationDetails(
           this.applicationNumber!,
-          this.validationOption!,
+          this.verificationOption!,
           this.emailAddress,
           this.phoneNumber
         );
 
-      if (this.validationOption == 'email-option') {
+      if (this.verificationOption == 'email-option') {
         if (result.IsValidApplicationNumber && result.IsValid) {
           this.verificationEmail = result.EmailAddress;
+
+
         } else if (!result.IsValidApplicationNumber && result.IsValid) {
           this.errors.applicationNumber.errorText =
             'Application number does not match this telephone number. Enter the correct 12 digit application code';
@@ -147,7 +152,7 @@ export class ReturningApplicationEnterDataComponent {
           this.errors.applicationNumber.errorText =
             'Your mobile phone number does not match this application. Enter the correct mobile telephone number';
         }
-      } else if (this.validationOption == 'phone-option') {
+      } else if (this.verificationOption == 'phone-option') {
         if (result.IsValidApplicationNumber && result.IsValid) {
           this.phoneNumber = result.PhoneNumber;
         } else if (!result.IsValidApplicationNumber && result.IsValid) {

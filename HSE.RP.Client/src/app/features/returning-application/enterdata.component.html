@@ -6,8 +6,8 @@
       message="{{errors.applicationNumber.errorText}}" />
       <govuk-error-link *ngIf="errors.phoneNumber.hasError" anchorId="input-phone-number"
       message="{{errors.phoneNumber.errorText}}" />
-      <govuk-error-link *ngIf="errors.validationOption.hasError" anchorId="phone-option-input"
-      message="{{errors.validationOption.errorText}}" />
+      <govuk-error-link *ngIf="errors.verificationOption.hasError" anchorId="phone-option-input"
+      message="{{errors.verificationOption.errorText}}" />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Continue a saved application</h1>
@@ -22,23 +22,24 @@
   <govuk-body>Select how you want to receive your 6-digit verification code</govuk-body>
 
   <govuk-radio-group title="Select how you want to recieve your 6-digit verification code"
-  [(model)]="validationOption" #field [govukRequired]="field"
-  [errorText]="getErrorDescription(errors.validationOption.hasError, errors.validationOption.errorText)"
+  [(model)]="verificationOption" #field [govukRequired]="field"
+  (modelChange)="verificationOptionChange.emit(verificationOption)"
+  [errorText]="getErrorDescription(errors.verificationOption.hasError, errors.verificationOption.errorText)"
   hintText="If you choose for us to send your code to your mobile phone, we will ask you to enter your email address to verify your application. If you choose for us to send your code to your email address, we will ask you to enter your mobile number to verify your application">
 
-  <govuk-radio [model]="validationOption" name="phone-option" id="phone-option" value="phone-option" label="Mobile telephone" (onKeyupEnter)="validateAndContinue()" (modelChange)="validationOptionChange.emit(validationOption)">
+  <govuk-radio [model]="verificationOption" name="phone-option" id="phone-option" value="phone-option" label="Mobile telephone" (onKeyupEnter)="validateAndContinue()">
     <govuk-body>To send 6-digit code to your mobile phone, enter your email address to verify your application</govuk-body>
     <govuk-input id="email-address" label="Email address" labelClass="govuk-label--s"
     [(model)]="emailAddress"
     [maxlength]=100
-    (modelChange)="emailAddressChange.emit(phoneNumber)"
+    (modelChange)="emailAddressChange.emit(emailAddress)"
     [errorText]="getErrorDescription(errors.emailAddress.hasError, errors.emailAddress.errorText)"
     class="govuk-!-margin-bottom-5" (onKeyupEnter)="validateAndContinue()" />
   </govuk-radio>
 
   <div class="govuk-radios__divider">or</div>
 
-  <govuk-radio [model]="validationOption" name="email-option" id="email-option" value="email-option" label="Email" (onKeyupEnter)="validateAndContinue()" (modelChange)="validationOptionChange.emit(validationOption)">
+  <govuk-radio [model]="verificationOption" name="email-option" id="email-option" value="email-option" label="Email" (onKeyupEnter)="validateAndContinue()">
     <govuk-body>To send 6-digit code to your email, enter your phone number to verify your application</govuk-body>
     <govuk-input id="phone-number" label="Mobile phone number" labelClass="govuk-label--s"
     [(model)]="phoneNumber"
