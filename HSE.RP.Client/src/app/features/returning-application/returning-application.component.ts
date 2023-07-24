@@ -4,6 +4,12 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { TitleService } from 'src/app/services/title.service';
 import { PageComponent } from '../../helpers/page.component';
+import { verify } from 'crypto';
+
+export type VerificationData = {
+  verificationEmail: string | undefined,
+  verificationPhone: string | undefined
+}
 
 @Component({
   templateUrl: './returning-application.component.html'
@@ -49,15 +55,22 @@ export class ReturningApplicationComponent extends PageComponent<string>{
     }
   }
   step = "enterdata";
+
   emailAddress?: string;
+  phoneNumber?: string
   applicationNumber?: string;
+  verificationPhone?: string
+  verificationEmail?: string
+  verificationOption?: string
 
   canContinue(): boolean {
     return false;
   }
 
-  showVerifyApplication() {
-    this.step = 'verify';
+  showVerifyApplication(event: VerificationData) {
+    this.verificationEmail = event.verificationEmail;
+    this.verificationPhone = event.verificationPhone;
+    this.step = "verify";
   }
 
   showResendStep() {
@@ -66,6 +79,18 @@ export class ReturningApplicationComponent extends PageComponent<string>{
 
   showVerifyResend() {
     this.step = 'resendverify';
+  }
+
+  showChangeVerificationStep() {
+    if(this.verificationOption == "email-option")
+    {
+      this.verificationOption = "phone-option";
+    }
+    else
+    {
+      this.verificationOption = "email-option";
+    }
+    this.step = 'enterdata';
   }
 
 
