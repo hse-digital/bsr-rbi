@@ -97,19 +97,19 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   override navigateNext(): Promise<boolean> {
     if (this.applicationService.model.InspectorClass?.Activities.AssessingPlans === true) {
       if (this.applicationService.model.InspectorClass.ClassType.Class === BuildingInspectorClassType.Class2) {
-        return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.PLANS_CATEGORIES);
+        return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS2_ACCESSING_PLANS_CATEGORIES);
       }
       if (this.applicationService.model.InspectorClass.ClassType.Class === BuildingInspectorClassType.Class3) {
-        return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.ASSESSING_PLANS_CLASS_3);
+        return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS3_ACCESSING_PLANS_CATEGORIES);
       }
     }
 
     if (this.applicationService.model.InspectorClass?.ClassType.Class === BuildingInspectorClassType.Class2) {
           // redirect to the Class 2 Inspection Categories once that page has been made
-      return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.SUMMARY);
+      return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES);
     }
           // redirect to the Class 3 Inspection Categories once that page has been made
-      return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.SUMMARY);
+      return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES);
   
   }
 
