@@ -30,8 +30,10 @@ public class AddressFunctions
         try
         {
             var resp = await integrationOptions.CommonAPIEndpoint
+                .AppendPathSegment("api")
                 .AppendPathSegment(nameof(SearchPostalAddressByPostcode))
                 .AppendPathSegment(postcode)
+                .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
                 .AllowHttpStatus(HttpStatusCode.BadRequest)
                 .GetAsync();
 
@@ -42,15 +44,17 @@ public class AddressFunctions
         catch (Exception ex)
         {
             throw;
-        }   
+        }
     }
 
     [Function(nameof(SearchAddress))]
     public async Task<HttpResponseData> SearchAddress([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{nameof(SearchAddress)}/{{query}}")] HttpRequestData request, string query)
     {
         var resp = await integrationOptions.CommonAPIEndpoint
+                .AppendPathSegment("api")
             .AppendPathSegment(nameof(SearchAddress))
             .SetQueryParam("query", query)
+            .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
             .AllowHttpStatus(HttpStatusCode.BadRequest)
             .GetAsync();
 
