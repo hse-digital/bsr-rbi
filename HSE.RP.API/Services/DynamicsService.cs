@@ -48,6 +48,7 @@ namespace HSE.RP.API.Services
         {
             var contact = await CreateContactAsync(buildingProfessionApplicationModel);
             var buildingProfessionApplication = await CreateBuildingProfessionApplicationAsync(buildingProfessionApplicationModel: buildingProfessionApplicationModel, contact);
+            
             var dynamicsContact = await dynamicsApi.Get<DynamicsContact>($"contacts({contact.Id})");
 
             await dynamicsApi.Update($"contacts({dynamicsContact.contactid})", dynamicsContact with {
@@ -70,15 +71,17 @@ namespace HSE.RP.API.Services
                                       jobRoleReferenceId: $"/bsr_jobroles({DynamicsJobRole.Ids["building_inspector"]})" 
                                       ); ;
             var dynamicsContact = modelDefinition.BuildDynamicsEntity(contact);
+            var existingContact = await FindExistingContactAsync(contact.FirstName, contact.LastName, contact.Email, contact.PhoneNumber);
 
-            var existingContact = await FindExistingContactAsync(contact.FirstName, contact.LastName, contact.Email, contact.PhoneNumber); 
-            if (existingContact == null)
-            {
-                var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsContact);
-                var contactId = ExtractEntityIdFromHeader(response.Headers);
-                await AssignContactType(contactId, DynamicsContactTypes.BIApplicant);
-                return contact with { Id = contactId };
-            }
+
+                if (existingContact == null)
+                {
+                    var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsContact);
+                    var contactId = ExtractEntityIdFromHeader(response.Headers);
+                    await AssignContactType(contactId, DynamicsContactTypes.BIApplicant);
+                    return contact with { Id = contactId };
+                }
+
 
             return contact with { Id = existingContact.contactid };
         }
@@ -123,6 +126,7 @@ namespace HSE.RP.API.Services
 
         private async Task AssignContactType(string contactId, string contactTypeId)
         {
+
             await dynamicsApi.Create($"contacts({contactId})/bsr_contacttype_contact/$ref", new DynamicsContactType
             {
                 contactTypeReferenceId = $"{dynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_contacttypes({contactTypeId})"
