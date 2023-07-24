@@ -77,15 +77,26 @@ export class ApplicationService {
 
   async continueApplication(
     ApplicationNumber: string,
-    PhoneNumber: string,
-    OTPToken: string
+    OTPToken: string,
+    ValidationOption: string,
+    EmailAddress?: string,
+    PhoneNumber?: string
   ): Promise<void> {
-    let application: BuildingProfessionalModel = await firstValueFrom(
-      this.httpClient.get<BuildingProfessionalModel>(
-        `api/GetApplication/${ApplicationNumber}/${PhoneNumber}/${OTPToken}`
-      )
-    );
-    this.model = application;
+    if (ValidationOption === 'email-option') {
+      let application: BuildingProfessionalModel = await firstValueFrom(
+        this.httpClient.get<BuildingProfessionalModel>(
+          `api/GetApplicationEmail/${ApplicationNumber}/${EmailAddress}/${OTPToken}`
+        )
+      );
+      this.model = application;
+    } else if (ValidationOption === 'phone-option') {
+      let application: BuildingProfessionalModel = await firstValueFrom(
+        this.httpClient.get<BuildingProfessionalModel>(
+          `api/GetApplicationPhone/${ApplicationNumber}/${PhoneNumber}/${OTPToken}`
+        )
+      );
+      this.model = application;
+    }
     this.model.ReturningApplication = true;
     this.updateLocalStorage();
   }
@@ -110,7 +121,7 @@ export class ApplicationService {
             EmailAddress: string;
             PhoneNumber: string;
           }>(
-            `api/ValidateApplicationNumberPhone/${EmailAddress!.toLowerCase()}/${ApplicationNumber}`
+            `api/ValidateApplicationNumberPhone/${PhoneNumber!}/${ApplicationNumber}`
           )
         );
       } else if ((ValidationOption = 'phone-option')) {
@@ -121,7 +132,7 @@ export class ApplicationService {
             EmailAddress: string;
             PhoneNumber: string;
           }>(
-            `api/ValidateApplicationNumberEmail/${PhoneNumber!}/${ApplicationNumber}`
+            `api/ValidateApplicationNumberEmail/${EmailAddress!.toLowerCase()}/${ApplicationNumber}`
           )
         );
       } else {

@@ -12,8 +12,11 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
   static title: string = "Enter security code - Register as a building inspector - GOV.UK";
 
-  @Input() emailAddress!: string;
+  @Input() emailAddress?: string;
   @Input() applicationNumber!: string;
+  @Input() verificationOption!: string;
+  @Input() phoneNumber?: string;
+  
   @Output() onResendClicked = new EventEmitter();
 
   sendingRequest = false;
@@ -29,6 +32,10 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle(ReturningApplicationVerifyComponent.title);
+    console.log(this.verificationOption);
+    console.log(this.applicationNumber);
+    console.log(this.emailAddress);
+
   }
 
   getErrorDescription(showError: boolean, errorMessage: string): string | undefined {
@@ -65,22 +72,21 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
   private async doesSecurityCodeMatch(): Promise<boolean> {
     try {
-      await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress);
-      await this.applicationService.continueApplication(this.applicationNumber, this.emailAddress, this.securityCode!);
-
-      //var applicationStatus = this.applicationService.model.ApplicationStatus;
-      // if ((applicationStatus & BuildingApplicationStatus.KbiSubmitComplete) == BuildingApplicationStatus.KbiSubmitComplete) {
-      //   this.navigationService.navigate(`application/${this.applicationNumber}/kbi/submit/information-submitted`);
-      // } else if ((applicationStatus & BuildingApplicationStatus.PaymentComplete) == BuildingApplicationStatus.PaymentComplete) {
-      //   this.navigationService.navigate(`application/${this.applicationNumber}/kbi`);
-      // } else {
-      //   this.navigationService.navigate(`application/${this.applicationNumber}`);
-      // }
-
-      this.navigationService.navigate(`application/${this.applicationNumber}`);
-
-
-      return true;
+      if(this.verificationOption == "email-option"){
+        await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress!);
+        await this.applicationService.continueApplication(this.applicationNumber, this.emailAddress!, this.securityCode!);
+        this.navigationService.navigate(`application/${this.applicationNumber}`);
+        return true;
+      }
+      else if(this.verificationOption == "phone-option"){
+        await this.applicationService.validateOTPToken(this.securityCode!, this.phoneNumber!);
+        await this.applicationService.continueApplication(this.applicationNumber, this.phoneNumber!, this.securityCode!);
+        this.navigationService.navigate(`application/${this.applicationNumber}`);
+        return true;
+      }
+      else{
+        return false;
+      }
     } catch {
       return false;
     }

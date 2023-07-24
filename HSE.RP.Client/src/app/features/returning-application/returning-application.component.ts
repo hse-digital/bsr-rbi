@@ -49,7 +49,10 @@ export class ReturningApplicationComponent extends PageComponent<string>{
     }
   }
   step = "enterdata";
+  
   emailAddress?: string;
+  phoneNumber?: string
+  verificationOption?: string
   applicationNumber?: string;
 
   canContinue(): boolean {

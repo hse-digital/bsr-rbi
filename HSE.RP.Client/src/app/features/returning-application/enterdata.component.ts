@@ -25,7 +25,7 @@ export class ReturningApplicationEnterDataComponent {
     phoneNumber: { hasError: false, errorText: '', anchorId: '' },
     validationOption: { hasError: false, errorText: '', anchorId: '' },
   };
-  validationOption?: string;
+
   verificationEmail?: string;
   verificationPhone?: string;
 
@@ -38,11 +38,18 @@ export class ReturningApplicationEnterDataComponent {
   @Input() phoneNumber: string | undefined;
   @Output() phoneNumberChange = new EventEmitter<string | undefined>();
 
+  @Input() validationOption: string | undefined;
+  @Output() validationOptionChange = new EventEmitter<string | undefined>();
+
+
+
+
   @Output()
   onContinue = new EventEmitter<{
-    emailAddress: string;
+    emailAddress?: string;
     applicationNumber: string;
-    phoneNumber: string;
+    phoneNumber?: string;
+    validationOption: string;
   }>();
 
   @ViewChildren('summaryError')
@@ -67,6 +74,7 @@ export class ReturningApplicationEnterDataComponent {
     this.errors.validationOption.hasError = false;
 
     this.sendingRequest = true;
+
     await this.isApplicationNumberValid();
 
     if (!this.validationOption && !this.applicationNumber) {
@@ -91,8 +99,16 @@ export class ReturningApplicationEnterDataComponent {
       this.errors.phoneNumber.hasError ||
       this.errors.validationOption.hasError;
     if (!this.hasErrors) {
-      // await this.applicationService.sendVerificationEmail(this.emailAddress!);
-      // this.onContinue.emit({ emailAddress: this.emailAddress!, applicationNumber: this.applicationNumber!, phoneNumber: this.phoneNumber! });
+      if(this.validationOption == 'phone-option')
+      {
+        await this.applicationService.sendVerificationSms(this.emailAddress!);
+
+      }
+      else if(this.validationOption == 'email-option')
+      {
+        await this.applicationService.sendVerificationEmail(this.verificationEmail!);
+      }
+      this.onContinue.emit({ emailAddress: this.verificationEmail, applicationNumber: this.applicationNumber!, phoneNumber: this.verificationPhone, validationOption: this.validationOption! });
     } else {
       this.sendingRequest = false;
       this.summaryError?.first?.focus();
