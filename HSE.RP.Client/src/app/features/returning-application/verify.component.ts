@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
 import { GovukErrorSummaryComponent } from "hse-angular";
-import { ApplicationService } from "src/app/services/application.service";
+import { ApplicationService, StageCompletionState } from "src/app/services/application.service";
 import { NavigationService } from "src/app/services/navigation.service";
 import { TitleService } from 'src/app/services/title.service';
 
@@ -12,9 +12,13 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
   static title: string = "Enter security code - Register as a building inspector - GOV.UK";
 
-  @Input() emailAddress!: string;
+  @Input() emailAddress?: string;
   @Input() applicationNumber!: string;
+  @Input() verificationOption!: string;
+  @Input() phoneNumber?: string;
+
   @Output() onResendClicked = new EventEmitter();
+  @Output() onShowChangeVerificationStepClicked = new EventEmitter();
 
   sendingRequest = false;
   hasErrors = false;
@@ -29,6 +33,7 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle(ReturningApplicationVerifyComponent.title);
+
   }
 
   getErrorDescription(showError: boolean, errorMessage: string): string | undefined {
@@ -63,24 +68,31 @@ export class ReturningApplicationVerifyComponent implements OnInit {
     this.onResendClicked.emit();
   }
 
+  showChangeVerificationStep() {
+    this.onShowChangeVerificationStepClicked.emit();
+  }
+
   private async doesSecurityCodeMatch(): Promise<boolean> {
     try {
-      await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress);
-      await this.applicationService.continueApplication(this.applicationNumber, this.emailAddress, this.securityCode!);
-
-      //var applicationStatus = this.applicationService.model.ApplicationStatus;
-      // if ((applicationStatus & BuildingApplicationStatus.KbiSubmitComplete) == BuildingApplicationStatus.KbiSubmitComplete) {
-      //   this.navigationService.navigate(`application/${this.applicationNumber}/kbi/submit/information-submitted`);
-      // } else if ((applicationStatus & BuildingApplicationStatus.PaymentComplete) == BuildingApplicationStatus.PaymentComplete) {
-      //   this.navigationService.navigate(`application/${this.applicationNumber}/kbi`);
-      // } else {
-      //   this.navigationService.navigate(`application/${this.applicationNumber}`);
-      // }
-
-      this.navigationService.navigate(`application/${this.applicationNumber}`);
-
-
-      return true;
+      if(this.verificationOption == "email-option"){
+        await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress!);
+        await this.applicationService.continueApplication( this.applicationNumber, this.securityCode!, this.verificationOption, this.emailAddress!, undefined);
+        this.applicationService.model.StageStatus["EmailVerification"] == StageCompletionState.Complete
+        this.applicationService.model.StageStatus["PhoneVerification"] == StageCompletionState.Complete
+        this.navigationService.navigate(`application/${this.applicationNumber}`);
+        return true;
+      }
+      else if(this.verificationOption == "phone-option"){
+        await this.applicationService.validateOTPToken(this.securityCode!, this.phoneNumber!);
+        await this.applicationService.continueApplication(this.applicationNumber, this.securityCode!, this.verificationOption, undefined, this.phoneNumber!);
+        this.applicationService.model.StageStatus["EmailVerification"] == StageCompletionState.Complete
+        this.applicationService.model.StageStatus["PhoneVerification"] == StageCompletionState.Complete
+        this.navigationService.navigate(`application/${this.applicationNumber}`);
+        return true;
+      }
+      else{
+        return false;
+      }
     } catch {
       return false;
     }

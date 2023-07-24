@@ -7,7 +7,10 @@ import { ApplicationService } from "src/app/services/application.service";
 })
 export class ReturningApplicationResendCodeComponent {
 
-    @Input() emailAddress!: string;
+  @Input() emailAddress?: string;
+  @Input() applicationNumber!: string;
+  @Input() verificationOption!: string;
+  @Input() phoneNumber?: string;
     @Output() onVerificationCodeSent = new EventEmitter();
 
     sendingRequest = false;
@@ -16,7 +19,11 @@ export class ReturningApplicationResendCodeComponent {
 
     async sendNewCode() {
         this.sendingRequest = true;
+        if(this.verificationOption === 'email') {
         await this.applicationService.sendVerificationEmail(this.emailAddress!);
+        } else {
+        await this.applicationService.sendVerificationSms(this.phoneNumber!);
+        }
         this.onVerificationCodeSent.emit();
     }
 }

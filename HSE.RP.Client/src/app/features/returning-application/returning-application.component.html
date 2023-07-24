@@ -5,9 +5,11 @@
 <div class="govuk-main-wrapper">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <application-enterdata *ngIf="step == 'enterdata'" (onContinue)="showVerifyApplication()" [(emailAddress)]="emailAddress" [(applicationNumber)]="applicationNumber" />
-      <application-verify *ngIf="step == 'verify' || step=='resendverify'" (onResendClicked)="showResendStep()" [emailAddress]="emailAddress!" [applicationNumber]="applicationNumber!" />
-      <application-resend *ngIf="step == 'resend'" (onVerificationCodeSent)="showVerifyResend()" [emailAddress]="emailAddress!"/>
+      <application-enterdata *ngIf="step == 'enterdata'" (onContinue)="showVerifyApplication($event)" [(emailAddress)]="emailAddress" [(applicationNumber)]="applicationNumber" [(phoneNumber)]="phoneNumber" [(verificationOption)]="verificationOption" />
+
+      <application-verify *ngIf="step == 'verify' || step=='resendverify'" (onResendClicked)="showResendStep()" (onShowChangeVerificationStepClicked)="showChangeVerificationStep()" [emailAddress]="verificationEmail" [applicationNumber]="applicationNumber!" [phoneNumber]="verificationPhone" [verificationOption]="verificationOption!" />
+
+      <application-resend *ngIf="step == 'resend'"  (onVerificationCodeSent)="showVerifyResend()" [emailAddress]="verificationEmail" [applicationNumber]="applicationNumber!" [phoneNumber]="verificationPhone" [verificationOption]="verificationOption!"/>
     </div>
   </div>
 </div>

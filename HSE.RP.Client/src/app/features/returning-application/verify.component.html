@@ -5,17 +5,35 @@
 
   <h1 class="govuk-heading-l">Enter security code</h1>
 
-  <govuk-body>We have sent a 6-digit security code to: <b>{{ emailAddress }}</b>.</govuk-body>
-  <govuk-body>If you cannot find the email, please check your junk or spam folders.</govuk-body>
-  <govuk-body>If you still cannot find it, or it has timed out <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new security code</a>.</govuk-body>
+
+  <ng-container *ngIf="verificationOption == 'email-option'" >
+
+      <govuk-body>We have sent a 6-digit security code to: <b>{{ emailAddress }}</b>.</govuk-body>
+      <govuk-body>If you cannot find the email, please check your junk or spam folders.</govuk-body>
+      <govuk-body>If you still cannot find it, or it has timed out <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new security code</a> or <a (click)="showChangeVerificationStep()" (keyup.enter)="showChangeVerificationStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification to your phone</a></govuk-body>
 
 
-  <govuk-input id="security-code" label="Security code" labelClass="govuk-label--s"
-               hint="For example, '123456'." [(model)]="securityCode" class="govuk-input--width-10"
-               [errorText]="getErrorDescription(errors.securityCode.hasError, errors.securityCode.errorText)"
-               (onKeyupEnter)="validateAndContinue()" />
+      <govuk-input id="security-code" label="Security code" labelClass="govuk-label--s"
+                  hint="For example, '123456'." [(model)]="securityCode" class="govuk-input--width-10"
+                  [errorText]="getErrorDescription(errors.securityCode.hasError, errors.securityCode.errorText)"
+                  (onKeyupEnter)="validateAndContinue()" />
 
+  </ng-container>
+
+  <ng-container *ngIf="verificationOption == 'phone-option'" >
+
+    <govuk-body>We have sent a 6-digit security code to: <b>{{ phoneNumber }}</b>.</govuk-body>
+    <govuk-body>If you did not get a text message, or wish to use a different mobile number, you can ask us to resend the security code.</govuk-body>
+    <govuk-body>If you have not received the text message, or it has timed out <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new security code</a> or <a (click)="showChangeVerificationStep()" (keyup.enter)="showChangeVerificationStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification to your email</a></govuk-body>
+
+
+    <govuk-input id="security-code" label="Security code" labelClass="govuk-label--s"
+                hint="For example, '123456'." [(model)]="securityCode" class="govuk-input--width-10"
+                [errorText]="getErrorDescription(errors.securityCode.hasError, errors.securityCode.errorText)"
+                (onKeyupEnter)="validateAndContinue()" />
+
+</ng-container>
 
 </div>
 
-<govuk-button (onClick)="validateAndContinue()" [isLoading]="sendingRequest" [disabled]="sendingRequest">Save and continue</govuk-button>
+<govuk-button (onClick)="validateAndContinue()" [isLoading]="sendingRequest" [disabled]="sendingRequest">Verify 6-digit code</govuk-button>

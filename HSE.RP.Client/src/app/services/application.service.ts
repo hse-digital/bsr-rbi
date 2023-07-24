@@ -78,31 +78,80 @@ export class ApplicationService {
 
   async continueApplication(
     ApplicationNumber: string,
-    PhoneNumber: string,
-    OTPToken: string
+    OTPToken: string,
+    ValidationOption: string,
+    EmailAddress?: string,
+    PhoneNumber?: string
   ): Promise<void> {
-    let application: BuildingProfessionalModel = await firstValueFrom(
-      this.httpClient.get<BuildingProfessionalModel>(
-        `api/GetApplication/${ApplicationNumber}/${PhoneNumber}/${OTPToken}`
-      )
-    );
-    this.model = application;
+    if (ValidationOption === 'email-option') {
+      let application: BuildingProfessionalModel = await firstValueFrom(
+        this.httpClient.get<BuildingProfessionalModel>(
+          `api/GetApplicationEmail/${ApplicationNumber}/${EmailAddress}/${OTPToken}`
+        )
+      );
+      this.model = application;
+    } else if (ValidationOption === 'phone-option') {
+      let application: BuildingProfessionalModel = await firstValueFrom(
+        this.httpClient.get<BuildingProfessionalModel>(
+          `api/GetApplicationPhone/${ApplicationNumber}/${PhoneNumber}/${OTPToken}`
+        )
+      );
+      this.model = application;
+    }
     this.model.ReturningApplication = true;
     this.updateLocalStorage();
   }
 
   async validateReturningApplicationDetails(
-    EmailAddress: string,
-    ApplicationNumber: string
-  ): Promise<{ isValidEmail: boolean; isValidApplicationNumber: boolean }> {
-    return await firstValueFrom(
-      this.httpClient.get<{
-        isValidEmail: boolean;
-        isValidApplicationNumber: boolean;
-      }>(
-        `api/ValidateApplicationNumber/${EmailAddress.toLowerCase()}/${ApplicationNumber}`
-      )
-    );
+    ApplicationNumber: string,
+    ValidationOption: string,
+    EmailAddress?: string,
+    PhoneNumber?: string
+  ): Promise<{
+    IsValid: boolean;
+    IsValidApplicationNumber: boolean;
+    EmailAddress: string;
+    PhoneNumber: string;
+  }> {
+    try {
+      if ((ValidationOption === 'email-option')) {
+        return await firstValueFrom(
+          this.httpClient.get<{
+            IsValid: boolean;
+            IsValidApplicationNumber: boolean;
+            EmailAddress: string;
+            PhoneNumber: string;
+          }>(
+            `api/ValidateApplicationNumberPhone/${PhoneNumber!}/${ApplicationNumber}`
+          )
+        );
+      } else if ((ValidationOption === 'phone-option')) {
+        return await firstValueFrom(
+          this.httpClient.get<{
+            IsValid: boolean;
+            IsValidApplicationNumber: boolean;
+            EmailAddress: string;
+            PhoneNumber: string;
+          }>(
+            `api/ValidateApplicationNumberEmail/${EmailAddress!.toLowerCase()}/${ApplicationNumber}`
+          )
+        );
+      } else {
+        return {
+          IsValid: false,
+          IsValidApplicationNumber: false,
+          EmailAddress: '',
+          PhoneNumber: '',
+        };
+      }
+    } catch (error) {
+      return {
+        IsValid: false,
+        IsValidApplicationNumber: false,
+        EmailAddress: '',
+        PhoneNumber: '',
+      };
+    }
   }
 
   async syncPayment(): Promise<void> {
