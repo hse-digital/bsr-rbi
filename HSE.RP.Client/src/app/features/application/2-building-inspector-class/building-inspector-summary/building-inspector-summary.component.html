@@ -4,8 +4,8 @@
   [hideBackButton]=true>
 
   <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class === 1">
-    <h2 class="govuk-heading-m" style="color:gray">Class 1 building inspector</h2>
     <h1 class="govuk-heading-l">
+      <span class="govuk-caption-l">Class 1 building inspector</span>
       Building inspector class
     </h1>
 
@@ -39,18 +39,11 @@
   </div>
 
   <!-- class 2 or 3 summary list -->
-  <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class !== 1">
-    <h2 class="govuk-heading-m" style="color:gray">
-      Class {{applicationService.model.InspectorClass?.ClassType?.Class}} building inspector
-    </h2>
+  <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class !== 1">    
     <h1 class="govuk-heading-l">
+      <span class="govuk-caption-l">Class {{applicationService.model.InspectorClass?.ClassType?.Class}} building inspector</span>
       Summary of building inspector class
     </h1>
-
-    <!-- <a class="govuk-link" role="link" (click)="item.onClick.emit()" (keyup.enter)="item.onKeyupEnter.emit()" tabindex="0"> -->
-    <a class="govuk-link" role="link" tabindex="0">
-      {{"change"}}<span class="govuk-visually-hidden">{{"item.actionDetails"}}</span>
-    </a>
 
     <govuk-summary-list>
       <govuk-summary-list-row 
@@ -60,18 +53,25 @@
         [showAction]="true"
         [actionText]="'change'"
       >
-        Class {{applicationService.model.InspectorClass?.ClassType?.Class}} building inspector
-      </govuk-summary-list-row>
+        <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class === 2">
+          Class 2 building inspector
+        </div>
 
-      <govuk-summary-list-row 
-        *ngIf="applicationService.model.InspectorClass?.ClassTechnicalManager === 'yes'"
-        (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
-        (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
-        [showAction]="true"
-        [actionText]="'change'"
-        key=" "
-      >
-        Class 4 building inspector
+        <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class === 3">
+          Class 3 building inspector
+        </div>
+
+        <div *ngIf="applicationService.model.InspectorClass?.ClassTechnicalManager === 'yes'">
+          <div [ngStyle]="{display: 'inline-block'}">
+            Class 4 building inspector
+          </div>    
+          <a class="govuk-link" role="link" tabindex="0" 
+            (click)="navigateTo(BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER)"
+            (keyup.enter)="navigateTo(BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER)"
+          >
+            {{"change"}}<span class="govuk-visually-hidden">{{"item.actionDetails"}}</span>
+          </a>
+        </div>
       </govuk-summary-list-row>
 
       <govuk-summary-list-row 
@@ -96,27 +96,18 @@
         [showAction]="true"
         [actionText]="'change'"
       >
-        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryA">
-          Category A
+        <!-- //! check if assess and inspection can have no categories selected, if they can't remove div ngIf -->
+        <div *ngIf="assessPlansCategories">
+          <div>{{assessPlansCategories}}</div>
+          <span class="govuk-caption-m">[Assess plans]</span>
         </div>
-        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryB">
-          Category B
-        </div>
-        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryC">
-          Category C
-        </div>
-        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryD">
-          Category D
-        </div>
-        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryE">
-          Category E
-        </div>
-        <div *ngIf="applicationService.model.InspectorClass?.BuildingPlanCategories?.CategoryF">
-          Category F
+
+        <div *ngIf="inspectionCategories">
+          <div>{{inspectionCategories}}</div>
+          <span class="govuk-caption-m">[Inspection]</span>
         </div>
       </govuk-summary-list-row>
 
-      <!-- //! this row may not be needed -->
       <govuk-summary-list-row 
         (onClick)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"
         (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"

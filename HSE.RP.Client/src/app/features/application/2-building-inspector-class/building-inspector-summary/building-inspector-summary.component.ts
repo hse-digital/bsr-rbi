@@ -26,6 +26,9 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   photoHasErrors = false;
   override model?: string;
 
+  assessPlansCategories: string = "";
+  inspectionCategories: string = "";
+
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
     this.updateOnSave = false;
@@ -34,6 +37,10 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   override onInit(applicationService: ApplicationService): void {
     //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
     console.log(applicationService.model)
+
+    //? can do this with pipes
+    this.inspectionCategories = this.categoriesToString(applicationService.model.InspectorClass?.BuildingPlanCategories!)
+    this.assessPlansCategories = this.categoriesToString(applicationService.model.InspectorClass?.AssessingPlansClass3)
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -59,5 +66,20 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
 
   public navigateTo(route: string) {
     return this.navigationService.navigateRelative(`${route}`, this.activatedRoute);
+  }
+
+  categoriesToString(categories: any): string {
+    // loop through keys in object
+    // if keys value is true, add the last character of the key name to string with a comma
+    // when the loop is complete, remove the trailing comma
+    let newString = "";
+
+    Object.keys(categories).forEach(key => {
+      if (categories[key] === true) {
+        newString = newString + key.slice(-1) + ", ";
+      }
+    });
+
+    return newString.slice(0, -2);
   }
 }
