@@ -8,7 +8,7 @@ public class ContactModelDefinition : DynamicsModelDefinition<Contact, DynamicsC
 
     public override DynamicsContact BuildDynamicsEntity(Contact entity)
     {
-        return new DynamicsContact(entity.FirstName, entity.LastName, entity.PhoneNumber, entity.Email, contactid: entity.Id, jobRoleReferenceId: entity.jobRoleReferenceId);
+        return new DynamicsContact(firstname: entity.FirstName,lastname: entity.LastName,telephone1: entity.PhoneNumber,emailaddress1: entity.Email, contactid: entity.Id, jobRoleReferenceId: entity.jobRoleReferenceId);
     }
 
     public override Contact BuildEntity(DynamicsContact dynamicsEntity)
