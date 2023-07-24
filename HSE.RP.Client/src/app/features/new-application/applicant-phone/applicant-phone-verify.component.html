@@ -1,7 +1,7 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
 
-<govuk-formpage saveAndContinueText="Verify Phone" [hideSaveAndComeBack]=true (saveAndContinue)="validateOTP()" [hideBackButton]=true [processing]="processing">
+<govuk-formpage saveAndContinueText="Verify mobile phone number" [hideSaveAndComeBack]=true (saveAndContinue)="validateOTP()" [hideBackButton]=true [processing]="processing">
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
     <govuk-error-link anchorId="input-security-code" [message]="getOtpError()" />
   </govuk-error-summary>
@@ -13,7 +13,7 @@
   </govuk-body>
 
   <govuk-body>
-    If you did not get a text message, or wish to use a different mobile number, you can     <a href="#" class="govuk-link" target="_blank">ask us to resend the security code.</a>
+    f you did not get a text message, security code timed out, or wish to use a different mobile number, you can ask us to <a href="#" class="govuk-link" target="_blank">resend the security code.</a>
   </govuk-body>
 
 
