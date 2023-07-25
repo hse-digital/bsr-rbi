@@ -1,7 +1,12 @@
 <govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
 
-  <h2 class="govuk-heading-m" style="color:gray">Class {{getClassType()}} building inspector</h2>
-  <h1 class="govuk-heading-l">What BSR-regulated activities will you do?</h1>
+  <h1 class="govuk-heading-l">
+    <span class="govuk-caption-l">
+      Class {{getClassType()}} building inspector
+    </span>
+    What BSR-regulated activities will you do?
+  </h1>
+
   <govuk-body>
     <govuk-checkbox-group [title]="" [hint]=hint [errorText]=errorText
                           [(model)]="selections"
