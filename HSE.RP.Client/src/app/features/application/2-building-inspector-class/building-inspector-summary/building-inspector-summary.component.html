@@ -94,7 +94,7 @@
           </div>
         </dd>
         <dd class="govuk-summary-list__actions">
-          <a class="govuk-link" role="link" *ngIf="applicationService.model.InspectorClass?.Activities?.AssessingPlans"
+          <a class="govuk-link" role="link"
             (click)="navigateTo(BuildingInspectorRoutes.REGULATED_ACTIVITIES)"
             (keyup.enter)="navigateTo(BuildingInspectorRoutes.REGULATED_ACTIVITIES)" tabindex="0"
           >
@@ -118,16 +118,19 @@
           </div>
         </dd>
         <dd class="govuk-summary-list__actions">
-          <a class="govuk-link" role="link" *ngIf="assessPlansCategories"
-            (click)="navigateTo(assessPlansLink)"
-            (keyup.enter)="navigateTo(assessPlansLink)" tabindex="0"
-          >
-            change<span class="govuk-visually-hidden"> activities</span>
-          </a>
+          <div *ngIf="assessPlansCategories">
+            <a class="govuk-link" role="link" 
+              (click)="navigateTo(assessPlansLink)"
+              (keyup.enter)="navigateTo(assessPlansLink)" tabindex="0"
+            >
+              change<span class="govuk-visually-hidden"> activities</span>
+            </a>
+            <br>
+          </div>
 
-          <!-- //! need to wrap brs in something -->
-          <br>
-          <br>
+          <br *ngIf="assessPlansCategories === 'false'">
+          <br *ngIf="assessPlansCategories">
+          
           <a class="govuk-link" role="link" *ngIf="inspectionCategories"
             (click)="navigateTo(inspectionLink)"
             (keyup.enter)="navigateTo(inspectionLink)" tabindex="0"
