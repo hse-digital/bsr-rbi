@@ -5,8 +5,10 @@ import { PageComponent } from '../../../../helpers/page.component';
 import { EmailValidator } from '../../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
-import { ApplicantEmail, ApplicationService, ApplicationStatus, ComponentCompletionState } from '../../../../services/application.service';
+import {  ApplicationService } from '../../../../services/application.service';
 import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-phone/applicant-alternative-phone.component';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
 
 @Component({
   selector: 'hse-applicant-alternative-email',

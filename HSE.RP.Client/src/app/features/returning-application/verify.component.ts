@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
 import { GovukErrorSummaryComponent } from "hse-angular";
-import { ApplicationService, StageCompletionState } from "src/app/services/application.service";
+import { StageCompletionState } from "src/app/models/stage-completion-state.enum";
+import { ApplicationService } from "src/app/services/application.service";
 import { NavigationService } from "src/app/services/navigation.service";
 import { TitleService } from 'src/app/services/title.service';
 

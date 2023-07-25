@@ -3,10 +3,11 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus } from '../../../../services/application.service';
+import { ApplicationService } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { CompetencyCertificateCodeComponent } from '../certificate-code/competency-certificate-code.component';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
 
 @Component({
   selector: 'hse-independent-competency-status',

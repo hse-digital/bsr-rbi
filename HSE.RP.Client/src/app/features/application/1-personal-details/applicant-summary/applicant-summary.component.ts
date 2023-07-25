@@ -3,14 +3,17 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, BuildingProfessionalModel, ComponentCompletionState, StageCompletionState } from '../../../../services/application.service';
+import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
-import { AddressModel } from '../../../../services/address.service';
 import { DateFormatHelper } from 'src/app/helpers/date-format-helper';
+import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { AddressModel } from 'src/app/models/address.model';
 
 @Component({
   selector: 'hse-applicant-summary',

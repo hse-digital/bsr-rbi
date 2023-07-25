@@ -4,11 +4,15 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, BuildingInspectorClass, BuildingInspectorClassType, BuildingInspectorRegulatedActivies, ComponentCompletionState } from '../../../../services/application.service';
+import { ApplicationService } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
 import { BuildingInspectorRoutes, BuildingInspectorRouter } from '../BuildingInspectorRoutes'; 
+import { BuildingInspectorRegulatedActivies } from 'src/app/models/building-inspector-regulated-activies.model';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
+import { BuildingInspectorClassType } from 'src/app/models/building-inspector-classtype.enum';
 
 @Component({
   selector: 'hse-building-inspector-regulated-activities',

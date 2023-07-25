@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { NotFoundComponent } from 'src/app/components/not-found/not-found.component';
-import { ApplicationService, ApplicationStatus, PaymentModel } from 'src/app/services/application.service';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { PaymentModel } from 'src/app/models/payment.model';
+import { ApplicationService } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PaymentService } from 'src/app/services/payment.service';
 
@@ -31,7 +33,7 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
       }
 
       this.payment = await this.paymentService.GetPayment(this.paymentReference);
-      if (this.payment.Status == 'success') {
+      if (this.payment?.Status == 'success') {
         this.applicationService.model.ApplicationStatus = this.applicationService.model.ApplicationStatus | ApplicationStatus.PaymentComplete;
         await this.applicationService.updateApplication();
         this.shouldRender = true;

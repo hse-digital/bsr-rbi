@@ -1,13 +1,24 @@
-import { Component, Injector, OnInit, QueryList, ViewChildren } from "@angular/core";
-import { Observable } from "rxjs";
-import { GetInjector } from "./injector.helper";
-import { ApplicationService, IComponentModel } from "../services/application.service";
-import { GovukErrorSummaryComponent } from "hse-angular";
-import { TitleService } from "../services/title.service";
-import { GovukRequiredDirective } from "../components/required.directive";
-import { NavigationService } from "../services/navigation.service";
-import { NotFoundComponent } from "../components/not-found/not-found.component";
-import { ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from "@angular/router";
+import {
+  Component,
+  Injector,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
+import { Observable } from 'rxjs';
+import { GetInjector } from './injector.helper';
+import { ApplicationService } from '../services/application.service';
+import { GovukErrorSummaryComponent } from 'hse-angular';
+import { TitleService } from '../services/title.service';
+import { GovukRequiredDirective } from '../components/required.directive';
+import { NavigationService } from '../services/navigation.service';
+import { NotFoundComponent } from '../components/not-found/not-found.component';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 
 @Component({ template: '' })
 export abstract class PageComponent<T> implements OnInit {
@@ -16,9 +27,11 @@ export abstract class PageComponent<T> implements OnInit {
   hasErrors: boolean = false;
   updateOnSave: boolean = true;
   private injector: Injector = GetInjector();
-  protected applicationService: ApplicationService = this.injector.get(ApplicationService);
+  protected applicationService: ApplicationService =
+    this.injector.get(ApplicationService);
   protected titleService: TitleService = this.injector.get(TitleService);
-  protected navigationService: NavigationService = this.injector.get(NavigationService);
+  protected navigationService: NavigationService =
+    this.injector.get(NavigationService);
 
   @ViewChildren(GovukRequiredDirective)
   private requiredFields?: QueryList<GovukRequiredDirective>;
@@ -26,7 +39,10 @@ export abstract class PageComponent<T> implements OnInit {
 
   abstract onInit(applicationService: ApplicationService): void;
   abstract onSave(applicationService: ApplicationService): Promise<void>;
-  abstract canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean;
+  abstract canAccess(
+    applicationService: ApplicationService,
+    routeSnapshot: ActivatedRouteSnapshot
+  ): boolean;
   abstract isValid(): boolean;
   abstract navigateNext(): Promise<boolean>;
 
@@ -42,15 +58,13 @@ export abstract class PageComponent<T> implements OnInit {
     this._isComplete = value;
   }
 
-
   constructor(protected activatedRoute: ActivatedRoute) {
-    this.triggerScreenReaderNotification("");
+    this.triggerScreenReaderNotification('');
   }
 
   ngOnInit(): void {
     this.onInit(this.applicationService);
   }
-
 
   async saveAndContinue(): Promise<void> {
     this.processing = true;
@@ -95,7 +109,14 @@ export abstract class PageComponent<T> implements OnInit {
     this.processing = false;
   }
 
-  canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    _: RouterStateSnapshot
+  ):
+    | boolean
+    | UrlTree
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree> {
     if (!this.canAccess(this.applicationService, route)) {
       this.navigationService.navigate(NotFoundComponent.route);
       return false;
@@ -104,30 +125,36 @@ export abstract class PageComponent<T> implements OnInit {
     return true;
   }
 
-
-  getErrorDescription(showError: boolean, errorMessage: string): string | undefined {
+  getErrorDescription(
+    showError: boolean,
+    errorMessage: string
+  ): string | undefined {
     return this.hasErrors && showError ? errorMessage : undefined;
   }
 
-  triggerScreenReaderNotification(message: string = "Sending success") {
-    var alertContainer = document!.getElementById("hiddenAlertContainer");
+  triggerScreenReaderNotification(message: string = 'Sending success') {
+    var alertContainer = document!.getElementById('hiddenAlertContainer');
     if (alertContainer) {
       alertContainer.innerHTML = message;
     }
   }
 
   private requiredFieldsAreEmpty() {
-    return this.requiredFields?.filter(x => {
-      if (Array.isArray(x.govukRequired.model)) {
-        return x.govukRequired.model.length == 0;
-      }
+    return (
+      this.requiredFields?.filter((x) => {
+        if (Array.isArray(x.govukRequired.model)) {
+          return x.govukRequired.model.length == 0;
+        }
 
-      return !x.govukRequired.model;
-    }).length == this.requiredFields?.length;
+        return !x.govukRequired.model;
+      }).length == this.requiredFields?.length
+    );
   }
 
   private navigateBack(): Promise<boolean> {
-    return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
+    return this.navigationService.navigate(
+      `application/${this.applicationService.model.id}`
+    );
   }
 
   private async saveAndUpdate(): Promise<void> {
@@ -140,5 +167,3 @@ export abstract class PageComponent<T> implements OnInit {
     this.titleService.setTitleError();
   }
 }
-
-

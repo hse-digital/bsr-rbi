@@ -2,14 +2,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
-import {
-  ApplicationService,
-  ApplicationStatus,
-  BuildingInspectorCountryOfWork,
-} from '../../../../services/application.service';
+import { ApplicationService } from '../../../../services/application.service';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
 import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
 import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
+import { BuildingInspectorCountryOfWork } from 'src/app/models/building-inspector-country-of-work.model';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
 
 @Component({
   selector: 'hse-building-inspector-country',
