@@ -1,7 +1,7 @@
-import { BuildingProfessionalModel } from '../../../services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
 import { Injectable } from '@angular/core';
+import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
 
 export const PersonalDetailRoutes = {
   ADDRESS: 'applicant-address',

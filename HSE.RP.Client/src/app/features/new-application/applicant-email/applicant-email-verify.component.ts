@@ -6,8 +6,10 @@ import { NotFoundComponent } from '../../../components/not-found/not-found.compo
 import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, StageCompletionState } from '../../../services/application.service';
+import { ApplicationService} from '../../../services/application.service';
 import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 
 @Component({
   selector: 'hse-applicant-email-verify',

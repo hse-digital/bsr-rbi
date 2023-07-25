@@ -4,14 +4,12 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { PhoneNumberValidator } from '../../../../helpers/validators/phone-number-validator';
 import {
-    ApplicantPhone,
   ApplicationService,
-  ApplicationStatus,
-  BuildingProfessionalModel,
-  ComponentCompletionState,
 } from '../../../../services/application.service';
 import { ApplicantNationalInsuranceNumberComponent } from '../applicant-national-insurance-number/applicant-national-insurance-number.component';
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
 
 @Component({
   selector: 'hse-applicant-alternative-phone',

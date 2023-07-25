@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AddressModel, AddressResponseModel } from 'src/app/services/address.service';
+import { AddressResponseModel } from 'src/app/models/address-response.model';
+import { AddressModel } from 'src/app/models/address.model';
 
 @Component({
   selector: 'hse-address',

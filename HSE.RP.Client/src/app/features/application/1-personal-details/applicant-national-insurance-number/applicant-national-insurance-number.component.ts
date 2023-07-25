@@ -3,13 +3,15 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicantNationalInsuranceNumber, ApplicationService, ApplicationStatus, ComponentCompletionState } from '../../../../services/application.service';
+import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ApplicantSummaryComponent } from '../applicant-summary/applicant-summary.component';
 import { NationalInsuranceNumberValidator } from '../../../../helpers/validators/national-insurance-number-validator';
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
 
 @Component({
   selector: 'hse-applicant-national-insurance-number',

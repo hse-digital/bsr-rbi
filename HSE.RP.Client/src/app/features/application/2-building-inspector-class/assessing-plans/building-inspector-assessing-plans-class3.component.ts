@@ -3,12 +3,14 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, StringModel, BuildingAssessingPlansCategoriesClass3, BuildingInspectorClassType, BuildingInspectorClass, ComponentCompletionState } from '../../../../services/application.service';
+import { ApplicationService} from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
 import { BuildingInspectorRoutes, BuildingInspectorRouter } from '../BuildingInspectorRoutes'; 
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { BuildingAssessingPlansCategoriesClass3 } from 'src/app/models/buidling-assessing-plans-categories-class3.model';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 interface AssessingPlans {
   value: string,
@@ -47,7 +49,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-    this.model = applicationService.model.InspectorClass?.BuildingAssessingPlansCategoriesClass3;
+    this.model = applicationService.model.InspectorClass?.AssessingPlansClass3;
     const demandModel = this.DemandModel();
     const categoryKeys = [
       'CategoryA',
