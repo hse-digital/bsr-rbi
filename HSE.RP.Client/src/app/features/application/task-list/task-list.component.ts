@@ -8,13 +8,7 @@ import {
 } from '@angular/router';
 import { GovukErrorSummaryComponent } from 'hse-angular';
 import {
-  ApplicationService,
-  BuildingProfessionalModel,
-  ApplicationStatus, /* PaymentStatus */
-  IComponentModel,
-  ComponentCompletionState,
-  StageCompletionState,
-  PaymentStatus,
+  ApplicationService
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PageComponent } from 'src/app/helpers/page.component';
@@ -58,6 +52,12 @@ import { PersonalDetailRoutes, PersonalDetailRouter } from '../1-personal-detail
 import { PaymentDeclarationComponent } from '../5-application-submission/payment/payment-declaration/payment-declaration.component';
 import { Validators } from '@angular/forms';
 import { PaymentReconciliationStatus } from 'src/app/services/payment.service';
+import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
+import { IComponentModel } from 'src/app/models/component. interface';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { PaymentStatus } from 'src/app/models/payment-status.enum';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
 
 
 interface ITaskListParent {

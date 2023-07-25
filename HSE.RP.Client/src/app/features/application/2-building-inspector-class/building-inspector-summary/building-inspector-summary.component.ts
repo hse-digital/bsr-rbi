@@ -4,8 +4,10 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService, ApplicationStatus, BuildingInspectorClassType } from '../../../../services/application.service';
+import { ApplicationService } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { BuildingInspectorRoutes, BuildingInspectorRouter } from '../BuildingInspectorRoutes';
 
 @Component({

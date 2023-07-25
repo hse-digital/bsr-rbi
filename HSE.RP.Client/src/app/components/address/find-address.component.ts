@@ -1,9 +1,10 @@
 import { Component, Output, EventEmitter, Input, ViewChildren, QueryList } from '@angular/core';
 import { ApplicationService } from 'src/app/services/application.service';
-import { AddressResponseModel, AddressService } from 'src/app/services/address.service';
+import { AddressService } from 'src/app/services/address.service';
 import { AddressSearchMode } from './address.component';
 import { GovukErrorSummaryComponent } from 'hse-angular';
 import { TitleService } from 'src/app/services/title.service';
+import { AddressResponseModel } from 'src/app/models/address-response.model';
 
 @Component({
   selector: 'find-address',

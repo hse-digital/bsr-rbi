@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { AddressModel } from "../services/address.service";
+import { AddressModel } from "../models/address.model";
 
 @Component({
     selector: 'address-description',

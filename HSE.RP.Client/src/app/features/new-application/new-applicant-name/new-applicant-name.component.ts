@@ -3,8 +3,12 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicantName, ApplicationService, BuildingProfessionalModel, ComponentCompletionState, StageCompletionState} from '../../../services/application.service';
+import { ApplicationService} from '../../../services/application.service';
 import { ApplicantEmailComponent } from '../applicant-email/applicant-email.component';
+import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
+import { ApplicantName } from 'src/app/models/applicant-name.model';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-applicant-name',

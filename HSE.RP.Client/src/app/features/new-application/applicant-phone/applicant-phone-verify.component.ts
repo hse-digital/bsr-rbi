@@ -6,8 +6,9 @@ import { NotFoundComponent } from '../../../components/not-found/not-found.compo
 import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService, NumberModel, StageCompletionState } from '../../../services/application.service';
+import { ApplicationService} from '../../../services/application.service';
 import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 
 @Component({
   selector: 'hse-applicant-phone-verify',
