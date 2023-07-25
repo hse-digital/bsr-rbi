@@ -44,4 +44,6 @@ export class AddressModel implements IComponentModel {
   AdministrativeArea?: string;
   Postcode?: string;
   CompletionState?: ComponentCompletionState;
+  CustodianCode?: string;
+  CustodianDescription?: string;
 }

@@ -233,7 +233,7 @@ export class BuildingProfessionalModel implements IComponentModel {
 export class PersonalDetails {
   ApplicantName?: ApplicantName = {};
   ApplicantDateOfBirth?: ApplicantDateOfBirth = {};
-  ApplicantAddress?: AddressModel;
+  ApplicantAddress?: AddressModel = {IsManual: false};
   ApplicantPhone?: ApplicantPhone;
   ApplicantAlternativePhone?: ApplicantPhone;
   ApplicantEmail?: ApplicantEmail;

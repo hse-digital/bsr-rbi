@@ -15,5 +15,8 @@ public class BuildingAddress
     public string Postcode { get; init; }
     public bool IsManual { get; init; }
     public string ClassificationCode { get; init; }
+    public string CustodianCode { get; init; }
+    public string CustodianDescription { get; init; }
+
 
 }
