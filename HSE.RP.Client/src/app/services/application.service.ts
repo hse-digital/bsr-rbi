@@ -43,12 +43,13 @@ export class ApplicationService {
   }
 
   async validateOTPToken(OTPToken: string, Data: string): Promise<void> {
-    await firstValueFrom(
+    var response = await firstValueFrom(
       this.httpClient.post('api/ValidateOTPToken', {
         OTPToken: OTPToken,
         Data: Data,
       })
     );
+    var xx = response;
   }
 
   async registerNewBuildingProfessionApplication(): Promise<void> {

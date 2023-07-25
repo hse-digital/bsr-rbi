@@ -21,6 +21,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
     'Verify phone number - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
+  optTimedOut:boolean = false;
 
   otpToken = '';
   otpError = false;
@@ -76,16 +77,23 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
     this.isOtpEmpty = otp.length == 0;
     this.isOtpInvalidLength = otp.trim().length < 6 || otp.trim().length > 6;
     this.isOtpNotNumber = isNaN(this.model!);
+    this.optTimedOut = false;
+
     if (!(this.isOtpNotNumber || this.isOtpInvalidLength || this.isOtpEmpty)) {
         try {
           await this.applicationService.validateOTPToken(
             this.model?.toString() ?? '',
             this.PhoneNumber ?? ''
           );
-        } catch (error) {
+        } catch (error: any) {
+
+          if (error.status && error.status === 403) {
+            this.optTimedOut= true;
+          }
+
           this.otpError = true;
           this.hasErrors = true;
-          this.processing=false;
+          this.processing = false;
           this.focusAndUpdateErrors();
           throw error;
         }
@@ -121,7 +129,14 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
     } else if (this.isOtpInvalidLength) {
       return 'You must enter your 6 digit security code';
     } else if (this.otpError) {
-      return 'Enter the correct security code';
+      if (this.optTimedOut) {
+        return 'Your 6-digit verification code has expired. Request a new verification code.';
+
+      }
+      else {
+        return 'Enter the correct security code';
+
+      }
     } else {
       return 'You must enter your 6 digit security code';
     }
