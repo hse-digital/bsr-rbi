@@ -17,6 +17,7 @@ import { BuildingAssessingPlansCategoriesClass3 } from 'src/app/models/buidling-
 import { BuildingAssessingPlansCategoriesClass2 } from 'src/app/models/building-assessing-plans-categories-class2.model';
 import { Class2InspectBuildingCategories } from 'src/app/models/class2-inspect-building-categories.model';
 import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-building-categories.model';
+import { BuildingInspectorCountryOfWork } from 'src/app/models/building-inspector-country-of-work.model';
 
 @Component({
   selector: 'hse-building-inspector-class-selection',
@@ -38,6 +39,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   selectedOptionError: boolean = false;
   errorMessage: string = "";
   override model?: ClassSelection;
+  originalOption?: BuildingInspectorClassType = this.applicationService.model.InspectorClass?.ClassType.Class;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
@@ -55,34 +57,32 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    if (this.selectedOption === BuildingInspectorClassType.Class1) {      
-      this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
+    // reset state if the user changes their input
+    if (this.selectedOption !== this.originalOption) {
+      this.applicationService.model.InspectorClass!.ClassType = { 
+        Class: this.selectedOption,
+        CompletionState: ComponentCompletionState.Complete
+      };
+
       // reset all other info to false
       this.applicationService.model.InspectorClass!.Activities = {
         AssessingPlans: false,
         Inspection: false,
         CompletionState: ComponentCompletionState.NotStarted,
       };
-      this.applicationService.model.InspectorClass!.AssessingPlansClass3 = new BuildingAssessingPlansCategoriesClass3();
+
       this.applicationService.model.InspectorClass!.AssessingPlansClass2 = new BuildingAssessingPlansCategoriesClass2();
+      this.applicationService.model.InspectorClass!.AssessingPlansClass3 = new BuildingAssessingPlansCategoriesClass3();
       this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
       this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
-      this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
-    }
-    else {
-      if (this.selectedOption === BuildingInspectorClassType.Class2) {
-        this.applicationService.model.InspectorClass!.AssessingPlansClass3 = new BuildingAssessingPlansCategoriesClass3();
-        this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
-        this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
+
+      //cannot be class 4 if you select class 1
+      if (this.selectedOption === BuildingInspectorClassType.Class1) {
+        this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"      
       }
-      if (this.selectedOption === BuildingInspectorClassType.Class3) {
-        this.applicationService.model.InspectorClass!.AssessingPlansClass2 = new BuildingAssessingPlansCategoriesClass2();
-        this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
-        this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
-      }
-      this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
     }
   }
+  
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     // if (this.applicationService.model.ApplicationStatus === ApplicationStatus.PersonalDetailsComplete) {
