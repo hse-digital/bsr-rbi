@@ -4,7 +4,7 @@
   <govuk-error-link *ngFor="let error of validationErrors" anchorId="{{error.Anchor}}" message={{error.Text}} />
 </govuk-error-summary>
 
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=true>
 
   <h1 class="govuk-heading-l">Your date of birth</h1>
 
