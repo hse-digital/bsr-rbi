@@ -1,5 +1,6 @@
 import { ApplicationStatus } from "./application-status.enum";
 import { BuildingInspectorClass } from "./building-inspector-class.model";
+import { Competency } from "./competency.model";
 import { ComponentCompletionState } from "./component-completion-state.enum";
 import { IComponentModel } from "./component. interface";
 import { PersonalDetails } from "./personal-details.model";
@@ -9,6 +10,7 @@ export class BuildingProfessionalModel implements IComponentModel {
   id?: string;
   PersonalDetails?: PersonalDetails = {};
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
+  Competency? : Competency = new  Competency();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
 
   //TODO test StageStatus and replace ApplicationStatus
