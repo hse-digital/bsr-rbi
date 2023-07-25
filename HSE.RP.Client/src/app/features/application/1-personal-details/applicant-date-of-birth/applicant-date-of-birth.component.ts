@@ -36,7 +36,7 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
   modelValid: boolean = false;
   validationErrors: DobValidationItem[] = [];
 
-  
+
   constructor(
     activatedRoute: ActivatedRoute,
     applicationService: ApplicationService,
@@ -77,31 +77,34 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
 
   override isValid(): boolean {
     this.validationErrors = [];
-
-    if (!this.isDateNumber(this.model?.day)) {
-      this.validationErrors.push({ Text: "Your date of birth must include a day", Anchor: "dob-input-day" });
-    }
-
-    if (!this.isDateNumber(this.model?.month)) {
-      this.validationErrors.push({ Text: "Your date of birth must include a month", Anchor: "dob-input-month" });
-    }
-
-    if (!this.isDateNumber(this.model?.year)) {
-      this.validationErrors.push({ Text: "Your date of birth must include a year", Anchor: "dob-input-year" });
-    }
-
-    if (this.isDateNumber(this.model?.year) && Number(this.model?.year!) < 1000) {
-      this.validationErrors.push({ Text: "Your date of birth must include all four numbers of the year, for example 1981, not just 81", Anchor: "dob-input-year" });
-    }
-
-    if (this.validationErrors.length == 0) {
-
-      if (new Date() < this.getDateOfBirth()) {
-        this.validationErrors.push({ Text: "Your date of birth must be in the past", Anchor: "dob-input-day" });
+    if ((this.model?.day ?? "") == "" && (this.model?.month ?? "") == "" && (this.model?.year ?? "") == "") {
+      this.validationErrors.push({ Text: "Enter your date of birth", Anchor: "dob-input-day" });
+    } else {
+      if (!this.isDateNumber(this.model?.day)) {
+        this.validationErrors.push({ Text: "Your date of birth must include a day", Anchor: "dob-input-day" });
       }
 
-      if (!this.isWorkingAge()) {
-        this.validationErrors.push({ Text: "Your date of birth indicates you are not of working age", Anchor: "dob-input-day" });
+      if (!this.isDateNumber(this.model?.month)) {
+        this.validationErrors.push({ Text: "Your date of birth must include a month", Anchor: "dob-input-month" });
+      }
+
+      if (!this.isDateNumber(this.model?.year)) {
+        this.validationErrors.push({ Text: "Your date of birth must include a year", Anchor: "dob-input-year" });
+      }
+
+      if (this.isDateNumber(this.model?.year) && Number(this.model?.year!) < 1000) {
+        this.validationErrors.push({ Text: "Your date of birth must include all four numbers of the year, for example 1981, not just 81", Anchor: "dob-input-year" });
+      }
+
+      if (this.validationErrors.length == 0) {
+
+        if (new Date() < this.getDateOfBirth()) {
+          this.validationErrors.push({ Text: "Your date of birth must be in the past", Anchor: "dob-input-day" });
+        }
+
+        if (!this.isWorkingAge()) {
+          this.validationErrors.push({ Text: "Your date of birth indicates you are not of working age", Anchor: "dob-input-day" });
+        }
       }
     }
 
