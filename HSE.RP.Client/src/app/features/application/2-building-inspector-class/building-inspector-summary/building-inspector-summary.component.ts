@@ -3,12 +3,13 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, BuildingInspectorClassType } from '../../../../services/application.service';
 import { ApplicationService } from '../../../../services/application.service';
+import { BuildingInspectorClassType } from 'src/app/models/building-inspector-classtype.enum';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { BuildingInspectorRoutes, BuildingInspectorRouter } from '../BuildingInspectorRoutes';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-building-inspector-summary',
@@ -48,7 +49,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
       this.assessPlansLink = BuildingInspectorRoutes.CLASS2_ACCESSING_PLANS_CATEGORIES;
       this.inspectionLink = BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES;
       this.inspectionCategories = this.categoriesToString(applicationService.model.InspectorClass?.Class2InspectBuildingCategories)
-      this.assessPlansCategories = this.categoriesToString(applicationService.model.InspectorClass?.BuildingAssessingPlansCategoriesClass2)
+      this.assessPlansCategories = this.categoriesToString(applicationService.model.InspectorClass?.AssessingPlansClass2)
     }
 
     if (applicationService.model.InspectorClass?.ClassType.Class === BuildingInspectorClassType.Class3)
@@ -57,7 +58,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
       this.inspectionLink = BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES;
       
       this.inspectionCategories = this.categoriesToString(applicationService.model.InspectorClass?.Class3InspectBuildingCategories)
-      this.assessPlansCategories = this.categoriesToString(applicationService.model.InspectorClass?.BuildingAssessingPlansCategoriesClass3)
+      this.assessPlansCategories = this.categoriesToString(applicationService.model.InspectorClass?.AssessingPlansClass3)
     }
   }
 
@@ -67,15 +68,13 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return true;
-    //! check if previous section is comeplete
-    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
+    //! check if previous section (country) is comeplete
+    //return (this.applicationService.model.InspectorClass?.InspectorCountryOfWork?.CompletionState === ComponentCompletionState.Complete);
   }
 
 
   override isValid(): boolean {
     return true;
-/*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
-    return !this.phoneNumberHasErrors; */
   }
 
   override navigateNext(): Promise<boolean> {
