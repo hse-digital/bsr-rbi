@@ -31,7 +31,9 @@ export class FindAddressComponent {
     if (this.isPostcodeValid()) {
       this.loading = true;
       let addressResponse = await this.searchAddress();
-
+      for (let address of addressResponse.Results) {
+        address.IsManual = false;
+      }
       this.onSearchPerformed.emit(addressResponse);
     } else {
       this.summaryError?.first?.focus();
@@ -65,5 +67,5 @@ export class FindAddressComponent {
     return "Your home address will not be published";
   }
 
- 
+
 }

@@ -38,9 +38,6 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
 
     serviceCollection.AddSingleton(_ => new MapperConfiguration(config =>
     {
-        //config.AddProfile<OrdnanceSurveyPostcodeResponseProfile>();
-        //config.AddProfile<CompaniesHouseSearchResponseProfile>();
-        //config.AddProfile<LocalAuthoritiesSearchResponseProfile>();
         config.AddProfile<PaymentProfile>();
     }).CreateMapper());
 }

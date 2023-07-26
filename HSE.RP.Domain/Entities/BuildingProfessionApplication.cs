@@ -4,10 +4,14 @@ using System.Text.Json.Serialization;
 namespace HSE.RP.Domain.Entities;
 
 public record BuildingProfessionApplication(
-    string ContactId,
-    string ApplicationReturnId = null,
-    BuildingProfessionType? BuildingProfessionTypeCode = null,
-    string Id = null
+ string Id = null,
+ string ContactId = null,
+ string ApplicationReturnId = null,
+ BuildingProfessionType? BuildingProfessionTypeCode = null,
+ string AssessmentOrganisationId = null,
+string AsessmentCertificateNumber = null,
+    DateOnly? AssessmentdDate = null
+
     ) : Entity(Id);
 
 public record DynamicsBuildingProfessionApplication(
@@ -16,8 +20,17 @@ public record DynamicsBuildingProfessionApplication(
     DynamicsContact bsr_applicantid_contact = null,
     BuildingProfessionType? bsr_buildingprofessiontypecode = null,
     string bsr_buildingproappid = null,
-    string bsr_buildingprofessionapplicationid = null
+    string bsr_buildingprofessionapplicationid = null,
+    bool? bsr_hasindependentassessment = null,
+    [property: JsonPropertyName("bsr_assessmentorganisationid@odata.bind")]
+    string bsr_assessmentorganisationid = null,
+    int? statuscode = null,
+    string bsr_assessmentcertnumber = null,
+    DateOnly? bsr_assessmentdate = null
 ) : DynamicsEntity<BuildingProfessionApplication>;
+
+
+
 
 public enum BuildingProfessionType
 {
