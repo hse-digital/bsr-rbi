@@ -122,7 +122,7 @@ export class ApplicationService {
             EmailAddress: string;
             PhoneNumber: string;
           }>(
-            `api/ValidateApplicationNumberPhone/${PhoneNumber!}/${ApplicationNumber}`
+            `api/ValidateApplicationNumberPhone/${PhoneNumber!}/${ApplicationNumber.toUpperCase()}`
           )
         );
       } else if ((ValidationOption === 'phone-option')) {
@@ -133,7 +133,7 @@ export class ApplicationService {
             EmailAddress: string;
             PhoneNumber: string;
           }>(
-            `api/ValidateApplicationNumberEmail/${EmailAddress!.toLowerCase()}/${ApplicationNumber}`
+            `api/ValidateApplicationNumberEmail/${EmailAddress!.toLowerCase()}/${ApplicationNumber.toUpperCase()}`
           )
         );
       } else {

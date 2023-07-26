@@ -27,8 +27,8 @@ export class ReturningApplicationEnterDataComponent {
     verificationOption: { hasError: false, errorText: '', anchorId: '' },
   };
 
-  verificationEmail: string = "";
-  verificationPhone: string = "";
+  verificationEmail: string = '';
+  verificationPhone: string = '';
   VerificationData?: VerificationData;
 
   @Input() emailAddress: string | undefined;
@@ -45,8 +45,6 @@ export class ReturningApplicationEnterDataComponent {
 
   @Output()
   onContinue = new EventEmitter<VerificationData>();
-
-
 
   @ViewChildren('summaryError')
   summaryError?: QueryList<GovukErrorSummaryComponent>;
@@ -95,19 +93,19 @@ export class ReturningApplicationEnterDataComponent {
       this.errors.phoneNumber.hasError ||
       this.errors.verificationOption.hasError;
     if (!this.hasErrors) {
-      if(this.verificationOption == 'phone-option')
-      {
-        await this.applicationService.sendVerificationSms(this.verificationPhone!);
-
-      }
-      else if(this.verificationOption == 'email-option')
-      {
-        await this.applicationService.sendVerificationEmail(this.verificationEmail!);
+      if (this.verificationOption == 'phone-option') {
+        await this.applicationService.sendVerificationSms(
+          this.verificationPhone!
+        );
+      } else if (this.verificationOption == 'email-option') {
+        await this.applicationService.sendVerificationEmail(
+          this.verificationEmail!
+        );
       }
 
       this.VerificationData = {
         verificationEmail: this.verificationEmail,
-        verificationPhone: this.verificationPhone
+        verificationPhone: this.verificationPhone,
       };
 
       this.onContinue.emit(this.VerificationData);
@@ -127,7 +125,6 @@ export class ReturningApplicationEnterDataComponent {
         'You must enter your 12 digit application code';
       this.errors.applicationNumber.anchorId = 'input-application-number';
     } else {
-
       var result =
         await this.applicationService.validateReturningApplicationDetails(
           this.applicationNumber!,
@@ -138,8 +135,6 @@ export class ReturningApplicationEnterDataComponent {
       if (this.verificationOption == 'email-option') {
         if (result.IsValidApplicationNumber && result.IsValid) {
           this.verificationEmail = result.EmailAddress;
-
-
         } else if (!result.IsValidApplicationNumber && result.IsValid) {
           this.errors.applicationNumber.errorText =
             'Application number does not match this telephone number. Enter the correct 12 digit application code';
