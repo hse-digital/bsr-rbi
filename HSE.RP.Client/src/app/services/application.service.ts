@@ -177,4 +177,10 @@ export class ApplicationService {
       this.httpClient.post(`api/SyncPersonalDetails`, this.model)
     );
   }
+
+  async syncBuildingInspectorClass(): Promise<void> {
+    await firstValueFrom(
+      this.httpClient.post(`api/SyncBuildingInspectorClass`, this.model)
+    );
+  }
 }
