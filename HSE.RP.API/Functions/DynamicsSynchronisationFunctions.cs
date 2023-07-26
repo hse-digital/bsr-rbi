@@ -184,7 +184,9 @@ public class DynamicsSynchronisationFunctions
             bsr_address1usrn = contactWrapper.Model.Address.USRN,
             bsr_address1lacode = contactWrapper.Model.Address.CustodianCode , 
             bsr_address1ladescription = contactWrapper.Model.Address.CustodianDescription,
-            bsr_manualaddress = contactWrapper.Model.Address.IsManual is null ? null : (contactWrapper.Model.Address.IsManual is true ? YesNoOption.Yes : YesNoOption.No),
+            bsr_manualaddress = contactWrapper.Model.Address.IsManual is null ? null :
+                                contactWrapper.Model.Address.IsManual is true ? YesNoOption.Yes :
+                                YesNoOption.No,
             birthdate = contactWrapper.Model.birthdate,
             bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber
         });
