@@ -43,6 +43,8 @@ public class AddressFunctions
         }
         catch (Exception ex)
         {
+            Console.WriteLine(ex.Message);
+
             throw;
         }
     }

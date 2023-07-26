@@ -10,7 +10,8 @@ public record BuildingInspectorRegistrationActivity(
     string ActivityId = null,
     string BuildingCategoryId = null,
     string BuildingProfessionApplicationId = null,
-    string ApplicantId = null
+    string ApplicantId = null,
+    string StatusCode = null
     ) : Entity(Id);
 
 public record DynamicsBuildingInspectorRegistrationActivity(
