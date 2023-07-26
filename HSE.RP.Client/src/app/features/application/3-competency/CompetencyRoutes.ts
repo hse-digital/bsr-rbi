@@ -6,6 +6,7 @@ import { CompetencyModule } from './application.competency.module';
 
 export const CompetencyRoutes = {
   INDEPENDENT_COMPETENCY_STATUS: 'independent-competency-status',
+  COMPETENCY_ASSESSMENT_ORGANISATION: 'competency-assesesment-organisation',
 };
 
 @Injectable({ providedIn: 'root' })
