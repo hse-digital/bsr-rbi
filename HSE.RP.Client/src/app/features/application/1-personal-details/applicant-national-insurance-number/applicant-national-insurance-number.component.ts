@@ -47,6 +47,7 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber!.NationalInsuranceNumber = this.model;
+    this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber!.CompletionState = ComponentCompletionState.Complete;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
