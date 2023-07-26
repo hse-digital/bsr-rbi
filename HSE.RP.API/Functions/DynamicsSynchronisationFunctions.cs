@@ -182,7 +182,7 @@ public class DynamicsSynchronisationFunctions
             bsr_address1lacode = contactWrapper.Model.Address.CustodianCode , 
             bsr_address1ladescription = contactWrapper.Model.Address.CustodianDescription,
             birthdate = contactWrapper.Model.birthdate,
-            bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber,
+            bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber
         });
     }
 
