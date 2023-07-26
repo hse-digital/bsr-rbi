@@ -24,10 +24,13 @@ public record DynamicsBuildingProfessionApplication(
     bool? bsr_hasindependentassessment = null,
     [property: JsonPropertyName("bsr_assessmentorganisationid@odata.bind")]
     string bsr_assessmentorganisationid = null,
-    string statuscode = null,
+    int? statuscode = null,
     string bsr_assessmentcertnumber = null,
     DateOnly? bsr_assessmentdate = null
 ) : DynamicsEntity<BuildingProfessionApplication>;
+
+
+
 
 public enum BuildingProfessionType
 {

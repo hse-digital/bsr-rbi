@@ -106,6 +106,9 @@ public class DynamicsSynchronisationFunctions
         var buildingProfessionApplicationModel = orchestrationContext.GetInput<BuildingProfessionApplicationModel>();
 
         var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
+
+        Console.WriteLine(dynamicsBuildingProfessionApplication.bsr_applicantid);
+
         if (dynamicsBuildingProfessionApplication != null)
         {
             var dynamicsContact = await orchestrationContext.CallActivityAsync<DynamicsContact>(nameof(GetContactUsingId), dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid);
@@ -181,6 +184,7 @@ public class DynamicsSynchronisationFunctions
             bsr_address1usrn = contactWrapper.Model.Address.USRN,
             bsr_address1lacode = contactWrapper.Model.Address.CustodianCode , 
             bsr_address1ladescription = contactWrapper.Model.Address.CustodianDescription,
+            bsr_manualaddress = contactWrapper.Model.Address.IsManual is null ? null : (contactWrapper.Model.Address.IsManual is true ? YesNoOption.Yes : YesNoOption.No),
             birthdate = contactWrapper.Model.birthdate,
             bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber
         });
