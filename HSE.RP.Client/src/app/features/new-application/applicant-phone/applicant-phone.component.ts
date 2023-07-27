@@ -9,12 +9,13 @@ import { ApplicationTaskListComponent } from '../../application/task-list/task-l
 import { ApplicantPhoneVerifyComponent } from './applicant-phone-verify.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { ApplicantPhone } from '../../../models/applicant-phone-model';
 
 @Component({
   selector: 'hse-applicant-phone',
   templateUrl: './applicant-phone.component.html',
 })
-export class ApplicantPhoneComponent extends PageComponent<string> {
+export class ApplicantPhoneComponent extends PageComponent<ApplicantPhone> {
   public static route: string = 'applicant-phone';
   static title: string =
     'Personal details - Register as a building inspector - GOV.UK';
@@ -33,20 +34,15 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
 
   override onInit(applicationService: ApplicationService): void {
     if (!applicationService.model.PersonalDetails?.ApplicantPhone) {
-      applicationService.model.PersonalDetails!.ApplicantPhone = {
-        PhoneNumber: '',
-        CompletionState: ComponentCompletionState.InProgress,
-      };
+      applicationService.model.PersonalDetails!.ApplicantPhone = new ApplicantPhone();
     }
-    this.model =
-      applicationService.model.PersonalDetails?.ApplicantPhone.PhoneNumber;
+    this.model = applicationService.model.PersonalDetails?.ApplicantPhone;
   }
 
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.PersonalDetails!.ApplicantPhone!.PhoneNumber =
-      this.model;
-    await applicationService.sendVerificationSms(this.model!);
+    this.applicationService.model.PersonalDetails!.ApplicantPhone = this.model;
+    await applicationService.sendVerificationSms(this.model!.PhoneNumber ?? "");
   }
 
   override canAccess(
@@ -64,7 +60,7 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
 
   override isValid(): boolean {
     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(
-      this.model?.toString() ?? ''
+      this.model?.PhoneNumber ?? ''
     );
     return !this.phoneNumberHasErrors;
   }

@@ -9,6 +9,7 @@ import { BuildingProfessionalModel } from 'src/app/models/building-professional.
 import { ApplicantName } from 'src/app/models/applicant-name.model';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { app } from '../../../../../server';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -39,6 +40,7 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
       applicationService.model.PersonalDetails!.ApplicantName = new ApplicantName();
       applicationService.model.PersonalDetails!.ApplicantName.FirstName= '';
       applicationService.model.PersonalDetails!.ApplicantName.LastName= '';
+      applicationService.model.PersonalDetails!.ApplicantName.CompletionState = ComponentCompletionState.InProgress;
     }
     if(applicationService.model.StageStatus == null)
     {
@@ -61,6 +63,7 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
   override async onSave(applicationService: ApplicationService): Promise<void> {
     applicationService.model.PersonalDetails!.ApplicantName!.FirstName = this.model.PersonalDetails!.ApplicantName!.FirstName;
     applicationService.model.PersonalDetails!.ApplicantName!.LastName = this.model.PersonalDetails!.ApplicantName!.LastName;
+    applicationService.model.PersonalDetails!.ApplicantName!.CompletionState = ComponentCompletionState.Complete;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
