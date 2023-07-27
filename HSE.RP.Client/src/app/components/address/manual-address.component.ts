@@ -33,6 +33,7 @@ export class ManualAddressComponent {
 
   confirmAddress() {
     if (this.isModelValid()) {
+      this.model.IsManual = true;
       this.onAddressEntered.emit(this.model);
     } else {
       this.summaryError?.first?.focus();

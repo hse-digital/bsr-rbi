@@ -7,6 +7,7 @@ namespace HSE.RP.API.Models
 	{
 		public string IndependentAssessmentStatus { get; set; } = string.Empty;
         public string CompetencyAssesesmentOrganisation { get; set; } = string.Empty;
+        public NoCompetencyAssessment NoCompetencyAssessment { get; set; }
         public ComponentCompletionState CompletionState { get; set; }
     }
 }

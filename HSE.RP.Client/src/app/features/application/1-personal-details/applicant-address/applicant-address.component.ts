@@ -79,7 +79,7 @@ export class ApplicantAddressComponent extends PageComponent<AddressModel> {
     await this.applicationService.updateApplication();
 
     this.navigationService.navigateRelative(
-      ApplicantAlternativePhoneComponent.route,
+      ApplicantAlternativeEmailComponent.route,
       this.activatedRoute
     );
   }

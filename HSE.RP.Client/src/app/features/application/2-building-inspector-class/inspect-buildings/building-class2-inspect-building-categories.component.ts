@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
 import { Class2InspectBuildingCategories } from 'src/app/models/class2-inspect-building-categories.model';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
 
 @Component({
   selector: 'hse-building-class2-inspect-building-categories',
@@ -87,7 +88,7 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
-      BuildingInspectorSummaryComponent.route,
+      BuildingClassTechnicalManagerComponent.route,
       this.activatedRoute
     );
   }

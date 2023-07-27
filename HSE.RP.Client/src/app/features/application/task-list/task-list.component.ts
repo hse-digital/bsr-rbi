@@ -193,7 +193,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAlternativeEmail)
     },
     {
-      prompt: "Telephone number", relativeRoute: (): TaskListRoute => {
+      prompt: "Alternative telephone number", relativeRoute: (): TaskListRoute => {
         return { route: PersonalDetailRoutes.ALT_PHONE}
       }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAlternativePhone)
     },

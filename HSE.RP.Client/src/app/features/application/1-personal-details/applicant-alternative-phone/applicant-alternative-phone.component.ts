@@ -71,7 +71,7 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
       }
       this.modelValid = true;
       return this.modelValid;
-    } else { 
+    } else {
       this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(
         this.model ?? ''
       );
