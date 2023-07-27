@@ -73,38 +73,31 @@ export abstract class PageComponent<T> implements OnInit {
 
   async saveAndContinue(): Promise<void> {
     this.processing = true;
-    try {
-      this.hasErrors = !this.isValid();
-      if (!this.hasErrors) {
-        this.triggerScreenReaderNotification();
-        //------------------------------------------------------------------------------
-        // If the model implements IComponentModel, set the completion state to complete
-        //------------------------------------------------------------------------------
-        if (this.modelImplementsIComponent(this.model)) {
-          var componentModel = this.model as IComponentModel;
-          componentModel.CompletionState = ComponentCompletionState.Complete;
-        }
-        this.onSave(this.applicationService);
-        this.applicationService.updateLocalStorage();
-        if (this.updateOnSave) {
-          await this.saveAndUpdate();
-        }
-
-        let navigationSucceeded = await this.navigateNext();
-        if (!navigationSucceeded) {
-          await this.navigationService.navigate(NotFoundComponent.route);
-        }
-      } else {
-        this.focusAndUpdateErrors();
+    this.hasErrors = !this.isValid();
+    if (!this.hasErrors) {
+      this.triggerScreenReaderNotification();
+      //------------------------------------------------------------------------------
+      // If the model implements IComponentModel, set the completion state to complete
+      //------------------------------------------------------------------------------
+      if (this.modelImplementsIComponent(this.model)) {
+        var componentModel = this.model as IComponentModel;
+        componentModel.CompletionState = ComponentCompletionState.Complete;
+      }
+      this.onSave(this.applicationService);
+      this.applicationService.updateLocalStorage();
+      if (this.updateOnSave) {
+        await this.saveAndUpdate();
       }
 
-      this.processing = false;
-
-    } catch (e) {
-      var xx = e;
-      throw e;
-
+      let navigationSucceeded = await this.navigateNext();
+      if (!navigationSucceeded) {
+        await this.navigationService.navigate(NotFoundComponent.route);
+      }
+    } else {
+      this.focusAndUpdateErrors();
     }
+
+    this.processing = false;
   }
 
   async saveAndComeBack(): Promise<void> {

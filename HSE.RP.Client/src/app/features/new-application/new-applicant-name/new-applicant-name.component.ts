@@ -81,8 +81,9 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
     return this.FirstNameValid && this.LastNameValid;
   }
 
-  override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantEmailComponent.route, this.activatedRoute);
+  override async  navigateNext(): Promise<boolean> {
+    var couldNavigate = await this.navigationService.navigateRelative(ApplicantEmailComponent.route, this.activatedRoute);
+    return couldNavigate;
   }
 }
 
