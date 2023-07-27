@@ -158,8 +158,6 @@ public class DynamicsSynchronisationFunctions
 
         if (dynamicsBuildingProfessionApplication != null)
         {
-            //var dynamicsContact = await orchestrationContext.CallActivityAsync<DynamicsContact>(nameof(GetContactUsingId), dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid);
-
             var dynamicsRegistrationClasses = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationClass>>(nameof(GetRegistrationClassesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
             //Check which registration class is selected in model
@@ -180,7 +178,7 @@ public class DynamicsSynchronisationFunctions
             }
 
             //If the selected class has changed set its status to inactive 
-            var classesToUpdate = dynamicsRegistrationClasses.Where(x => x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[selectedRegistrationClassId]).ToList();
+            var classesToUpdate = dynamicsRegistrationClasses.Where(x => x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[selectedRegistrationClassId] && x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[4]).ToList();
             if (classesToUpdate.Any())
             {
                 foreach (DynamicsBuildingInspectorRegistrationClass classToUpdate in classesToUpdate)
@@ -199,33 +197,46 @@ public class DynamicsSynchronisationFunctions
                 }
             }
 
-
-        }
-
-        /*            if (dynamicsContact != null)
+            //If user has also selected class 4 then create record for it
+            if (buildingProfessionApplicationModel.InspectorClass.ClassTechnicalManager == "yes")
+            {
+                if (!dynamicsRegistrationClasses.Any(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[4] && x.statecode != 1))
+                {
+                    var registrationClass = new BuildingInspectorRegistrationClass
                     {
-                        var contact = new Contact
+                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                        ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                        ClassId = BuildingInspectorClassNames.Ids[4],
+                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
+                        StateCode = 0
+                    };
+                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
+                }
+            }
+            //Check if previously existed and deactivate
+            else
+            {
+                classesToUpdate = dynamicsRegistrationClasses.Where(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[4]).ToList();
+                if (classesToUpdate.Any())
+                {
+                    foreach (DynamicsBuildingInspectorRegistrationClass classToUpdate in classesToUpdate)
+                    {
+                        var registrationClass = new BuildingInspectorRegistrationClass
                         {
-                            Id = dynamicsContact.contactid ?? "",
-                            FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName ?? "",
-                            LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName ?? "",
-                            Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email ?? "",
-                            AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
-                            PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? null,
-                            AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
-                            Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
-                            birthdate = buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth is null ? null :
-                            new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
-                                                     int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),
-                                                     int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day)),
-                            NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber
+                            Id = classToUpdate.bsr_biregclassid,
+                            BuildingProfessionApplicationId = classToUpdate._bsr_biapplicationid_value,
+                            ApplicantId = classToUpdate._bsr_buildinginspectorid_value,
+                            ClassId = classToUpdate._bsr_biclassid_value,
+                            StatusCode = 2,
+                            StateCode = 1
                         };
 
-                        var contactWrapper = new ContactWrapper(contact, dynamicsContact);
+                        await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
+                    }
+                }
+            }
+        }
 
-
-                        await orchestrationContext.CallActivityAsync(nameof(UpdateContact), contactWrapper);
-                    }*/
     }
 
 
