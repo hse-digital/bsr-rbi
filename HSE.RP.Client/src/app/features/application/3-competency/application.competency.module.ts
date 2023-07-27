@@ -13,12 +13,13 @@ import { CompetencyCertificateCodeComponent } from './certificate-code/competenc
 import { CompetencyAssessmentOrganisationComponent } from './assesesment-organisation/competency-assesesment-organisation.component';
 import { CompetencyAssessmentDateComponent } from './assesesment-date/competency-assesesment-date.component';
 import { CompetencySummaryComponent } from './competency-summary/competency-summary.component';
-
+import { CompetencyAssessmentCertificateNumberComponent } from './assessment-certificate-number/competency-assessment-certificate-number.component';
 
 const routes = new HseRoutes([
   HseRoute.protected(CompetencyIndependentStatusComponent.route, CompetencyIndependentStatusComponent, CompetencyIndependentStatusComponent.title),
   HseRoute.protected(CompetencyCertificateCodeComponent.route, CompetencyCertificateCodeComponent, CompetencyCertificateCodeComponent.title),
   HseRoute.protected(CompetencyAssessmentOrganisationComponent.route, CompetencyAssessmentOrganisationComponent, CompetencyAssessmentOrganisationComponent.title),
+  HseRoute.protected(CompetencyAssessmentCertificateNumberComponent.route, CompetencyAssessmentCertificateNumberComponent, CompetencyAssessmentCertificateNumberComponent.title),
   HseRoute.protected(CompetencyAssessmentDateComponent.route, CompetencyAssessmentDateComponent, CompetencyAssessmentDateComponent.title),
   HseRoute.protected(CompetencySummaryComponent.route, CompetencySummaryComponent, CompetencySummaryComponent.title),
 ]);
@@ -28,6 +29,7 @@ const routes = new HseRoutes([
 CompetencyIndependentStatusComponent,
 CompetencyCertificateCodeComponent,
 CompetencyAssessmentOrganisationComponent,
+CompetencyAssessmentCertificateNumberComponent,
 CompetencyAssessmentDateComponent,
 CompetencySummaryComponent
   ],
