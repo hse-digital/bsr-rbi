@@ -1,12 +1,44 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
-
-
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="false"
+  (saveAndContinue)="saveAndContinue()"
+  (saveAndComeBack)="saveAndComeBack()"
+  [hideBackButton]="true"
+>
+  <govuk-error-summary
+    *ngIf="hasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="!modelValid"
+      anchorId="competency-assesesment-organisation"
+      message="{{ errorMessage }}"
+    />
+  </govuk-error-summary>
   <h1 class="govuk-heading-l">Assessment organisation</h1>
   <govuk-body>
-  Please enter your assessment organisation
- </govuk-body>
+    <govuk-radio-group
+      hintText="Select one"
+      id="competency-assesesment-organisation"
+      [(model)]="selectedOption"
+    >
+      <govuk-radio
+        class=""
+        label="Building Safety Competence Foundation (BSCF)"
+        value="yes"
+        id="yes"
+        [model]="selectedOption"
+      >
+      </govuk-radio>
+      <govuk-radio
+        label="Chartered Association of Building Engineers (CABE)"
+        value="no"
+        id="no"
+        [model]="selectedOption"
+      ></govuk-radio>
+    </govuk-radio-group>
+  </govuk-body>
 </govuk-formpage>
-

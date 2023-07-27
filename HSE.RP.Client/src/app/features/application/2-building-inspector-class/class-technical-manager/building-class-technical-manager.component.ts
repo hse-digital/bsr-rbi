@@ -77,7 +77,7 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<string
   override async navigateNext(): Promise<boolean> {
     return this.buildingInspectorRouter.navigateTo(
       this.applicationService.model,
-      BuildingInspectorRoutes.SUMMARY
+      BuildingInspectorRoutes.INSPECTOR_COUNTRY
     );
   }
 

@@ -8,6 +8,7 @@ namespace HSE.RP.API.Models
         [property: JsonPropertyName("id")] string Id,
         PersonalDetails PersonalDetails = null,
         BuildingInspectorClass InspectorClass = null,
+        Competency Competency = null,
         Dictionary<string, StageCompletionState> StageStatus = null,
         ApplicationStatus ApplicationStatus = ApplicationStatus.None) : IValidatableModel
     {
