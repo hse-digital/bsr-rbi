@@ -16,7 +16,7 @@ public record BuildingInspectorRegistrationActivity(
 
 public record DynamicsBuildingInspectorRegistrationActivity(
     string bsr_biregactivityId = null,
-    [property: JsonPropertyName("bsr_biactivityid.bind")]
+    [property: JsonPropertyName("bsr_biactivityid@odata.bind")]
     string buildingActivityReferenceId = null,
     [property: JsonPropertyName("bsr_biapplicationid@odata.bind")]
     string buidingProfessionApplicationReferenceId = null,

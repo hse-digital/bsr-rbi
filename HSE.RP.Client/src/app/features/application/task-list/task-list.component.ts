@@ -217,11 +217,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
         }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.NotStarted
       },
       {
-        prompt: "Class details", relativeRoute: (): TaskListRoute => {
-          return { route: BuildingInspectorClassSelectionComponent.route}
-        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
-      },
-      {
         prompt: "Country", relativeRoute: (): TaskListRoute => {
           return { route: BuildingInspectorCountryComponent.route}
         }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart

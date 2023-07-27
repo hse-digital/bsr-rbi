@@ -1,7 +1,9 @@
 using System.Globalization;
+using System.Runtime.InteropServices;
 using AutoMapper;
 using Flurl;
 using Flurl.Http;
+using HSE.RP.API.Enums;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.DynamicsSynchronisation;
@@ -128,10 +130,10 @@ public class DynamicsSynchronisationFunctions
                     FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName ?? "",
                     LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName ?? "",
                     Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email ?? "",
-                    AlternativeEmail =  buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
+                    AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
                     PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? null,
                     AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
-                    Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null  ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
+                    Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
                     birthdate = buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth is null ? null :
                     new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
                                              int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),
@@ -156,36 +158,80 @@ public class DynamicsSynchronisationFunctions
 
         if (dynamicsBuildingProfessionApplication != null)
         {
-            var dynamicsContact = await orchestrationContext.CallActivityAsync<DynamicsContact>(nameof(GetContactUsingId), dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid);
+            //var dynamicsContact = await orchestrationContext.CallActivityAsync<DynamicsContact>(nameof(GetContactUsingId), dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid);
 
-            var dynamicsContact = await orchestrationContext.CallActivityAsync<BIRegi>(nameof(GetContactUsingId), dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid);
+            var dynamicsRegistrationClasses = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationClass>>(nameof(GetRegistrationClassesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
+            //Check which registration class is selected in model
+            var selectedRegistrationClassId = (int)buildingProfessionApplicationModel.InspectorClass.ClassType.Class;
 
-            if (dynamicsContact != null)
+            //If the selected registration class is not in the list of registration classes, then add it
+            if (!dynamicsRegistrationClasses.Any(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[selectedRegistrationClassId]))
             {
-                var contact = new Contact
+                var registrationClass = new BuildingInspectorRegistrationClass
                 {
-                    Id = dynamicsContact.contactid ?? "",
-                    FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName ?? "",
-                    LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName ?? "",
-                    Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email ?? "",
-                    AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
-                    PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? null,
-                    AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
-                    Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
-                    birthdate = buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth is null ? null :
-                    new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
-                                             int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),
-                                             int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day)),
-                    NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber
+                    BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                    ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                    ClassId = BuildingInspectorClassNames.Ids[selectedRegistrationClassId],
+                    StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
+                    StateCode = 0
                 };
-
-                var contactWrapper = new ContactWrapper(contact, dynamicsContact);
-
-
-                await orchestrationContext.CallActivityAsync(nameof(UpdateContact), contactWrapper);
+                await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
             }
+            //If the selected class has changed set its status to inactive 
+            var classesToUpdate = dynamicsRegistrationClasses.Where(x => x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[selectedRegistrationClassId] || x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[4]);
+            if (classesToUpdate.Any())
+            {
+                foreach (DynamicsBuildingInspectorRegistrationClass classToUpdate in classesToUpdate)
+                {
+                    var registrationClass = new BuildingInspectorRegistrationClass
+                    {
+                        Id = classToUpdate.bsr_biregclassid,
+                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                        ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                        ClassId = BuildingInspectorClassNames.Ids[selectedRegistrationClassId],
+                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
+                        StateCode = 0
+                    };
+
+                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
+                }
+            }
+
+
         }
+
+        /*            if (dynamicsContact != null)
+                    {
+                        var contact = new Contact
+                        {
+                            Id = dynamicsContact.contactid ?? "",
+                            FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName ?? "",
+                            LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName ?? "",
+                            Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email ?? "",
+                            AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
+                            PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? null,
+                            AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
+                            Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
+                            birthdate = buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth is null ? null :
+                            new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
+                                                     int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),
+                                                     int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day)),
+                            NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber
+                        };
+
+                        var contactWrapper = new ContactWrapper(contact, dynamicsContact);
+
+
+                        await orchestrationContext.CallActivityAsync(nameof(UpdateContact), contactWrapper);
+                    }*/
+    }
+
+
+    [Function(nameof(CreateOrUpdateRegistrationClass))]
+    public async Task CreateOrUpdateRegistrationClass([ActivityTrigger] BuildingInspectorRegistrationClass buildingInspectorRegistrationClass)
+    {
+        await dynamicsService.CreateOrUpdateRegistrationClass(buildingInspectorRegistrationClass);
     }
 
     [Function(nameof(GetBuildingProfessionApplicationUsingId))]
@@ -198,6 +244,12 @@ public class DynamicsSynchronisationFunctions
     public Task<DynamicsContact> GetContactUsingId([ActivityTrigger] string contactId)
     {
         return dynamicsService.GetContactUsingId(contactId);
+    }
+
+    [Function(nameof(GetRegistrationClassesUsingApplicationId))]
+    public Task<List<DynamicsBuildingInspectorRegistrationClass>> GetRegistrationClassesUsingApplicationId([ActivityTrigger] string applicationId)
+    {
+        return dynamicsService.GetRegistrationClassesUsingApplicationId(applicationId);
     }
 
     [Function(nameof(UpdateBuildingProfessionApplication))]
@@ -230,7 +282,7 @@ public class DynamicsSynchronisationFunctions
             address1_postalcode = contactWrapper.Model.Address.Postcode,
             bsr_address1uprn = contactWrapper.Model.Address.UPRN,
             bsr_address1usrn = contactWrapper.Model.Address.USRN,
-            bsr_address1lacode = contactWrapper.Model.Address.CustodianCode , 
+            bsr_address1lacode = contactWrapper.Model.Address.CustodianCode,
             bsr_address1ladescription = contactWrapper.Model.Address.CustodianDescription,
             bsr_manualaddress = contactWrapper.Model.Address.IsManual is null ? null :
                                 contactWrapper.Model.Address.IsManual is true ? YesNoOption.Yes :
@@ -245,8 +297,8 @@ public class DynamicsSynchronisationFunctions
     {
         return dynamicsService.UpdateBuildingProfessionApplication(buildingProfessionApplication, new DynamicsBuildingProfessionApplication
         {
-/*            bsr_submittedon = DateTime.Now.ToString(CultureInfo.InvariantCulture),
-            bsr_applicationstage = BuildingApplicationStage.ApplicationSubmitted*/
+            /*            bsr_submittedon = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                        bsr_applicationstage = BuildingApplicationStage.ApplicationSubmitted*/
         });
     }
 

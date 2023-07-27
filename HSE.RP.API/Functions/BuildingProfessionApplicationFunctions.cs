@@ -162,6 +162,7 @@ public class BuildingProfessionApplicationFunctions
         var validation = buildingProfessionApplicationModel.Validate();
         if (!validation.IsValid)
         {
+
             return await request.BuildValidationErrorResponseDataAsync(validation);
         }
 

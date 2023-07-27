@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -114,6 +115,24 @@ namespace HSE.RP.API.Services
             return response.value.FirstOrDefault();
         }
 
+        private async Task<DynamicsBuildingInspectorRegistrationClass> FindExistingBuildingInspectorRegistrationClass(string classId, string buidingProfessionApplicationId)
+        {
+            try
+            {
+                var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorRegistrationClass>>("bsr_biregclasses", new[]
+                 {
+                        ("$filter", $"_bsr_biapplicationid_value eq '{buidingProfessionApplicationId}' and _bsr_biclassid_value eq '{classId}'")
+
+                    });
+
+                return response.value.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
 
         private string ExtractEntityIdFromHeader(IReadOnlyNameValueList<string> headers)
         {
@@ -152,7 +171,7 @@ namespace HSE.RP.API.Services
                 var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
                 {
                 ("$filter", $"bsr_buildingproappid eq '{applicationId}'"),
-                ("$expand", "bsr_applicantid_contact")
+                ("$expand", "bsr_applicantid_contact,")
                 });
                 return response.value.FirstOrDefault();
 
@@ -176,6 +195,15 @@ namespace HSE.RP.API.Services
             return response.value.FirstOrDefault();
         }
 
+        public async Task<List<DynamicsBuildingInspectorRegistrationClass>> GetRegistrationClassesUsingApplicationId(string applicationId)
+        {
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorRegistrationClass>>("bsr_biregclasses", new[]
+            {
+            ("$filter", $"_bsr_biapplicationid_value eq '{applicationId}'")
+            });
+
+            return response.value;
+        }
 
         public async Task CreatePayment(BuildingProfessionApplicationPayment buildingProfessionApplicationPayment)
         {
@@ -253,7 +281,33 @@ namespace HSE.RP.API.Services
             return payments.value;
         }
 
+        public async Task<BuildingInspectorRegistrationClass> CreateOrUpdateRegistrationClass(BuildingInspectorRegistrationClass buildingInspectorRegistrationClass)
+        {
 
+            var dynamicsBuildingInspectorRegistraionClass = new DynamicsBuildingInspectorRegistrationClass(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorRegistrationClass.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorRegistrationClass.ApplicantId})",
+                classRef: $"/bsr_biclasses({buildingInspectorRegistrationClass.ClassId})",
+                statuscode: buildingInspectorRegistrationClass.StatusCode,
+                statecode: buildingInspectorRegistrationClass.StateCode
+                );
+
+            var existingRegistrationClass = await FindExistingBuildingInspectorRegistrationClass(buildingInspectorRegistrationClass.ClassId, buildingInspectorRegistrationClass.BuildingProfessionApplicationId);
+
+            if (existingRegistrationClass == null)
+            {
+                var response = await dynamicsApi.Create("bsr_biregclasses", dynamicsBuildingInspectorRegistraionClass);
+                var buildingInspectorRegistrationClassId = ExtractEntityIdFromHeader(response.Headers);
+                return buildingInspectorRegistrationClass with { Id = buildingInspectorRegistrationClassId };
+            }
+            else
+            {
+                var response = await dynamicsApi.Update($"bsr_biregclasses({existingRegistrationClass.bsr_biregclassid})", dynamicsBuildingInspectorRegistraionClass);
+                var buildingInspectorRegistrationClassId = ExtractEntityIdFromHeader(response.Headers);
+                return buildingInspectorRegistrationClass with { Id = buildingInspectorRegistrationClassId };
+            }
+
+        }
     }
 
 
