@@ -13,6 +13,7 @@ import { CompetencyCertificateCodeComponent } from './certificate-code/competenc
 import { CompetencyAssessmentOrganisationComponent } from './assesesment-organisation/competency-assesesment-organisation.component';
 import { CompetencyAssessmentDateComponent } from './assesesment-date/competency-assesesment-date.component';
 import { CompetencySummaryComponent } from './competency-summary/competency-summary.component';
+import { NoCompetencyAssessmentComponent } from './no-competency-assessment/no-competency-assessment.component';
 
 
 const routes = new HseRoutes([
@@ -20,6 +21,7 @@ const routes = new HseRoutes([
   HseRoute.protected(CompetencyCertificateCodeComponent.route, CompetencyCertificateCodeComponent, CompetencyCertificateCodeComponent.title),
   HseRoute.protected(CompetencyAssessmentOrganisationComponent.route, CompetencyAssessmentOrganisationComponent, CompetencyAssessmentOrganisationComponent.title),
   HseRoute.protected(CompetencyAssessmentDateComponent.route, CompetencyAssessmentDateComponent, CompetencyAssessmentDateComponent.title),
+  HseRoute.protected(NoCompetencyAssessmentComponent.route, NoCompetencyAssessmentComponent, NoCompetencyAssessmentComponent.title),
   HseRoute.protected(CompetencySummaryComponent.route, CompetencySummaryComponent, CompetencySummaryComponent.title),
 ]);
 
@@ -29,7 +31,8 @@ CompetencyIndependentStatusComponent,
 CompetencyCertificateCodeComponent,
 CompetencyAssessmentOrganisationComponent,
 CompetencyAssessmentDateComponent,
-CompetencySummaryComponent
+CompetencySummaryComponent,
+NoCompetencyAssessmentComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
