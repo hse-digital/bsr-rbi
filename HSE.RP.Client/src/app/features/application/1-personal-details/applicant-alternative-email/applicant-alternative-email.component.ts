@@ -9,12 +9,13 @@ import {  ApplicationService } from '../../../../services/application.service';
 import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-phone/applicant-alternative-phone.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { ApplicantEmail } from '../../../../models/applicant-email.model';
 
 @Component({
   selector: 'hse-applicant-alternative-email',
   templateUrl: './applicant-alternative-email.component.html',
 })
-export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
+export class ApplicantAlternativeEmailComponent extends PageComponent<ApplicantEmail>  {
 
   public static route: string = PersonalDetailRoutes.ALT_EMAIL;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
@@ -36,7 +37,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
     if (!applicationService.model.PersonalDetails?.ApplicantAlternativeEmail) {
       applicationService.model.PersonalDetails!.ApplicantAlternativeEmail = { Email: '', CompletionState: ComponentCompletionState.InProgress };
     }
-    this.model = applicationService.model.PersonalDetails?.ApplicantAlternativeEmail?.Email;
+    this.model = applicationService.model.PersonalDetails?.ApplicantAlternativeEmail;
     if (this.model === "") {
       this.selectedOption = "no"
     } else if (this.model) {
@@ -45,7 +46,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.Email = this.model;
+    this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail = this.model;
     if (this.selectedOption === "no") {
         this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.Email = ""
     }
@@ -71,7 +72,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
       this.emailHasErrors = true;
     }
     else{
-      this.emailHasErrors = !EmailValidator.isValid(this.model ?? '');
+      this.emailHasErrors = !EmailValidator.isValid(this.model!.Email ?? '');
       this.emailErrorMessage = "Enter a valid email address";
     }
     return !this.emailHasErrors;

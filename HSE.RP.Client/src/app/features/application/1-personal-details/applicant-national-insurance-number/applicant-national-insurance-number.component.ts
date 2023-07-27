@@ -12,12 +12,13 @@ import { NationalInsuranceNumberValidator } from '../../../../helpers/validators
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { ApplicantNationalInsuranceNumber } from '../../../../models/applicant-national-insurance-number.model';
 
 @Component({
   selector: 'hse-applicant-national-insurance-number',
   templateUrl: './applicant-national-insurance-number.component.html',
 })
-export class ApplicantNationalInsuranceNumberComponent extends PageComponent<string> {
+export class ApplicantNationalInsuranceNumberComponent extends PageComponent<ApplicantNationalInsuranceNumber> {
 
   public static route: string = PersonalDetailRoutes.NATIONAL_INS_NUMBER;
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
@@ -36,14 +37,13 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
 
   override onInit(applicationService: ApplicationService): void {
     if (!applicationService.model.PersonalDetails?.ApplicantNationalInsuranceNumber) {
-      applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber = { NationalInsuranceNumber: '', CompletionState: ComponentCompletionState.InProgress };
+      applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber = new ApplicantNationalInsuranceNumber();
     }
-    this.model = applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber!.NationalInsuranceNumber;
+    this.model = applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber!.NationalInsuranceNumber = this.model;
-    this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber!.CompletionState = ComponentCompletionState.Complete;
+    this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber = this.model;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -62,8 +62,8 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
   }
 
   override isValid(): boolean {
-    this.nsiIsNullOrWhiteSpace = !FieldValidations.IsNotNullOrWhitespace(this.model);
-    this.nsiIsInvalidFormat = !NationalInsuranceNumberValidator.isValid(this.model ?? '');
+    this.nsiIsNullOrWhiteSpace = !FieldValidations.IsNotNullOrWhitespace(this.model?.NationalInsuranceNumber);
+    this.nsiIsInvalidFormat = !NationalInsuranceNumberValidator.isValid(this.model?.NationalInsuranceNumber ?? '');
     this.nsiHasErrors = this.nsiIsNullOrWhiteSpace || this.nsiIsInvalidFormat;
     return !this.nsiHasErrors; 
   }
