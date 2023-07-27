@@ -137,7 +137,7 @@ export class ReturningApplicationEnterDataComponent {
           this.verificationEmail = result.EmailAddress;
         } else if (!result.IsValidApplicationNumber && result.IsValid) {
           this.errors.applicationNumber.errorText =
-            'Application number does not match this telephone number. Enter the correct 12 digit application code';
+            'Application number does not match this telephone number. Enter the correct 12 digit application number';
           this.errors.applicationNumber.anchorId = 'input-phone-number';
         } else if (result.IsValidApplicationNumber && !result.IsValid) {
           this.errors.applicationNumber.errorText =
@@ -151,7 +151,7 @@ export class ReturningApplicationEnterDataComponent {
           this.verificationPhone = result.PhoneNumber;
         } else if (!result.IsValidApplicationNumber && result.IsValid) {
           this.errors.applicationNumber.errorText =
-            'Application number does not match this email address. Enter the correct 12 digit application code';
+            'Application number does not match this email address. Enter the correct 12 digit application number';
           this.errors.applicationNumber.anchorId = 'input-email-address';
         } else if (result.IsValidApplicationNumber && !result.IsValid) {
           this.errors.applicationNumber.errorText =
