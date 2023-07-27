@@ -165,8 +165,8 @@ public class DynamicsSynchronisationFunctions
             //Check which registration class is selected in model
             var selectedRegistrationClassId = (int)buildingProfessionApplicationModel.InspectorClass.ClassType.Class;
 
-            //If the selected registration class is not in the list of registration classes, then add it
-            if (!dynamicsRegistrationClasses.Any(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[selectedRegistrationClassId]))
+            //If the selected registration class is not in the list of registration classes or is deactivate, then add/reactivate it
+            if (!dynamicsRegistrationClasses.Any(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[selectedRegistrationClassId] && x.statecode!=1))
             {
                 var registrationClass = new BuildingInspectorRegistrationClass
                 {
@@ -178,8 +178,9 @@ public class DynamicsSynchronisationFunctions
                 };
                 await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
             }
+
             //If the selected class has changed set its status to inactive 
-            var classesToUpdate = dynamicsRegistrationClasses.Where(x => x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[selectedRegistrationClassId] || x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[4]);
+            var classesToUpdate = dynamicsRegistrationClasses.Where(x => x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[selectedRegistrationClassId]).ToList();
             if (classesToUpdate.Any())
             {
                 foreach (DynamicsBuildingInspectorRegistrationClass classToUpdate in classesToUpdate)
@@ -187,11 +188,11 @@ public class DynamicsSynchronisationFunctions
                     var registrationClass = new BuildingInspectorRegistrationClass
                     {
                         Id = classToUpdate.bsr_biregclassid,
-                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
-                        ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
-                        ClassId = BuildingInspectorClassNames.Ids[selectedRegistrationClassId],
-                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
-                        StateCode = 0
+                        BuildingProfessionApplicationId = classToUpdate._bsr_biapplicationid_value,
+                        ApplicantId = classToUpdate._bsr_buildinginspectorid_value,
+                        ClassId = classToUpdate._bsr_biclassid_value,
+                        StatusCode = 2,
+                        StateCode = 1
                     };
 
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);

@@ -292,19 +292,32 @@ namespace HSE.RP.API.Services
                 statecode: buildingInspectorRegistrationClass.StateCode
                 );
 
-            var existingRegistrationClass = await FindExistingBuildingInspectorRegistrationClass(buildingInspectorRegistrationClass.ClassId, buildingInspectorRegistrationClass.BuildingProfessionApplicationId);
-
-            if (existingRegistrationClass == null)
+            //If the registration class has an id then we need to update it
+            if (buildingInspectorRegistrationClass.Id is not null)
             {
-                var response = await dynamicsApi.Create("bsr_biregclasses", dynamicsBuildingInspectorRegistraionClass);
+                var response = await dynamicsApi.Update($"bsr_biregclasses({buildingInspectorRegistrationClass.Id})", dynamicsBuildingInspectorRegistraionClass);
                 var buildingInspectorRegistrationClassId = ExtractEntityIdFromHeader(response.Headers);
                 return buildingInspectorRegistrationClass with { Id = buildingInspectorRegistrationClassId };
             }
             else
             {
-                var response = await dynamicsApi.Update($"bsr_biregclasses({existingRegistrationClass.bsr_biregclassid})", dynamicsBuildingInspectorRegistraionClass);
-                var buildingInspectorRegistrationClassId = ExtractEntityIdFromHeader(response.Headers);
-                return buildingInspectorRegistrationClass with { Id = buildingInspectorRegistrationClassId };
+                //Check if an entry for this class already exists
+                var existingRegistrationClass = await FindExistingBuildingInspectorRegistrationClass(buildingInspectorRegistrationClass.ClassId, buildingInspectorRegistrationClass.BuildingProfessionApplicationId);
+
+                //If no entry exists then create a new one
+                if (existingRegistrationClass == null)
+                {
+                    var response = await dynamicsApi.Create("bsr_biregclasses", dynamicsBuildingInspectorRegistraionClass);
+                    var buildingInspectorRegistrationClassId = ExtractEntityIdFromHeader(response.Headers);
+                    return buildingInspectorRegistrationClass with { Id = buildingInspectorRegistrationClassId };
+                }
+                //If an entry exists then update it
+                else
+                {
+                    var response = await dynamicsApi.Update($"bsr_biregclasses({existingRegistrationClass.bsr_biregclassid})", dynamicsBuildingInspectorRegistraionClass);
+                    var buildingInspectorRegistrationClassId = ExtractEntityIdFromHeader(response.Headers);
+                    return buildingInspectorRegistrationClass with { Id = buildingInspectorRegistrationClassId };
+                }
             }
 
         }
