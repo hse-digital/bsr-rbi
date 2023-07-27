@@ -57,9 +57,6 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
 
   }
 
-  override DerivedIsComplete(value: boolean) {
-    this.applicationService.model.PersonalDetails!.ApplicantName!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
-  }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     applicationService.model.PersonalDetails!.ApplicantName!.FirstName = this.model.PersonalDetails!.ApplicantName!.FirstName;

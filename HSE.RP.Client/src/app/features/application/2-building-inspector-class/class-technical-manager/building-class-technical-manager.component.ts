@@ -81,5 +81,4 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<string
     );
   }
 
-  override DerivedIsComplete(value: boolean): void {}
 }

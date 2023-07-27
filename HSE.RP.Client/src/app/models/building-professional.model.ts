@@ -26,10 +26,16 @@ export class BuildingProfessionalModel implements IComponentModel {
   };
 
   ReturningApplication: boolean = false;
+  //CompletionState?: ComponentCompletionState;
+
+
   get CompletionState(): ComponentCompletionState {
     return this!.ApplicationStatus! ==
       ApplicationStatus.ApplicationSubmissionComplete
       ? ComponentCompletionState.Complete
       : ComponentCompletionState.InProgress;
+  }
+  set CompletionState(value: ComponentCompletionState) {
+
   }
 }

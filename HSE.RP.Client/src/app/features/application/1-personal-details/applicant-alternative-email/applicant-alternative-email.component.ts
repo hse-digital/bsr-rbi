@@ -44,11 +44,6 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<string>  {
     }
   }
 
-  override DerivedIsComplete(value: boolean) {
-    if(value)
-      this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.CompletionState = ComponentCompletionState.Complete;
-  }
-
   override async onSave(applicationService: ApplicationService): Promise<void> {
     this.applicationService.model.PersonalDetails!.ApplicantAlternativeEmail!.Email = this.model;
     if (this.selectedOption === "no") {

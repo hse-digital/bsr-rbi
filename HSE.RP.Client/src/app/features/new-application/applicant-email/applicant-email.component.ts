@@ -44,10 +44,6 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
     return applicationService.model.PersonalDetails?.ApplicantName?.CompletionState == ComponentCompletionState.Complete;
   }
 
-  override DerivedIsComplete(value: boolean) : void {
-    this.applicationService.model.PersonalDetails!.ApplicantEmail!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
-  }
-
   override isValid(): boolean {
     this.emailHasErrors = false;
     if (this.model == null || this.model == '')

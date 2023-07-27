@@ -42,12 +42,6 @@ export class ApplicantPhoneComponent extends PageComponent<string> {
       applicationService.model.PersonalDetails?.ApplicantPhone.PhoneNumber;
   }
 
-  override DerivedIsComplete(value: boolean): void {
-    this.applicationService.model.PersonalDetails!.ApplicantPhone!.CompletionState =
-      value
-        ? ComponentCompletionState.Complete
-        : ComponentCompletionState.InProgress;
-  }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     this.applicationService.model.PersonalDetails!.ApplicantPhone!.PhoneNumber =

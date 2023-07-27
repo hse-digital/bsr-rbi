@@ -47,10 +47,6 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<string> {
     }
   }
 
-  override DerivedIsComplete(value: boolean) {
-    this.applicationService.model.PersonalDetails!.ApplicantAlternativePhone!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
-  }
-
   override async onSave(applicationService: ApplicationService): Promise<void> {
     this.applicationService.model.PersonalDetails!.ApplicantAlternativePhone!.PhoneNumber = this.model;
   }

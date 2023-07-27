@@ -41,10 +41,6 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<str
     this.model = applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber!.NationalInsuranceNumber;
   }
 
-  override DerivedIsComplete(value: boolean) {
-    this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
-  }
-
   override async onSave(applicationService: ApplicationService): Promise<void> {
     this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber!.NationalInsuranceNumber = this.model;
     this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber!.CompletionState = ComponentCompletionState.Complete;

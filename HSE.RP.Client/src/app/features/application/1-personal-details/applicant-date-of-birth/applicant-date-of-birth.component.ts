@@ -57,10 +57,6 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
 
   }
 
-  override DerivedIsComplete(value: boolean) {
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
-  }
-
   override async onSave(applicationService: ApplicationService): Promise<void> {
     this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Day = this.model!.day;
     this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Month = this.model!.month;
