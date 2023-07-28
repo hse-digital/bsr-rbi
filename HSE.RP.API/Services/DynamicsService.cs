@@ -430,7 +430,7 @@ namespace HSE.RP.API.Services
                 buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorRegistrationActivity.BuildingProfessionApplicationId})",
                 contactRefId: $"/contacts({buildingInspectorRegistrationActivity.BuildingInspectorId})",
                 buildingActivityReferenceId: $"/bsr_biactivities({buildingInspectorRegistrationActivity.ActivityId})",
-                buidingCategoryReferenceId: $"/bsr_bicategories({buildingInspectorRegistrationActivity.BuildingCategoryId})",
+                buidingCategoryReferenceId: $"/bsr_bibuildingcategories({buildingInspectorRegistrationActivity.BuildingCategoryId})",
                 statuscode: buildingInspectorRegistrationActivity.StatusCode,
                 statecode: buildingInspectorRegistrationActivity.StateCode
                 );

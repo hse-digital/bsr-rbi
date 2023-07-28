@@ -25,10 +25,12 @@ public record DynamicsBuildingInspectorRegistrationActivity(
     string buidingCategoryReferenceId = null,
     [property: JsonPropertyName("bsr_buildinginspectorid@odata.bind")]
     string contactRefId = null,
+
     string _bsr_biapplicationid_value = null,
     string _bsr_biactivityid_value = null,
     string _bsr_buildinginspectorid_value = null,
     string _bsr_bibuildingcategoryid_value = null,
+
     int? statuscode = null,
     int? statecode = null
 ) : DynamicsEntity<BuildingInspectorRegistrationActivity>;

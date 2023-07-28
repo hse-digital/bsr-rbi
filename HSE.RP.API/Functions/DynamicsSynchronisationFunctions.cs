@@ -12,6 +12,7 @@ using HSE.RP.API.Models.DynamicsSynchronisation;
 using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.API.Services;
 using HSE.RP.Domain.Entities;
+using JWT.Builder;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
@@ -338,7 +339,7 @@ public class DynamicsSynchronisationFunctions
             if (buildingProfessionApplicationModel.InspectorClass.Activities.AssessingPlans == true)
             {
                 //Check the list of registration activities to see if AssessingPlans is there
-                if (!dynamicsRegistrationActivities.Any(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"]                                                         &&  x.statecode != 1))
+                if (!dynamicsRegistrationActivities.Any(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"] &&  x.statecode != 1))
                 {
                     //Get categories for Assessing Plans and class
                     //selectedRegistrationClassId
@@ -346,35 +347,62 @@ public class DynamicsSynchronisationFunctions
 
                     if(selectedRegistrationClassId == 2)
                     {
-                        foreach (var category in buildingProfessionApplicationModel.InspectorClass.BuildingAssessingPlansCategoriesClass2.MapSelectedCategories())
+
+                        foreach (var category in buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2.GetType().GetProperties())
                         {
-                            var registrationActivity = new BuildingInspectorRegistrationActivity
+                            var categoryName = category.Name + "Class2";
+
+                            //get value of current category
+
+
+
+                            if (category.GetValue(buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2) == null 
+                                || (bool)category.GetValue(buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2) == false)
                             {
-                                BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
-                                BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
-                                BuildingCategoryId = category.Id,
-                                ActivityId = BuildingInspectorActivityNames.Ids["AssessingPlans"],
-                                StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Applied,
-                                StateCode = 0
-                            };
-                            await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), registrationActivity);
+                                continue;
+                            }
+                            else
+                            {
+
+                                var registrationActivity = new BuildingInspectorRegistrationActivity
+                                {
+                                    BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                                    BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                                    BuildingCategoryId = BuildingInspectorBuildingCategoryNames.Ids[categoryName],
+                                    ActivityId = BuildingInspectorActivityNames.Ids["AssessingPlans"],
+                                    StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Applied,
+                                    StateCode = 0
+                                };
+                                await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), registrationActivity);
+
+                            }
+
                         }
-                        
+
                     }
                     else if(selectedRegistrationClassId == 3)
                     {
-                        foreach (var category in buildingProfessionApplicationModel.InspectorClass.BuildingAssessingPlansCategoriesClass3.MapSelectedCategories())
+                        foreach (var category in buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass3.GetType().GetProperties())
                         {
-                            var registrationActivity = new BuildingInspectorRegistrationActivity
+                            if (category.GetValue(this) == null || (bool)category.GetValue(this) == false)
                             {
-                                BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
-                                BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
-                                BuildingCategoryId = category.Id,
-                                ActivityId = BuildingInspectorActivityNames.Ids["AssessingPlans"],
-                                StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Applied,
-                                StateCode = 0
-                            };
-                            await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), registrationActivity);
+                                continue;
+                            }
+                            else
+                            {
+                                var categoryName = category.Name + "Class3";
+
+                                var registrationActivity = new BuildingInspectorRegistrationActivity
+                                {
+                                    BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                                    BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                                    BuildingCategoryId = BuildingInspectorBuildingCategoryNames.Ids[categoryName],
+                                    ActivityId = BuildingInspectorActivityNames.Ids["AssessingPlans"],
+                                    StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Applied,
+                                    StateCode = 0
+                                };
+                                await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), registrationActivity);
+                            }
                         }
                     }
                 }
