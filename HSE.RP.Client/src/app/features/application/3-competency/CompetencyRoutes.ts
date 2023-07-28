@@ -8,7 +8,7 @@ export const CompetencyRoutes = {
   INDEPENDENT_COMPETENCY_STATUS: 'independent-competency-status',
   COMPETENCY_ASSESSMENT_ORGANISATION: 'competency-assesesment-organisation',
   NO_COMPETENCY_ASSESSMENT: 'no-competency-assessment',
-  COMPETENCY_ASSESSMENT_DATE: 'competency-assesesment-date'
+  COMPETENCY_ASSESSMENT_DATE: 'competency-assesesment-date',
   COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER: 'competency-assessment-certificate-number'
 };
 
