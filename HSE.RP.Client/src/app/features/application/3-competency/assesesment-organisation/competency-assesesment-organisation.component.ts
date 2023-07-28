@@ -6,10 +6,10 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { ApplicationService } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
-import { CompetencyAssessmentDateComponent } from '../assesesment-date/competency-assesesment-date.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { CompetencyAssessmentCertificateNumberComponent } from '../assessment-certificate-number/competency-assessment-certificate-number.component';
 
 @Component({
   selector: 'hse-competency-assesesment-organisation',
@@ -25,7 +25,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
   photoHasErrors = false;
   override model?: string;
   errorMessage: string = '';
-  selectedOption: string = 'no';
+  selectedOption: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -39,7 +39,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
     this.model =
       applicationService.model.Competency?.CompetencyAssesesmentOrganisation;
 
-    this.selectedOption = this.model ? this.model : 'no';
+    this.selectedOption = this.model ? this.model : 'CABE';
 
     this.applicationService = applicationService;
   }
@@ -48,7 +48,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
     this.applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
       this.model;
 
-    if (['no', 'yes'].includes(this.selectedOption)) {
+    if (['CABE', 'BSCF'].includes(this.selectedOption)) {
       applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
         this.selectedOption;
     }
@@ -70,7 +70,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
-      CompetencyAssessmentDateComponent.route,
+      CompetencyAssessmentCertificateNumberComponent.route,
       this.activatedRoute
     );
   }

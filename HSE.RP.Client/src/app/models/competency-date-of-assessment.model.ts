@@ -2,4 +2,6 @@ import { ComponentCompletionState } from './component-completion-state.enum';
 import { IComponentModel } from './component. interface';
 import { DateBase } from './date-base.model';
 
-export class ApplicantDateOfBirth extends DateBase implements IComponentModel {}
+export class CompetencyDateOfAssessment
+  extends DateBase
+  implements IComponentModel {}

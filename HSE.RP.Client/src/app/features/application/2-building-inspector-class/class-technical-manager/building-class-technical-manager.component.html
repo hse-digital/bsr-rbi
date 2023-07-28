@@ -30,15 +30,15 @@
     <govuk-radio-group
       hintText=" "
       id="radios-technical-manager"
-      [(model)]="selectedOption"
+      [(model)]="model!.YesNo"
     >
-      <govuk-radio label="Yes" value="yes" id="yes" [model]="selectedOption">
+      <govuk-radio label="Yes" value="yes" id="yes" [model]="model!.YesNo">
       </govuk-radio>
       <govuk-radio
         label="No"
         value="no"
         id="no"
-        [model]="selectedOption"
+        [model]="model!.YesNo"
       ></govuk-radio>
     </govuk-radio-group>
   </govuk-body>

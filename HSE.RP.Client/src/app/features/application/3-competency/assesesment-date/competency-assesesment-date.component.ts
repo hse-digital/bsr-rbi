@@ -8,52 +8,188 @@ import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { CompetencySummaryComponent } from '../competency-summary/competency-summary.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { CompetencyRoutes } from '../CompetencyRoutes';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { IComponentModel } from 'src/app/models/component. interface';
+import { CompetencyDateOfAssessment } from 'src/app/models/competency-date-of-assessment.model';
+
+class DateInputControlDate implements IComponentModel {
+  constructor(private containedModel: CompetencyDateOfAssessment) {}
+  get day(): string | undefined {
+    return this.containedModel.Day;
+  }
+  set day(value: string | undefined) {
+    this.containedModel.Day = value;
+  }
+  get month(): string | undefined {
+    return this.containedModel.Month;
+  }
+  set month(value: string | undefined) {
+    this.containedModel.Month = value;
+  }
+  get year(): string | undefined {
+    return this.containedModel.Year;
+  }
+  set year(value: string | undefined) {
+    this.containedModel.Year = value;
+  }
+  get CompletionState(): ComponentCompletionState | undefined {
+    return this.containedModel.CompletionState;
+  }
+  set CompletionState(value: ComponentCompletionState | undefined) {
+    this.containedModel.CompletionState = value;
+  }
+}
+
+type DoaValidationItem = {
+  Text: string;
+  Anchor: string;
+};
+
+const ERROR_MESSAGES = {
+  DATE_ASSESSMENT_REQUIRED: 'Enter your date of assessment',
+  DAY_REQUIRED: 'Your date of assessment must include a day',
+  MONTH_REQUIRED: 'Your date of assessment must include a month',
+  YEAR_REQUIRED: 'Your date of assessment must include a year',
+  YEAR_FORMAT:
+    'Your date of assessment must include all four numbers of the year, for example 1981, not just 81.',
+  DATE_IN_PRESENT_OR_PAST:
+    'Your date of assessment must be today or a date in the past',
+};
 
 @Component({
   selector: 'hse-competency-assesesment-date',
   templateUrl: './competency-assesesment-date.component.html',
 })
-export class CompetencyAssessmentDateComponent extends PageComponent<string> {
-  DerivedIsComplete(value: boolean): void {
-      
-  }
-
-  public static route: string = "competency-assesesment-date";
-  static title: string = "Competency - Register as a building inspector - GOV.UK";
+export class CompetencyAssessmentDateComponent extends PageComponent<DateInputControlDate> {
+  public static route: string = CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE;
+  static title: string =
+    'Competency - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: string;
+  errorMessage: string = '';
+  validationErrors: DoaValidationItem[] = [];
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
-    this.updateOnSave = false;
   }
 
   override onInit(applicationService: ApplicationService): void {
-    //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
+    this.updateOnSave = true;
+    if (!applicationService.model.Competency?.CompetencyDateOfAssessment) {
+      applicationService.model.Competency!.CompetencyDateOfAssessment =
+        new CompetencyDateOfAssessment();
+    }
+
+    if (applicationService.model.Competency?.CompetencyDateOfAssessment)
+      this.model = new DateInputControlDate(
+        applicationService.model.Competency?.CompetencyDateOfAssessment
+      );
   }
 
-  override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.CompetencyComplete;
-   }
+  DerivedIsComplete(value: boolean): void {
+    this.applicationService.model.Competency!.CompetencyDateOfAssessment!.CompletionState =
+      value
+        ? ComponentCompletionState.Complete
+        : ComponentCompletionState.InProgress;
+  }
 
-  override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
+  override async onSave(): Promise<void> {
+    this.applicationService.model.Competency!.CompetencyDateOfAssessment!.Day =
+      this.model?.day;
+    this.applicationService.model.Competency!.CompetencyDateOfAssessment!.Month =
+      this.model?.month;
+    this.applicationService.model.Competency!.CompetencyDateOfAssessment!.Year =
+      this.model?.year;
+  }
+
+  override canAccess(
+    applicationService: ApplicationService,
+    routeSnapshot: ActivatedRouteSnapshot
+  ): boolean {
     return true;
     //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
-
   }
 
+  isDateNumber(dateNumber: string | undefined): boolean {
+    return (
+      FieldValidations.IsNotNullOrWhitespace(dateNumber) &&
+      FieldValidations.IsWholeNumber(Number(dateNumber))
+    );
+  }
 
   override isValid(): boolean {
-    return true;
-/*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
-    return !this.phoneNumberHasErrors; */
+    this.validationErrors = [];
+    if (!this.model?.day && !this.model?.month && !this.model?.year) {
+      this.validationErrors.push({
+        Text: ERROR_MESSAGES.DATE_ASSESSMENT_REQUIRED,
+        Anchor: 'doa-input-day',
+      });
+      return false;
+    }
 
+    if (!this.isDateNumber(this.model?.day)) {
+      this.validationErrors.push({
+        Text: ERROR_MESSAGES.DAY_REQUIRED,
+        Anchor: 'doa-input-day',
+      });
+    }
+
+    if (!this.isDateNumber(this.model?.month)) {
+      this.validationErrors.push({
+        Text: ERROR_MESSAGES.MONTH_REQUIRED,
+        Anchor: 'doa-input-month',
+      });
+    }
+
+    if (!this.isDateNumber(this.model?.year)) {
+      this.validationErrors.push({
+        Text: ERROR_MESSAGES.YEAR_REQUIRED,
+        Anchor: 'doa-input-year',
+      });
+    } else if (Number(this.model?.year!) < 1000) {
+      this.validationErrors.push({
+        Text: ERROR_MESSAGES.YEAR_FORMAT,
+        Anchor: 'doa-input-year',
+      });
+    }
+
+    const currentDate = new Date();
+    const selectedDate = this.getDateOfAssessment();
+    if (selectedDate > currentDate) {
+      this.validationErrors.push({
+        Text: ERROR_MESSAGES.DATE_IN_PRESENT_OR_PAST,
+        Anchor: 'doa-input-day',
+      });
+    }
+
+    return this.validationErrors.length === 0;
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(CompetencySummaryComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(
+      CompetencySummaryComponent.route,
+      this.activatedRoute
+    );
   }
 
+  getDateOfAssessment(): Date {
+    if (this.model!.day && this.model!.month && this.model!.year) {
+      return new Date(
+        Number(this.model!.year),
+        Number(this.model!.month) - 1,
+        Number(this.model!.day)
+      );
+    } else {
+      return new Date();
+    }
+  }
+
+  getFirstErrorDescription(): string {
+    if (this.validationErrors.length > 0) {
+      return this.validationErrors[0].Text;
+    }
+    return '';
+  }
 }

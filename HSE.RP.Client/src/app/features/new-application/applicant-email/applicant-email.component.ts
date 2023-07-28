@@ -14,7 +14,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
   selector: 'hse-applicant-email',
   templateUrl: './applicant-email.component.html',
 })
-export class ApplicantEmailComponent extends PageComponent<string>  {
+export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
 
   public static route: string = "applicant-email";
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
@@ -32,20 +32,16 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
     if (!applicationService.model.PersonalDetails?.ApplicantEmail) {
       applicationService.model.PersonalDetails!.ApplicantEmail = new ApplicantEmail();
     }
-    this.model = applicationService.model.PersonalDetails?.ApplicantEmail?.Email
+    this.model = applicationService.model.PersonalDetails?.ApplicantEmail;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.PersonalDetails!.ApplicantEmail!.Email = this.model;
-    await applicationService.sendVerificationEmail(this.model!)
+    applicationService.model.PersonalDetails!.ApplicantEmail = this.model;
+    await applicationService.sendVerificationEmail(this.model!.Email!)
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return applicationService.model.PersonalDetails?.ApplicantName?.CompletionState == ComponentCompletionState.Complete;
-  }
-
-  override DerivedIsComplete(value: boolean) : void {
-    this.applicationService.model.PersonalDetails!.ApplicantEmail!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
   }
 
   override isValid(): boolean {
@@ -56,7 +52,7 @@ export class ApplicantEmailComponent extends PageComponent<string>  {
       this.emailHasErrors = true;
     }
     else{
-      this.emailHasErrors = !EmailValidator.isValid(this.model ?? '');
+      this.emailHasErrors = !EmailValidator.isValid(this.model!.Email ?? '');
       this.emailErrorMessage = "Enter a valid email address";
     }
     return !this.emailHasErrors;

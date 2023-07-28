@@ -58,6 +58,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { PaymentStatus } from 'src/app/models/payment-status.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { CompetencyAssessmentCertificateNumberComponent } from '../3-competency/assessment-certificate-number/competency-assessment-certificate-number.component';
 
 
 interface ITaskListParent {
@@ -141,6 +142,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   override async onInit(applicationService: ApplicationService): Promise<void> {
     this.model = applicationService.model;
     this.checkingStatus = false;
+    console.log(applicationService.model)
   }
 
   getModelStatus(model?: IComponentModel): TaskStatus {
@@ -243,6 +245,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
         prompt: "Assessment organisation", relativeRoute: (): TaskListRoute => {
           return { route: CompetencyAssessmentOrganisationComponent.route}
         }, getStatus: (): TaskStatus => TaskStatus.CannotStart
+      },
+      {
+        prompt: "Assessment certificate number", relativeRoute: (): TaskListRoute => {
+          return { route: CompetencyAssessmentCertificateNumberComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.Competency?.CompetencyAssessmentCertificateNumber)
       },
       {
         prompt: "Date of assessment", relativeRoute: (): TaskListRoute => {
