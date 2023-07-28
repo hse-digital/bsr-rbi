@@ -3,16 +3,43 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicantDateOfBirth, ApplicationService, ApplicationStatus, BuildingProfessionalModel, ComponentCompletionState, IComponentModel } from '../../../../services/application.service';
+import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantAddressComponent } from '../applicant-address/applicant-address.component';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { IComponentModel } from '../../../../models/component. interface';
+import { ApplicantDateOfBirth } from '../../../../models/applicant-date-of-birth.model';
 
-class DateInputControlDate {
-  day?: string;
-  month?: string;
-  year?: string;
+class DateInputControlDate implements IComponentModel {
+  constructor(private containedModel: ApplicantDateOfBirth) {
+  }
+  get day(): string | undefined {
+    return this.containedModel.Day;
+  }
+  set day(value : string | undefined) {
+    this.containedModel.Day = value;
+  }
+  get month(): string | undefined {
+    return this.containedModel.Month;
+  }
+  set month(value: string | undefined) {
+    this.containedModel.Month = value;
+  }
+  get year(): string | undefined {
+    return this.containedModel.Year;
+  }
+  set year(value: string | undefined) {
+    this.containedModel.Year = value;
+  }
+  get CompletionState(): ComponentCompletionState | undefined {
+    return this.containedModel.CompletionState;
+  }
+  set CompletionState(value: ComponentCompletionState | undefined) {
+    this.containedModel.CompletionState = value;
+  }
 };
 
 type DobValidationItem = {
@@ -34,7 +61,7 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
   modelValid: boolean = false;
   validationErrors: DobValidationItem[] = [];
 
-  
+
   constructor(
     activatedRoute: ActivatedRoute,
     applicationService: ApplicationService,
@@ -45,24 +72,13 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
 
   override onInit(applicationService: ApplicationService): void {
     if (!applicationService.model.PersonalDetails?.ApplicantDateOfBirth) {
-      applicationService.model.PersonalDetails!.ApplicantDateOfBirth = { Day: "", Month: "", Year: "", CompletionState: ComponentCompletionState.InProgress };
+      applicationService.model.PersonalDetails!.ApplicantDateOfBirth = new ApplicantDateOfBirth();
     }
-    this.model = {
-      day: applicationService.model.PersonalDetails!.ApplicantDateOfBirth.Day,
-      month: applicationService.model.PersonalDetails!.ApplicantDateOfBirth.Month,
-      year: applicationService.model.PersonalDetails!.ApplicantDateOfBirth.Year,
-    };
-
-  }
-
-  override DerivedIsComplete(value: boolean) {
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
+    if (applicationService.model.PersonalDetails?.ApplicantDateOfBirth)
+      this.model = new DateInputControlDate(applicationService.model.PersonalDetails?.ApplicantDateOfBirth);
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Day = this.model!.day;
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Month = this.model!.month;
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Year = this.model!.year;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -75,31 +91,34 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
 
   override isValid(): boolean {
     this.validationErrors = [];
-
-    if (!this.isDateNumber(this.model?.day)) {
-      this.validationErrors.push({ Text: "Your date of birth must include a day", Anchor: "dob-input-day" });
-    }
-
-    if (!this.isDateNumber(this.model?.month)) {
-      this.validationErrors.push({ Text: "Your date of birth must include a month", Anchor: "dob-input-month" });
-    }
-
-    if (!this.isDateNumber(this.model?.year)) {
-      this.validationErrors.push({ Text: "Your date of birth must include a year", Anchor: "dob-input-year" });
-    }
-
-    if (this.isDateNumber(this.model?.year) && Number(this.model?.year!) < 1000) {
-      this.validationErrors.push({ Text: "Your date of birth must include all four numbers of the year, for example 1981, not just 81", Anchor: "dob-input-year" });
-    }
-
-    if (this.validationErrors.length == 0) {
-
-      if (new Date() < this.getDateOfBirth()) {
-        this.validationErrors.push({ Text: "Your date of birth must be in the past", Anchor: "dob-input-day" });
+    if ((this.model?.day ?? "") == "" && (this.model?.month ?? "") == "" && (this.model?.year ?? "") == "") {
+      this.validationErrors.push({ Text: "Enter your date of birth", Anchor: "dob-input-day" });
+    } else {
+      if (!this.isDateNumber(this.model?.day) || !this.isDayValid(Number(this.model?.day))) {
+        this.validationErrors.push({ Text: "Your date of birth must include a day", Anchor: "dob-input-day" });
       }
 
-      if (!this.isWorkingAge()) {
-        this.validationErrors.push({ Text: "Your date of birth indicates you are not of working age", Anchor: "dob-input-day" });
+      if (!this.isDateNumber(this.model?.month) || !this.isMonthValid(Number(this.model?.month))) {
+        this.validationErrors.push({ Text: "Your date of birth must include a month", Anchor: "dob-input-month" });
+      }
+
+      if (!this.isDateNumber(this.model?.year)) {
+        this.validationErrors.push({ Text: "Your date of birth must include a year", Anchor: "dob-input-year" });
+      }
+
+      if (this.isDateNumber(this.model?.year) && Number(this.model?.year!) < 1000) {
+        this.validationErrors.push({ Text: "Your date of birth must include all four numbers of the year, for example 1981, not just 81", Anchor: "dob-input-year" });
+      }
+
+      if (this.validationErrors.length == 0) {
+
+        if (new Date() < this.getDateOfBirth()) {
+          this.validationErrors.push({ Text: "Your date of birth must be in the past", Anchor: "dob-input-day" });
+        }
+
+        if (!this.isWorkingAge()) {
+          this.validationErrors.push({ Text: "Your date of birth indicates you are not of working age", Anchor: "dob-input-day" });
+        }
       }
     }
 
@@ -132,4 +151,13 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
     }
     return "";
   }
+
+  isDayValid(day: number) {
+    return day <= 31 && day >= 1;
+  }
+
+  isMonthValid(month: number) {
+    return month <= 12 && month >= 1;
+  }
+
 }

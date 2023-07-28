@@ -6,11 +6,11 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { PageComponent } from 'src/app/helpers/page.component';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import {
-  ApplicationService,
-  ApplicationStatus,
-  BuildingProfessionalModel,
-  StageCompletionState,
+  ApplicationService
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PaymentService } from 'src/app/services/payment.service';

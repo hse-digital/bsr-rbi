@@ -1,13 +1,5 @@
-﻿
-using HSE.RP.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
+﻿using System.Text.Json.Serialization;
+using HSE.RP.API.Enums;
 
 namespace HSE.RP.API.Models
 {
@@ -16,6 +8,7 @@ namespace HSE.RP.API.Models
         [property: JsonPropertyName("id")] string Id,
         PersonalDetails PersonalDetails = null,
         BuildingInspectorClass InspectorClass = null,
+        Competency Competency = null,
         Dictionary<string, StageCompletionState> StageStatus = null,
         ApplicationStatus ApplicationStatus = ApplicationStatus.None) : IValidatableModel
     {
@@ -43,172 +36,5 @@ namespace HSE.RP.API.Models
             return new ValidationSummary(!errors.Any(), errors.ToArray());
         }
     }
-    public enum ComponentCompletionState
-    {
-        NotStarted = 0,
-        InProgress = 1,
-        Complete = 2
-    }
-
-    public enum StageCompletionState
-    {
-        NotStarted = 0,
-        InProgress = 1,
-        Complete = 2
-    }
-
-    public record ApplicantName
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public ComponentCompletionState IsComplete { get; set; } = ComponentCompletionState.NotStarted;
-    }
-
-    public record ApplicantPhone
-    { 
-        public string PhoneNumber { get; set; }
-        public ComponentCompletionState IsComplete { get; set; } = ComponentCompletionState.NotStarted;
-    }
-    public record ApplicantDateOfBirth
-    {
-        public string Day  { get; set; }
-        public string Month  { get; set; }
-        public string Year  { get; set; }
-        public ComponentCompletionState IsComplete { get; set; } = ComponentCompletionState.NotStarted;
-
-    }
-
-    public record ApplicantEmail
-    {
-        public string Email { get; set; }
-
-        public ComponentCompletionState IsComplete { get; set; } = ComponentCompletionState.NotStarted;
-    };
-
-    public record ApplicantNationalInsuranceNumber
-    {
-        public string NationalInsuranceNumber { get; set; }
-        public ComponentCompletionState IsComplete { get; set; } = ComponentCompletionState.NotStarted;
-    };
-
-    public record PersonalDetails
-    {
-        public ApplicantName ApplicantName { get; set; }
-        public BuildingAddress ApplicantAddress { get; set; }
-        public ApplicantPhone ApplicantPhone { get; set; }
-        public ApplicantPhone ApplicantAlternativePhone { get; set; }
-        public ApplicantEmail ApplicantEmail { get; set; }
-        public ApplicantEmail ApplicantAlternativeEmail { get; set; }
-        public ApplicantDateOfBirth ApplicantDateOfBirth { get; set; }
-        public ApplicantNationalInsuranceNumber ApplicantNationalInsuranceNumber { get; set; }
-
-    }
-
-    public enum BuildingInspectorClassType
-    {
-        ClassNone = 0,
-        Class1 = 1,
-        Class2 = 2,
-        Class3 = 3
-    }
-
-    public record BuildingInspectorRegulatedActivies
-    {
-        public bool? AssessingPlans { get; set; }
-        public bool? Inspection {get;set; }
-        public ComponentCompletionState CompletionState { get; set; }
-
-    }
-
-    public record BuildingInspectorClass
-    {
-        public ClassSelection ClassType { get; set; }
-        public BuildingInspectorRegulatedActivies? Activities { get; set; }
-        public BuildingAssessingPlansCategoriesClass2 BuildingAssessingPlansCategoriesClass2 { get; set; }
-        public BuildingAssessingPlansCategoriesClass3 BuildingAssessingPlansCategoriesClass3 { get; set; }
-        public string ClassTechnicalManager { get; set; } = string.Empty;
-        public BuildingInspectorCountryOfWork? InspectorCountryOfWork { get; set; }
-        public Class2InspectBuildingCategories Class2InspectBuildingCategories { get; set; }
-        public Class3InspectBuildingCategories Class3InspectBuildingCategories { get; set; }
-    }
-
-
-    public record BuildingAssessingPlansCategoriesClass2
-    {
-        public bool? CategoryA { get; set; }
-        public bool? CategoryB { get; set; }
-        public bool? CategoryC { get; set; }
-        public bool? CategoryD { get; set; }
-        public bool? CategoryE { get; set; }
-        public bool? CategoryF { get; set; }
-        public ComponentCompletionState CompletionState { get; set; }
-    }
-
-    public record BuildingAssessingPlansCategoriesClass3
-    {
-        public bool? CategoryA { get; set; }
-        public bool? CategoryB { get; set; }
-        public bool? CategoryC { get; set; }
-        public bool? CategoryD { get; set; }
-        public bool? CategoryE { get; set; }
-        public bool? CategoryF { get; set; }
-        public bool? CategoryG { get; set; }
-        public bool? CategoryH { get; set; }
-
-        public ComponentCompletionState CompletionState { get; set; }
-    }
-
-    public record BuildingInspectorCountryOfWork
-    {
-        public bool? England { get; set; }
-        public bool? Wales { get; set; }
-    }
-
-
-    public record Class2InspectBuildingCategories
-    {
-      public bool? CategoryA {get;set;}
-      public bool? CategoryB {get;set;}
-      public bool? CategoryC { get;set;}
-      public bool? CategoryD { get;set;}
-      public bool? CategoryE { get;set;}
-      public bool? CategoryF { get; set; }
-      public ComponentCompletionState CompletionState { get; set; }
-    }
-    public record Class3InspectBuildingCategories
-    {
-        public bool? CategoryA { get; set; }
-        public bool? CategoryB { get; set; }
-        public bool? CategoryC { get; set; }
-        public bool? CategoryD { get; set; }
-        public bool? CategoryE { get; set; }
-        public bool? CategoryF { get; set; }
-        public bool? CategoryG { get; set; }
-        public bool? CategoryH { get; set; }
-        public ComponentCompletionState CompletionState { get; set; }
-    }
-
-    public record ClassSelection
-    (
-        BuildingInspectorClassType Class = BuildingInspectorClassType.ClassNone,
-        ComponentCompletionState CompletionState = ComponentCompletionState.NotStarted
-    );
-
-    [Flags]
-    public enum ApplicationStatus
-    {
-        None = 0,
-        EmailVerified = 1,
-        PhoneVerified = 2,
-        PersonalDetailsComplete = 4,
-        BuildingInspectorClassComplete = 8,
-        CompetencyComplete = 16,
-        ProfessionalActivityComplete = 32,
-        ApplicationSubmissionComplete = 64,
-        PaymentInProgress = 128,
-        PaymentComplete = 256,
-    }
-    public record Submit();
-
 
 }

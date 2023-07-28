@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { LocalStorage } from 'src/app/helpers/local-storage';
-import { AddressModel } from './address.service';
+import { BuildingProfessionalModel } from '../models/building-professional.model';
+import { ApplicationStatus } from '../models/application-status.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -122,7 +123,7 @@ export class ApplicationService {
             EmailAddress: string;
             PhoneNumber: string;
           }>(
-            `api/ValidateApplicationNumberPhone/${PhoneNumber!}/${ApplicationNumber}`
+            `api/ValidateApplicationNumberPhone/${PhoneNumber!}/${ApplicationNumber.toUpperCase()}`
           )
         );
       } else if ((ValidationOption === 'phone-option')) {
@@ -133,7 +134,7 @@ export class ApplicationService {
             EmailAddress: string;
             PhoneNumber: string;
           }>(
-            `api/ValidateApplicationNumberEmail/${EmailAddress!.toLowerCase()}/${ApplicationNumber}`
+            `api/ValidateApplicationNumberEmail/${EmailAddress!.toLowerCase()}/${ApplicationNumber.toUpperCase()}`
           )
         );
       } else {
@@ -177,226 +178,4 @@ export class ApplicationService {
       this.httpClient.post(`api/SyncPersonalDetails`, this.model)
     );
   }
-}
-
-export enum ComponentCompletionState {
-  NotStarted = 0,
-  InProgress = 1,
-  Complete = 2,
-}
-
-export enum StageCompletionState {
-  Incomplete = 0,
-  Complete = 1,
-}
-
-export interface IComponentModel {
-  CompletionState?: ComponentCompletionState;
-}
-
-export class StringModel implements IComponentModel {
-  stringValue?: string;
-  CompletionState?: ComponentCompletionState;
-}
-
-export class NumberModel implements IComponentModel {
-  numberValue?: number;
-  CompletionState?: ComponentCompletionState;
-}
-
-export class BuildingProfessionalModel implements IComponentModel {
-  id?: string;
-  PersonalDetails?: PersonalDetails = {};
-  InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
-  ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
-
-  //TODO test StageStatus and replace ApplicationStatus
-  StageStatus: Record<string, StageCompletionState> = {
-    EmailVerification: StageCompletionState.Incomplete,
-    PhoneVerification: StageCompletionState.Incomplete,
-    PersonalDetails: StageCompletionState.Incomplete,
-    BuildingInspectorClass: StageCompletionState.Incomplete,
-    Competency: StageCompletionState.Incomplete,
-    ProfessionalActivity: StageCompletionState.Incomplete,
-    Declaration: StageCompletionState.Incomplete,
-    Payment: StageCompletionState.Incomplete,
-  };
-
-  ReturningApplication: boolean = false;
-  get CompletionState(): ComponentCompletionState {
-    return this!.ApplicationStatus! ==
-      ApplicationStatus.ApplicationSubmissionComplete
-      ? ComponentCompletionState.Complete
-      : ComponentCompletionState.InProgress;
-  }
-}
-
-export class PersonalDetails {
-  ApplicantName?: ApplicantName = {};
-  ApplicantDateOfBirth?: ApplicantDateOfBirth = {};
-  ApplicantAddress?: AddressModel;
-  ApplicantPhone?: ApplicantPhone;
-  ApplicantAlternativePhone?: ApplicantPhone;
-  ApplicantEmail?: ApplicantEmail;
-  ApplicantAlternativeEmail?: ApplicantEmail;
-  ApplicantNationalInsuranceNumber?: ApplicantNationalInsuranceNumber;
-}
-
-export class ApplicantPhone implements IComponentModel {
-  PhoneNumber?: string;
-  CompletionState?: ComponentCompletionState;
-}
-
-export class ApplicantEmail implements IComponentModel {
-  Email?: string;
-  CompletionState?: ComponentCompletionState;
-}
-
-export class ApplicantNationalInsuranceNumber implements IComponentModel {
-  NationalInsuranceNumber?: string;
-  CompletionState?: ComponentCompletionState;
-}
-
-export class ApplicantName implements IComponentModel {
-  FirstName?: string;
-  LastName?: string;
-  CompletionState?: ComponentCompletionState;
-}
-
-export class ApplicantDateOfBirth implements IComponentModel {
-  Day?: string;
-  Month?: string;
-  Year?: string;
-  CompletionState?: ComponentCompletionState;
-}
-
-export enum ApplicationStatus {
-  None = 0,
-  EmailVerified = 1,
-  PhoneVerified = 2,
-  PersonalDetailsComplete = 4,
-  BuildingInspectorClassComplete = 8,
-  CompetencyComplete = 16,
-  ProfessionalActivityComplete = 23,
-  ApplicationSubmissionComplete = 64,
-  PaymentInProgress = 128,
-  PaymentComplete = 256,
-}
-
-export class PaymentModel {
-  CreatedDate?: string;
-  Status?: string;
-  Finished?: boolean;
-  PaymentLink!: string;
-  Amount?: number;
-  Email?: string;
-  Reference?: string;
-  Description?: string;
-  ReturnURL?: string;
-  PaymentId?: string;
-  PaymentProvider?: string;
-  ProviderId?: string;
-  ReconciliationStatus?: number;
-}
-
-export enum PaymentStatus {
-  Started,
-  Pending,
-  Success,
-  Failed,
-}
-
-export class BuildingInspectorClass {
-  ClassType: ClassSelection = {
-    Class: BuildingInspectorClassType.ClassNone,
-    CompletionState: ComponentCompletionState.NotStarted,
-  };
-  Activities: BuildingInspectorRegulatedActivies = {
-    AssessingPlans: false,
-    Inspection: false,
-    CompletionState: ComponentCompletionState.NotStarted,
-  };
-  BuildingAssessingPlansCategoriesClass2: BuildingAssessingPlansCategoriesClass2 = new BuildingAssessingPlansCategoriesClass2();
-  BuildingAssessingPlansCategoriesClass3: BuildingAssessingPlansCategoriesClass3 = new BuildingAssessingPlansCategoriesClass3();
-  ClassTechnicalManager?: string;
-  InspectorCountryOfWork?: BuildingInspectorCountryOfWork = { England: false, Wales: false };
-  Class2InspectBuildingCategories: Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
-  Class3InspectBuildingCategories: Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
-}
-
-export class ClassSelection implements IComponentModel {
-  Class?: BuildingInspectorClassType;
-  CompletionState?: ComponentCompletionState;
-}
-
-export enum BuildingInspectorClassType {
-  ClassNone = 0,
-  Class1 = 1,
-  Class2 = 2,
-  Class3 = 3,
-}
-
-export class BuildingInspectorRegulatedActivies {
-  [key: string]: any;
-  AssessingPlans: boolean = false;
-  Inspection: boolean = false;
-  CompletionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
-}
-export class BuildingAssessingPlansCategoriesClass2 {
-  [key: string]: any;
-  CategoryA?: boolean = false;
-  CategoryB?: boolean = false;
-  CategoryC?: boolean = false;
-  CategoryD?: boolean = false;
-  CategoryE?: boolean = false;
-  CategoryF?: boolean = false;
-  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
-}
-
-export class BuildingAssessingPlansCategoriesClass3 {
-  [key: string]: any;
-  CategoryA?: boolean = false;
-  CategoryB?: boolean = false;
-  CategoryC?: boolean = false;
-  CategoryD?: boolean = false;
-  CategoryE?: boolean = false;
-  CategoryF?: boolean = false;
-  CategoryG?: boolean = false;
-  CategoryH?: boolean = false;
-  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
-}
-
-export class Class2InspectBuildingCategories {
-  [key: string]: any;
-  CategoryA: boolean = false;
-  CategoryB: boolean = false;
-  CategoryC: boolean = false;
-  CategoryD: boolean = false;
-  CategoryE: boolean = false;
-  CategoryF: boolean = false;
-  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
-}
-
-
-export class Class3InspectBuildingCategories {
-  [key: string]: any;
-  CategoryA: boolean = false;
-  CategoryB: boolean = false;
-  CategoryC: boolean = false;
-  CategoryD: boolean = false;
-  CategoryE: boolean = false;
-  CategoryF: boolean = false;
-  CategoryG: boolean = false;
-  CategoryH: boolean = false;
-  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
-}
-
-
-
-
-export class BuildingInspectorCountryOfWork {
-  [key: string]: any;
-  England?: boolean;
-  Wales?: boolean;
-  CompletionState?: ComponentCompletionState;
 }

@@ -8,13 +8,7 @@ import {
 } from '@angular/router';
 import { GovukErrorSummaryComponent } from 'hse-angular';
 import {
-  ApplicationService,
-  BuildingProfessionalModel,
-  ApplicationStatus, /* PaymentStatus */
-  IComponentModel,
-  ComponentCompletionState,
-  StageCompletionState,
-  PaymentStatus,
+  ApplicationService
 } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PageComponent } from 'src/app/helpers/page.component';
@@ -58,6 +52,13 @@ import { PersonalDetailRoutes, PersonalDetailRouter } from '../1-personal-detail
 import { PaymentDeclarationComponent } from '../5-application-submission/payment/payment-declaration/payment-declaration.component';
 import { Validators } from '@angular/forms';
 import { PaymentReconciliationStatus } from 'src/app/services/payment.service';
+import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
+import { IComponentModel } from 'src/app/models/component. interface';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { PaymentStatus } from 'src/app/models/payment-status.enum';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { CompetencyAssessmentCertificateNumberComponent } from '../3-competency/assessment-certificate-number/competency-assessment-certificate-number.component';
 
 
 interface ITaskListParent {
@@ -141,6 +142,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   override async onInit(applicationService: ApplicationService): Promise<void> {
     this.model = applicationService.model;
     this.checkingStatus = false;
+    console.log(applicationService.model)
   }
 
   getModelStatus(model?: IComponentModel): TaskStatus {
@@ -193,7 +195,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAlternativeEmail)
     },
     {
-      prompt: "Telephone number", relativeRoute: (): TaskListRoute => {
+      prompt: "Alternative telephone number", relativeRoute: (): TaskListRoute => {
         return { route: PersonalDetailRoutes.ALT_PHONE}
       }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.PersonalDetails?.ApplicantAlternativePhone)
     },
@@ -248,6 +250,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
         prompt: "Assessment organisation", relativeRoute: (): TaskListRoute => {
           return { route: CompetencyAssessmentOrganisationComponent.route}
         }, getStatus: (): TaskStatus => TaskStatus.CannotStart
+      },
+      {
+        prompt: "Assessment certificate number", relativeRoute: (): TaskListRoute => {
+          return { route: CompetencyAssessmentCertificateNumberComponent.route}
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.Competency?.CompetencyAssessmentCertificateNumber)
       },
       {
         prompt: "Date of assessment", relativeRoute: (): TaskListRoute => {

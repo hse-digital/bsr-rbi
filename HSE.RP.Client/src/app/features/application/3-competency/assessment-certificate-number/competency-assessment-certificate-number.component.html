@@ -1,0 +1,33 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="false"
+  (saveAndContinue)="saveAndContinue()"
+  (saveAndComeBack)="saveAndComeBack()"
+  [hideBackButton]="true"
+>
+  <govuk-error-summary
+    *ngIf="hasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="!modelValid"
+      anchorId="competency-assesesment-certificate-number"
+      message="{{ errorMessage }}"
+    />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">
+    Your certificate number
+  </h1>
+
+  <govuk-body>
+    <govuk-input hint="For example, CABE1262IJSBFAHS840"
+      [maxlength]=20
+      [(model)]="certificateNumber"
+      >
+    </govuk-input>
+  </govuk-body>
+</govuk-formpage>

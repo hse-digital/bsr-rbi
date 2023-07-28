@@ -3,13 +3,21 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, StringModel, ComponentCompletionState, BuildingInspectorRegulatedActivies, ClassSelection, BuildingInspectorClassType, BuildingInspectorClass, BuildingAssessingPlansCategoriesClass3, BuildingAssessingPlansCategoriesClass2, Class2InspectBuildingCategories, Class3InspectBuildingCategories } from '../../../../services/application.service';
+import { ApplicationService, } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
 import { application } from 'express';
 import { BuildingInspectorRegulatedActivitiesComponent } from '../regulated-activities/building-inspector-regulated-activities.component';
 import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
+import { ClassSelection } from 'src/app/models/class-selection.model';
+import { BuildingInspectorClassType } from 'src/app/models/building-inspector-classtype.enum';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { BuildingAssessingPlansCategoriesClass3 } from 'src/app/models/buidling-assessing-plans-categories-class3.model';
+import { BuildingAssessingPlansCategoriesClass2 } from 'src/app/models/building-assessing-plans-categories-class2.model';
+import { Class2InspectBuildingCategories } from 'src/app/models/class2-inspect-building-categories.model';
+import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-building-categories.model';
+import { BuildingInspectorCountryOfWork } from 'src/app/models/building-inspector-country-of-work.model';
 
 @Component({
   selector: 'hse-building-inspector-class-selection',
@@ -31,6 +39,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   selectedOptionError: boolean = false;
   errorMessage: string = "";
   override model?: ClassSelection;
+  originalOption?: BuildingInspectorClassType = this.applicationService.model.InspectorClass?.ClassType.Class;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
@@ -48,34 +57,32 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    if (this.selectedOption === BuildingInspectorClassType.Class1) {      
-      this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
+    // reset state if the user changes their input
+    if (this.selectedOption !== this.originalOption) {
+      this.applicationService.model.InspectorClass!.ClassType = { 
+        Class: this.selectedOption,
+        CompletionState: ComponentCompletionState.Complete
+      };
+
       // reset all other info to false
       this.applicationService.model.InspectorClass!.Activities = {
         AssessingPlans: false,
         Inspection: false,
         CompletionState: ComponentCompletionState.NotStarted,
       };
-      this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass3 = new BuildingAssessingPlansCategoriesClass3();
-      this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass2 = new BuildingAssessingPlansCategoriesClass2();
+
+      this.applicationService.model.InspectorClass!.AssessingPlansClass2 = new BuildingAssessingPlansCategoriesClass2();
+      this.applicationService.model.InspectorClass!.AssessingPlansClass3 = new BuildingAssessingPlansCategoriesClass3();
       this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
       this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
-      this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
-    }
-    else {
-      if (this.selectedOption === BuildingInspectorClassType.Class2) {
-        this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass3 = new BuildingAssessingPlansCategoriesClass3();
-        this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
-        this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
+
+      //cannot be class 4 if you select class 1
+      if (this.selectedOption === BuildingInspectorClassType.Class1) {
+        this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"      
       }
-      if (this.selectedOption === BuildingInspectorClassType.Class3) {
-        this.applicationService.model.InspectorClass!.BuildingAssessingPlansCategoriesClass2 = new BuildingAssessingPlansCategoriesClass2();
-        this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
-        this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"
-      }
-      this.applicationService.model.InspectorClass!.ClassType = { Class: this.selectedOption, CompletionState: ComponentCompletionState.Complete };
     }
   }
+  
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     // if (this.applicationService.model.ApplicationStatus === ApplicationStatus.PersonalDetailsComplete) {

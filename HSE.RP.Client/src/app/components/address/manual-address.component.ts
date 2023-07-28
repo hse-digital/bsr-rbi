@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
-import { ApplicationService, ComponentCompletionState } from 'src/app/services/application.service';
-import { AddressModel } from 'src/app/services/address.service';
+import { ApplicationService } from 'src/app/services/application.service';
 import { AddressSearchMode } from './address.component';
 import { GovukErrorSummaryComponent } from 'hse-angular';
 import { TitleService } from 'src/app/services/title.service';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { AddressModel } from 'src/app/models/address.model';
 
 @Component({
   selector: 'manual-address',
@@ -32,6 +33,7 @@ export class ManualAddressComponent {
 
   confirmAddress() {
     if (this.isModelValid()) {
+      this.model.IsManual = true;
       this.onAddressEntered.emit(this.model);
     } else {
       this.summaryError?.first?.focus();

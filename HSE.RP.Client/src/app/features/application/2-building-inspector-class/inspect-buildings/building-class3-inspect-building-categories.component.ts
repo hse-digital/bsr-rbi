@@ -2,17 +2,14 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { PageComponent } from 'src/app/helpers/page.component';
 import {
-  ApplicationService,
-  BuildingAssessingPlansCategoriesClass2,
-  BuildingInspectorClass,
-  BuildingInspectorClassType,
-  Class3InspectBuildingCategories,
-  ClassSelection,
-  ComponentCompletionState,
+  ApplicationService
 } from 'src/app/services/application.service';
 import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 import { environment } from 'src/environments/environment';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
+import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-building-categories.model';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
 
 @Component({
   selector: 'hse-building-class3-inspect-building-categories',
@@ -95,7 +92,7 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
-      BuildingInspectorSummaryComponent.route,
+      BuildingClassTechnicalManagerComponent.route,
       this.activatedRoute
     );
   }

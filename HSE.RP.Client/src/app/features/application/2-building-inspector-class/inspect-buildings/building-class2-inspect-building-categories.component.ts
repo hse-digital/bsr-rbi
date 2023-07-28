@@ -1,26 +1,21 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { PageComponent } from 'src/app/helpers/page.component';
-import {
-  ApplicationService,
-  BuildingAssessingPlansCategoriesClass2,
-  BuildingInspectorClass,
-  BuildingInspectorClassType,
-  Class2InspectBuildingCategories,
-  Class3InspectBuildingCategories,
-  ClassSelection,
-  ComponentCompletionState,
-} from 'src/app/services/application.service';
+import { ApplicationService } from 'src/app/services/application.service';
 import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 import { environment } from 'src/environments/environment';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
+import { Class2InspectBuildingCategories } from 'src/app/models/class2-inspect-building-categories.model';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
 
 @Component({
   selector: 'hse-building-class2-inspect-building-categories',
   templateUrl: './building-class2-inspect-building-categories.component.html',
 })
 export class Class2InspectBuildingCategoriesComponent extends PageComponent<Class2InspectBuildingCategories> {
-  public static route: string = BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES;
+  public static route: string =
+    BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES;
   public id: string = BuildingInspectorSummaryComponent.route;
   static title =
     'Building inspector class - Register as a building inspector - GOV.UK';
@@ -43,7 +38,8 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
 
-    this.model = applicationService.model.InspectorClass?.Class2InspectBuildingCategories;
+    this.model =
+      applicationService.model.InspectorClass?.Class2InspectBuildingCategories;
 
     const demandModel = this.DemandModel();
     const categoryKeys = [
@@ -92,7 +88,7 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
-      BuildingInspectorSummaryComponent.route,
+      BuildingClassTechnicalManagerComponent.route,
       this.activatedRoute
     );
   }

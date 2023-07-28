@@ -1,9 +1,11 @@
 import { Component, Output, EventEmitter, Input, ViewChildren, QueryList } from '@angular/core';
 import { ApplicationService } from 'src/app/services/application.service';
-import { AddressResponseModel, AddressService } from 'src/app/services/address.service';
+import { AddressService } from 'src/app/services/address.service';
 import { AddressSearchMode } from './address.component';
 import { GovukErrorSummaryComponent } from 'hse-angular';
 import { TitleService } from 'src/app/services/title.service';
+import { AddressResponseModel } from 'src/app/models/address-response.model';
+import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 
 @Component({
   selector: 'find-address',
@@ -12,9 +14,10 @@ import { TitleService } from 'src/app/services/title.service';
 export class FindAddressComponent {
 
   @Input() searchMode: AddressSearchMode = AddressSearchMode.HomeAddress;
-  @Input() searchModel!: { postcode?: string };
+  @Input() searchModel!: { postcode?: string, addressLineOne?: string };
   @Input() addressName!: string;
   @Input() selfAddress = false;
+  @Input() showOptionalAddressLineOne = false;
   @Output() public onSearchPerformed = new EventEmitter<AddressResponseModel>();
 
   postcodeHasErrors: boolean = false;
@@ -31,11 +34,22 @@ export class FindAddressComponent {
       this.loading = true;
       let addressResponse = await this.searchAddress();
 
+      if(FieldValidations.IsNotNullOrWhitespace(this.searchModel.addressLineOne)){
+        addressResponse.Results = this.filterAddresses(addressResponse);
+      }
+
+      for (let address of addressResponse.Results) {
+        address.IsManual = false;
+      }
       this.onSearchPerformed.emit(addressResponse);
     } else {
       this.summaryError?.first?.focus();
       this.titleService.setTitleError();
     }
+  }
+
+  filterAddresses(addresses: AddressResponseModel) {
+    return addresses.Results.filter(x => !!x.Address && x.Address?.toLowerCase().indexOf(this.searchModel.addressLineOne!.toLowerCase()) > -1);
   }
 
   isPostcodeValid(): boolean {
@@ -64,5 +78,5 @@ export class FindAddressComponent {
     return "Your home address will not be published";
   }
 
- 
+
 }

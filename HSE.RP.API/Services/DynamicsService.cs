@@ -89,7 +89,7 @@ namespace HSE.RP.API.Services
         private async Task<BuildingProfessionApplicationModel> CreateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel, Contact contact)
         {
             var modelDefinition = dynamicsModelDefinitionFactory.GetDefinitionFor<BuildingProfessionApplication, DynamicsBuildingProfessionApplication>();
-            var buildingProfessionApplication = new BuildingProfessionApplication(contact.Id, BuildingProfessionTypeCode: BuildingProfessionType.BuildingInspector);
+            var buildingProfessionApplication = new BuildingProfessionApplication(ContactId: contact.Id, BuildingProfessionTypeCode: BuildingProfessionType.BuildingInspector);
             var dynamicsBuildingProfessionApplication = modelDefinition.BuildDynamicsEntity(buildingProfessionApplication);
             var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsBuildingProfessionApplication);
             var buildingProfessionalApplicationId = ExtractEntityIdFromHeader(response.Headers);
@@ -147,13 +147,23 @@ namespace HSE.RP.API.Services
 
         public async Task<DynamicsBuildingProfessionApplication> GetBuildingProfessionApplicationUsingId(string applicationId)
         {
-            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
+            try
             {
-            ("$filter", $"bsr_buildingproappid eq '{applicationId}'"),
-            ("$expand", "bsr_applicantid_contact")
-            });
+                var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
+                {
+                ("$filter", $"bsr_buildingproappid eq '{applicationId}'"),
+                ("$expand", "bsr_applicantid_contact")
+                });
+                return response.value.FirstOrDefault();
 
-            return response.value.FirstOrDefault();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+
         }
 
         public async Task<DynamicsContact> GetContactUsingId(string contactId)

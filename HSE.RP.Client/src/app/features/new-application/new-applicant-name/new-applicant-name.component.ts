@@ -3,8 +3,13 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { PageComponent } from '../../../helpers/page.component';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicantName, ApplicationService, BuildingProfessionalModel, ComponentCompletionState, StageCompletionState} from '../../../services/application.service';
+import { ApplicationService} from '../../../services/application.service';
 import { ApplicantEmailComponent } from '../applicant-email/applicant-email.component';
+import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
+import { ApplicantName } from 'src/app/models/applicant-name.model';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { app } from '../../../../../server';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -35,6 +40,7 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
       applicationService.model.PersonalDetails!.ApplicantName = new ApplicantName();
       applicationService.model.PersonalDetails!.ApplicantName.FirstName= '';
       applicationService.model.PersonalDetails!.ApplicantName.LastName= '';
+      applicationService.model.PersonalDetails!.ApplicantName.CompletionState = ComponentCompletionState.InProgress;
     }
     if(applicationService.model.StageStatus == null)
     {
@@ -53,13 +59,11 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
 
   }
 
-  override DerivedIsComplete(value: boolean) {
-    this.applicationService.model.PersonalDetails!.ApplicantName!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
-  }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     applicationService.model.PersonalDetails!.ApplicantName!.FirstName = this.model.PersonalDetails!.ApplicantName!.FirstName;
     applicationService.model.PersonalDetails!.ApplicantName!.LastName = this.model.PersonalDetails!.ApplicantName!.LastName;
+    applicationService.model.PersonalDetails!.ApplicantName!.CompletionState = ComponentCompletionState.Complete;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -80,8 +84,9 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
     return this.FirstNameValid && this.LastNameValid;
   }
 
-  override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ApplicantEmailComponent.route, this.activatedRoute);
+  override async  navigateNext(): Promise<boolean> {
+    var couldNavigate = await this.navigationService.navigateRelative(ApplicantEmailComponent.route, this.activatedRoute);
+    return couldNavigate;
   }
 }
 

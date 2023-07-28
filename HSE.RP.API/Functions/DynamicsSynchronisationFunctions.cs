@@ -106,6 +106,9 @@ public class DynamicsSynchronisationFunctions
         var buildingProfessionApplicationModel = orchestrationContext.GetInput<BuildingProfessionApplicationModel>();
 
         var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
+
+        Console.WriteLine(dynamicsBuildingProfessionApplication.bsr_applicantid);
+
         if (dynamicsBuildingProfessionApplication != null)
         {
             var dynamicsContact = await orchestrationContext.CallActivityAsync<DynamicsContact>(nameof(GetContactUsingId), dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid);
@@ -118,14 +121,15 @@ public class DynamicsSynchronisationFunctions
                     FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName ?? "",
                     LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName ?? "",
                     Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email ?? "",
-                    AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email ?? "",
-                    PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? "",
-                    AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
-                    Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress ?? new BuildingAddress { },
-                    birthdate = new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year ?? "1990"),
-                                             int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month ?? "01"),
-                                             int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day ?? "01")),
-                    NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber ?? "",
+                    AlternativeEmail =  buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
+                    PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? null,
+                    AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
+                    Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null  ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
+                    birthdate = buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth is null ? null :
+                    new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
+                                             int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),
+                                             int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day)),
+                    NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber
                 };
 
                 var contactWrapper = new ContactWrapper(contact, dynamicsContact);
@@ -178,10 +182,13 @@ public class DynamicsSynchronisationFunctions
             address1_postalcode = contactWrapper.Model.Address.Postcode,
             bsr_address1uprn = contactWrapper.Model.Address.UPRN,
             bsr_address1usrn = contactWrapper.Model.Address.USRN,
-            bsr_address1lacode = "", //TODO update after address lookup merge
-            bsr_address1ladescription = "", //TODO update after address lookup merge
+            bsr_address1lacode = contactWrapper.Model.Address.CustodianCode , 
+            bsr_address1ladescription = contactWrapper.Model.Address.CustodianDescription,
+            bsr_manualaddress = contactWrapper.Model.Address.IsManual is null ? null :
+                                contactWrapper.Model.Address.IsManual is true ? YesNoOption.Yes :
+                                YesNoOption.No,
             birthdate = contactWrapper.Model.birthdate,
-            bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber,
+            bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber
         });
     }
 

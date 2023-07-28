@@ -6,10 +6,12 @@
   (saveAndContinue)="saveAndContinue()"
   [hideBackButton]="true"
 >
-  <span class="govuk-caption-l" style="color: gray">
-    Class 2 building inspector
-  </span>
-  <h1 class="govuk-heading-l">Which countries will you work in?</h1>
+  <h1 class="govuk-heading-l">
+    <span class="govuk-caption-l">
+      Class {{applicationService.model.InspectorClass?.ClassType!.Class}} building inspector
+    </span>
+    Which countries will you work in?
+  </h1>
 
   <govuk-body>
     <govuk-checkbox-group

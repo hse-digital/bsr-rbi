@@ -3,14 +3,15 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { PageComponent } from 'src/app/helpers/page.component';
 import {
   ApplicationService,
-  BuildingAssessingPlansCategoriesClass2,
-  BuildingInspectorClass,
-  BuildingInspectorClassType,
-  ComponentCompletionState,
+
 } from 'src/app/services/application.service';
 import { BuildingInspectorRouter, BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 import { environment } from 'src/environments/environment';
 import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
+import { BuildingAssessingPlansCategoriesClass2 } from 'src/app/models/building-assessing-plans-categories-class2.model';
+import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
+import { BuildingInspectorClassType } from 'src/app/models/building-inspector-classtype.enum';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-building-assessing-plans-categories',
@@ -43,14 +44,14 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
       applicationService.model.InspectorClass = new BuildingInspectorClass();
     }
 
-    if (!applicationService.model.InspectorClass.BuildingAssessingPlansCategoriesClass2) {
-      applicationService.model.InspectorClass.BuildingAssessingPlansCategoriesClass2 =
+    if (!applicationService.model.InspectorClass.AssessingPlansClass2) {
+      applicationService.model.InspectorClass.AssessingPlansClass2 =
         new BuildingAssessingPlansCategoriesClass2();
     }
 
     applicationService.model.InspectorClass!.ClassType.Class =
       BuildingInspectorClassType.Class2;
-    this.model = applicationService.model.InspectorClass?.BuildingAssessingPlansCategoriesClass2;
+    this.model = applicationService.model.InspectorClass?.AssessingPlansClass2;
 
     const demandModel = this.DemandModel();
     const categoryKeys = [

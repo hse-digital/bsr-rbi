@@ -6,18 +6,26 @@ import { NotFoundComponent } from '../../../components/not-found/not-found.compo
 import { PageComponent } from '../../../helpers/page.component';
 import { EmailValidator } from '../../../helpers/validators/email-validator';
 import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
-import { ApplicationService, ApplicationStatus, StageCompletionState } from '../../../services/application.service';
+import { ApplicationService} from '../../../services/application.service';
 import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
+import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { ComponentCompletionState } from "src/app/models/component-completion-state.enum";
+import { IComponentModel } from "src/app/models/component. interface";
+
+export class NumberComponent implements IComponentModel {
+  Number: string = '';
+  Email : string = '';
+  CompletionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
+}
+
+
 
 @Component({
   selector: 'hse-applicant-email-verify',
   templateUrl: './applicant-email-verify.component.html',
 })
-export class ApplicantEmailVerifyComponent extends PageComponent<number> {
-
-  DerivedIsComplete(value: boolean): void {
-
-  }
+export class ApplicantEmailVerifyComponent extends PageComponent<NumberComponent> {
 
   public static route: string = 'applicant-email-verify';
   static title: string =
@@ -25,7 +33,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   production: boolean = environment.production;
   modelValid: boolean = false;
 
-  override model!: number;
+  override model!: NumberComponent;
   otpToken = '';
   otpError = false;
   isOtpNotNumber = false;
@@ -45,7 +53,9 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.model = new NumberComponent();
     this.email = applicationService.model.PersonalDetails?.ApplicantEmail?.Email;
+    this.model.Email = this.email ?? '';
   }
 
   override canAccess(
@@ -74,14 +84,14 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
     this.isOtpEmpty = false;
     this.hasErrors = false;
 
-    var otp = this.model?.toString() ?? '';
+    var otp = this.model?.Number ?? '';
     this.isOtpEmpty = otp.length == 0;
     this.isOtpInvalidLength = otp.trim().length < 6 || otp.trim().length > 6;
-    this.isOtpNotNumber = isNaN(this.model);
+    this.isOtpNotNumber = isNaN(parseInt( this.model!.Number ));
     if (!(this.isOtpNotNumber || this.isOtpInvalidLength || this.isOtpEmpty)) {
         try {
           await this.applicationService.validateOTPToken(
-            this.model?.toString() ?? '',
+            this.model!.Number.toString() ?? '',
             this.email ?? ''
           );
         } catch (error) {
@@ -90,7 +100,8 @@ export class ApplicantEmailVerifyComponent extends PageComponent<number> {
           this.focusAndUpdateErrors();
           throw error;
         }
-        this.applicationService.model.ApplicationStatus = ApplicationStatus.EmailVerified;
+
+      this.applicationService.model.ApplicationStatus = ApplicationStatus.EmailVerified;
         this.applicationService.model.StageStatus['EmailVerification'] = StageCompletionState.Complete;
         // try {
         //   await this.applicationService.registerNewBuildingProfessionApplication();
