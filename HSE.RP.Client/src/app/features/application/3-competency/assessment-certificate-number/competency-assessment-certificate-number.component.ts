@@ -38,15 +38,16 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-    console.log(applicationService.model.Competency)
-    if (applicationService.model.Competency?.CompetencyAssesesmentOrganisation === "yes") { this.organisationPrefix = "BSCF" }
-    if (applicationService.model.Competency?.CompetencyAssesesmentOrganisation === "no") { this.organisationPrefix = "CABE" }
+    
+    this.organisationPrefix = applicationService.model.Competency!.CompetencyAssesesmentOrganisation!;
+    applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.InProgress;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     this.model = applicationService.model.Competency?.CompetencyAssessmentCertificateNumber
-
-    applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.Complete;
+    if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
+      applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.Complete;
+    }
   }
 
   override canAccess(
@@ -65,8 +66,6 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
 
     // 3-4 character prefix (CABE or BSCF) with a 20 character max string so CABE1262IJSBFAHS840.
     let prefix = this.certificateNumber.slice(0, 4);
-
-    console.log(`checking ${prefix} === ${this.organisationPrefix}`)
 
     if (prefix !== this.organisationPrefix) {
       this.errorMessage = "You must enter an assessment certificate number in the correct format";

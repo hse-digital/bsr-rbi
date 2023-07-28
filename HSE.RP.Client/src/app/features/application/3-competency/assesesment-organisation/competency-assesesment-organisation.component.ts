@@ -25,7 +25,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
   photoHasErrors = false;
   override model?: string;
   errorMessage: string = '';
-  selectedOption: string = 'no';
+  selectedOption: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -39,7 +39,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
     this.model =
       applicationService.model.Competency?.CompetencyAssesesmentOrganisation;
 
-    this.selectedOption = this.model ? this.model : 'no';
+    this.selectedOption = this.model ? this.model : 'CABE';
 
     this.applicationService = applicationService;
   }
@@ -48,7 +48,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
     this.applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
       this.model;
 
-    if (['no', 'yes'].includes(this.selectedOption)) {
+    if (['CABE', 'BSCF'].includes(this.selectedOption)) {
       applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
         this.selectedOption;
     }
