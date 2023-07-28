@@ -11,6 +11,7 @@ import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRou
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ApplicantPhone } from '../../../../models/applicant-phone-model';
+import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 
 @Component({
   selector: 'hse-applicant-alternative-phone',
@@ -40,10 +41,10 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<ApplicantP
     }
     this.model = applicationService.model.PersonalDetails?.ApplicantAlternativePhone;
 
-    if (this.model === "") {
+    if ( this.model?.PhoneNumber === "") {
       this.selectedOption = "no";
     }
-    else if (this.model) {
+    else if (this.model?.PhoneNumber) {
       this.selectedOption = "yes";
     }
   }
@@ -64,22 +65,34 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<ApplicantP
     if (this.selectedOption === "") {
       this.selectedOptionError = true;
       this.errorMessage = "Select yes if you want to provide an alternative telephone number";
-      console.log("no option selected")
       return false;
-    } else if (this.selectedOption === "no") {
+    }
+    if (this.selectedOption === "no") {
       if (this.model) {
         this.model.PhoneNumber = "";
       }
       this.modelValid = true;
       return this.modelValid;
-    } else {
-      this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(
-        this.model?.PhoneNumber ?? ''
-      );
-      this.modelValid = false;
-      this.errorMessage = "Enter a UK telephone number"
-      return !this.phoneNumberHasErrors;
+    } 
+    this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(
+      this.model?.PhoneNumber ?? ''
+    );
+    this.modelValid = !this.phoneNumberHasErrors;
+    if (this.phoneNumberHasErrors) {
+      if (this.isNullOrWhitespace(this.model?.PhoneNumber)) {
+        this.errorMessage = "Enter your alternative telephone number";
+      }
+      else
+      {
+        this.errorMessage = "Enter a UK telephone number";
+      }
     }
+
+    return !this.phoneNumberHasErrors;
+  }
+
+  isNullOrWhitespace(input: string | null | undefined): boolean {
+    return !input || input.trim().length === 0;
   }
 
   override navigateNext(): Promise<boolean> {
