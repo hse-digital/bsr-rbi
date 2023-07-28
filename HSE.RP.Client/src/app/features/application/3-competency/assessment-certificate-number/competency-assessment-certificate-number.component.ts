@@ -10,6 +10,7 @@ import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { error } from 'console';
 import { CompetenceyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
+import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 
 @Component({
   selector: 'hse-competency-assesesment-certificate-number',
@@ -58,7 +59,8 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
   }
 
   override isValid(): boolean {
-    if (this.model?.CertificateNumber === '') { 
+    if (!FieldValidations.IsNotNullOrWhitespace(this.certificateNumber))
+    {
       this.errorMessage = "Enter your assessment certificate number";
       this.hasErrors = true;
       return false;
@@ -74,6 +76,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
       return false;
     }
 
+    this.hasErrors = false;
     return true;
   }
 
