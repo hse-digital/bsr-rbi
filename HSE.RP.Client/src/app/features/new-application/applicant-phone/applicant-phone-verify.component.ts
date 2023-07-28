@@ -11,7 +11,6 @@ import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.comp
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { ComponentCompletionState } from "src/app/models/component-completion-state.enum";
 import { IComponentModel } from "src/app/models/component. interface";
-
 export class NumberComponent implements IComponentModel {
   Number: string = '';
   PhoneNumber: string = '';
@@ -25,8 +24,6 @@ export class NumberComponent implements IComponentModel {
   templateUrl: './applicant-phone-verify.component.html',
 })
 export class ApplicantPhoneVerifyComponent extends PageComponent<NumberComponent> {
-  DerivedIsComplete(value: boolean): void {
-  }
   public static route: string = 'applicant-phone-verify';
   static title: string =
     'Verify phone number - Register as a building inspector - GOV.UK';
@@ -95,10 +92,11 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<NumberComponent
             this.model?.Number ?? '',
             this.PhoneNumber ?? ''
           );
-        } catch (error) {
+        } catch (error: any) {
+
           this.otpError = true;
           this.hasErrors = true;
-          this.processing=false;
+          this.processing = false;
           this.focusAndUpdateErrors();
           throw error;
         }
@@ -128,13 +126,14 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<NumberComponent
     return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
   }
 
-  getOtpError() {
+  getOtpError() : string {
     if (!this.isOtpEmpty && this.isOtpNotNumber) {
       return 'Your 6-digit security code must be a number, like 123456';
     } else if (this.isOtpInvalidLength) {
       return 'You must enter your 6 digit security code';
     } else if (this.otpError) {
-      return 'Enter the correct security code';
+      const route = "/new-application/applicant-phone";
+      return `Your 6-digit verification code is incorrect or has expired. Request a new verification code by clicking the "resend the security code" link on this page.`;
     } else {
       return 'You must enter your 6 digit security code';
     }
