@@ -5,6 +5,7 @@ import { AddressSearchMode } from './address.component';
 import { GovukErrorSummaryComponent } from 'hse-angular';
 import { TitleService } from 'src/app/services/title.service';
 import { AddressResponseModel } from 'src/app/models/address-response.model';
+import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 
 @Component({
   selector: 'find-address',
@@ -13,9 +14,10 @@ import { AddressResponseModel } from 'src/app/models/address-response.model';
 export class FindAddressComponent {
 
   @Input() searchMode: AddressSearchMode = AddressSearchMode.HomeAddress;
-  @Input() searchModel!: { postcode?: string };
+  @Input() searchModel!: { postcode?: string, addressLineOne?: string };
   @Input() addressName!: string;
   @Input() selfAddress = false;
+  @Input() showOptionalAddressLineOne = false;
   @Output() public onSearchPerformed = new EventEmitter<AddressResponseModel>();
 
   postcodeHasErrors: boolean = false;
@@ -31,6 +33,11 @@ export class FindAddressComponent {
     if (this.isPostcodeValid()) {
       this.loading = true;
       let addressResponse = await this.searchAddress();
+
+      if(FieldValidations.IsNotNullOrWhitespace(this.searchModel.addressLineOne)){
+        addressResponse.Results = this.filterAddresses(addressResponse);
+      }
+
       for (let address of addressResponse.Results) {
         address.IsManual = false;
       }
@@ -39,6 +46,10 @@ export class FindAddressComponent {
       this.summaryError?.first?.focus();
       this.titleService.setTitleError();
     }
+  }
+
+  filterAddresses(addresses: AddressResponseModel) {
+    return addresses.Results.filter(x => !!x.Address && x.Address?.toLowerCase().indexOf(this.searchModel.addressLineOne!.toLowerCase()) > -1);
   }
 
   isPostcodeValid(): boolean {
