@@ -10,11 +10,36 @@ import { ApplicationTaskListComponent } from '../../task-list/task-list.componen
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { IComponentModel } from '../../../../models/component. interface';
+import { ApplicantDateOfBirth } from '../../../../models/applicant-date-of-birth.model';
 
-class DateInputControlDate {
-  day?: string;
-  month?: string;
-  year?: string;
+class DateInputControlDate implements IComponentModel {
+  constructor(private containedModel: ApplicantDateOfBirth) {
+  }
+  get day(): string | undefined {
+    return this.containedModel.Day;
+  }
+  set day(value : string | undefined) {
+    this.containedModel.Day = value;
+  }
+  get month(): string | undefined {
+    return this.containedModel.Month;
+  }
+  set month(value: string | undefined) {
+    this.containedModel.Month = value;
+  }
+  get year(): string | undefined {
+    return this.containedModel.Year;
+  }
+  set year(value: string | undefined) {
+    this.containedModel.Year = value;
+  }
+  get CompletionState(): ComponentCompletionState | undefined {
+    return this.containedModel.CompletionState;
+  }
+  set CompletionState(value: ComponentCompletionState | undefined) {
+    this.containedModel.CompletionState = value;
+  }
 };
 
 type DobValidationItem = {
@@ -47,24 +72,13 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
 
   override onInit(applicationService: ApplicationService): void {
     if (!applicationService.model.PersonalDetails?.ApplicantDateOfBirth) {
-      applicationService.model.PersonalDetails!.ApplicantDateOfBirth = { Day: "", Month: "", Year: "", CompletionState: ComponentCompletionState.InProgress };
+      applicationService.model.PersonalDetails!.ApplicantDateOfBirth = new ApplicantDateOfBirth();
     }
-    this.model = {
-      day: applicationService.model.PersonalDetails!.ApplicantDateOfBirth.Day,
-      month: applicationService.model.PersonalDetails!.ApplicantDateOfBirth.Month,
-      year: applicationService.model.PersonalDetails!.ApplicantDateOfBirth.Year,
-    };
-
-  }
-
-  override DerivedIsComplete(value: boolean) {
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
+    if (applicationService.model.PersonalDetails?.ApplicantDateOfBirth)
+      this.model = new DateInputControlDate(applicationService.model.PersonalDetails?.ApplicantDateOfBirth);
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Day = this.model!.day;
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Month = this.model!.month;
-    this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!.Year = this.model!.year;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {

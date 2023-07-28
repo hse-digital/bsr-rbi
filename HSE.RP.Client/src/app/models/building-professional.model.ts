@@ -12,7 +12,7 @@ export class BuildingProfessionalModel implements IComponentModel {
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   Competency? : Competency = new  Competency();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
-
+  private _completionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
   //TODO test StageStatus and replace ApplicationStatus
   StageStatus: Record<string, StageCompletionState> = {
     EmailVerification: StageCompletionState.Incomplete,
@@ -26,10 +26,16 @@ export class BuildingProfessionalModel implements IComponentModel {
   };
 
   ReturningApplication: boolean = false;
+
   get CompletionState(): ComponentCompletionState {
     return this!.ApplicationStatus! ==
       ApplicationStatus.ApplicationSubmissionComplete
       ? ComponentCompletionState.Complete
       : ComponentCompletionState.InProgress;
+  }
+  set CompletionState(value: ComponentCompletionState) {
+    this._completionState = value;
+
+
   }
 }

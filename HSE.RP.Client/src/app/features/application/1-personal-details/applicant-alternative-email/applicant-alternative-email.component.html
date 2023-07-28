@@ -16,7 +16,7 @@
       *ngIf="selectedOption === 'yes'"
         id="applicant-alternative-email" 
         label="Alternative email address"
-        [(model)]="model" [maxlength]=100
+        [(model)]="model!.Email" [maxlength]=100
         labelClass="govuk-label--s"
         hint="We will use this to contact you about this application."
         [errorText]="getErrorDescription(!modelValid, emailErrorMessage)"

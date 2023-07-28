@@ -34,7 +34,7 @@
   <govuk-body>If you do not have an email address, <a href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm" class="govuk-link" target="_blank">contact us</a> apply to register as a building inspector.</govuk-body>
 
   <govuk-input id="applicant-email" label="Enter your email address"
-               [(model)]="model" [maxlength]=100
+               [(model)]="model!.Email" [maxlength]=100
                labelClass="govuk-label--s"
                [errorText]="getErrorDescription(!modelValid, emailErrorMessage)"
                hintClass="no-margin-top"
