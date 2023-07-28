@@ -36,6 +36,7 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<App
   }
 
   override onInit(applicationService: ApplicationService): void {
+
     if (!applicationService.model.PersonalDetails?.ApplicantNationalInsuranceNumber) {
       applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber = new ApplicantNationalInsuranceNumber();
     }

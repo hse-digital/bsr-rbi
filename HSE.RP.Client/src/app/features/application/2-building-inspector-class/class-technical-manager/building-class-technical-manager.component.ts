@@ -8,13 +8,21 @@ import {
 } from '../BuildingInspectorRoutes';
 import { environment } from 'src/environments/environment';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
+import { IComponentModel } from '../../../../models/component. interface';
+import { ComponentCompletionState } from '../../../../models/component-completion-state.enum';
+
+class YesNoModel implements IComponentModel {
+  YesNo: string = 'no';
+  CompletionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
+}
+
 
 @Component({
   selector: 'hse-building-class-technical-manager',
   templateUrl: './building-class-technical-manager.component.html',
   styles: [],
 })
-export class BuildingClassTechnicalManagerComponent extends PageComponent<string> {
+export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoModel> {
   public static route: string = BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER;
   public id: string = BuildingInspectorSummaryComponent.route;
   static title =
@@ -22,7 +30,6 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<string
   production = environment.production;
   errorMessage: string = '';
   modelValid: boolean = false;
-  selectedOption: string = 'no';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -33,26 +40,20 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<string
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
+    this.model = new YesNoModel();
 
-    this.model = applicationService.model.InspectorClass?.ClassTechnicalManager;
-
-    this.selectedOption = this.model ? this.model : 'no';
 
     this.applicationService = applicationService;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.InspectorClass!.ClassTechnicalManager =
-      this.model;
-
     /**
      * Below block of code condition: "if (['no', 'yes'].includes(this.selectedOption))"
      * is equal to condition: "if (this.selectedOption === 'no' || this.selectedOption === 'yes')""
      **/
 
-    if (['no', 'yes'].includes(this.selectedOption)) {
-      applicationService.model.InspectorClass!.ClassTechnicalManager =
-        this.selectedOption;
+    if (this.model && ['no', 'yes'].includes(this.model?.YesNo)) {
+      applicationService.model.InspectorClass!.ClassTechnicalManager = this.model?.YesNo;
     }
   }
 
@@ -66,7 +67,7 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<string
   override isValid(): boolean {
     this.hasErrors = false;
 
-    if (this.selectedOption === '') {
+    if (this.model!.YesNo === '') {
       this.hasErrors = true;
       this.errorMessage = 'Select one option';
     }
