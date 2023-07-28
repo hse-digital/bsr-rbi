@@ -6,13 +6,13 @@ import { ApplicantNationalInsuranceNumber } from "./applicant-national-insurance
 import { ApplicantPhone } from "./applicant-phone-model";
 
 export class PersonalDetails {
-    ApplicantName?: ApplicantName = {};
-    ApplicantDateOfBirth?: ApplicantDateOfBirth = {};
-    ApplicantAddress?: AddressModel;
-    ApplicantPhone?: ApplicantPhone;
-    ApplicantAlternativePhone?: ApplicantPhone;
-    ApplicantEmail?: ApplicantEmail;
-    ApplicantAlternativeEmail?: ApplicantEmail;
-    ApplicantNationalInsuranceNumber?: ApplicantNationalInsuranceNumber;
+  ApplicantName?: ApplicantName = new ApplicantName();
+  ApplicantDateOfBirth?: ApplicantDateOfBirth = new ApplicantDateOfBirth();
+    ApplicantAddress?: AddressModel; // Don't initialise this as there is a requirement it is null
+    ApplicantPhone?: ApplicantPhone= new ApplicantPhone();
+    ApplicantAlternativePhone?: ApplicantPhone = new ApplicantPhone();
+    ApplicantEmail?: ApplicantEmail = new ApplicantEmail();
+    ApplicantAlternativeEmail?: ApplicantEmail = new ApplicantEmail();
+  ApplicantNationalInsuranceNumber?: ApplicantNationalInsuranceNumber = new ApplicantNationalInsuranceNumber();
   }
 

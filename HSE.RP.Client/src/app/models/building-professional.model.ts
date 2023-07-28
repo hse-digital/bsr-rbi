@@ -8,7 +8,7 @@ import { StageCompletionState } from "./stage-completion-state.enum";
 
 export class BuildingProfessionalModel implements IComponentModel {
   id?: string;
-  PersonalDetails?: PersonalDetails = {};
+  PersonalDetails?: PersonalDetails = new PersonalDetails();
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   Competency? : Competency = new  Competency();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
