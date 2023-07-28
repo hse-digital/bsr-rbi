@@ -13,6 +13,10 @@ import { BuildingInspectorRegulatedActivies } from 'src/app/models/building-insp
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
 import { BuildingInspectorClassType } from 'src/app/models/building-inspector-classtype.enum';
+import { BuildingAssessingPlansCategoriesClass2 } from 'src/app/models/building-assessing-plans-categories-class2.model';
+import { BuildingAssessingPlansCategoriesClass3 } from 'src/app/models/buidling-assessing-plans-categories-class3.model';
+import { Class2InspectBuildingCategories } from 'src/app/models/class2-inspect-building-categories.model';
+import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-building-categories.model';
 
 @Component({
   selector: 'hse-building-inspector-regulated-activities',
@@ -75,6 +79,19 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+    // check if original options have changed, if they have reset state for the relevant next pages
+    if (this.model?.AssessingPlans === true && this.selections.includes("AssessingPlans") === false)
+    {
+      this.applicationService.model.InspectorClass!.AssessingPlansClass2 = new BuildingAssessingPlansCategoriesClass2();
+      this.applicationService.model.InspectorClass!.AssessingPlansClass3 = new BuildingAssessingPlansCategoriesClass3();
+    }
+
+    if (this.model?.Inspection === true && this.selections.includes("Inspection") === false)
+    {
+      this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
+      this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
+    }
+
     this.DemandModel().AssessingPlans = false;
     this.DemandModel().Inspection = false;
     this.selections.forEach((value: any) => {

@@ -9,12 +9,22 @@ import { FieldValidations } from '../../../helpers/validators/fieldvalidations';
 import { ApplicationService} from '../../../services/application.service';
 import { ApplicantPhoneComponent } from '../applicant-phone/applicant-phone.component';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { ComponentCompletionState } from "src/app/models/component-completion-state.enum";
+import { IComponentModel } from "src/app/models/component. interface";
+
+export class NumberComponent implements IComponentModel {
+  Number: string = '';
+  PhoneNumber: string = '';
+  CompletionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
+}
+
+
 
 @Component({
   selector: 'hse-applicant-phone-verify',
   templateUrl: './applicant-phone-verify.component.html',
 })
-export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
+export class ApplicantPhoneVerifyComponent extends PageComponent<NumberComponent> {
   DerivedIsComplete(value: boolean): void {
   }
   public static route: string = 'applicant-phone-verify';
@@ -43,7 +53,9 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.model = new NumberComponent();
     this.PhoneNumber = applicationService.model.PersonalDetails!.ApplicantPhone?.PhoneNumber;
+    this.model.PhoneNumber = this.PhoneNumber ?? '';
   }
 
   override canAccess(
@@ -73,14 +85,14 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<number> {
     this.isOtpEmpty = false;
     this.hasErrors = false;
 
-    var otp = this.model?.toString() ?? '';
+    var otp = this.model?.Number ?? '';
     this.isOtpEmpty = otp.length == 0;
     this.isOtpInvalidLength = otp.trim().length < 6 || otp.trim().length > 6;
-    this.isOtpNotNumber = isNaN(this.model!);
+    this.isOtpNotNumber = isNaN(parseInt(this.model!.Number));
     if (!(this.isOtpNotNumber || this.isOtpInvalidLength || this.isOtpEmpty)) {
         try {
           await this.applicationService.validateOTPToken(
-            this.model?.toString() ?? '',
+            this.model?.Number ?? '',
             this.PhoneNumber ?? ''
           );
         } catch (error) {

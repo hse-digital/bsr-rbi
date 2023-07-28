@@ -1,0 +1,68 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="false"
+  (saveAndContinue)="saveAndContinue()"
+  (saveAndComeBack)="saveAndComeBack()"
+  [hideBackButton]="true"
+>
+  <govuk-error-summary
+    *ngIf="hasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="!modelValid"
+      anchorId="independent-assessment-status"
+      message="{{ errorMessage }}"
+    />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">
+    You will be registered as a class 1 building inspector
+  </h1>
+
+  <govuk-warning
+    message="Class 1 includes unqualified trainees and qualified inspectors waiting for independent assessment."
+    background="#0"
+  ></govuk-warning>
+
+  <govuk-body>
+    If you are a competent building inspector, you should
+    <a
+      href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm"
+      class="govuk-link"
+      target="_blank"
+      >ask the Building Safety Regulator to change your assessed class on the
+      public register.</a
+    >
+
+    <p>
+      A class 1 building inspector must assess plans and inspect
+      buildings(BSR-regulated activities) only under the supervision of a
+      registered building inspector.
+    </p>
+
+    <govuk-checkbox-group
+      [title]=""
+      [hint]="hint"
+      [errorText]="errorMessage"
+      [(model)]="selections"
+      [id]="id"
+      #field
+      [govukRequired]="field"
+    >
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [id]="id"
+        [model]="selections"
+        text="I declare that, while I am a class 1 building inspector, I will engage in BSR-regulated activities only under supervision of a registered building inspector."
+        value="Declaration"
+        (onClicked)="optionClicked()"
+        hint=""
+      />
+    </govuk-checkbox-group>
+  </govuk-body>
+</govuk-formpage>
