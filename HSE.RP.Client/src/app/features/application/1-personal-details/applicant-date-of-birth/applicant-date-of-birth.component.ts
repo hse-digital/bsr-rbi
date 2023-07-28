@@ -94,11 +94,11 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
     if ((this.model?.day ?? "") == "" && (this.model?.month ?? "") == "" && (this.model?.year ?? "") == "") {
       this.validationErrors.push({ Text: "Enter your date of birth", Anchor: "dob-input-day" });
     } else {
-      if (!this.isDateNumber(this.model?.day)) {
+      if (!this.isDateNumber(this.model?.day) || !this.isDayValid(Number(this.model?.day))) {
         this.validationErrors.push({ Text: "Your date of birth must include a day", Anchor: "dob-input-day" });
       }
 
-      if (!this.isDateNumber(this.model?.month)) {
+      if (!this.isDateNumber(this.model?.month) || !this.isMonthValid(Number(this.model?.month))) {
         this.validationErrors.push({ Text: "Your date of birth must include a month", Anchor: "dob-input-month" });
       }
 
@@ -151,4 +151,13 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
     }
     return "";
   }
+
+  isDayValid(day: number) {
+    return day <= 31 && day >= 1;
+  }
+
+  isMonthValid(month: number) {
+    return month <= 12 && month >= 1;
+  }
+
 }
