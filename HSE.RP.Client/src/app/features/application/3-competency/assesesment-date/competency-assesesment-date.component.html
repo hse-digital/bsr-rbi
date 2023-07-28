@@ -1,12 +1,32 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
+<govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
+  <govuk-error-link
+    *ngFor="let error of validationErrors"
+    anchorId="{{ error.Anchor }}"
+    message="{{ error.Text }}"
+  />
+</govuk-error-summary>
 
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="false"
+  (saveAndContinue)="saveAndContinue()"
+  (saveAndComeBack)="saveAndComeBack()"
+  [hideBackButton]="true"
+>
+  <h1 class="govuk-heading-l">Date of assessment certificate</h1>
 
-
-  <h1 class="govuk-heading-l">Assessment date</h1>
   <govuk-body>
-  Please enter your assessment date
- </govuk-body>
-</govuk-formpage>
+    This is the date when your assessment certificate was issued. For <br />
+    example, 31 3 2022
+  </govuk-body>
 
+  <govuk-date-input
+    hint=""
+    [(model)]="model"
+    id="doa-input"
+    [errorText]="getFirstErrorDescription()"
+  >
+  </govuk-date-input>
+</govuk-formpage>
