@@ -6,6 +6,9 @@ import { ApplicationService } from '../../../../services/application.service';
 import { CompetencyCertificateCodeComponent } from '../certificate-code/competency-certificate-code.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
+import { CompetenceyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
+import { CompetencyAssessmentCertificateNumberComponent } from '../assessment-certificate-number/competency-assessment-certificate-number.component';
+import { CompetencyAssessmentOrganisationComponent } from '../assesesment-organisation/competency-assesesment-organisation.component';
 
 @Component({
   selector: 'hse-independent-competency-status',
@@ -66,10 +69,19 @@ export class CompetencyIndependentStatusComponent extends PageComponent<string> 
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(
-      CompetencyCertificateCodeComponent.route,
-      this.activatedRoute
-    );
+    if (this.selectedOption === "yes") {
+      return this.navigationService.navigateRelative(
+        CompetencyAssessmentOrganisationComponent.route,
+        this.activatedRoute
+      );
+    }
+    else {
+      // TODO - needs changing to US-9033 when complete
+      return this.navigationService.navigateRelative(
+        CompetencyCertificateCodeComponent.route,
+        this.activatedRoute
+      );
+    }
   }
 
   DerivedIsComplete(value: boolean): void {}
