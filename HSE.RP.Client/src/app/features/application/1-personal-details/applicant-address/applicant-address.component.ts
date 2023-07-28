@@ -67,12 +67,6 @@ export class ApplicantAddressComponent extends PageComponent<AddressModel> {
     );
   }
 
-  override DerivedIsComplete(value: boolean) {
-    this.applicationService.model.PersonalDetails!.ApplicantAddress!.CompletionState =
-      value
-        ? ComponentCompletionState.Complete
-        : ComponentCompletionState.InProgress;
-  }
 
   override isValid(): boolean {
     return true;

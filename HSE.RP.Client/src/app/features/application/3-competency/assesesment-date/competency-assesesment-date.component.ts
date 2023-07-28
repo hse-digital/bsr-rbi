@@ -10,7 +10,36 @@ import { CompetencySummaryComponent } from '../competency-summary/competency-sum
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
-import { DateInputControlDate } from 'src/app/models/date-input-control-date.model';
+import { IComponentModel } from 'src/app/models/component. interface';
+import { CompetencyDateOfAssessment } from 'src/app/models/competency-date-of-assessment.model';
+
+class DateInputControlDate implements IComponentModel {
+  constructor(private containedModel: CompetencyDateOfAssessment) {}
+  get day(): string | undefined {
+    return this.containedModel.Day;
+  }
+  set day(value: string | undefined) {
+    this.containedModel.Day = value;
+  }
+  get month(): string | undefined {
+    return this.containedModel.Month;
+  }
+  set month(value: string | undefined) {
+    this.containedModel.Month = value;
+  }
+  get year(): string | undefined {
+    return this.containedModel.Year;
+  }
+  set year(value: string | undefined) {
+    this.containedModel.Year = value;
+  }
+  get CompletionState(): ComponentCompletionState | undefined {
+    return this.containedModel.CompletionState;
+  }
+  set CompletionState(value: ComponentCompletionState | undefined) {
+    this.containedModel.CompletionState = value;
+  }
+}
 
 type DoaValidationItem = {
   Text: string;
@@ -49,21 +78,14 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
     if (!applicationService.model.Competency?.CompetencyDateOfAssessment) {
-      applicationService.model.Competency!.CompetencyDateOfAssessment = {
-        Day: '',
-        Month: '',
-        Year: '',
-        CompletionState: ComponentCompletionState.InProgress,
-      };
+      applicationService.model.Competency!.CompetencyDateOfAssessment =
+        new CompetencyDateOfAssessment();
     }
 
-    this.model = {
-      day: applicationService.model.Competency!.CompetencyDateOfAssessment.Day,
-      month:
-        applicationService.model.Competency!.CompetencyDateOfAssessment.Month,
-      year: applicationService.model.Competency!.CompetencyDateOfAssessment
-        .Year,
-    };
+    if (applicationService.model.Competency?.CompetencyDateOfAssessment)
+      this.model = new DateInputControlDate(
+        applicationService.model.Competency?.CompetencyDateOfAssessment
+      );
   }
 
   DerivedIsComplete(value: boolean): void {

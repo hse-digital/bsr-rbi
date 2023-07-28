@@ -19,6 +19,8 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
+import { IComponentModel } from '../models/component. interface';
+import { ComponentCompletionState } from '../models/component-completion-state.enum';
 
 @Component({ template: '' })
 export abstract class PageComponent<T> implements OnInit {
@@ -26,6 +28,7 @@ export abstract class PageComponent<T> implements OnInit {
   processing: boolean = false;
   hasErrors: boolean = false;
   updateOnSave: boolean = true;
+  originalModelStringified: string = '';
   private injector: Injector = GetInjector();
   protected applicationService: ApplicationService =
     this.injector.get(ApplicationService);
@@ -46,33 +49,40 @@ export abstract class PageComponent<T> implements OnInit {
   abstract isValid(): boolean;
   abstract navigateNext(): Promise<boolean>;
 
-  abstract DerivedIsComplete(value: boolean): void;
-
-  private _isComplete: boolean = false;
-  public get IsComplete(): boolean {
-    return this._isComplete;
-  }
-
-  public set IsComplete(value: boolean) {
-    this.DerivedIsComplete(value);
-    this._isComplete = value;
-  }
-
   constructor(protected activatedRoute: ActivatedRoute) {
     this.triggerScreenReaderNotification('');
   }
 
   ngOnInit(): void {
     this.onInit(this.applicationService);
+    this.originalModelStringified = JSON.stringify(this.model);
+    if (this.modelImplementsIComponent(this.model)) {
+      var componentModel = this.model as IComponentModel;
+      if(componentModel.CompletionState === ComponentCompletionState.NotStarted) {
+        componentModel.CompletionState = ComponentCompletionState.InProgress;
+      }
+    }
   }
+
+  modelImplementsIComponent(obj: any): obj is IComponentModel {
+    return this.model !== undefined && this.model !== null && 'CompletionState' in this.model
+      && (obj.CompletionState === undefined
+        || Object.values(ComponentCompletionState).includes(obj.CompletionState));
+  }
+
 
   async saveAndContinue(): Promise<void> {
     this.processing = true;
-
     this.hasErrors = !this.isValid();
     if (!this.hasErrors) {
       this.triggerScreenReaderNotification();
-      this.IsComplete = true;
+      //------------------------------------------------------------------------------
+      // If the model implements IComponentModel, set the completion state to complete
+      //------------------------------------------------------------------------------
+      if (this.modelImplementsIComponent(this.model)) {
+        var componentModel = this.model as IComponentModel;
+        componentModel.CompletionState = ComponentCompletionState.Complete;
+      }
       this.onSave(this.applicationService);
       this.applicationService.updateLocalStorage();
       if (this.updateOnSave) {
@@ -94,11 +104,24 @@ export abstract class PageComponent<T> implements OnInit {
     this.processing = true;
     let canSave = this.requiredFieldsAreEmpty() || this.isValid();
     this.hasErrors = !canSave;
+    //------------------------------------------------------------------------------
+    // If the model implements IComponentModel, see if the model had been previously
+    // completed. If the model has been modified, set the completion state to in progress,
+    // otherwise leave it as completed.
+    //------------------------------------------------------------------------------
+    if (this.modelImplementsIComponent(this.model)) {
+      var componentModel = this.model as IComponentModel;
+      if (componentModel.CompletionState === ComponentCompletionState.Complete) {
+        if(this.originalModelStringified !== JSON.stringify(this.model)) {
+          componentModel.CompletionState = ComponentCompletionState.InProgress;
+        }
+      }
+    }
+
     if (!this.hasErrors) {
       this.triggerScreenReaderNotification();
       this.applicationService.updateLocalStorage();
       if (this.updateOnSave) {
-        this.IsComplete = false;
         await this.saveAndUpdate();
       }
       await this.navigateBack();

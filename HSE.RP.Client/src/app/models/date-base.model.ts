@@ -4,5 +4,5 @@ export class DateBase {
     Day?: string;
     Month?: string;
     Year?: string;
-    CompletionState?: ComponentCompletionState;
+    CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
 }
