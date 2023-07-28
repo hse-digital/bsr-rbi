@@ -17,5 +17,12 @@
                class="govuk-!-margin-bottom-5 govuk-input--width-10"
                (onKeyupEnter)="findAddress()" />
 
+  <govuk-input id="address-line-one" label="Address line 1 (optional)"
+              *ngIf="showOptionalAddressLineOne"
+              hint="For example, 'Flat 3A' or '30 St Mary Axe'"
+              [(model)]="searchModel.addressLineOne"
+              class="govuk-!-margin-bottom-5"
+              (onKeyupEnter)="findAddress()" />
+
   <govuk-button [isLoading]="loading" loadingText="Searching..." [disabled]="loading" (onClick)="findAddress()">Find address</govuk-button>
 </div>
