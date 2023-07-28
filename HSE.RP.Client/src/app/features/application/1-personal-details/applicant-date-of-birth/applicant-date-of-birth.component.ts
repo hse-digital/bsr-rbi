@@ -10,12 +10,8 @@ import { ApplicationTaskListComponent } from '../../task-list/task-list.componen
 import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { DateInputControlDate } from 'src/app/models/date-input-control-date.model';
 
-class DateInputControlDate {
-  day?: string;
-  month?: string;
-  year?: string;
-};
 
 type DobValidationItem = {
   Text: string;
