@@ -122,7 +122,7 @@ export class ReturningApplicationEnterDataComponent {
     this.errors.applicationNumber.errorText = '';
     if (!this.applicationNumber || this.applicationNumber.length != 12) {
       this.errors.applicationNumber.errorText =
-        'You must enter your 12 digit application code';
+        'You must enter your 12 digit application number';
       this.errors.applicationNumber.anchorId = 'input-application-number';
     } else {
       var result =
@@ -137,7 +137,7 @@ export class ReturningApplicationEnterDataComponent {
           this.verificationEmail = result.EmailAddress;
         } else if (!result.IsValidApplicationNumber && result.IsValid) {
           this.errors.applicationNumber.errorText =
-            'Application number does not match this telephone number. Enter the correct 12 digit application code';
+            'Application number does not match this telephone number. Enter the correct 12 digit application number';
           this.errors.applicationNumber.anchorId = 'input-phone-number';
         } else if (result.IsValidApplicationNumber && !result.IsValid) {
           this.errors.applicationNumber.errorText =
@@ -151,7 +151,7 @@ export class ReturningApplicationEnterDataComponent {
           this.verificationPhone = result.PhoneNumber;
         } else if (!result.IsValidApplicationNumber && result.IsValid) {
           this.errors.applicationNumber.errorText =
-            'Application number does not match this email address. Enter the correct 12 digit application code';
+            'Application number does not match this email address. Enter the correct 12 digit application number';
           this.errors.applicationNumber.anchorId = 'input-email-address';
         } else if (result.IsValidApplicationNumber && !result.IsValid) {
           this.errors.applicationNumber.errorText =

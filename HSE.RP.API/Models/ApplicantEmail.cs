@@ -8,7 +8,7 @@ namespace HSE.RP.API.Models
     {
         public string Email { get; set; }
 
-        public ComponentCompletionState IsComplete { get; set; } = ComponentCompletionState.NotStarted;
+        public ComponentCompletionState CompletionState { get; set; } = ComponentCompletionState.NotStarted;
     }
 }
 
