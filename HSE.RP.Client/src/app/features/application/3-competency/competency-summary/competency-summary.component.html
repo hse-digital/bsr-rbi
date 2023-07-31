@@ -1,12 +1,56 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
-
-
-  <h1 class="govuk-heading-l">Competency summary</h1>
+<govuk-formpage
+  saveAndContinueText="Continue"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="saveAndContinue()"
+  [hideBackButton]="true"
+>
   <govuk-body>
-  Please enter your summary below
- </govuk-body>
+    <h1 class="govuk-heading-l">Summary of your competency assessment</h1>
+
+    <govuk-summary-list>
+      <govuk-summary-list-row
+        (onClick)="navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)"
+        (onKeyupEnter)="
+          navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)
+        "
+        key="Assessment"
+        [showAction]="true"
+        >{{ getIndependentAssessmentStatus() }}
+      </govuk-summary-list-row>
+
+      <govuk-summary-list-row
+        (onClick)="
+          navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION)
+        "
+        (onKeyupEnter)="
+          navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION)
+        "
+        key="Provider"
+        [showAction]="true"
+        >{{ getCompetencyAssessmentOrg() }}
+      </govuk-summary-list-row>
+      <govuk-summary-list-row
+        (onClick)="
+          navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER)
+        "
+        (onKeyupEnter)="
+          navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER)
+        "
+        key="Certificate number"
+        [showAction]="true"
+        >{{ getCompetencyAssessmentCertificateNo() }}
+      </govuk-summary-list-row>
+      <govuk-summary-list-row
+        (onClick)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE)"
+        (onKeyupEnter)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE)"
+        key="Date of assessment certificate"
+        [showAction]="true"
+        >{{ GetFormattedDateofBirth() }}
+      </govuk-summary-list-row>
+    </govuk-summary-list>
+  </govuk-body>
 </govuk-formpage>
 
+<div>{{ applicationService.model.Competency | json }}</div>

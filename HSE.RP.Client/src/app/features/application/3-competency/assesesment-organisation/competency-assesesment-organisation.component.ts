@@ -10,6 +10,7 @@ import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { CompetencyAssessmentCertificateNumberComponent } from '../assessment-certificate-number/competency-assessment-certificate-number.component';
+import { Competency } from 'src/app/models/competency.model';
 
 @Component({
   selector: 'hse-competency-assesesment-organisation',
@@ -25,7 +26,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
   photoHasErrors = false;
   override model?: string;
   errorMessage: string = '';
-  selectedOption: string = '';
+  selectedOption?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -36,25 +37,34 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-    this.model =
-      applicationService.model.Competency?.CompetencyAssesesmentOrganisation;
 
-    this.selectedOption = this.model ? this.model : 'CABE';
+    if (
+      !applicationService.model.Competency?.CompetencyAssesesmentOrganisation
+    ) {
+      applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
+        'CABE';
+    }
 
-    this.applicationService = applicationService;
+    this.selectedOption =
+      applicationService.model.Competency!.CompetencyAssesesmentOrganisation ===
+      'BSCF'
+        ? applicationService.model.Competency?.CompetencyAssesesmentOrganisation
+        : 'CABE';
+
+        this.applicationService = applicationService;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     this.applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
       this.model;
 
-    if (['CABE', 'BSCF'].includes(this.selectedOption)) {
+    if (['CABE', 'BSCF'].includes(this.selectedOption!)) {
       applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
         this.selectedOption;
     }
 
-    applicationService.model.ApplicationStatus =
-      ApplicationStatus.CompetencyComplete;
+    // applicationService.model.ApplicationStatus =
+    //   ApplicationStatus.CompetencyComplete;
   }
 
   override canAccess(
@@ -76,8 +86,8 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
   }
 
   DerivedIsComplete(value: boolean): void {
-    this.applicationService.model.Competency!.CompletionState = value
-      ? ComponentCompletionState.Complete
-      : ComponentCompletionState.InProgress;
+    // this.applicationService.model.Competency!.CompletionState = value
+    //   ? ComponentCompletionState.Complete
+    //   : ComponentCompletionState.InProgress;
   }
 }

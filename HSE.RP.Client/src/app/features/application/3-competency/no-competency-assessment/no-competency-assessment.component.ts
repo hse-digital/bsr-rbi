@@ -6,6 +6,7 @@ import { CompetencyRoutes } from '../CompetencyRoutes';
 import { environment } from 'src/environments/environment';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { NoCompetencyAssessment } from 'src/app/models/no-competency-assessment.model';
+import { CompetencySummaryComponent } from '../competency-summary/competency-summary.component';
 
 @Component({
   selector: 'hse-no-competency-assessment',
@@ -76,7 +77,10 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
   }
 
   override async navigateNext(): Promise<boolean> {
-    return true;
+    return this.navigationService.navigateRelative(
+      CompetencySummaryComponent.route,
+      this.activatedRoute
+    );
   }
 
   DerivedIsComplete(value: boolean): void {}

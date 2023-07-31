@@ -3,12 +3,9 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { ApplicationService } from '../../../../services/application.service';
-import { CompetencyCertificateCodeComponent } from '../certificate-code/competency-certificate-code.component';
-import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
-import { CompetenceyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
-import { CompetencyAssessmentCertificateNumberComponent } from '../assessment-certificate-number/competency-assessment-certificate-number.component';
 import { CompetencyAssessmentOrganisationComponent } from '../assesesment-organisation/competency-assesesment-organisation.component';
+import { NoCompetencyAssessmentComponent } from '../no-competency-assessment/no-competency-assessment.component';
 
 @Component({
   selector: 'hse-independent-competency-status',
@@ -23,7 +20,6 @@ export class CompetencyIndependentStatusComponent extends PageComponent<string> 
   photoHasErrors = false;
   errorMessage: string = '';
   selectedOption: string = 'no';
-  // override model?: string;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -35,16 +31,18 @@ export class CompetencyIndependentStatusComponent extends PageComponent<string> 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
 
-    this.model =
-      applicationService.model.Competency?.IndependentAssessmentStatus;
+    if(!applicationService.model.Competency?.IndependentAssessmentStatus) {
+      applicationService.model.Competency!.IndependentAssessmentStatus = 'no'
+    } 
 
-    this.selectedOption = this.model ? this.model : 'no';
+    console.log(applicationService.model.Competency?.IndependentAssessmentStatus)
+
+    this.selectedOption = applicationService.model.Competency?.IndependentAssessmentStatus ? applicationService.model.Competency?.IndependentAssessmentStatus : 'no'
 
     this.applicationService = applicationService;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-
     this.applicationService.model.Competency!.IndependentAssessmentStatus =
       this.model;
 
@@ -52,9 +50,6 @@ export class CompetencyIndependentStatusComponent extends PageComponent<string> 
       applicationService.model.Competency!.IndependentAssessmentStatus =
         this.selectedOption;
     }
-
-    applicationService.model.ApplicationStatus =
-      ApplicationStatus.CompetencyComplete;
   }
 
   override canAccess(
@@ -69,16 +64,15 @@ export class CompetencyIndependentStatusComponent extends PageComponent<string> 
   }
 
   override navigateNext(): Promise<boolean> {
-    if (this.selectedOption === "yes") {
+    if (this.selectedOption === 'yes') {
       return this.navigationService.navigateRelative(
         CompetencyAssessmentOrganisationComponent.route,
         this.activatedRoute
       );
-    }
-    else {
+    } else {
       // TODO - needs changing to US-9033 when complete
       return this.navigationService.navigateRelative(
-        CompetencyCertificateCodeComponent.route,
+        NoCompetencyAssessmentComponent.route,
         this.activatedRoute
       );
     }
