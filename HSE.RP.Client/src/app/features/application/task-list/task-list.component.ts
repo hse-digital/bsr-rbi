@@ -142,7 +142,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   override async onInit(applicationService: ApplicationService): Promise<void> {
     this.model = applicationService.model;
     this.checkingStatus = false;
-    console.log(applicationService.model)
   }
 
   getModelStatus(model?: IComponentModel): TaskStatus {

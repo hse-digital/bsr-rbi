@@ -8,6 +8,7 @@ import { BuildingClassTechnicalManagerComponent } from '../class-technical-manag
 import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 import { BuildingInspectorCountryOfWork } from 'src/app/models/building-inspector-country-of-work.model';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-building-inspector-country',
@@ -51,6 +52,7 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       ...countryKeys.filter((key) => demandModel[key] === true)
     );
 
+    this.model!.CompletionState = ComponentCompletionState.InProgress;
     this.applicationService = applicationService;
   }
 
@@ -63,8 +65,13 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       demandModel[value] = true;
     });
 
+    this.model!.CompletionState = ComponentCompletionState.Complete;
+
     applicationService.model.ApplicationStatus =
       ApplicationStatus.BuildingInspectorClassComplete;
+
+      applicationService.model.InspectorClass!.InspectorCountryOfWork = demandModel;
+      applicationService.model.InspectorClass!.InspectorCountryOfWork.CompletionState = ComponentCompletionState.Complete;
   }
 
   override canAccess(

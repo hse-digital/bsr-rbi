@@ -37,7 +37,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   inspectionCategories: string = "";
   inspectionLink: string = "";
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService, private buildingInspectorRouter : BuildingInspectorRouter) {
     super(activatedRoute);
     this.updateOnSave = false;
   }
@@ -64,15 +64,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.processing=true;
-
-    try {
-      await this.applicationService.syncBuildingInspectorClass();
-    } catch (error) {
-      this.focusAndUpdateErrors();
-      throw error;
-    }
-    this.processing=false;
+    await this.applicationService.syncBuildingInspectorClass();
     applicationService.model.ApplicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
     applicationService.model.StageStatus["BuildingInspectorClass"] = StageCompletionState.Complete;
     this.saveAndContinue();
@@ -90,7 +82,9 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+
+    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.TASK_LIST);
+
   }
 
   public navigateTo(route: string) {
