@@ -10,6 +10,7 @@ import { ApplicationTaskListComponent } from '../../task-list/task-list.componen
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { BuildingInspectorRoutes, BuildingInspectorRouter } from '../BuildingInspectorRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 
 @Component({
   selector: 'hse-building-inspector-summary',
@@ -17,7 +18,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 })
 export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   DerivedIsComplete(value: boolean): void {
-    
+
   }
 
   BuildingInspectorRoutes = BuildingInspectorRoutes;
@@ -56,14 +57,25 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
     {
       this.assessPlansLink = BuildingInspectorRoutes.CLASS3_ACCESSING_PLANS_CATEGORIES;
       this.inspectionLink = BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES;
-      
+
       this.inspectionCategories = this.categoriesToString(applicationService.model.InspectorClass?.Class3InspectBuildingCategories)
       this.assessPlansCategories = this.categoriesToString(applicationService.model.InspectorClass?.AssessingPlansClass3)
     }
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+    this.processing=true;
+
+    try {
+      await this.applicationService.syncBuildingInspectorClass();
+    } catch (error) {
+      this.focusAndUpdateErrors();
+      throw error;
+    }
+    this.processing=false;
     applicationService.model.ApplicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
+    applicationService.model.StageStatus["BuildingInspectorClass"] = StageCompletionState.Complete;
+    this.saveAndContinue();
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
