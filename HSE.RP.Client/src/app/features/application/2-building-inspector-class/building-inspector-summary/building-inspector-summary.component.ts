@@ -17,6 +17,13 @@ import { StageCompletionState } from 'src/app/models/stage-completion-state.enum
   templateUrl: './building-inspector-summary.component.html',
 })
 export class BuildingInspectorSummaryComponent extends PageComponent<string> {
+
+
+  override async onSave(applicationService: ApplicationService): Promise<void> {
+    this.applicationService.model.ApplicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
+    this.applicationService.model.StageStatus["BuildingInspectorClass"] = StageCompletionState.Complete;
+  }
+
   DerivedIsComplete(value: boolean): void {
 
   }
@@ -63,11 +70,10 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
     }
   }
 
-  override async onSave(applicationService: ApplicationService): Promise<void> {
+  async SyncAndContinue() {
     await this.applicationService.syncBuildingInspectorClass();
-    applicationService.model.ApplicationStatus = ApplicationStatus.BuildingInspectorClassComplete;
-    applicationService.model.StageStatus["BuildingInspectorClass"] = StageCompletionState.Complete;
     this.saveAndContinue();
+
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
