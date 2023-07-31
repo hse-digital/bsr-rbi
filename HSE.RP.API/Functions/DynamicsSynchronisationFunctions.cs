@@ -170,7 +170,7 @@ public class DynamicsSynchronisationFunctions
             var selectedRegistrationClassId = (int)buildingProfessionApplicationModel.InspectorClass.ClassType.Class;
 
             //If the selected registration class is not in the list of registration classes or is deactivated, then add/reactivate it
-            if (!dynamicsRegistrationClasses.Any(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[selectedRegistrationClassId] && x.statecode!=1))
+            if (!dynamicsRegistrationClasses.Any(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[selectedRegistrationClassId] && x.statecode != 1))
             {
                 var registrationClass = new BuildingInspectorRegistrationClass
                 {
@@ -251,7 +251,7 @@ public class DynamicsSynchronisationFunctions
             var selectedCountries = buildingProfessionApplicationModel.InspectorClass.InspectorCountryOfWork;
 
             //If the selected countries are not in the list of registration countries or is deactivated, then add/reactivate it
-            if(buildingProfessionApplicationModel.InspectorClass.InspectorCountryOfWork.England == true)
+            if (buildingProfessionApplicationModel.InspectorClass.InspectorCountryOfWork.England == true)
             {
                 //Check the list of registration countries to see if England is there
                 if (!dynamicsRegistrationCountries.Any(x => x._bsr_countryid_value == BuildingInspectorCountryNames.Ids["England"] && x.statecode != 1))
@@ -260,20 +260,20 @@ public class DynamicsSynchronisationFunctions
                     {
                         BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                         BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
-                        CountryID= BuildingInspectorCountryNames.Ids["England"],
+                        CountryID = BuildingInspectorCountryNames.Ids["England"],
                         StatusCode = 1,
                         StateCode = 0
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationCountry), registrationCountry);
                 }
             }
-            else if(buildingProfessionApplicationModel.InspectorClass.InspectorCountryOfWork.England == false)
+            else if (buildingProfessionApplicationModel.InspectorClass.InspectorCountryOfWork.England == false)
             {
                 //Check the list of registration countries to see if England was previously selected
                 if (dynamicsRegistrationCountries.Any(x => x._bsr_countryid_value == BuildingInspectorCountryNames.Ids["England"]))
                 {
                     var buildingInspectorRegistrationCountriesToUpdate = dynamicsRegistrationCountries.Where(x => x._bsr_countryid_value == BuildingInspectorCountryNames.Ids["England"]).ToList();
-                    foreach(DynamicsBuildingInspectorRegistrationCountry countryToUpdate in buildingInspectorRegistrationCountriesToUpdate)
+                    foreach (DynamicsBuildingInspectorRegistrationCountry countryToUpdate in buildingInspectorRegistrationCountriesToUpdate)
                     {
                         var registrationCountry = new BuildingInspectorRegistrationCountry
                         {
@@ -329,41 +329,62 @@ public class DynamicsSynchronisationFunctions
 
             //Update Registration Activities-------------
             //-------------------------------------------
+            //Note for Sean - Need to fix the logic for adding new activites as we need to check if both the activity class and category are there
 
-            //Get all activities for application
-            var dynamicsRegistrationActivities= await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationActivity>>(nameof(GetRegistrationActivitiesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
-            
+
+            //Get all existing activities for application
+
+            //Get selected activities
             var selectedActivities = buildingProfessionApplicationModel.InspectorClass.Activities;
 
             //If the selected activities are not in the list of registration activities or is deactivated, then add/reactivate it
             if (buildingProfessionApplicationModel.InspectorClass.Activities.AssessingPlans == true)
             {
-                //Check the list of registration activities to see if AssessingPlans is there
-                if (!dynamicsRegistrationActivities.Any(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"] &&  x.statecode != 1))
+                if (selectedRegistrationClassId == 2)
                 {
-                    //Get categories for Assessing Plans and class
-                    //selectedRegistrationClassId
-                    //BuildingInspectorClassNames.Ids[selectedRegistrationClassId]
-
-                    if(selectedRegistrationClassId == 2)
+                    foreach (var category in buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2.GetType().GetProperties().Where(x => x.Name!= "CompletionState").ToList())
                     {
+                        //Get all existing activities for application
+                        var dynamicsRegistrationActivities = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationActivity>>(nameof(GetRegistrationActivitiesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
-                        foreach (var category in buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2.GetType().GetProperties())
+                        var categoryName = category.Name + "Class2";
+
+                        //get value of current category
+
+                        //If false check if previously selected
+                        if ((category.GetValue(buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2) == null || (bool)category.GetValue(buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2) == false))
                         {
-                            var categoryName = category.Name + "Class2";
-
-                            //get value of current category
-
-
-
-                            if (category.GetValue(buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2) == null 
-                                || (bool)category.GetValue(buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2) == false)
+                            if (dynamicsRegistrationActivities.Any(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"]
+                                && x._bsr_bibuildingcategoryid_value == BuildingInspectorBuildingCategoryNames.Ids[categoryName]))
                             {
-                                continue;
+
+                                var buildingInspectorRegistrationActivitiesToUpdate = dynamicsRegistrationActivities.Where(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"]
+                                                        && x._bsr_bibuildingcategoryid_value == BuildingInspectorBuildingCategoryNames.Ids[categoryName] && x.statecode!=1).ToList();
+
+                                foreach (var activityToUpdate in buildingInspectorRegistrationActivitiesToUpdate)
+                                {
+
+                                    var registrationActivity = new BuildingInspectorRegistrationActivity
+                                    {
+                                        Id = activityToUpdate.bsr_biregactivityId,
+                                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                                        BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                                        BuildingCategoryId = BuildingInspectorBuildingCategoryNames.Ids[categoryName],
+                                        ActivityId = BuildingInspectorActivityNames.Ids["AssessingPlans"],
+                                        StatusCode = 2,
+                                        StateCode = 1
+                                    };
+                                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), registrationActivity);
+                                }
                             }
-                            else
+                        }
+                        else
+                        {
+                            if (!dynamicsRegistrationActivities.Any(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"]
+                                && x._bsr_bibuildingcategoryid_value == BuildingInspectorBuildingCategoryNames.Ids[categoryName]
+                                && x.statecode != 1)
+                             )
                             {
-
                                 var registrationActivity = new BuildingInspectorRegistrationActivity
                                 {
                                     BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
@@ -373,27 +394,20 @@ public class DynamicsSynchronisationFunctions
                                     StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Applied,
                                     StateCode = 0
                                 };
+                                
                                 await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), registrationActivity);
-
                             }
-
-                        }
-
-                    }
-                    else if(selectedRegistrationClassId == 3)
-                    {
-                        foreach (var category in buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass3.GetType().GetProperties())
-                        {
-                            if (category.GetValue(this) == null || (bool)category.GetValue(this) == false)
+                            else if (dynamicsRegistrationActivities.Any(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"]
+                                && x._bsr_bibuildingcategoryid_value == BuildingInspectorBuildingCategoryNames.Ids[categoryName]))
                             {
-                                continue;
-                            }
-                            else
-                            {
-                                var categoryName = category.Name + "Class3";
+
+                                var activityToUpdate = dynamicsRegistrationActivities.FirstOrDefault(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"]
+                                                        && x._bsr_bibuildingcategoryid_value == BuildingInspectorBuildingCategoryNames.Ids[categoryName]);
+
 
                                 var registrationActivity = new BuildingInspectorRegistrationActivity
                                 {
+                                    Id = activityToUpdate.bsr_biregactivityId,
                                     BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                                     BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                                     BuildingCategoryId = BuildingInspectorBuildingCategoryNames.Ids[categoryName],
@@ -403,32 +417,38 @@ public class DynamicsSynchronisationFunctions
                                 };
                                 await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), registrationActivity);
                             }
+
                         }
+
                     }
+                }
+                else if (selectedRegistrationClassId == 3)
+                {
+
                 }
             }
 
-/*            else if (buildingProfessionApplicationModel.InspectorClass.Activities.AssessingPlans == false)
-            {
-                //Check the list of registration countries to see if Assessing plans was previously selected
-                if (dynamicsRegistrationActivities.Any(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"]))
-                {
-                    var buildingInspectorRegistrationCountriesToUpdate = dynamicsRegistrationCountries.Where(x => x._bsr_countryid_value == BuildingInspectorCountryNames.Ids["England"]).ToList();
-                    foreach (DynamicsBuildingInspectorRegistrationCountry countryToUpdate in buildingInspectorRegistrationCountriesToUpdate)
-                    {
-                        var registrationCountry = new BuildingInspectorRegistrationCountry
+            /*            else if (buildingProfessionApplicationModel.InspectorClass.Activities.AssessingPlans == false)
                         {
-                            Id = countryToUpdate.bsr_biregcountryid,
-                            BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
-                            BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
-                            CountryID = BuildingInspectorCountryNames.Ids["England"],
-                            StatusCode = 2,
-                            StateCode = 1
-                        };
-                        await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationCountry), registrationCountry);
-                    }
-                }
-            }*/
+                            //Check the list of registration countries to see if Assessing plans was previously selected
+                            if (dynamicsRegistrationActivities.Any(x => x._bsr_biactivityid_value == BuildingInspectorActivityNames.Ids["AssessingPlans"]))
+                            {
+                                var buildingInspectorRegistrationCountriesToUpdate = dynamicsRegistrationCountries.Where(x => x._bsr_countryid_value == BuildingInspectorCountryNames.Ids["England"]).ToList();
+                                foreach (DynamicsBuildingInspectorRegistrationCountry countryToUpdate in buildingInspectorRegistrationCountriesToUpdate)
+                                {
+                                    var registrationCountry = new BuildingInspectorRegistrationCountry
+                                    {
+                                        Id = countryToUpdate.bsr_biregcountryid,
+                                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                                        BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                                        CountryID = BuildingInspectorCountryNames.Ids["England"],
+                                        StatusCode = 2,
+                                        StateCode = 1
+                                    };
+                                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationCountry), registrationCountry);
+                                }
+                            }
+                        }*/
 
         }
 

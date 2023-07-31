@@ -153,13 +153,13 @@ namespace HSE.RP.API.Services
             }
         }
 
-        private async Task<DynamicsBuildingInspectorRegistrationActivity> FindExistingBuildingInspectorRegistrationActivity(string activityId, string buidingProfessionApplicationId)
+        private async Task<DynamicsBuildingInspectorRegistrationActivity> FindExistingBuildingInspectorRegistrationActivity(string activityId, string categoryId, string buidingProfessionApplicationId)
         {
             try
             {
                 var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorRegistrationActivity>>("bsr_biregactivities", new[]
                  {
-                        ("$filter", $"_bsr_biapplicationid_value eq '{buidingProfessionApplicationId}' and _bsr_biactivityid_value eq '{activityId}'")
+                        ("$filter", $"_bsr_biapplicationid_value eq '{buidingProfessionApplicationId}' and _bsr_biactivityid_value eq '{activityId}' and _bsr_bibuildingcategoryid_value eq '{categoryId}'")
 
                     });
 
@@ -444,8 +444,8 @@ namespace HSE.RP.API.Services
             }
             else
             {
-                //Check if an entry for this class already exists
-                var existingRegistrationActivity = await FindExistingBuildingInspectorRegistrationActivity(buildingInspectorRegistrationActivity.ActivityId, buildingInspectorRegistrationActivity.BuildingProfessionApplicationId);
+                //Check if an entry for this class, category and activity already exists
+                var existingRegistrationActivity = await FindExistingBuildingInspectorRegistrationActivity(buildingInspectorRegistrationActivity.ActivityId, buildingInspectorRegistrationActivity.BuildingCategoryId, buildingInspectorRegistrationActivity.BuildingProfessionApplicationId);
 
                 //If no entry exists then create a new one
                 if (existingRegistrationActivity == null)
@@ -457,7 +457,7 @@ namespace HSE.RP.API.Services
                 //If an entry exists then update it
                 else
                 {
-                    var response = await dynamicsApi.Update($"bsr_biregactivities({existingRegistrationActivity._bsr_biactivityid_value})", dynamicsBuildingInspectorRegistraionActivity);
+                    var response = await dynamicsApi.Update($"bsr_biregactivities({existingRegistrationActivity.bsr_biregactivityId})", dynamicsBuildingInspectorRegistraionActivity);
                     var buildingInspectorRegistrationActivityId = ExtractEntityIdFromHeader(response.Headers);
                     return buildingInspectorRegistrationActivity with { Id = buildingInspectorRegistrationActivityId };
                 }
