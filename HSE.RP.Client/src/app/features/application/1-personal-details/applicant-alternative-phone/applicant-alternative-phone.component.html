@@ -20,7 +20,7 @@
         [(model)]="model!.PhoneNumber"
         labelClass="govuk-label--s"
         hint="Enter a UK telephone or mobile number with or without spaces. For example, '01234567890' or '+447654321098'."
-        [errorText]="getErrorDescription(phoneNumberHasErrors, 'Enter a UK telephone number')"
+        [errorText]="errorMessage"
         hintClass="no-margin-top"
         (onKeyupEnter)="saveAndContinue()"
       />

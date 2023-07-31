@@ -112,7 +112,7 @@ public class BuildingProfessionApplicationFunctions
         if (buildingProfessionApplications.Any())
         {
             var application = buildingProfessionApplications[0];
-            if (otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantEmail.Email) || featureOptions.DisableOtpValidation)
+            if (await otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantEmail.Email) || featureOptions.DisableOtpValidation)
             {
                 return await request.CreateObjectResponseAsync(application);
             }
@@ -129,7 +129,7 @@ public class BuildingProfessionApplicationFunctions
         if (buildingProfessionApplications.Any())
         {
             var application = buildingProfessionApplications[0];
-            if (otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantPhone.PhoneNumber) || featureOptions.DisableOtpValidation)
+            if (await otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantPhone.PhoneNumber)|| featureOptions.DisableOtpValidation)
             {
                 return await request.CreateObjectResponseAsync(application);
             }
@@ -146,7 +146,7 @@ public class BuildingProfessionApplicationFunctions
         if (buildingProfessionApplications.Any())
         {
             var application = buildingProfessionApplications[0];
-            if (otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantEmail.Email) || featureOptions.DisableOtpValidation)
+            if (await otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantEmail.Email) || featureOptions.DisableOtpValidation)
             {
                 return await request.CreateObjectResponseAsync(application);
             }

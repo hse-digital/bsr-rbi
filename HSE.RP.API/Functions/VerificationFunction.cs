@@ -1,7 +1,9 @@
 using System.Net;
+using AutoMapper.Internal;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Models;
 using HSE.RP.API.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -36,7 +38,7 @@ namespace HSE.RP.API.Functions
                 return await request.BuildValidationErrorResponseDataAsync(validation);
             }
 
-            var otpToken = otpService.GenerateToken(emailVerificationModel.EmailAddress);
+            var otpToken = await otpService.GenerateToken(emailVerificationModel.EmailAddress);
             await notificationService.SendOTPEmail(emailVerificationModel.EmailAddress, otpToken: otpToken);
 
             return new CustomHttpResponseData
@@ -55,7 +57,7 @@ namespace HSE.RP.API.Functions
                 return await request.BuildValidationErrorResponseDataAsync(validation);
             }
 
-            var otpToken = otpService.GenerateToken(phoneVerificationModel.PhoneNumber);
+            var otpToken = await otpService.GenerateToken(phoneVerificationModel.PhoneNumber);
             await notificationService.SendOTPSms(phoneVerificationModel.PhoneNumber, otpToken: otpToken);
 
             return new CustomHttpResponseData
@@ -77,17 +79,27 @@ namespace HSE.RP.API.Functions
                 };
             }
 #endif
-            var isTokenValid = otpValidationModel.Validate().IsValid && otpService.ValidateToken(otpValidationModel.OTPToken, otpValidationModel.Data);
-
-            var returnStatusCode = HttpStatusCode.OK;
-            if (!featureOptions.DisableOtpValidation && !isTokenValid)
+            if(!otpValidationModel.Validate().IsValid)
             {
-                returnStatusCode = HttpStatusCode.BadRequest;
+                return new CustomHttpResponseData
+                {
+                    HttpResponse = request.CreateResponse(HttpStatusCode.BadRequest)
+                };
+            }
+
+            var isTokenValid = await otpService.ValidateToken(otpValidationModel.OTPToken, otpValidationModel.Data);
+
+            if (!isTokenValid)
+            {
+                return new CustomHttpResponseData
+                {
+                    HttpResponse = request.CreateResponse(HttpStatusCode.BadRequest)
+                };
             }
 
             return new CustomHttpResponseData
             {
-                HttpResponse = request.CreateResponse(returnStatusCode)
+                HttpResponse = request.CreateResponse(HttpStatusCode.OK)
             };
         }
 
