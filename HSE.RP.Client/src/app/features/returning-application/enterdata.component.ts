@@ -139,12 +139,9 @@ export class ReturningApplicationEnterDataComponent {
           this.errors.applicationNumber.errorText =
             'Application number does not match this telephone number. Enter the correct 12 digit application number';
           this.errors.applicationNumber.anchorId = 'input-phone-number';
-        } else if (result.IsValidApplicationNumber && !result.IsValid) {
+        } else if (result.IsValidApplicationNumber && !result.IsValid && this.errors.phoneNumber.hasError==false) {
           this.errors.applicationNumber.errorText =
             'Your telephone number does not match this application. Enter the correct telephone number';
-        } else {
-          this.errors.applicationNumber.errorText =
-            'Your mobile phone number does not match this application. Enter the correct mobile telephone number';
         }
       } else if (this.verificationOption == 'phone-option') {
         if (result.IsValidApplicationNumber && result.IsValid) {
