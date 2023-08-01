@@ -21,6 +21,7 @@
       </govuk-summary-list-row>
 
       <govuk-summary-list-row
+        *ngIf="isCompetencyAssessmentStatusYes()"
         (onClick)="
           navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION)
         "
@@ -32,6 +33,7 @@
         >{{ getCompetencyAssessmentOrg() }}
       </govuk-summary-list-row>
       <govuk-summary-list-row
+        *ngIf="isCompetencyAssessmentStatusYes()"
         (onClick)="
           navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER)
         "
@@ -43,6 +45,7 @@
         >{{ getCompetencyAssessmentCertificateNo() }}
       </govuk-summary-list-row>
       <govuk-summary-list-row
+        *ngIf="isCompetencyAssessmentStatusYes()"
         (onClick)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE)"
         (onKeyupEnter)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE)"
         key="Date of assessment certificate"
@@ -52,5 +55,3 @@
     </govuk-summary-list>
   </govuk-body>
 </govuk-formpage>
-
-<div>{{ applicationService.model.Competency | json }}</div>

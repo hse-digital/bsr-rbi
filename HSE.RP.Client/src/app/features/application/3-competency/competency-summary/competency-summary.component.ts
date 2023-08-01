@@ -89,12 +89,15 @@ export class CompetencySummaryComponent extends PageComponent<string> {
       : 'No';
   }
 
+  public isCompetencyAssessmentStatusYes(): boolean {
+    return this.applicationService.model.Competency?.IndependentAssessmentStatus === 'yes';
+  }
+
   public getCompetencyAssessmentOrg(): string {
-    return (
-      this.applicationService.model.Competency
-        ?.CompetencyAssesesmentOrganisation ||
-      'Chartered Association of Building Engineers (CABE)'
-    );
+    return this.applicationService.model.Competency
+      ?.CompetencyAssesesmentOrganisation === 'BSCF'
+      ? 'Building Safety Competence Foundation (BSCF)'
+      : 'Chartered Association of Building Engineers (CABE)';
   }
 
   public getCompetencyAssessmentCertificateNo(): string {
