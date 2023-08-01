@@ -233,7 +233,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       {
         prompt: "Independent assessment", relativeRoute: (): TaskListRoute => {
           return { route: CompetencyIndependentStatusComponent.route}
-        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.Competency?.IndependentAssessmentStatus)
       },
       {
         prompt: "Certificate code", relativeRoute: (): TaskListRoute => {
@@ -243,7 +243,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       {
         prompt: "Assessment organisation", relativeRoute: (): TaskListRoute => {
           return { route: CompetencyAssessmentOrganisationComponent.route}
-        }, getStatus: (): TaskStatus => TaskStatus.CannotStart
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.Competency?.CompetencyAssesesmentOrganisation)
       },
       {
         prompt: "Assessment certificate number", relativeRoute: (): TaskListRoute => {
@@ -253,12 +253,12 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       {
         prompt: "Date of assessment", relativeRoute: (): TaskListRoute => {
           return { route: CompetencyAssessmentDateComponent.route}
-        }, getStatus: (): TaskStatus => TaskStatus.CannotStart
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.Competency?.CompetencyDateOfAssessment)
       },
       {
         prompt: "Summary", relativeRoute: (): TaskListRoute => {
           return { route: CompetencySummaryComponent.route}
-        }, getStatus: (): TaskStatus => TaskStatus.None
+        },  getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.None
       },
     ]
   },

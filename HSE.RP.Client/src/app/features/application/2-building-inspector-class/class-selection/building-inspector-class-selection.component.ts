@@ -24,9 +24,6 @@ import { BuildingInspectorCountryOfWork } from 'src/app/models/building-inspecto
   templateUrl: './building-inspector-class-selection.component.html',
 })
 export class BuildingInspectorClassSelectionComponent extends PageComponent<ClassSelection> {
-  DerivedIsComplete(value: boolean): void {
-    // this.applicationService.model.BuildingInspectorClass!.ClassSelection!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
-  }
 
   public static route: string = BuildingInspectorRoutes.CLASS_SELECTION;
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
@@ -118,4 +115,9 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
       )
     }
   }
+
+  DerivedIsComplete(value: boolean): void {
+    // this.applicationService.model.BuildingInspectorClass!.ClassSelection!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
+  }
+
 }
