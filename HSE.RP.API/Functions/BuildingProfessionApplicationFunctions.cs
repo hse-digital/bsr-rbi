@@ -51,7 +51,7 @@ public class BuildingProfessionApplicationFunctions
     public Task<HttpResponseData> ValidateApplicationNumberEmail([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumberEmail/{EmailAddress}/{ApplicationNumber}")] HttpRequestData request,
     [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {ApplicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> applications,
-    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail.Email), {EmailAddress}, true)", Connection = "CosmosConnection")]
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail.Email, {EmailAddress}, true)", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> emails)
 
     {

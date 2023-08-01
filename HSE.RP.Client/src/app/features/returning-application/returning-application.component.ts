@@ -5,6 +5,8 @@ import { NavigationService } from 'src/app/services/navigation.service';
 import { TitleService } from 'src/app/services/title.service';
 import { PageComponent } from '../../helpers/page.component';
 import { verify } from 'crypto';
+import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
+import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
 
 export type VerificationData = {
   verificationEmail: string | undefined,
@@ -19,6 +21,7 @@ export class ReturningApplicationComponent extends PageComponent<string>{
 
   }
   onInit(applicationService: ApplicationService): void {
+    this.applicationService.model = new BuildingProfessionalModel();
       //throw new Error('Method not implemented.');
   }
   onSave(applicationService: ApplicationService): Promise<void> {

@@ -76,6 +76,8 @@ export class ReturningApplicationEnterDataComponent {
       this.errors.serviceError.hasError = true;
       this.errors.serviceError.errorText = "There was a problem with the service. Try again later.";
       this.sendingRequest = false;
+      throw error;
+
     }
 
     if (!this.verificationOption && !this.applicationNumber) {
@@ -109,6 +111,8 @@ export class ReturningApplicationEnterDataComponent {
           this.errors.serviceError.hasError = true;
           this.errors.serviceError.errorText = "There was a problem with the service. Try again later.";
           this.sendingRequest = false;
+          throw error;
+
         };
       } else if (this.verificationOption == 'email-option') {
         try{
@@ -119,6 +123,7 @@ export class ReturningApplicationEnterDataComponent {
           this.errors.serviceError.hasError = true;
           this.errors.serviceError.errorText = "There was a problem with the service. Try again later.";
           this.sendingRequest = false;
+          throw error;
         }
       }
 
