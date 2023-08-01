@@ -53,6 +53,7 @@ namespace HSE.RP.API.Services
                 .AppendPathSegment("api")
                 .AppendPathSegment("CheckIsTokenExpired")
                 .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
+                .AllowHttpStatus(HttpStatusCode.BadRequest)
                 .PostJsonAsync(new TokenRequestModel { Token = otpToken, TokenData = tokenPersonaIdentifier });
             if(response.StatusCode == (int)HttpStatusCode.ExpectationFailed)
             {

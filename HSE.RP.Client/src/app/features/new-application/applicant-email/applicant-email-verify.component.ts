@@ -39,6 +39,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<NumberComponent
   isOtpNotNumber = false;
   isOtpInvalidLength = false;
   isOtpEmpty = false;
+  isOtpExpired = false;
   dataSyncError = false;
   email?: string;
 
@@ -97,6 +98,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<NumberComponent
         } catch (error) {
           this.otpError = true;
           this.hasErrors = true;
+          this.isOtpExpired = await this.checkIfOTPTokenHasExpired();
           this.focusAndUpdateErrors();
           throw error;
         }
@@ -120,6 +122,13 @@ export class ApplicantEmailVerifyComponent extends PageComponent<NumberComponent
     this.saveAndContinue();
   }
 
+  async checkIfOTPTokenHasExpired() {
+    return await this.applicationService.checkIsTokenExpired(            
+      this.model!.Number.toString() ?? '',
+      this.email ?? ''
+    );
+  }
+
   navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(ApplicantPhoneComponent.route, this.activatedRoute);
   }
@@ -127,11 +136,13 @@ export class ApplicantEmailVerifyComponent extends PageComponent<NumberComponent
   getOtpError() {
     if (!this.isOtpEmpty && this.isOtpNotNumber) {
       return 'Your 6-digit security code must be a number, like 123456';
+    } else if (this.isOtpExpired) {
+      return 'Your 6-digit verification code has expired. Request a new verification code.'
     } else if (this.isOtpInvalidLength) {
       return 'You must enter your 6 digit security code';
     } else if (this.otpError) {
       return 'Enter the correct security code';
-    } else {
+    } else{
       return 'You must enter your 6 digit security code';
     }
   }

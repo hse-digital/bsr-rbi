@@ -103,5 +103,33 @@ namespace HSE.RP.API.Functions
             };
         }
 
+        [Function(nameof(IsOTPTokenExpired))]
+        public async Task<CustomHttpResponseData> IsOTPTokenExpired([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+        {
+
+            var otpValidationModel = await request.ReadAsJsonAsync<OTPValidationModel>();
+            
+            if(!otpValidationModel.Validate().IsValid)
+            {
+                return new CustomHttpResponseData
+                {
+                    HttpResponse = request.CreateResponse(HttpStatusCode.BadRequest)
+                };
+            }
+
+            var isOTPTokenExpired = await otpService.CheckIsTokenExpired(otpValidationModel.OTPToken, otpValidationModel.Data);
+            if(isOTPTokenExpired) {
+                return new CustomHttpResponseData
+                {
+                    HttpResponse = request.CreateResponse(HttpStatusCode.OK)
+                };
+            }
+
+            return new CustomHttpResponseData
+            {
+                HttpResponse = request.CreateResponse(HttpStatusCode.ExpectationFailed)
+            };
+        }
+
     }
 }

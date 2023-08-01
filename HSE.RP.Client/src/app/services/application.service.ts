@@ -53,6 +53,15 @@ export class ApplicationService {
     var xx = response;
   }
 
+  async checkIsTokenExpired(OTPToken: string, Data: string): Promise<boolean> {
+    return await firstValueFrom(
+      this.httpClient.post<boolean>('api/IsOTPTokenExpired', {
+        OTPToken: OTPToken,
+        Data: Data.toLowerCase(),
+      })
+    );
+  }
+
   async registerNewBuildingProfessionApplication(): Promise<void> {
     this.model.ApplicationStatus = ApplicationStatus.PhoneVerified;
     this.model = await firstValueFrom(
