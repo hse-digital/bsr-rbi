@@ -25,6 +25,7 @@ export class ReturningApplicationEnterDataComponent {
     applicationNumber: { hasError: false, errorText: '', anchorId: '' },
     phoneNumber: { hasError: false, errorText: '', anchorId: '' },
     verificationOption: { hasError: false, errorText: '', anchorId: '' },
+    serviceError: { hasError: false, errorText: '', anchorId: '' },
   };
 
   verificationEmail: string = '';
@@ -66,10 +67,16 @@ export class ReturningApplicationEnterDataComponent {
     this.errors.phoneNumber.hasError = false;
     this.errors.applicationNumber.hasError = false;
     this.errors.verificationOption.hasError = false;
+    this.errors.serviceError.hasError = false;
+    this.sendingRequest = false;
 
-    this.sendingRequest = true;
-
+    try{
     await this.isApplicationNumberValid();
+    }catch(error){
+      this.errors.serviceError.hasError = true;
+      this.errors.serviceError.errorText = "There was a problem with the service. Try again later.";
+      this.sendingRequest = false;
+    }
 
     if (!this.verificationOption && !this.applicationNumber) {
       this.errors.applicationNumber.errorText =
@@ -86,36 +93,55 @@ export class ReturningApplicationEnterDataComponent {
         this.isPhoneNumberValid();
       }
     }
-
     this.hasErrors =
       this.errors.emailAddress.hasError ||
       this.errors.applicationNumber.hasError ||
       this.errors.phoneNumber.hasError ||
-      this.errors.verificationOption.hasError;
+      this.errors.verificationOption.hasError ||
+      this.errors.serviceError.hasError;
+
     if (!this.hasErrors) {
       if (this.verificationOption == 'phone-option') {
+        try{
         await this.applicationService.sendVerificationSms(
-          this.verificationPhone!
-        );
+          this.verificationPhone!)
+        }catch(error){
+          this.errors.serviceError.hasError = true;
+          this.errors.serviceError.errorText = "There was a problem with the service. Try again later.";
+          this.sendingRequest = false;
+        };
       } else if (this.verificationOption == 'email-option') {
+        try{
         await this.applicationService.sendVerificationEmail(
           this.verificationEmail!
         );
+        }catch(error){
+          this.errors.serviceError.hasError = true;
+          this.errors.serviceError.errorText = "There was a problem with the service. Try again later.";
+          this.sendingRequest = false;
+        }
       }
 
-      this.VerificationData = {
-        verificationEmail: this.verificationEmail,
-        verificationPhone: this.verificationPhone,
-      };
+      if(!this.errors.serviceError.hasError)
+      {
+        this.VerificationData = {
+          verificationEmail: this.verificationEmail,
+          verificationPhone: this.verificationPhone,
+        };
+        this.onContinue.emit(this.VerificationData);
+      }
+      else
+      {
+        this.sendingRequest = false;
+        this.summaryError?.first?.focus();
+        this.titleService.setTitleError();
 
-      this.onContinue.emit(this.VerificationData);
+      }
     } else {
       this.sendingRequest = false;
       this.summaryError?.first?.focus();
       this.titleService.setTitleError();
     }
-
-    this.sendingRequest = false;
   }
 
   async isApplicationNumberValid() {
