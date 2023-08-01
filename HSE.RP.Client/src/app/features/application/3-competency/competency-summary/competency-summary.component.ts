@@ -38,7 +38,9 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   override onInit(applicationService: ApplicationService): void { }
 
-  override async onSave(applicationService: ApplicationService): Promise<void> { }
+  override async onSave(applicationService: ApplicationService): Promise<void> {
+    applicationService.model.ApplicationStatus = ApplicationStatus.CompetencyComplete;
+  }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return true;

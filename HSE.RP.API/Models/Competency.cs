@@ -4,12 +4,12 @@ namespace HSE.RP.API.Models
 {
     public record Competency
 	{
-		public string IndependentAssessmentStatus { get; set; } = string.Empty;
-        public string CompetencyAssesesmentOrganisation { get; set; } = string.Empty;
+		public IndependentAssessmentStatus IndependentAssessmentStatus { get; set; } 
+        public CompetencyAssesesmentOrganisation CompetencyAssesesmentOrganisation { get; set; } 
         public NoCompetencyAssessment NoCompetencyAssessment { get; set; }
         public CompetencyDateOfAssessment CompetencyDateOfAssessment { get; set; }
-        public CompetencyAssessmentCertificateNumber? CompetencyAssessmentCertificateNumber { get; set; }
-        public ComponentCompletionState CompletionState { get; set; }
+        public CompetencyAssessmentCertificateNumber CompetencyAssessmentCertificateNumber { get; set; }
+       
     }
 }
 

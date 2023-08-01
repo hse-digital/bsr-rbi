@@ -1,5 +1,6 @@
 ﻿using System;
 using HSE.RP.API.Enums;
+using HSE.RP.Domain.Entities;
 
 namespace HSE.RP.API.Models
 {

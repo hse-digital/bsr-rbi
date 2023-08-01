@@ -19,7 +19,7 @@ export class ReturningApplicationResendCodeComponent {
 
     async sendNewCode() {
         this.sendingRequest = true;
-        if(this.verificationOption === 'email') {
+        if(this.verificationOption === 'email-option') {
         await this.applicationService.sendVerificationEmail(this.emailAddress!);
         } else {
         await this.applicationService.sendVerificationSms(this.phoneNumber!);

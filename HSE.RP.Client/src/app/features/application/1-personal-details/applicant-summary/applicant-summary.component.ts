@@ -124,15 +124,7 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   async SyncAndContinue() {
-    this.processing=true;
-
-    try {
-      await this.applicationService.syncPersonalDetails();
-    } catch (error) {
-      this.focusAndUpdateErrors();
-      throw error;
-    }
-    this.processing=false;
+    await this.applicationService.syncPersonalDetails();
     this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
     this.saveAndContinue();
 
