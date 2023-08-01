@@ -149,11 +149,11 @@ export class ReturningApplicationEnterDataComponent {
       } else if (this.verificationOption == 'phone-option') {
         if (result.IsValidApplicationNumber && result.IsValid) {
           this.verificationPhone = result.PhoneNumber;
-        } else if (!result.IsValidApplicationNumber && result.IsValid) {
+        } else if (!result.IsValidApplicationNumber && result.IsValid ) {
           this.errors.applicationNumber.errorText =
             'Application number does not match this email address. Enter the correct 12 digit application number';
           this.errors.applicationNumber.anchorId = 'input-email-address';
-        } else if (result.IsValidApplicationNumber && !result.IsValid) {
+        } else if (result.IsValidApplicationNumber && !result.IsValid && this.errors.emailAddress.hasError==false) {
           this.errors.applicationNumber.errorText =
             'Your email does not match this application. Enter the correct email address';
         }
