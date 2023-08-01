@@ -4,14 +4,11 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
-import { takeLast } from 'rxjs';
-import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
-import { CompetencySummaryComponent } from '../competency-summary/competency-summary.component';
-import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { IComponentModel } from 'src/app/models/component. interface';
 import { CompetencyDateOfAssessment } from 'src/app/models/competency-date-of-assessment.model';
+import { CompetencySummaryComponent } from '../competency-summary/competency-summary.component';
 
 class DateInputControlDate implements IComponentModel {
   constructor(private containedModel: CompetencyDateOfAssessment) {}

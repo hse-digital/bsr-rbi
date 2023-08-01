@@ -10,7 +10,7 @@ export const CompetencyRoutes = {
   NO_COMPETENCY_ASSESSMENT: 'no-competency-assessment',
   COMPETENCY_ASSESSMENT_DATE: 'competency-assesesment-date',
   COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER: 'competency-assessment-certificate-number',
-  INDEPENDENT_ASSESSMENT_SUMMARY: 'independent-assessment-summary',
+  COMPETENCY_SUMMARY: 'competency-summary',
   TASK_LIST: ''
 };
 

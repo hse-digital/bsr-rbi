@@ -1,9 +1,0 @@
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [processing]="processing" [hideBackButton]=false>
-    <h1 class="govuk-heading-xl">Summary of your independent assessment</h1>
-    <govuk-summary-list>
-        <govuk-summary-list-row (onClick)="navigateTo(competencyRoutes.INDEPENDENT_COMPETENCY_STATUS)" (onKeyupEnter)="navigateTo(competencyRoutes.INDEPENDENT_COMPETENCY_STATUS)" key="Date of assessment"  [showAction]=true>{{this.applicationService.model.Competency!.IndependentAssessmentStatus}}</govuk-summary-list-row>
-        <govuk-summary-list-row (onClick)="navigateTo(competencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION)" (onKeyupEnter)="navigateTo(competencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION)" key="Assessment organisation"  [showAction]=true>{{this.applicationService.model.Competency!.CompetencyAssesesmentOrganisation}}</govuk-summary-list-row>
-        <govuk-summary-list-row (onClick)="navigateTo(competencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER)" (onKeyupEnter)="navigateTo(competencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER)" key="Certificate number"  [showAction]=true>{{this.applicationService.model.Competency?.CompetencyAssessmentCertificateNumber?.CertificateNumber}}</govuk-summary-list-row>
-        <govuk-summary-list-row (onClick)="navigateTo(competencyRoutes.COMPETENCY_ASSESSMENT_DATE)" (onKeyupEnter)="navigateTo(competencyRoutes.COMPETENCY_ASSESSMENT_DATE)" key="Date of assessment"  [showAction]=true>{{GetFormattedDate(this.applicationService.model.Competency!.CompetencyDateOfAssessment)}}</govuk-summary-list-row>
-    </govuk-summary-list>
-</govuk-formpage>
