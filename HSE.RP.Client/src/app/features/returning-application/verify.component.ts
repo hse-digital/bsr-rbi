@@ -76,7 +76,7 @@ export class ReturningApplicationVerifyComponent implements OnInit {
   private async doesSecurityCodeMatch(): Promise<boolean> {
     try {
       if(this.verificationOption == "email-option"){
-        await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress!);
+        //await this.applicationService.validateOTPToken(this.securityCode!, this.emailAddress!); --Redundant as token validated in continueApplication
         await this.applicationService.continueApplication( this.applicationNumber, this.securityCode!, this.verificationOption, this.emailAddress!, undefined);
         this.applicationService.model.StageStatus["EmailVerification"] == StageCompletionState.Complete
         this.applicationService.model.StageStatus["PhoneVerification"] == StageCompletionState.Complete
@@ -84,7 +84,7 @@ export class ReturningApplicationVerifyComponent implements OnInit {
         return true;
       }
       else if(this.verificationOption == "phone-option"){
-        await this.applicationService.validateOTPToken(this.securityCode!, this.phoneNumber!);
+        //await this.applicationService.validateOTPToken(this.securityCode!, this.phoneNumber!); --Redundant as token validated in continueApplication
         await this.applicationService.continueApplication(this.applicationNumber, this.securityCode!, this.verificationOption, undefined, this.phoneNumber!);
         this.applicationService.model.StageStatus["EmailVerification"] == StageCompletionState.Complete
         this.applicationService.model.StageStatus["PhoneVerification"] == StageCompletionState.Complete

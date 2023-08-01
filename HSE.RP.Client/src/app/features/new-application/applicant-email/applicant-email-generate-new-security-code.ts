@@ -7,12 +7,16 @@ import { ApplicationService } from '../../../services/application.service';
 import { ApplicantAddressComponent } from '../../application/1-personal-details/applicant-address/applicant-address.component';
 import { ApplicantSummaryComponent } from '../../application/1-personal-details/applicant-summary/applicant-summary.component';
 import { ApplicantEmailVerifyComponent } from './applicant-email-verify.component';
+import { IComponentModel } from 'src/app/models/component. interface';
+import { ApplicantEmail } from 'src/app/models/applicant-email.model';
+
+
 
 @Component({
   selector: 'hse-applicant-email-generate-new-security-code',
   templateUrl: './applicant-email-generate-new-security-code.component.html',
 })
-export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<string> {
+export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<ApplicantEmail> {
   DerivedIsComplete(value: boolean): void {
 
   }
@@ -22,7 +26,6 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<str
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: string;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
@@ -30,12 +33,11 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<str
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = applicationService.model.PersonalDetails?.ApplicantEmail?.Email
-;
+    this.model = applicationService.model.PersonalDetails?.ApplicantEmail!;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    await applicationService.sendVerificationEmail(this.model!)
+    await applicationService.sendVerificationEmail(this.model!.Email!)
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {

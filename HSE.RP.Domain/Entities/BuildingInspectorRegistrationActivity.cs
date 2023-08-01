@@ -10,19 +10,29 @@ public record BuildingInspectorRegistrationActivity(
     string ActivityId = null,
     string BuildingCategoryId = null,
     string BuildingProfessionApplicationId = null,
-    string ApplicantId = null,
-    string StatusCode = null
+    string BuildingInspectorId = null,
+    int? StatusCode = null,
+    int? StateCode = null
     ) : Entity(Id);
 
 public record DynamicsBuildingInspectorRegistrationActivity(
     string bsr_biregactivityId = null,
-    [property: JsonPropertyName("bsr_biactivityid.bind")]
+    [property: JsonPropertyName("bsr_biactivityid@odata.bind")]
     string buildingActivityReferenceId = null,
     [property: JsonPropertyName("bsr_biapplicationid@odata.bind")]
     string buidingProfessionApplicationReferenceId = null,
     [property: JsonPropertyName("bsr_bibuildingcategoryid@odata.bind")]
     string buidingCategoryReferenceId = null,
-    string statuscode = null
+    [property: JsonPropertyName("bsr_buildinginspectorid@odata.bind")]
+    string contactRefId = null,
+
+    string _bsr_biapplicationid_value = null,
+    string _bsr_biactivityid_value = null,
+    string _bsr_buildinginspectorid_value = null,
+    string _bsr_bibuildingcategoryid_value = null,
+
+    int? statuscode = null,
+    int? statecode = null
 ) : DynamicsEntity<BuildingInspectorRegistrationActivity>;
 
 public enum BuildingInspectorRegistrationActivityStatus
