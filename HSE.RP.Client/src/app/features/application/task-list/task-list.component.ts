@@ -59,6 +59,7 @@ import { StageCompletionState } from 'src/app/models/stage-completion-state.enum
 import { PaymentStatus } from 'src/app/models/payment-status.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyAssessmentCertificateNumberComponent } from '../3-competency/assessment-certificate-number/competency-assessment-certificate-number.component';
+import { IndependentAssessmentCheckAnswersComponent } from '../3-competency/independent-assessment-check-answers/independent-assessment-check-answers.component';
 
 
 interface ITaskListParent {
@@ -263,7 +264,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       },
       {
         prompt: "Summary", relativeRoute: (): TaskListRoute => {
-          return { route: CompetencySummaryComponent.route}
+          return { route: IndependentAssessmentCheckAnswersComponent.route}
         }, getStatus: (): TaskStatus => TaskStatus.None
       },
     ]

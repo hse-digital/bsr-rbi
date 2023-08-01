@@ -15,6 +15,7 @@ import { CompetencyAssessmentDateComponent } from './assesesment-date/competency
 import { CompetencySummaryComponent } from './competency-summary/competency-summary.component';
 import { NoCompetencyAssessmentComponent } from './no-competency-assessment/no-competency-assessment.component';
 import { CompetencyAssessmentCertificateNumberComponent } from './assessment-certificate-number/competency-assessment-certificate-number.component';
+import { IndependentAssessmentCheckAnswersComponent } from './independent-assessment-check-answers/independent-assessment-check-answers.component';
 
 const routes = new HseRoutes([
   HseRoute.protected(CompetencyIndependentStatusComponent.route, CompetencyIndependentStatusComponent, CompetencyIndependentStatusComponent.title),
@@ -23,7 +24,7 @@ const routes = new HseRoutes([
   HseRoute.protected(CompetencyAssessmentCertificateNumberComponent.route, CompetencyAssessmentCertificateNumberComponent, CompetencyAssessmentCertificateNumberComponent.title),
   HseRoute.protected(CompetencyAssessmentDateComponent.route, CompetencyAssessmentDateComponent, CompetencyAssessmentDateComponent.title),
   HseRoute.protected(NoCompetencyAssessmentComponent.route, NoCompetencyAssessmentComponent, NoCompetencyAssessmentComponent.title),
-  HseRoute.protected(CompetencySummaryComponent.route, CompetencySummaryComponent, CompetencySummaryComponent.title),
+  HseRoute.protected(IndependentAssessmentCheckAnswersComponent.route, IndependentAssessmentCheckAnswersComponent, IndependentAssessmentCheckAnswersComponent.title),
 ]);
 
 @NgModule({
@@ -34,7 +35,8 @@ CompetencyAssessmentOrganisationComponent,
 CompetencyAssessmentCertificateNumberComponent,
 CompetencyAssessmentDateComponent,
 CompetencySummaryComponent,
-NoCompetencyAssessmentComponent
+NoCompetencyAssessmentComponent,
+IndependentAssessmentCheckAnswersComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
