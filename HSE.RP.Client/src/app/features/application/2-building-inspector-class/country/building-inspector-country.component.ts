@@ -69,7 +69,6 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
 
     applicationService.model.ApplicationStatus =
       ApplicationStatus.BuildingInspectorClassComplete;
-
       applicationService.model.InspectorClass!.InspectorCountryOfWork = demandModel;
       applicationService.model.InspectorClass!.InspectorCountryOfWork.CompletionState = ComponentCompletionState.Complete;
   }
