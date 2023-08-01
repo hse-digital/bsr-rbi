@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
-import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
@@ -29,7 +27,6 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   constructor(
     activatedRoute: ActivatedRoute,
-    applicationService: ApplicationService
   ) {
     super(activatedRoute);
     this.updateOnSave = true;
@@ -84,18 +81,18 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   public getIndependentAssessmentStatus(): string {
     return this.applicationService.model.Competency
-      ?.IndependentAssessmentStatus === 'yes'
+      ?.IndependentAssessmentStatus?.IAStatus === 'yes'
       ? 'Yes'
       : 'No';
   }
 
   public isCompetencyAssessmentStatusYes(): boolean {
-    return this.applicationService.model.Competency?.IndependentAssessmentStatus === 'yes';
+    return this.applicationService.model.Competency?.IndependentAssessmentStatus?.IAStatus === 'yes';
   }
 
   public getCompetencyAssessmentOrg(): string {
     return this.applicationService.model.Competency
-      ?.CompetencyAssesesmentOrganisation === 'BSCF'
+      ?.CompetencyAssesesmentOrganisation?.ComAssesesmentOrganisation === 'BSCF'
       ? 'Building Safety Competence Foundation (BSCF)'
       : 'Chartered Association of Building Engineers (CABE)';
   }

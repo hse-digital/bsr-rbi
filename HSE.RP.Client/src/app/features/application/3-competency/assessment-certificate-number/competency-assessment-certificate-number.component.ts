@@ -3,12 +3,9 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { ApplicationService } from '../../../../services/application.service';
-import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { CompetencyAssessmentDateComponent } from '../assesesment-date/competency-assesesment-date.component';
-import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
-import { error } from 'console';
 import { CompetenceyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
 import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 
@@ -32,7 +29,6 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
 
   constructor(
     activatedRoute: ActivatedRoute,
-    applicationService: ApplicationService
   ) {
     super(activatedRoute);
   }
@@ -46,7 +42,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
       this.certificateNumber = applicationService.model.Competency!.CompetencyAssessmentCertificateNumber.CertificateNumber!;
     }
     
-    this.organisationPrefix = applicationService.model.Competency!.CompetencyAssesesmentOrganisation!;
+    this.organisationPrefix = applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.ComAssesesmentOrganisation;
     applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.InProgress;
   }
 
@@ -76,9 +72,6 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
 
     // 3-4 character prefix (CABE or BSCF) with a 20 character max string so CABE1262IJSBFAHS840.
     let prefix = this.certificateNumber.slice(0, 4);
-
-    console.log()
-
     if (prefix !== this.organisationPrefix) {
       this.errorMessage = "You must enter an assessment certificate number in the correct format";
       this.hasErrors = true;

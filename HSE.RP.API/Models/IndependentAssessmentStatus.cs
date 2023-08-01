@@ -2,9 +2,10 @@
 
 namespace HSE.RP.API.Models
 {
-    public record CompetencyAssessmentCertificateNumber
-    {
-        public string CertificateNumber { get; set; } = string.Empty;
+    public record IndependentAssessmentStatus
+	{
+		public string IAStatus { get; set; }
         public ComponentCompletionState CompletionState { get; set; } = ComponentCompletionState.NotStarted;
     }
 }
+

@@ -2,21 +2,17 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
-import { takeLast } from 'rxjs';
-import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
-import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { CompetencyAssessmentCertificateNumberComponent } from '../assessment-certificate-number/competency-assessment-certificate-number.component';
-import { Competency } from 'src/app/models/competency.model';
+import { CompetencyAssesesmentOrganisation } from 'src/app/models/competency-assesesment-organisation.model';
 
 @Component({
   selector: 'hse-competency-assesesment-organisation',
   templateUrl: './competency-assesesment-organisation.component.html',
 })
-export class CompetencyAssessmentOrganisationComponent extends PageComponent<string> {
+export class CompetencyAssessmentOrganisationComponent extends PageComponent<CompetencyAssesesmentOrganisation> {
   public static route: string =
     CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION;
   static title: string =
@@ -24,14 +20,10 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: string;
   errorMessage: string = '';
   selectedOption?: string = '';
 
-  constructor(
-    activatedRoute: ActivatedRoute,
-    applicationService: ApplicationService
-  ) {
+  constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
   }
 
@@ -42,29 +34,34 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
       !applicationService.model.Competency?.CompetencyAssesesmentOrganisation
     ) {
       applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
+        new CompetencyAssesesmentOrganisation();
+      applicationService.model.Competency!.CompetencyAssesesmentOrganisation.ComAssesesmentOrganisation =
         'CABE';
     }
 
+    applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.CompletionState =
+      ComponentCompletionState.InProgress;
+
     this.selectedOption =
-      applicationService.model.Competency!.CompetencyAssesesmentOrganisation ===
-      'BSCF'
-        ? applicationService.model.Competency?.CompetencyAssesesmentOrganisation
+      applicationService.model.Competency!.CompetencyAssesesmentOrganisation
+        .ComAssesesmentOrganisation === 'BSCF'
+        ? applicationService.model.Competency!.CompetencyAssesesmentOrganisation
+            .ComAssesesmentOrganisation
         : 'CABE';
 
-        this.applicationService = applicationService;
+    this.applicationService = applicationService;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
-      this.model;
-
     if (['CABE', 'BSCF'].includes(this.selectedOption!)) {
-      applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
-        this.selectedOption;
+      applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.ComAssesesmentOrganisation =
+        this.selectedOption!;
     }
 
-    // applicationService.model.ApplicationStatus =
-    //   ApplicationStatus.CompetencyComplete;
+    if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
+      applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.CompletionState =
+        ComponentCompletionState.Complete;
+    }
   }
 
   override canAccess(
@@ -86,8 +83,9 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<str
   }
 
   DerivedIsComplete(value: boolean): void {
-    // this.applicationService.model.Competency!.CompletionState = value
-    //   ? ComponentCompletionState.Complete
-    //   : ComponentCompletionState.InProgress;
+    this.applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.CompletionState =
+      value
+        ? ComponentCompletionState.Complete
+        : ComponentCompletionState.InProgress;
   }
 }

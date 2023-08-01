@@ -4,9 +4,9 @@ import { PageComponent } from 'src/app/helpers/page.component';
 import { ApplicationService } from 'src/app/services/application.service';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { environment } from 'src/environments/environment';
-import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { NoCompetencyAssessment } from 'src/app/models/no-competency-assessment.model';
 import { CompetencySummaryComponent } from '../competency-summary/competency-summary.component';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-no-competency-assessment',
@@ -60,8 +60,10 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
       demandModel[value] = true;
     });
 
-    applicationService.model.ApplicationStatus =
-      ApplicationStatus.CompetencyComplete;
+    if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
+      applicationService.model.Competency!.NoCompetencyAssessment!.CompletionState =
+        ComponentCompletionState.Complete;
+    }
   }
   override canAccess(
     applicationService: ApplicationService,
@@ -83,7 +85,12 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
     );
   }
 
-  DerivedIsComplete(value: boolean): void {}
+  DerivedIsComplete(value: boolean): void {
+    this.applicationService.model.Competency!.NoCompetencyAssessment!.CompletionState =
+      value
+        ? ComponentCompletionState.Complete
+        : ComponentCompletionState.InProgress;
+  }
 
   public DemandModel(): NoCompetencyAssessment {
     if (this.model === undefined || this.model === null) {
