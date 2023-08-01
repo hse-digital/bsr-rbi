@@ -9,7 +9,19 @@
   <govuk-body>
     <h1 class="govuk-heading-l">Summary of your competency assessment</h1>
 
-    <govuk-summary-list>
+    <govuk-summary-list *ngIf="!isCompetencyAssessmentStatusYes()">
+      <govuk-summary-list-row
+        (onClick)="navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)"
+        (onKeyupEnter)="
+          navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)
+        "
+        key="Assessment"
+        [showAction]="true"
+        >{{ getIndependentAssessmentStatus() }}
+      </govuk-summary-list-row>
+    </govuk-summary-list>
+
+    <govuk-summary-list *ngIf="isCompetencyAssessmentStatusYes()">
       <govuk-summary-list-row
         (onClick)="navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)"
         (onKeyupEnter)="
@@ -21,7 +33,6 @@
       </govuk-summary-list-row>
 
       <govuk-summary-list-row
-        *ngIf="isCompetencyAssessmentStatusYes()"
         (onClick)="
           navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION)
         "
@@ -33,7 +44,6 @@
         >{{ getCompetencyAssessmentOrg() }}
       </govuk-summary-list-row>
       <govuk-summary-list-row
-        *ngIf="isCompetencyAssessmentStatusYes()"
         (onClick)="
           navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER)
         "
@@ -45,7 +55,6 @@
         >{{ getCompetencyAssessmentCertificateNo() }}
       </govuk-summary-list-row>
       <govuk-summary-list-row
-        *ngIf="isCompetencyAssessmentStatusYes()"
         (onClick)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE)"
         (onKeyupEnter)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE)"
         key="Date of assessment certificate"
