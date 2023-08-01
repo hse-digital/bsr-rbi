@@ -4,7 +4,7 @@
 
   <h1 class="govuk-heading-l">Do you want to add an alternative telephone number?</h1>
 
-  <govuk-warning message="Your alternative telephone number will not be published." background="#0"></govuk-warning>
+  <govuk-warning message="Your alternative phone number will not be published." background="#0"></govuk-warning>
 
   <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-alternative-phone" [message]="errorMessage"/>
@@ -16,17 +16,17 @@
       <govuk-input
         *ngIf="selectedOption === 'yes'"
         id="applicant-alternative-phone"
-        label="Alternative telephone number"
+        label="Alternative phone number"
         [(model)]="model!.PhoneNumber"
         labelClass="govuk-label--s"
-        hint="Enter a UK telephone or mobile number with or without spaces. For example, '01234567890' or '+447654321098'."
+        hint="Enter a UK phone or mobile number with or without spaces. For example, '01234567890' or '+447654321098'."
         [errorText]="errorMessage"
         hintClass="no-margin-top"
         (onKeyupEnter)="saveAndContinue()"
       />
 
     </govuk-radio>
-    
+
     <govuk-radio label="No" value="no" id="no" [model]="selectedOption">
 
     </govuk-radio>
