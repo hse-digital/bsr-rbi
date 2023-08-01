@@ -1,6 +1,6 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()"
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="SyncAndContinue()"
   [hideBackButton]=true>
 
   <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class === BuildingInspectorClassType.Class1">
@@ -11,7 +11,7 @@
 
     <!-- class 1 summary list -->
     <govuk-summary-list>
-      <govuk-summary-list-row 
+      <govuk-summary-list-row
         (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
         (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
         key="ClassSelection"
@@ -21,7 +21,7 @@
         Class 1 building inspector
       </govuk-summary-list-row>
 
-      <govuk-summary-list-row 
+      <govuk-summary-list-row
         (onClick)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"
         (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"
         key="Country"
@@ -39,7 +39,7 @@
   </div>
 
   <!-- class 2 or 3 summary list -->
-  <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class !== BuildingInspectorClassType.Class1">    
+  <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class !== BuildingInspectorClassType.Class1">
     <h1 class="govuk-heading-l">
       <span class="govuk-caption-l">Class {{applicationService.model.InspectorClass?.ClassType?.Class}} building inspector</span>
       Summary of building inspector class
@@ -119,7 +119,7 @@
         </dd>
         <dd class="govuk-summary-list__actions">
           <div *ngIf="assessPlansCategories">
-            <a class="govuk-link" role="link" 
+            <a class="govuk-link" role="link"
               (click)="navigateTo(assessPlansLink)"
               (keyup.enter)="navigateTo(assessPlansLink)" tabindex="0"
             >
@@ -130,7 +130,7 @@
 
           <br *ngIf="assessPlansCategories === 'false'">
           <br *ngIf="assessPlansCategories">
-          
+
           <a class="govuk-link" role="link" *ngIf="inspectionCategories"
             (click)="navigateTo(inspectionLink)"
             (keyup.enter)="navigateTo(inspectionLink)" tabindex="0"

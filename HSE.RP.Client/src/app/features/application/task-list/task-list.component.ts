@@ -142,7 +142,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   override async onInit(applicationService: ApplicationService): Promise<void> {
     this.model = applicationService.model;
     this.checkingStatus = false;
-    console.log(applicationService.model)
   }
 
   getModelStatus(model?: IComponentModel): TaskStatus {
@@ -216,17 +215,12 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       {
         prompt: "Class selection", relativeRoute: (): TaskListRoute => {
           return { route: BuildingInspectorClassSelectionComponent.route}
-        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.NotStarted
-      },
-      {
-        prompt: "Class details", relativeRoute: (): TaskListRoute => {
-          return { route: BuildingInspectorClassSelectionComponent.route}
-        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.InspectorClass?.ClassType)
       },
       {
         prompt: "Country", relativeRoute: (): TaskListRoute => {
           return { route: BuildingInspectorCountryComponent.route}
-        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.InspectorClass?.InspectorCountryOfWork)
       },
       {
         prompt: "Summary", relativeRoute: (): TaskListRoute => {

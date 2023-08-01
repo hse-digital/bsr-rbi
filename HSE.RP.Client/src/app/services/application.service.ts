@@ -47,7 +47,7 @@ export class ApplicationService {
     var response = await firstValueFrom(
       this.httpClient.post('api/ValidateOTPToken', {
         OTPToken: OTPToken,
-        Data: Data,
+        Data: Data.toLowerCase(),
       })
     );
     var xx = response;
@@ -87,14 +87,14 @@ export class ApplicationService {
     if (ValidationOption === 'email-option') {
       let application: BuildingProfessionalModel = await firstValueFrom(
         this.httpClient.get<BuildingProfessionalModel>(
-          `api/GetApplicationEmail/${ApplicationNumber}/${EmailAddress}/${OTPToken}`
+          `api/GetApplicationEmail/${ApplicationNumber.toUpperCase()}/${EmailAddress}/${OTPToken}`
         )
       );
       this.model = application;
     } else if (ValidationOption === 'phone-option') {
       let application: BuildingProfessionalModel = await firstValueFrom(
         this.httpClient.get<BuildingProfessionalModel>(
-          `api/GetApplicationPhone/${ApplicationNumber}/${PhoneNumber}/${OTPToken}`
+          `api/GetApplicationPhone/${ApplicationNumber.toUpperCase()}/${PhoneNumber}/${OTPToken}`
         )
       );
       this.model = application;
@@ -176,6 +176,12 @@ export class ApplicationService {
   async syncPersonalDetails(): Promise<void> {
     await firstValueFrom(
       this.httpClient.post(`api/SyncPersonalDetails`, this.model)
+    );
+  }
+
+  async syncBuildingInspectorClass(): Promise<void> {
+    await firstValueFrom(
+      this.httpClient.post(`api/SyncBuildingInspectorClass`, this.model)
     );
   }
 }

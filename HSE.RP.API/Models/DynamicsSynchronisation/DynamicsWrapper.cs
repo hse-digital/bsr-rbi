@@ -6,6 +6,7 @@ namespace HSE.RP.API.Models.DynamicsSynchronisation;
 public record BuildingProfessionApplicationWrapper(BuildingProfessionApplicationModel Model, DynamicsBuildingProfessionApplication DynamicsBuildingProfessionApplication/*, ApplicationStatus Stage*/);
 
 public record BuildingProfessionApplicationPayment(string BuildingProfessionApplicationId, PaymentResponseModel Payment);
+public record BuildingInspectorRegistrationClassWrapper(BuildingProfessionApplicationModel BuildingProfessionApplicationModel, DynamicsBuildingInspectorRegistrationClass dynamicsBuildingInspectorRegistrationClass);
 
 public record ContactWrapper(Contact Model, DynamicsContact DynamicsContact);
 

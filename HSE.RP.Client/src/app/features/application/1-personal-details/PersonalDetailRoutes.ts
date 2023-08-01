@@ -12,17 +12,19 @@ export const PersonalDetailRoutes = {
   NATIONAL_INS_NUMBER: 'applicant-national-insurance-number',
   PROOF_OF_ID: 'applicant-photo',
   SUMMARY: 'applicant-summary',
-  TASK_LIST: ''
-}
+  TASK_LIST: '',
+};
 /// <summary>
 /// This class is used to navigate to the different components of
 /// the personal details section or back to the task list.
 /// </summary>
 @Injectable({ providedIn: 'root' })
 export class PersonalDetailRouter {
-  constructor(private navigationService: NavigationService) {
-  }
-  public navigateTo(model: BuildingProfessionalModel, component: string): Promise<boolean>  {
+  constructor(private navigationService: NavigationService) {}
+  public navigateTo(
+    model: BuildingProfessionalModel,
+    component: string
+  ): Promise<boolean> {
     // This initial will bring the user to the task list.
     const taskListRoute: string = `application/${model.id}`;
     var useRoute = taskListRoute;
@@ -32,5 +34,5 @@ export class PersonalDetailRouter {
     }
 
     return this.navigationService.navigate(useRoute);
-  };
+  }
 }

@@ -49,9 +49,9 @@ public class BuildingProfessionApplicationFunctions
 
     [Function(nameof(ValidateApplicationNumberEmail))]
     public Task<HttpResponseData> ValidateApplicationNumberEmail([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumberEmail/{EmailAddress}/{ApplicationNumber}")] HttpRequestData request,
-    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber}", Connection = "CosmosConnection")]
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {ApplicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> applications,
-    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail.Email, {EmailAddress}, true)", Connection = "CosmosConnection")]
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail.Email), {EmailAddress}, true)", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> emails)
 
     {
@@ -77,7 +77,7 @@ public class BuildingProfessionApplicationFunctions
 
     [Function(nameof(ValidateApplicationNumberPhone))]
     public Task<HttpResponseData> ValidateApplicationNumberPhone([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "ValidateApplicationNumberPhone/{PhoneNumber}/{ApplicationNumber}")] HttpRequestData request,
-    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber}", Connection = "CosmosConnection")]
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {ApplicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> applications,
     [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantPhone.PhoneNumber, {PhoneNumber}, true)", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> phoneNumbers)
@@ -123,7 +123,7 @@ public class BuildingProfessionApplicationFunctions
 
     [Function(nameof(GetApplicationPhone))]
     public async Task<HttpResponseData> GetApplicationPhone([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetApplicationPhone/{ApplicationNumber}/{PhoneNumber}/{OTPToken}")] HttpRequestData request,
-    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and c.PersonalDetails.ApplicantPhone.PhoneNumber = {PhoneNumber}", PartitionKey = "{applicationNumber}", Connection = "CosmosConnection")]
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {ApplicationNumber} and c.PersonalDetails.ApplicantPhone.PhoneNumber = {PhoneNumber}", PartitionKey = "{ApplicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> buildingProfessionApplications, string otpToken)
     {
         if (buildingProfessionApplications.Any())
@@ -140,7 +140,7 @@ public class BuildingProfessionApplicationFunctions
 
     [Function(nameof(GetApplicationEmail))]
     public async Task<HttpResponseData> GetApplicationEmail([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetApplicationEmail/{ApplicationNumber}/{EmailAddress}/{OTPToken}")] HttpRequestData request,
-    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {applicationNumber} and c.PersonalDetails.ApplicantEmail.Email = {EmailAddress}", PartitionKey = "{applicationNumber}", Connection = "CosmosConnection")]
+    [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {ApplicationNumber} and c.PersonalDetails.ApplicantEmail.Email = {EmailAddress}", PartitionKey = "{ApplicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> buildingProfessionApplications, string otpToken)
     {
         if (buildingProfessionApplications.Any())
@@ -162,6 +162,7 @@ public class BuildingProfessionApplicationFunctions
         var validation = buildingProfessionApplicationModel.Validate();
         if (!validation.IsValid)
         {
+
             return await request.BuildValidationErrorResponseDataAsync(validation);
         }
 
