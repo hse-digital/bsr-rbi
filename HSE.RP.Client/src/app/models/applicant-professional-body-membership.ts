@@ -23,6 +23,7 @@ export class ApplicantProfessionBodyMemberships {
     this.Reset(ProfessionalBodies.CIOB.BodyCode);
     this.Reset(ProfessionalBodies.OTHER.BodyCode);
   }
+  IsProfessionBodyRelevantYesNo: string = 'no';
   RICS: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
   CABE: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
   CIOB: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
