@@ -2,58 +2,87 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
-import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ApplicationService } from '../../../../services/application.service';
-import { takeLast } from 'rxjs';
-import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ProfessionalActivityEmploymentTypeComponent } from '../employment-type/professional-activity-employment-type.component';
-import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { ProfessionalBodiesMember } from 'src/app/models/professional-bodies-memeber.model';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ProfessionalActivityRoutes } from '../ProfessionalActivityRoutes';
 
 @Component({
   selector: 'hse-professional-body-memberships',
   templateUrl: './professional-body-memberships.component.html',
 })
-export class ProfessionalBodyMembershipsComponent extends PageComponent<string> {
-  DerivedIsComplete(value: boolean): void {
+export class ProfessionalBodyMembershipsComponent extends PageComponent<ProfessionalBodiesMember> {
+  // public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_BODY_MEMBERSHIPS;
 
-  }
-
-  public static route: string = "professional-body-memberships";
-  static title: string = "Professional activity - Register as a building inspector - GOV.UK";
+  public static route: string = 'professional-body-memberships';
+  static title: string =
+    'Professional activity - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
-  photoHasErrors = false;
-  override model?: string;
+  errorMessage: string = '';
+  selectedOption: string = 'no';
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
-    this.updateOnSave = false;
   }
 
   override onInit(applicationService: ApplicationService): void {
-    //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
+    this.updateOnSave = true;
+
+    if (!applicationService.model.ProfessionalActivity) {
+      applicationService.model.ProfessionalActivity = {};
+    }
+
+    if (
+      applicationService.model.ProfessionalActivity?.ProfessionalBodiesMember ==
+      null
+    ) {
+      applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember =
+        new ProfessionalBodiesMember();
+      this.selectedOption = 'no';
+    }
+
+    this.selectedOption = applicationService.model.ProfessionalActivity
+      ?.ProfessionalBodiesMember
+      ? applicationService.model.ProfessionalActivity?.ProfessionalBodiesMember!
+          .Membership!
+      : 'no';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.ProfessionalActivityComplete;
-   }
+    if (['no', 'yes'].includes(this.selectedOption)) {
+      applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.Membership =
+        this.selectedOption;
+    }
 
-  override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return true;
-    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
-
+    if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
+      applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
+        ComponentCompletionState.Complete;
+    }
   }
 
+  override canAccess(
+    applicationService: ApplicationService,
+    routeSnapshot: ActivatedRouteSnapshot
+  ): boolean {
+    return true;
+  }
 
   override isValid(): boolean {
     return true;
-/*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
-    return !this.phoneNumberHasErrors; */
-
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ProfessionalActivityEmploymentTypeComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(
+      ProfessionalActivityEmploymentTypeComponent.route,
+      this.activatedRoute
+    );
   }
-
+  DerivedIsComplete(value: boolean): void {
+    this.applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
+      value
+        ? ComponentCompletionState.Complete
+        : ComponentCompletionState.InProgress;
+  }
 }

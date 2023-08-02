@@ -4,9 +4,9 @@ namespace HSE.RP.API.Models
 {
     public record DateBase
 	{
-		public required string Day { get; set; }
-        public required string Month { get; set; }
-        public required string Year { get; set; }
+        public string Day { get; set; } = string.Empty;
+        public  string Month { get; set; } = string.Empty;
+        public  string Year { get; set; } = string.Empty;
 
     }
 }

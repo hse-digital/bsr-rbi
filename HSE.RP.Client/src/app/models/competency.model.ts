@@ -1,5 +1,4 @@
 import { CompetencyDateOfAssessment } from './competency-date-of-assessment.model';
-import { ComponentCompletionState } from './component-completion-state.enum';
 import { NoCompetencyAssessment } from './no-competency-assessment.model';
 import { CompetenceyAssessmentCertificateNumber } from './competency-assessment-certificate-number.model';
 import { IndependentAssessmentStatus } from './independent-assessment-status.model';
@@ -10,11 +9,8 @@ export class Competency {
     new IndependentAssessmentStatus();
   CompetencyAssesesmentOrganisation?: CompetencyAssesesmentOrganisation =
     new CompetencyAssesesmentOrganisation();
-  CompetencyDateOfAssessment: CompetencyDateOfAssessment = {};
+  CompetencyDateOfAssessment?: CompetencyDateOfAssessment = new CompetencyDateOfAssessment();
   NoCompetencyAssessment?: NoCompetencyAssessment = { Declaration: false };
   CompetencyAssessmentCertificateNumber?: CompetenceyAssessmentCertificateNumber =
     new CompetenceyAssessmentCertificateNumber();
-
-  // CompletionState?: ComponentCompletionState =
-  //   ComponentCompletionState.NotStarted;
 }

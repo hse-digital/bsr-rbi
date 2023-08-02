@@ -13,20 +13,35 @@ import { ProfessionalActivityEmploymentTypeComponent } from './employment-type/p
 import { ProfessionalActivityEmploymentDetailsComponent } from './employment-details/professional-activity-employment-details.component';
 import { ProfessionalActivitySummaryComponent } from './professional-activity-summary/professional-activity-summary.component';
 
-
 const routes = new HseRoutes([
-  HseRoute.protected(ProfessionalBodyMembershipsComponent.route, ProfessionalBodyMembershipsComponent, ProfessionalBodyMembershipsComponent.title),
-  HseRoute.protected(ProfessionalActivityEmploymentTypeComponent.route, ProfessionalActivityEmploymentTypeComponent, ProfessionalActivityEmploymentTypeComponent.title),
-  HseRoute.protected(ProfessionalActivityEmploymentDetailsComponent.route, ProfessionalActivityEmploymentDetailsComponent, ProfessionalActivityEmploymentDetailsComponent.title),
-  HseRoute.protected(ProfessionalActivitySummaryComponent.route, ProfessionalActivitySummaryComponent, ProfessionalActivitySummaryComponent.title),
+  HseRoute.protected(
+    ProfessionalBodyMembershipsComponent.route,
+    ProfessionalBodyMembershipsComponent,
+    ProfessionalBodyMembershipsComponent.title
+  ),
+  HseRoute.protected(
+    ProfessionalActivityEmploymentTypeComponent.route,
+    ProfessionalActivityEmploymentTypeComponent,
+    ProfessionalActivityEmploymentTypeComponent.title
+  ),
+  HseRoute.protected(
+    ProfessionalActivityEmploymentDetailsComponent.route,
+    ProfessionalActivityEmploymentDetailsComponent,
+    ProfessionalActivityEmploymentDetailsComponent.title
+  ),
+  HseRoute.protected(
+    ProfessionalActivitySummaryComponent.route,
+    ProfessionalActivitySummaryComponent,
+    ProfessionalActivitySummaryComponent.title
+  ),
 ]);
 
 @NgModule({
   declarations: [
-ProfessionalBodyMembershipsComponent,
-ProfessionalActivityEmploymentTypeComponent,
-ProfessionalActivityEmploymentDetailsComponent,
-ProfessionalActivitySummaryComponent
+    ProfessionalBodyMembershipsComponent,
+    ProfessionalActivityEmploymentTypeComponent,
+    ProfessionalActivityEmploymentDetailsComponent,
+    ProfessionalActivitySummaryComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
@@ -34,9 +49,14 @@ ProfessionalActivitySummaryComponent
     HseAngularModule,
     CommonModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [HttpClient, ApplicationService, CookiesBannerService, ...routes.getProviders()]
+  providers: [
+    HttpClient,
+    ApplicationService,
+    CookiesBannerService,
+    ...routes.getProviders(),
+  ],
 })
 export class ProfessionalActivityModule {
   static baseRoute: string = 'professional-activity';

@@ -59,6 +59,7 @@ import { StageCompletionState } from 'src/app/models/stage-completion-state.enum
 import { PaymentStatus } from 'src/app/models/payment-status.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyAssessmentCertificateNumberComponent } from '../3-competency/assessment-certificate-number/competency-assessment-certificate-number.component';
+import { ProfessionalActivityModule } from '../4-professional-activity/application.professional-activity.module';
 
 
 interface ITaskListParent {
@@ -263,11 +264,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     ]
   },
   {
-    prompt: "Professional Activity", number: "4.", relativeRoute: CompetencyModule.baseRoute, children: [
+    prompt: "Professional Activity", number: "4.", relativeRoute: ProfessionalActivityModule.baseRoute, children: [
       {
         prompt: "Professional body membership", relativeRoute: (): TaskListRoute => {
           return { route: ProfessionalBodyMembershipsComponent.route}
-        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.ProfessionalActivity?.ProfessionalBodiesMember)
       },
       {
         prompt: "Employment type", relativeRoute: (): TaskListRoute => {
