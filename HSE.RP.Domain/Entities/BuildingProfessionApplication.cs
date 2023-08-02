@@ -10,6 +10,7 @@ public record BuildingProfessionApplication(
  BuildingProfessionType? BuildingProfessionTypeCode = null,
  string AssessmentOrganisationId = null,
 string AsessmentCertificateNumber = null,
+bool HasIndependentAssessment = false,
     DateOnly? AssessmentdDate = null
 
     ) : Entity(Id);
@@ -21,12 +22,12 @@ public record DynamicsBuildingProfessionApplication(
     BuildingProfessionType? bsr_buildingprofessiontypecode = null,
     string bsr_buildingproappid = null,
     string bsr_buildingprofessionapplicationid = null,
-    bool? bsr_hasindependentassessment = null,
     [property: JsonPropertyName("bsr_assessmentorganisationid@odata.bind")]
     string bsr_assessmentorganisationid = null,
     int? statuscode = null,
     string bsr_assessmentcertnumber = null,
-    DateOnly? bsr_assessmentdate = null
+    DateOnly? bsr_assessmentdate = null,
+    YesNoOption? bsr_hasindependentassessment = null
 ) : DynamicsEntity<BuildingProfessionApplication>;
 
 

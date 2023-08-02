@@ -82,6 +82,7 @@ public class DynamicsSynchronisationFunctions
         }
     }
 
+
     [Function(nameof(SynchronisePayment))]
     public async Task SynchronisePayment([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
     {
@@ -169,6 +170,19 @@ public class DynamicsSynchronisationFunctions
             //Check which registration class is selected in model
             var selectedRegistrationClassId = (int)buildingProfessionApplicationModel.InspectorClass.ClassType.Class;
 
+            //Set Building Profession Application (bsr_buildingprofessionapplication)	bsr_hasindependentassessment = no
+            if (selectedRegistrationClassId == (int) BuildingInspectorClassType.Class1)
+            {
+                var dynamicsBuildingApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
+
+                if (dynamicsBuildingApplication != null)
+                {
+                    await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingApplication with {
+                        bsr_hasindependentassessment = YesNoOption.Yes
+                    }));
+                }
+            }
+
             //If the selected registration class is not in the list of registration classes or is deactivated, then add/reactivate it
             if (!dynamicsRegistrationClasses.Any(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[selectedRegistrationClassId] && x.statecode != 1))
             {
@@ -177,7 +191,7 @@ public class DynamicsSynchronisationFunctions
                     BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                     ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                     ClassId = BuildingInspectorClassNames.Ids[selectedRegistrationClassId],
-                    StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
+                    StatusCode = selectedRegistrationClassId == (int)BuildingInspectorClassType.Class1 ? (int)BuildingInspectorRegistrationClassStatus.Applied : (int)BuildingInspectorRegistrationClassStatus.Registered,
                     StateCode = 0
                 };
                 await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
@@ -866,8 +880,6 @@ public class DynamicsSynchronisationFunctions
         //var stage = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_applicationstage == BuildingApplicationStage.ApplicationSubmitted ? BuildingApplicationStage.ApplicationSubmitted : buildingProfessionApplicationWrapper.Stage;
         return dynamicsService.UpdateBuildingProfessionApplication(buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication, new DynamicsBuildingProfessionApplication
         {
-            //bsr_applicationstage = stage,
-            //bsr_declarationconfirmed = buildingProfessionApplicationWrapper.Stage is BuildingApplicationStage.ApplicationSubmitted or BuildingApplicationStage.PayAndApply,
         });
     }
 
