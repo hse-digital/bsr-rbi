@@ -3,11 +3,9 @@
     <govuk-error-link *ngIf="errors.securityCode.hasError" anchorId="input-security-code" message="{{errors.securityCode.errorText}}" />
   </govuk-error-summary>
 
-  
-
+  <h1 class="govuk-heading-l">Security code</h1>
 
   <ng-container *ngIf="verificationOption == 'email-option'" >
-    <h1 class="govuk-heading-l">Security code</h1>
       <govuk-body>We have sent a 6-digit security code to: <b>{{ emailAddress }}</b>.</govuk-body>
       <govuk-body>If you cannot find the email, check your spam folder.</govuk-body>
       <govuk-body>If you still cannot find the code or it has expired, <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">ask us to generate a new code</a>, or <a (click)="showChangeVerificationStep()" (keyup.enter)="showChangeVerificationStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification code to your phone</a>.</govuk-body>
@@ -20,7 +18,6 @@
   </ng-container>
 
   <ng-container *ngIf="verificationOption == 'phone-option'" >
-    <h1 class="govuk-heading-l">Enter security code</h1>
     <govuk-body>We have sent a 6-digit security code to: <b>{{ phoneNumber }}</b>.</govuk-body>
     <govuk-body>If you did not get a text message, or wish to use a different mobile number, you can ask us to resend the security code.</govuk-body>
     <govuk-body>If you have not received the text message, or it has timed out <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new security code</a> or <a (click)="showChangeVerificationStep()" (keyup.enter)="showChangeVerificationStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification to your email</a></govuk-body>
