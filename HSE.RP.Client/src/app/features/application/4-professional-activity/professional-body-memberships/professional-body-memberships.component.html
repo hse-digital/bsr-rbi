@@ -1,12 +1,54 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
-
-
-  <h1 class="govuk-heading-l">Professional body membership details</h1>
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="false"
+  (saveAndContinue)="saveAndContinue()"
+  (saveAndComeBack)="saveAndComeBack()"
+  [hideBackButton]="true"
+>
+  <h1 class="govuk-heading-l">Membership of professional bodies</h1>
   <govuk-body>
-  Please enter your professional body membership details
- </govuk-body>
-</govuk-formpage>
+    For example, Royal Institution of Chartered Surveyors (RICS), Chartered
+    Association of Building Engineers (CABE), Chartered Institute of Building
+    (CIOB).
+    <p>
+      For each of your Membership of professional bodies we will ask you for:
+    </p>
 
+    <govuk-list classes="govuk-list--bullet">
+      <govuk-list-item text="Membership number" />
+      <govuk-list-item text="Level of current membership" />
+      <govuk-list-item
+        text="Year when you obtained the current membership level"
+      />
+    </govuk-list>
+
+    <h2 class="govuk-heading-m">
+      Are you a member of a professional body relevant to your work as a
+      building inspector?
+    </h2>
+
+    <govuk-radio-group
+      hintText=" "
+      id="professional-body-membership"
+      [(model)]="selectedOption"
+     
+    >
+      <govuk-radio
+        class=""
+        label="Yes"
+        value="yes"
+        id="yes"
+        [model]="selectedOption"
+      >
+      </govuk-radio>
+      <govuk-radio
+        label="No"
+        value="no"
+        id="no"
+        [model]="selectedOption"
+      ></govuk-radio>
+    </govuk-radio-group>
+  </govuk-body>
+</govuk-formpage>
