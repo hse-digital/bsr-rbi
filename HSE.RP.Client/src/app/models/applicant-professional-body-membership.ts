@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { ComponentCompletionState } from "./component-completion-state.enum";
 import { IComponentModel } from "./component. interface";
 
+/// Defines a model for an individudal membership
 export class ApplicantProfessionalBodyMembership implements IComponentModel {
   MembershipBodyCode: string = '';
   MembershipNumber: string = '';
@@ -26,6 +27,9 @@ export class ApplicantProfessionBodyMemberships {
   CABE: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
   CIOB: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
   OTHER: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
+  // Has entered professional memberships
+  HasMemberships() : 
+
   // Resets the professional body passed in, as if it were deleted.
   Reset(bodyCode: string): void
   {
