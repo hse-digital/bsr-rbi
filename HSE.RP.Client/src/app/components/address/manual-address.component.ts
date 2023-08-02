@@ -5,6 +5,7 @@ import { GovukErrorSummaryComponent } from 'hse-angular';
 import { TitleService } from 'src/app/services/title.service';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { AddressModel } from 'src/app/models/address.model';
+import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 
 @Component({
   selector: 'manual-address',
@@ -18,12 +19,10 @@ export class ManualAddressComponent {
   @Input() addressName?: string;
   @Input() selfAddress = false;
 
+  postcodeHasErrors = false;
+  postcodeErrorMessage?: string;
   hasErrors = false;
-  errors = {
-    lineOneHasErrors: false,
-    townOrCityHasErrors: false,
-    postcode: { hasErrors: false, errorText: '' },
-  }
+  errorMessage?: string;
 
   model: AddressModel = { IsManual: true, CompletionState: ComponentCompletionState.Complete }
 
@@ -41,28 +40,51 @@ export class ManualAddressComponent {
     }
   }
 
-  private isModelValid() {
-    this.errors.lineOneHasErrors = !this.model.Address;
-    this.errors.townOrCityHasErrors = !this.model.Town;
-    this.isPostcodeValid();
+  addressOneIsValid?: boolean;
+  townOrCityIsValid?: boolean;
+  postcodeIsValid?: boolean;
 
-    this.hasErrors = this.errors.lineOneHasErrors || this.errors.townOrCityHasErrors || this.errors.postcode.hasErrors || this.errors.postcode.hasErrors;
+  private isModelValid() {
+    this.addressOneIsValid = this.isAddressOneValid();
+    this.townOrCityIsValid = this.isTownOrCityValid();
+    this.postcodeIsValid = this.isPostcodeValid();
+    
+    this.hasErrors = !this.addressOneIsValid || !this.townOrCityIsValid || !this.postcodeIsValid;
 
     return !this.hasErrors;
   }
 
-  private isPostcodeValid(): boolean {
-    let postcode = this.model.Postcode?.replace(' ', '');
-    this.errors.postcode.hasErrors = true;
-    if (!postcode) {
-      this.errors.postcode.errorText = 'Enter a postcode';
-    } else if (postcode.length < 5 || postcode.length > 7) {
-      this.errors.postcode.errorText = "Enter a real postcode, like 'EC3A 8BF'.";
-    } else {
-      this.errors.postcode.hasErrors = false;
-    }
+  isAddressOneValid() {
+    return FieldValidations.IsNotNullOrWhitespace(this.model.Address);
+  }
 
-    return !this.errors.postcode.hasErrors;
+  isTownOrCityValid() {
+    return FieldValidations.IsNotNullOrWhitespace(this.model.Town);
+  }
+
+  isPostcodeValid(): boolean {
+    let postcode = this.model.Postcode?.replace(' ', '');
+    let error = true;
+    if (!postcode) {
+      this.postcodeErrorMessage = 'Enter a postcode';
+    } else if (postcode.length < 5 || postcode.length > 7) {
+      this.postcodeErrorMessage = "Enter a real postcode, like 'EC3A 8BF'.";
+    } else {
+      error = false;
+    }
+    this.postcodeHasErrors = error;
+    return !error;
+  }
+
+  get anchorId() {
+    if(!this.addressOneIsValid) {
+      return "input-address-line-one";
+    } else if (!this.townOrCityIsValid) {
+      return "input-town-or-city";
+    } else if (!FieldValidations.IsNotNullOrWhitespace(this.model.Postcode)) {
+      return "input-postcode";
+    }
+    return "";
   }
 
   getErrorDescription(showError: boolean, errorMessage: string): string | undefined {
