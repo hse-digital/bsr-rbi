@@ -50,7 +50,7 @@ export class ReturningApplicationVerifyComponent implements OnInit {
     } else if (!Number(this.securityCode) || this.securityCode.length != 6) {
       this.errors.securityCode.errorText = 'You must enter your 6 digit security code';
     } else if (!(await this.doesSecurityCodeMatch())) {
-      this.errors.securityCode.errorText = 'Your 6-digit verification code is incorrect or has expired. Request a new verification code by clicking "resend the security code" link on this page.';
+      this.errors.securityCode.errorText = 'Your 6-digit verification code is incorrect or has expired. Request a new verification code by clicking "Generate a new security code" link on this page.';
     } else {
       this.errors.securityCode.hasError = false;
     }
