@@ -23,41 +23,41 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Independ
   errorMessage: string = '';
   selectedOption: string = 'no';
 
-  constructor(
-    activatedRoute: ActivatedRoute,
-  ) {
+  constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
   }
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
 
-    if (!applicationService.model.Competency?.IndependentAssessmentStatus) {
-      applicationService.model.Competency!.IndependentAssessmentStatus!.IAStatus =
-        'no';
+    if (!applicationService.model.Competency) {
+      applicationService.model.Competency = {};
     }
 
-    applicationService.model.Competency!.IndependentAssessmentStatus!.CompletionState = ComponentCompletionState.InProgress;
+    if (
+      applicationService.model.Competency?.IndependentAssessmentStatus == null
+    ) {
+      applicationService.model.Competency!.IndependentAssessmentStatus =
+        new IndependentAssessmentStatus();
+      this.selectedOption = 'no';
+    }
 
     this.selectedOption = applicationService.model.Competency
       ?.IndependentAssessmentStatus
       ? applicationService.model.Competency?.IndependentAssessmentStatus
           .IAStatus!
       : 'no';
-
-    this.applicationService = applicationService;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-
     if (['no', 'yes'].includes(this.selectedOption)) {
       applicationService.model.Competency!.IndependentAssessmentStatus!.IAStatus =
         this.selectedOption;
     }
     if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
-      applicationService.model.Competency!.IndependentAssessmentStatus!.CompletionState = ComponentCompletionState.Complete;
+      applicationService.model.Competency!.IndependentAssessmentStatus!.CompletionState =
+        ComponentCompletionState.Complete;
     }
-
   }
 
   override canAccess(

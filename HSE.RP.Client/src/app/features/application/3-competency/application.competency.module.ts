@@ -17,24 +17,52 @@ import { NoCompetencyAssessmentComponent } from './no-competency-assessment/no-c
 import { CompetencyAssessmentCertificateNumberComponent } from './assessment-certificate-number/competency-assessment-certificate-number.component';
 
 const routes = new HseRoutes([
-  HseRoute.protected(CompetencyIndependentStatusComponent.route, CompetencyIndependentStatusComponent, CompetencyIndependentStatusComponent.title),
-  HseRoute.protected(CompetencyCertificateCodeComponent.route, CompetencyCertificateCodeComponent, CompetencyCertificateCodeComponent.title),
-  HseRoute.protected(CompetencyAssessmentOrganisationComponent.route, CompetencyAssessmentOrganisationComponent, CompetencyAssessmentOrganisationComponent.title),
-  HseRoute.protected(CompetencyAssessmentCertificateNumberComponent.route, CompetencyAssessmentCertificateNumberComponent, CompetencyAssessmentCertificateNumberComponent.title),
-  HseRoute.protected(CompetencyAssessmentDateComponent.route, CompetencyAssessmentDateComponent, CompetencyAssessmentDateComponent.title),
-  HseRoute.protected(NoCompetencyAssessmentComponent.route, NoCompetencyAssessmentComponent, NoCompetencyAssessmentComponent.title),
-  HseRoute.protected(CompetencySummaryComponent.route, CompetencySummaryComponent, CompetencySummaryComponent.title),
+  HseRoute.protected(
+    CompetencyIndependentStatusComponent.route,
+    CompetencyIndependentStatusComponent,
+    CompetencyIndependentStatusComponent.title
+  ),
+  HseRoute.protected(
+    CompetencyCertificateCodeComponent.route,
+    CompetencyCertificateCodeComponent,
+    CompetencyCertificateCodeComponent.title
+  ),
+  HseRoute.protected(
+    CompetencyAssessmentOrganisationComponent.route,
+    CompetencyAssessmentOrganisationComponent,
+    CompetencyAssessmentOrganisationComponent.title
+  ),
+  HseRoute.protected(
+    CompetencyAssessmentCertificateNumberComponent.route,
+    CompetencyAssessmentCertificateNumberComponent,
+    CompetencyAssessmentCertificateNumberComponent.title
+  ),
+  HseRoute.protected(
+    CompetencyAssessmentDateComponent.route,
+    CompetencyAssessmentDateComponent,
+    CompetencyAssessmentDateComponent.title
+  ),
+  HseRoute.protected(
+    NoCompetencyAssessmentComponent.route,
+    NoCompetencyAssessmentComponent,
+    NoCompetencyAssessmentComponent.title
+  ),
+  HseRoute.protected(
+    CompetencySummaryComponent.route,
+    CompetencySummaryComponent,
+    CompetencySummaryComponent.title
+  ),
 ]);
 
 @NgModule({
   declarations: [
-CompetencyIndependentStatusComponent,
-CompetencyCertificateCodeComponent,
-CompetencyAssessmentOrganisationComponent,
-CompetencyAssessmentCertificateNumberComponent,
-CompetencyAssessmentDateComponent,
-CompetencySummaryComponent,
-NoCompetencyAssessmentComponent
+    CompetencyIndependentStatusComponent,
+    CompetencyCertificateCodeComponent,
+    CompetencyAssessmentOrganisationComponent,
+    CompetencyAssessmentCertificateNumberComponent,
+    CompetencyAssessmentDateComponent,
+    CompetencySummaryComponent,
+    NoCompetencyAssessmentComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
@@ -42,9 +70,14 @@ NoCompetencyAssessmentComponent
     HseAngularModule,
     CommonModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [HttpClient, ApplicationService, CookiesBannerService, ...routes.getProviders()]
+  providers: [
+    HttpClient,
+    ApplicationService,
+    CookiesBannerService,
+    ...routes.getProviders(),
+  ],
 })
 export class CompetencyModule {
   static baseRoute: string = 'competency';

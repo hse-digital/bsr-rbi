@@ -6,12 +6,13 @@ import { ComponentCompletionState } from "./component-completion-state.enum";
 import { IComponentModel } from "./component. interface";
 import { PersonalDetails } from "./personal-details.model";
 import { StageCompletionState } from "./stage-completion-state.enum";
-
+import { ProfessionalActivity } from './professional-activity.model';
 export class BuildingProfessionalModel implements IComponentModel {
   id?: string;
   PersonalDetails?: PersonalDetails = new PersonalDetails();
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
-  Competency? : Competency = new  Competency();
+  Competency?: Competency = new Competency();
+  ProfessionalActivity?: ProfessionalActivity = new ProfessionalActivity();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
   ProfessionalMemberships: ApplicantProfessionBodyMemberships = new ApplicantProfessionBodyMemberships();
   private _completionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
@@ -37,7 +38,5 @@ export class BuildingProfessionalModel implements IComponentModel {
   }
   set CompletionState(value: ComponentCompletionState) {
     this._completionState = value;
-
-
   }
 }
