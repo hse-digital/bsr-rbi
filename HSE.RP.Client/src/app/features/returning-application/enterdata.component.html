@@ -24,6 +24,10 @@
       anchorId="phone-option-input"
       message="{{ errors.verificationOption.errorText }}"
     />
+    <govuk-error-link
+    *ngIf="errors.serviceError.hasError"
+    message="{{ errors.serviceError.errorText }}"
+  />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Continue a saved application</h1>
