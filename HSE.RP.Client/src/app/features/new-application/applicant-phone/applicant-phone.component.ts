@@ -41,6 +41,8 @@ export class ApplicantPhoneComponent extends PageComponent<ApplicantPhone> {
 
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+    //Force the phone number to be in the correct format
+    this.model!.PhoneNumber = this.model?.PhoneNumber?.trim().replace("+44", "0");
     this.applicationService.model.PersonalDetails!.ApplicantPhone = this.model;
     await applicationService.sendVerificationSms(this.model!.PhoneNumber ?? "");
   }
