@@ -27,9 +27,6 @@ export class ApplicantProfessionBodyMemberships {
   CABE: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
   CIOB: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
   OTHER: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
-  // Has entered professional memberships
-  HasMemberships() : 
-
   // Resets the professional body passed in, as if it were deleted.
   Reset(bodyCode: string): void
   {
