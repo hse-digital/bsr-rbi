@@ -78,7 +78,7 @@ export class ManualAddressComponent {
   }
 
   warningMessage(): string {
-    return "Your home address will not be published";
+    return "Your home address will not be published unless it is also your business address.";
   }
 
 }
