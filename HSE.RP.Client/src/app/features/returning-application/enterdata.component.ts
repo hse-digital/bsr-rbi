@@ -25,6 +25,7 @@ export class ReturningApplicationEnterDataComponent {
     applicationNumber: { hasError: false, errorText: '', anchorId: '' },
     phoneNumber: { hasError: false, errorText: '', anchorId: '' },
     verificationOption: { hasError: false, errorText: '', anchorId: '' },
+    serviceError: { hasError: false, errorText: '', anchorId: '' },
   };
 
   verificationEmail: string = '';
@@ -66,20 +67,22 @@ export class ReturningApplicationEnterDataComponent {
     this.errors.phoneNumber.hasError = false;
     this.errors.applicationNumber.hasError = false;
     this.errors.verificationOption.hasError = false;
+    this.errors.serviceError.hasError = false;
+    this.sendingRequest = false;
 
-    this.sendingRequest = true;
 
-    await this.isApplicationNumberValid();
 
     if (!this.verificationOption && !this.applicationNumber) {
       this.errors.applicationNumber.errorText =
         'Enter your 12-digit application reference number and select a verification option';
       this.errors.applicationNumber.anchorId = 'input-application-number';
-    } else if (!this.verificationOption) {
+    }
+    else if (!this.verificationOption) {
       this.errors.verificationOption.hasError = true;
       this.errors.verificationOption.errorText =
         'Select how you want to receive your 6-digit verification code, via text message or email';
-    } else {
+    }
+    else {
       if (this.verificationOption == 'phone-option') {
         this.isEmailAddressValid();
       } else if (this.verificationOption == 'email-option') {
@@ -87,35 +90,67 @@ export class ReturningApplicationEnterDataComponent {
       }
     }
 
+    try{
+      await this.isApplicationNumberValid();
+      }catch(error){
+        this.errors.serviceError.hasError = true;
+        this.errors.serviceError.errorText = "There was a problem with the service. Try again later.";
+        this.sendingRequest = false;
+        throw error;
+      }
+
     this.hasErrors =
       this.errors.emailAddress.hasError ||
       this.errors.applicationNumber.hasError ||
       this.errors.phoneNumber.hasError ||
-      this.errors.verificationOption.hasError;
+      this.errors.verificationOption.hasError ||
+      this.errors.serviceError.hasError;
+
     if (!this.hasErrors) {
       if (this.verificationOption == 'phone-option') {
+        try{
         await this.applicationService.sendVerificationSms(
-          this.verificationPhone!
-        );
+          this.verificationPhone!)
+        }catch(error){
+          this.errors.serviceError.hasError = true;
+          this.errors.serviceError.errorText = "There was a problem with the service. Try again later.";
+          this.sendingRequest = false;
+          throw error;
+
+        };
       } else if (this.verificationOption == 'email-option') {
+        try{
         await this.applicationService.sendVerificationEmail(
           this.verificationEmail!
         );
+        }catch(error){
+          this.errors.serviceError.hasError = true;
+          this.errors.serviceError.errorText = "There was a problem with the service. Try again later.";
+          this.sendingRequest = false;
+          throw error;
+        }
       }
 
-      this.VerificationData = {
-        verificationEmail: this.verificationEmail,
-        verificationPhone: this.verificationPhone,
-      };
+      if(!this.errors.serviceError.hasError)
+      {
+        this.VerificationData = {
+          verificationEmail: this.verificationEmail,
+          verificationPhone: this.verificationPhone,
+        };
+        this.onContinue.emit(this.VerificationData);
+      }
+      else
+      {
+        this.sendingRequest = false;
+        this.summaryError?.first?.focus();
+        this.titleService.setTitleError();
 
-      this.onContinue.emit(this.VerificationData);
+      }
     } else {
       this.sendingRequest = false;
       this.summaryError?.first?.focus();
       this.titleService.setTitleError();
     }
-
-    this.sendingRequest = false;
   }
 
   async isApplicationNumberValid() {
@@ -133,6 +168,7 @@ export class ReturningApplicationEnterDataComponent {
           this.phoneNumber
         );
       if (this.verificationOption == 'email-option') {
+        if(this.errors.phoneNumber.hasError==false){
         if (result.IsValidApplicationNumber && result.IsValid) {
           this.verificationEmail = result.EmailAddress;
         } else if (!result.IsValidApplicationNumber && result.IsValid) {
@@ -142,20 +178,19 @@ export class ReturningApplicationEnterDataComponent {
         } else if (result.IsValidApplicationNumber && !result.IsValid) {
           this.errors.applicationNumber.errorText =
             'Your telephone number does not match this application. Enter the correct telephone number';
-        } else {
-          this.errors.applicationNumber.errorText =
-            'Your mobile phone number does not match this application. Enter the correct mobile telephone number';
         }
+      }
       } else if (this.verificationOption == 'phone-option') {
-        if (result.IsValidApplicationNumber && result.IsValid) {
-          this.verificationPhone = result.PhoneNumber;
-        } else if (!result.IsValidApplicationNumber && result.IsValid) {
-          this.errors.applicationNumber.errorText =
-            'Application number does not match this email address. Enter the correct 12 digit application number';
-          this.errors.applicationNumber.anchorId = 'input-email-address';
-        } else if (result.IsValidApplicationNumber && !result.IsValid) {
-          this.errors.applicationNumber.errorText =
-            'Your email does not match this application. Enter the correct email address';
+        if(this.errors.emailAddress.hasError==false){
+          if (result.IsValidApplicationNumber && result.IsValid) {
+            this.verificationPhone = result.PhoneNumber;
+          } else if (!result.IsValidApplicationNumber && result.IsValid ) {
+            this.errors.applicationNumber.errorText =
+              'Application number does not match this email address. Enter the correct 12 digit application number';
+            this.errors.applicationNumber.anchorId = 'input-email-address';
+          } else if (result.IsValidApplicationNumber && !result.IsValid ) {
+           this.errors.applicationNumber.errorText = 'Your email does not match this application. Enter the correct email address';
+          }
         }
       }
     }
