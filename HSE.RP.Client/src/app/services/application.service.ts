@@ -47,7 +47,7 @@ export class ApplicationService {
     var response = await firstValueFrom(
       this.httpClient.post('api/ValidateOTPToken', {
         OTPToken: OTPToken,
-        Data: Data.toLowerCase(),
+        Data: Data.toLowerCase().trim().replace("+44", "0"),
       })
     );
     var xx = response;
@@ -103,7 +103,7 @@ export class ApplicationService {
     } else if (ValidationOption === 'phone-option') {
       let application: BuildingProfessionalModel = await firstValueFrom(
         this.httpClient.get<BuildingProfessionalModel>(
-          `api/GetApplicationPhone/${ApplicationNumber.toUpperCase()}/${PhoneNumber}/${OTPToken}`
+          `api/GetApplicationPhone/${ApplicationNumber.toUpperCase()}/${PhoneNumber?.trim().replace("+44","0")}/${OTPToken}`
         )
       );
       this.model = application;
@@ -132,7 +132,7 @@ export class ApplicationService {
             EmailAddress: string;
             PhoneNumber: string;
           }>(
-            `api/ValidateApplicationNumberPhone/${PhoneNumber!}/${ApplicationNumber.toUpperCase()}`
+            `api/ValidateApplicationNumberPhone/${PhoneNumber!.trim().replace("+44","0")}/${ApplicationNumber.toUpperCase()}`
           )
         );
       } else if ((ValidationOption === 'phone-option')) {
