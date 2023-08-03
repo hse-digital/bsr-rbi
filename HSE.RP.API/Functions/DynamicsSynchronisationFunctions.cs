@@ -70,6 +70,14 @@ public class DynamicsSynchronisationFunctions
         return request.CreateResponse();
     }
 
+    [Function(nameof(SyncCompetency))]
+    public async Task<HttpResponseData> SyncCompetency([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    {
+        var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseCompetency), buildingProfessionApplication);
+        return request.CreateResponse();
+    }
+
     [Function(nameof(SynchroniseDeclaration))]
     public async Task SynchroniseDeclaration([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
     {
@@ -153,6 +161,62 @@ public class DynamicsSynchronisationFunctions
         }
     }
 
+    [Function(nameof(SynchroniseCompetency))]
+    public async Task SynchroniseCompetency([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
+    {
+        var buildingProfessionApplicationModel = orchestrationContext.GetInput<BuildingProfessionApplicationModel>();
+
+        var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
+
+        /*if (dynamicsBuildingProfessionApplication != null)
+        {
+
+            if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == true)
+            {
+
+                await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
+                {
+                    bsr_hasindependentassessment = YesNoOption.No
+                }));
+
+
+                //If no competency assessment is selected, then create new registration for class 1
+                var dynamicsRegistrationClasses = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationClass>>(nameof(GetRegistrationClassesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+
+                //Create new if doesnt exist
+                if (!dynamicsRegistrationClasses.Any(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[1] && x.statecode != 1))
+                {
+                    var registrationClass = new BuildingInspectorRegistrationClass
+                    {
+                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                        ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                        ClassId = BuildingInspectorClassNames.Ids[1],
+                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Registered,
+                        StateCode = 0
+                    };
+                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
+                }
+
+            }
+            if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == false)
+            {
+                await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
+                {
+                    bsr_hasindependentassessment = YesNoOption.Yes,
+                    bsr_assessmentorganisationid = buildingProfessionApplicationModel.Competency.CompetencyAssesesmentOrganisation.ComAssesesmentOrganisation is null ? null : $"accounts({AssessmentOrganisationNames.Ids[buildingProfessionApplicationModel.Competency.CompetencyAssesesmentOrganisation.ComAssesesmentOrganisation]})",
+                    bsr_assessmentdate = buildingProfessionApplicationModel.Competency.CompetencyDateOfAssessment is null ? null :
+                                        new DateOnly(int.Parse(buildingProfessionApplicationModel.Competency.CompetencyDateOfAssessment.Year),
+                                                     int.Parse(buildingProfessionApplicationModel.Competency.CompetencyDateOfAssessment.Month),
+                                                     int.Parse(buildingProfessionApplicationModel.Competency.CompetencyDateOfAssessment.Day)),
+                    bsr_assessmentcertnumber = buildingProfessionApplicationModel.Competency.CompetencyAssessmentCertificateNumber is null ? null : buildingProfessionApplicationModel.Competency.CompetencyAssessmentCertificateNumber.CertificateNumber,
+                }));
+            }
+        }*/
+
+
+
+    }
+
     [Function(nameof(SynchroniseBuildingInspectorClass))]
     public async Task SynchroniseBuildingInspectorClass([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
     {
@@ -171,16 +235,12 @@ public class DynamicsSynchronisationFunctions
             var selectedRegistrationClassId = (int)buildingProfessionApplicationModel.InspectorClass.ClassType.Class;
 
             //Set Building Profession Application (bsr_buildingprofessionapplication)	bsr_hasindependentassessment = no
-            if (selectedRegistrationClassId == (int) BuildingInspectorClassType.Class1)
+            if (selectedRegistrationClassId == (int)BuildingInspectorClassType.Class1)
             {
-                var dynamicsBuildingApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
-
-                if (dynamicsBuildingApplication != null)
+                await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
                 {
-                    await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingApplication with {
-                        bsr_hasindependentassessment = YesNoOption.Yes
-                    }));
-                }
+                    bsr_hasindependentassessment = false
+                })); ;
             }
 
             //If the selected registration class is not in the list of registration classes or is deactivated, then add/reactivate it
@@ -756,7 +816,7 @@ public class DynamicsSynchronisationFunctions
                 var class2Categories = class2AssessCategories.Concat(class2InspectCategories).ToList();
                 foreach (var category in class2Categories)
                 {
-                    var activitiesToUpdate = class2ynamicsRegistrationActivities.Where(x => x._bsr_bibuildingcategoryid_value == BuildingInspectorBuildingCategoryNames.Ids[category.Name+"Class2"]).ToList();
+                    var activitiesToUpdate = class2ynamicsRegistrationActivities.Where(x => x._bsr_bibuildingcategoryid_value == BuildingInspectorBuildingCategoryNames.Ids[category.Name + "Class2"]).ToList();
                     foreach (var activity in activitiesToUpdate)
                     {
                         var registrationActivity = new BuildingInspectorRegistrationActivity
