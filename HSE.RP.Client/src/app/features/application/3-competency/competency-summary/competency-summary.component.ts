@@ -55,6 +55,11 @@ export class CompetencySummaryComponent extends PageComponent<string> {
     return !this.phoneNumberHasErrors; */
   }
 
+  async SyncAndContinue() {
+    await this.applicationService.syncCompetency();
+    this.saveAndContinue();
+  }
+
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
       `../${ApplicationTaskListComponent.route}`,

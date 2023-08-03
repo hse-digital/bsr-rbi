@@ -253,7 +253,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       {
         prompt: "Certificate code", relativeRoute: (): TaskListRoute => {
           return { route: CompetencyCertificateCodeComponent.route}
-        }, getStatus: (): TaskStatus => TaskStatus.CannotStart
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.Competency?.CompetencyAssessmentCertificateNumber)
       },
       {
         prompt: "Assessment organisation", relativeRoute: (): TaskListRoute => {

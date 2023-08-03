@@ -73,7 +73,6 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   async SyncAndContinue() {
     await this.applicationService.syncBuildingInspectorClass();
     this.saveAndContinue();
-
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
