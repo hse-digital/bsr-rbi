@@ -4,15 +4,14 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { ApplicationService } from '../../../../services/application.service';
 import { ProfessionalActivityEmploymentTypeComponent } from '../employment-type/professional-activity-employment-type.component';
-import { ProfessionalBodiesMember } from 'src/app/models/professional-bodies-memeber.model';
-import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
-import { ProfessionalActivityRoutes } from '../ProfessionalActivityRoutes';
+import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
+import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
 
 @Component({
   selector: 'hse-professional-body-memberships',
   templateUrl: './professional-body-memberships.component.html',
 })
-export class ProfessionalBodyMembershipsComponent extends PageComponent<ProfessionalBodiesMember> {
+export class ProfessionalBodyMembershipsComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
   // public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_BODY_MEMBERSHIPS;
 
   public static route: string = 'professional-body-memberships';
@@ -30,36 +29,37 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Professi
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
 
-    if (!applicationService.model.ProfessionalActivity) {
-      applicationService.model.ProfessionalActivity = {};
+    if (!applicationService.model.ProfessionalMemberships) {
+      applicationService.model.ProfessionalMemberships =
+        new ApplicantProfessionBodyMemberships();
     }
 
     if (
-      applicationService.model.ProfessionalActivity?.ProfessionalBodiesMember ==
-      null
+      applicationService.model.ProfessionalMemberships
+        .IsProfessionBodyRelevantYesNo == null
     ) {
-      applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember =
-        new ProfessionalBodiesMember();
+      applicationService.model.ProfessionalMemberships =
+        new ApplicantProfessionBodyMemberships();
       this.selectedOption = 'no';
     }
 
-    this.selectedOption = applicationService.model.ProfessionalActivity
-      ?.ProfessionalBodiesMember
-      ? applicationService.model.ProfessionalActivity?.ProfessionalBodiesMember!
-          .Membership!
+    this.selectedOption = applicationService.model.ProfessionalMemberships
+      .IsProfessionBodyRelevantYesNo
+      ? applicationService.model.ProfessionalMemberships
+          .IsProfessionBodyRelevantYesNo!
       : 'no';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     if (['no', 'yes'].includes(this.selectedOption)) {
-      applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.Membership =
+      applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo =
         this.selectedOption;
     }
 
-    if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
-      applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
-        ComponentCompletionState.Complete;
-    }
+    // if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
+    //   applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
+    //     ComponentCompletionState.Complete;
+    // }
   }
 
   override canAccess(
@@ -78,11 +78,12 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Professi
       ProfessionalActivityEmploymentTypeComponent.route,
       this.activatedRoute
     );
+
   }
   DerivedIsComplete(value: boolean): void {
-    this.applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
-      value
-        ? ComponentCompletionState.Complete
-        : ComponentCompletionState.InProgress;
+    // this.applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
+    //   value
+    //     ? ComponentCompletionState.Complete
+    //     : ComponentCompletionState.InProgress;
   }
 }

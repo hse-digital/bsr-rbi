@@ -1,0 +1,50 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="false"
+  (saveAndContinue)="saveAndContinue()"
+  (saveAndComeBack)="saveAndComeBack()"
+  [hideBackButton]="true"
+>
+  <h1 class="govuk-heading-l">Which professional body are you a member of?</h1>
+  <govuk-body>
+    <p>
+      Select one. You will be able to add additional memberships if required.
+    </p>
+
+    <govuk-radio-group
+      hintText=" "
+      id="professional-body-selection"
+      [(model)]="selectedOption"
+    >
+      <govuk-radio
+        class=""
+        label="Royal Institution of Chartered Surveyors (RICS)"
+        value="RICS"
+        id="RICS"
+        [model]="selectedOption"
+      >
+      </govuk-radio>
+      <govuk-radio
+        label="Chartered Association of Building Engineers (CABE)"
+        value="CABE"
+        id="CABE"
+        [model]="selectedOption"
+      ></govuk-radio>
+      <govuk-radio
+        label="Chartered Institute of Building (CIOB)"
+        value="CIOB"
+        id="CIOB"
+        [model]="selectedOption"
+      ></govuk-radio>
+      <div class="govuk-radios__divider">or</div>
+      <govuk-radio
+        label="Other"
+        value="OTHER"
+        id="OTHER"
+        [model]="selectedOption"
+      ></govuk-radio>
+    </govuk-radio-group>
+  </govuk-body>
+</govuk-formpage>
