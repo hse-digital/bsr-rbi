@@ -54,15 +54,15 @@ export class ManualAddressComponent {
     return !this.hasErrors;
   }
 
-  isAddressOneValid() {
+  private isAddressOneValid() {
     return FieldValidations.IsNotNullOrWhitespace(this.model.Address);
   }
 
-  isTownOrCityValid() {
+  private isTownOrCityValid() {
     return FieldValidations.IsNotNullOrWhitespace(this.model.Town);
   }
 
-  isPostcodeValid(): boolean {
+  private isPostcodeValid(): boolean {
     let postcode = this.model.Postcode?.replace(' ', '');
     let error = true;
     if (!postcode) {
