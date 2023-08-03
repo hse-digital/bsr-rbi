@@ -248,7 +248,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       {
         prompt: "Independent assessment", relativeRoute: (): TaskListRoute => {
           return { route: CompetencyIndependentStatusComponent.route}
-        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.Competency?.IndependentAssessmentStatus)
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.Competency?.CompetencyIndependentAssessmentStatus)
       },
       {
         prompt: "Certificate code", relativeRoute: (): TaskListRoute => {

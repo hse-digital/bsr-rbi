@@ -52,10 +52,14 @@ public class BuildingProfessionApplicationFunctions
     [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE c.id = {ApplicationNumber}", Connection = "CosmosConnection")]
         List<BuildingProfessionApplicationModel> applications,
     [CosmosDBInput("hseportal", "regulated_building_professions", SqlQuery = "SELECT * FROM c WHERE StringEquals(c.PersonalDetails.ApplicantEmail.Email, {EmailAddress}, true)", Connection = "CosmosConnection")]
-        List<BuildingProfessionApplicationModel> emails)
+        List<dynamic> emails)
 
     {
 
+
+
+        Console.WriteLine("applications: " + applications);
+        Console.WriteLine("emails: " + emails);
 
         if (applications.Any() && emails.Any(app => app.Id == applications[0].Id))
         {

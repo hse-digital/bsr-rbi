@@ -6,14 +6,14 @@ import { ApplicationService } from '../../../../services/application.service';
 import { CompetencyAssessmentDateComponent } from '../assesesment-date/competency-assesesment-date.component';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
-import { CompetenceyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
+import { CompetencyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
 import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 
 @Component({
   selector: 'hse-competency-assesesment-certificate-number',
   templateUrl: './competency-assessment-certificate-number.component.html',
 })
-export class CompetencyAssessmentCertificateNumberComponent extends PageComponent<CompetenceyAssessmentCertificateNumber> {
+export class CompetencyAssessmentCertificateNumberComponent extends PageComponent<CompetencyAssessmentCertificateNumber> {
   public static route: string =
     CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER;
   static title: string =
@@ -21,7 +21,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: CompetenceyAssessmentCertificateNumber;
+  override model?: CompetencyAssessmentCertificateNumber;
   errorMessage: string = '';
   organisationPrefix: string = '';
   certificateNumber: string = '';
@@ -37,7 +37,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     this.updateOnSave = true;
 
     if(!applicationService.model.Competency!.CompetencyAssessmentCertificateNumber) {
-      applicationService.model.Competency!.CompetencyAssessmentCertificateNumber = new CompetenceyAssessmentCertificateNumber();
+      applicationService.model.Competency!.CompetencyAssessmentCertificateNumber = new CompetencyAssessmentCertificateNumber();
     } else {
       this.certificateNumber = applicationService.model.Competency!.CompetencyAssessmentCertificateNumber.CertificateNumber!;
     }

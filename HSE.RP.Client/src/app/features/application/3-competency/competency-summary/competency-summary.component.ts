@@ -81,13 +81,13 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   public getIndependentAssessmentStatus(): string {
     return this.applicationService.model.Competency
-      ?.IndependentAssessmentStatus?.IAStatus === 'yes'
+      ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes'
       ? 'Yes'
       : 'No';
   }
 
   public isCompetencyAssessmentStatusYes(): boolean {
-    return this.applicationService.model.Competency?.IndependentAssessmentStatus?.IAStatus === 'yes';
+    return this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes';
   }
 
   public getCompetencyAssessmentOrg(): string {
