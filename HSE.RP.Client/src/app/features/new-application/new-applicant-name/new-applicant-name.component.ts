@@ -10,6 +10,7 @@ import { ApplicantName } from 'src/app/models/applicant-name.model';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { app } from '../../../../../server';
+import { Competency } from 'src/app/models/competency.model';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -55,6 +56,8 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
         "Payment": StageCompletionState.Incomplete,
       };
     }
+    applicationService.model.Competency = new Competency();
+
     this.model = applicationService.model;
 
   }

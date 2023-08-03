@@ -184,16 +184,16 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       return TaskStatus.NotStarted;
     } else if (model?.CompletionState == ComponentCompletionState.InProgress && countryModel?.CompletionState == ComponentCompletionState.NotStarted) {
       return TaskStatus.CannotStart;
-    } 
+    }
     else if (model?.CompletionState == ComponentCompletionState.Complete && countryModel?.CompletionState == ComponentCompletionState.NotStarted) {
       return TaskStatus.NotStarted;
-    } 
+    }
     else if (model?.CompletionState == ComponentCompletionState.Complete && countryModel?.CompletionState == ComponentCompletionState.InProgress) {
       return TaskStatus.InProgress;
-    } 
+    }
     else if (model?.CompletionState == ComponentCompletionState.Complete && countryModel?.CompletionState == ComponentCompletionState.Complete) {
       return TaskStatus.Complete;
-    } 
+    }
     else {
       return TaskStatus.None;
     }
@@ -341,7 +341,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: CompetencyIndependentStatusComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(aModel.Competency?.IndependentAssessmentStatus),
+            this.getModelStatus(aModel.Competency?.CompetencyIndependentAssessmentStatus),
         },
         {
           prompt: 'Certificate code',
@@ -357,7 +357,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getModelStatus(
-              aModel.Competency?.CompetencyAssesesmentOrganisation
+              aModel.Competency?.CompetencyAssessmentOrganisation
             ),
         },
         {
