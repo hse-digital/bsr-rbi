@@ -59,11 +59,13 @@ import { StageCompletionState } from 'src/app/models/stage-completion-state.enum
 import { PaymentStatus } from 'src/app/models/payment-status.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyAssessmentCertificateNumberComponent } from '../3-competency/assessment-certificate-number/competency-assessment-certificate-number.component';
+import { ProfessionalActivityModule } from '../4-professional-activity/application.professional-activity.module';
+import { BuildingInspectorClassType } from 'src/app/models/building-inspector-classtype.enum';
 
 
 interface ITaskListParent {
   prompt: string;
-  number: string;
+  show: boolean;
   relativeRoute: string;
   children: ITaskListChild[];
 }
@@ -142,6 +144,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   override async onInit(applicationService: ApplicationService): Promise<void> {
     this.model = applicationService.model;
     this.checkingStatus = false;
+    if(this.isInspectorClassOne()) this.hideCompetencySection();
+  }
+
+  private isInspectorClassOne() {
+    return this.model?.InspectorClass?.ClassType.Class == BuildingInspectorClassType.Class1;
   }
 
   getModelStatus(model?: IComponentModel): TaskStatus {
@@ -158,9 +165,17 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     }
   };
 
+  hideCompetencySection() {
+    this.taskItems[2].show = false;
+  }
+
+  get items() {
+    return this.taskItems.filter(x => x.show);
+  }
+
   //#9044 Pattern updated to allow routes to also include query params
-  taskItems: ITaskListParent[] = [{
-    prompt: "Personal details", number: "1.", relativeRoute: ApplicationPersonalDetailsModule.baseRoute, children: [{
+  private taskItems: ITaskListParent[] = [{
+    prompt: "Personal details", relativeRoute: ApplicationPersonalDetailsModule.baseRoute, show: true, children: [{
       prompt: "Name", relativeRoute: ():
       TaskListRoute => {
         return {
@@ -211,7 +226,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     ]
   },
   {
-    prompt: "Building inspector class", number: "2.", relativeRoute: BuildingInspectorClassModule.baseRoute, children: [
+    prompt: "Building inspector class", relativeRoute: BuildingInspectorClassModule.baseRoute, show: true, children: [
       {
         prompt: "Class selection", relativeRoute: (): TaskListRoute => {
           return { route: BuildingInspectorClassSelectionComponent.route}
@@ -229,7 +244,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       }]
   },
   {
-    prompt: "Competency", number: "3.", relativeRoute:  CompetencyModule.baseRoute, children: [
+    prompt: "Competency", relativeRoute:  CompetencyModule.baseRoute, show: true, children: [
       {
         prompt: "Independent assessment", relativeRoute: (): TaskListRoute => {
           return { route: CompetencyIndependentStatusComponent.route}
@@ -263,11 +278,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     ]
   },
   {
-    prompt: "Professional Activity", number: "4.", relativeRoute: CompetencyModule.baseRoute, children: [
+    prompt: "Professional Activity", relativeRoute: ProfessionalActivityModule.baseRoute, show: true, children: [
       {
         prompt: "Professional body membership", relativeRoute: (): TaskListRoute => {
           return { route: ProfessionalBodyMembershipsComponent.route}
-        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.ProfessionalActivity?.ProfessionalBodiesMember)
       },
       {
         prompt: "Employment type", relativeRoute: (): TaskListRoute => {
@@ -288,7 +303,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     ]
   },
   {
-    prompt: "Application summary", number: "5.", relativeRoute: "application-submission/payment", children: [
+    prompt: "Application summary", relativeRoute: "application-submission/payment", show: true, children: [
       {
         prompt: "Application summary", relativeRoute: (): TaskListRoute => {
         return {route: ApplicationSummaryComponent.route}

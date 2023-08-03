@@ -9,6 +9,8 @@ namespace HSE.RP.API.Models
         PersonalDetails PersonalDetails = null,
         BuildingInspectorClass InspectorClass = null,
         Competency Competency = null,
+        ProfessionalActivity ProfessionalActivity = null,
+        ApplicantProfessionBodyMemberships ProfessionalMemberships = null,
         Dictionary<string, StageCompletionState> StageStatus = null,
         ApplicationStatus ApplicationStatus = ApplicationStatus.None) : IValidatableModel
     {

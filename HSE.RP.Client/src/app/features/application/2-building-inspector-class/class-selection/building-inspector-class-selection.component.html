@@ -9,12 +9,12 @@
 
   <h1 class="govuk-heading-l">What class of building inspector are you applying for?</h1>
 
-  <govuk-radio-group hintText="Select one option." id="radios-bi-class-selection" [(model)]="selectedOption" [errorText]="errorMessage">
+  <govuk-radio-group hintText="Select one option." id="radios-bi-class-selection" [(model)]="model!.Class" [errorText]="errorMessage">
     <govuk-radio 
       label="Class 1 building inspector"
       [value]="BuildingInspectorClassType.Class1"
       id="1"
-      [model]="selectedOption" 
+      [model]="model!.Class" 
       [hint]="'A class 1 building inspector is an unqualified trainee and must work under the supervision of a registered building inspector.'">
     </govuk-radio>
 
@@ -22,7 +22,7 @@
       label="Class 2 building inspector"
       [value]="BuildingInspectorClassType.Class2"
       id="2"
-      [model]="selectedOption"
+      [model]="model!.Class"
       [hint]="'A class 2 building inspector is competent to work without supervision on standard buildings.'">
     </govuk-radio>
 
@@ -30,7 +30,7 @@
       label="Class 3 specialist building inspector"
       [value]="BuildingInspectorClassType.Class3"
       id="3"
-      [model]="selectedOption"
+      [model]="model!.Class"
       [hint]="'A class 3 building inspector is competent to work without supervision on all building types including nonstandard or high-risk buildings or both.'">
     </govuk-radio>
   </govuk-radio-group>
