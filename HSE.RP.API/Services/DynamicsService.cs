@@ -313,6 +313,21 @@ namespace HSE.RP.API.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                throw;
+            }
+
+        }
+
+        public async Task UpdateBuildingProfessionApplicationCompetency(DynamicsBuildingProfessionApplication dynamicsBuildingProfessionApplication, DynamicsBuildingProfessionApplication buildingProfessionApplication)
+        {
+            try
+            {
+                var result = await dynamicsApi.Update($"bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid})", buildingProfessionApplication);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
 
         }
@@ -326,6 +341,8 @@ namespace HSE.RP.API.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                throw;
+
             }
 
         }

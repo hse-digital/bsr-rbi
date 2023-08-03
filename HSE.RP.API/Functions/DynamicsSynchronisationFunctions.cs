@@ -168,7 +168,7 @@ public class DynamicsSynchronisationFunctions
 
         var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
 
-        /*if (dynamicsBuildingProfessionApplication != null)
+        if (dynamicsBuildingProfessionApplication != null)
         {
 
             if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == true)
@@ -176,7 +176,7 @@ public class DynamicsSynchronisationFunctions
 
                 await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
                 {
-                    bsr_hasindependentassessment = YesNoOption.No
+                    bsr_hasindependentassessment = false
                 }));
 
 
@@ -200,10 +200,10 @@ public class DynamicsSynchronisationFunctions
             }
             if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == false)
             {
-                await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
+                await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplicationCompetency), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
                 {
-                    bsr_hasindependentassessment = YesNoOption.Yes,
-                    bsr_assessmentorganisationid = buildingProfessionApplicationModel.Competency.CompetencyAssesesmentOrganisation.ComAssesesmentOrganisation is null ? null : $"accounts({AssessmentOrganisationNames.Ids[buildingProfessionApplicationModel.Competency.CompetencyAssesesmentOrganisation.ComAssesesmentOrganisation]})",
+                    bsr_hasindependentassessment = true,
+                    bsr_assessmentorganisationid = buildingProfessionApplicationModel.Competency.CompetencyAssessmentOrganisation.ComAssessmentOrganisation is null ? null : $"accounts({AssessmentOrganisationNames.Ids[buildingProfessionApplicationModel.Competency.CompetencyAssessmentOrganisation.ComAssessmentOrganisation]})",
                     bsr_assessmentdate = buildingProfessionApplicationModel.Competency.CompetencyDateOfAssessment is null ? null :
                                         new DateOnly(int.Parse(buildingProfessionApplicationModel.Competency.CompetencyDateOfAssessment.Year),
                                                      int.Parse(buildingProfessionApplicationModel.Competency.CompetencyDateOfAssessment.Month),
@@ -211,7 +211,7 @@ public class DynamicsSynchronisationFunctions
                     bsr_assessmentcertnumber = buildingProfessionApplicationModel.Competency.CompetencyAssessmentCertificateNumber is null ? null : buildingProfessionApplicationModel.Competency.CompetencyAssessmentCertificateNumber.CertificateNumber,
                 }));
             }
-        }*/
+        }
 
 
 
@@ -940,6 +940,20 @@ public class DynamicsSynchronisationFunctions
         //var stage = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_applicationstage == BuildingApplicationStage.ApplicationSubmitted ? BuildingApplicationStage.ApplicationSubmitted : buildingProfessionApplicationWrapper.Stage;
         return dynamicsService.UpdateBuildingProfessionApplication(buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication, new DynamicsBuildingProfessionApplication
         {
+        });
+    }
+
+    [Function(nameof(UpdateBuildingProfessionApplicationCompetency))]
+    public Task UpdateBuildingProfessionApplicationCompetency([ActivityTrigger] BuildingProfessionApplicationWrapper buildingProfessionApplicationWrapper)
+    {
+        //var stage = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_applicationstage == BuildingApplicationStage.ApplicationSubmitted ? BuildingApplicationStage.ApplicationSubmitted : buildingProfessionApplicationWrapper.Stage;
+        return dynamicsService.UpdateBuildingProfessionApplicationCompetency(buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication, new DynamicsBuildingProfessionApplication
+        {
+            bsr_hasindependentassessment = true,
+            bsr_assessmentorganisationid = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_assessmentorganisationid,
+            bsr_assessmentdate = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_assessmentdate,
+            bsr_assessmentcertnumber = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_assessmentcertnumber
+
         });
     }
 
