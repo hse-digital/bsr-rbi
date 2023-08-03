@@ -41,8 +41,8 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     } else {
       this.certificateNumber = applicationService.model.Competency!.CompetencyAssessmentCertificateNumber.CertificateNumber!;
     }
-    
-    this.organisationPrefix = applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.ComAssesesmentOrganisation;
+
+    this.organisationPrefix = applicationService.model.Competency!.CompetencyAssessmentOrganisation!.ComAssessmentOrganisation;
     applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.InProgress;
   }
 

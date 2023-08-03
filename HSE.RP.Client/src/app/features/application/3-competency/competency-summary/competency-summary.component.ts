@@ -92,7 +92,7 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   public getCompetencyAssessmentOrg(): string {
     return this.applicationService.model.Competency
-      ?.CompetencyAssesesmentOrganisation?.ComAssesesmentOrganisation === 'BSCF'
+      ?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation === 'BSCF'
       ? 'Building Safety Competence Foundation (BSCF)'
       : 'Chartered Association of Building Engineers (CABE)';
   }
