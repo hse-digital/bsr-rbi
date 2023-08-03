@@ -5,7 +5,8 @@ import { BuildingProfessionalModel } from 'src/app/models/building-professional.
 import { ProfessionalActivityModule } from './application.professional-activity.module';
 
 export const ProfessionalActivityRoutes = {
-    PROFESSIONAL_BODY_MEMBERSHIPS: 'professional-body-memberships'
+    PROFESSIONAL_BODY_MEMBERSHIPS: 'professional-body-memberships',
+    PROFESSIONAL_BODY_SELECTION: 'professional-body-selection'
 };
 
 @Injectable({ providedIn: 'root' })

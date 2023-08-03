@@ -282,7 +282,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       {
         prompt: "Professional body membership", relativeRoute: (): TaskListRoute => {
           return { route: ProfessionalBodyMembershipsComponent.route}
-        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => this.getModelStatus(aModel.ProfessionalActivity?.ProfessionalBodiesMember)
+        }, getStatus: (aModel: BuildingProfessionalModel): TaskStatus => TaskStatus.CannotStart // this.getModelStatus(aModel.ProfessionalMemberships?.IsProfessionBodyRelevantYesNo)
       },
       {
         prompt: "Employment type", relativeRoute: (): TaskListRoute => {
