@@ -40,6 +40,11 @@ const routes = new HseRoutes([
     ProfessionalBodySelectionComponent,
     ProfessionalBodySelectionComponent.title
   ),
+  HseRoute.protected(
+    ProfessionalActivitySummaryComponent.route,
+    ProfessionalActivitySummaryComponent,
+    ProfessionalActivitySummaryComponent.title
+  ),
 ]);
 
 @NgModule({
@@ -48,7 +53,8 @@ const routes = new HseRoutes([
     ProfessionalActivityEmploymentTypeComponent,
     ProfessionalActivityEmploymentDetailsComponent,
     ProfessionalActivitySummaryComponent,
-    ProfessionalBodySelectionComponent
+    ProfessionalBodySelectionComponent,
+    ProfessionalActivitySummaryComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

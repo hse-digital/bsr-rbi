@@ -13,9 +13,6 @@ import { ApplicationStatus } from 'src/app/models/application-status.enum';
   templateUrl: './professional-activity-summary.component.html',
 })
 export class ProfessionalActivitySummaryComponent extends PageComponent<string> {
-  DerivedIsComplete(value: boolean): void {
-      
-  }
 
   public static route: string = "professional-activity-summary";
   static title: string = "Professional activity - Register as a building inspector - GOV.UK";
@@ -53,6 +50,18 @@ export class ProfessionalActivitySummaryComponent extends PageComponent<string> 
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+  }
+  public navigateTo(route: string) {
+    return this.navigationService.navigateRelative(`${route}`, this.activatedRoute);
+  }
+  public emptyActionText(): string {
+    return "";
+  }
+  public changeActionText(): string {
+    return "change";
+  }
+  public removeActionText(): string {
+    return "remove";
   }
 
 }

@@ -4,9 +4,77 @@
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
 
-  <h1 class="govuk-heading-l">Professional activity summary</h1>
   <govuk-body>
-  Please enter your summary below
- </govuk-body>
+    <h1 class="govuk-heading-xl">Summary of your professional memberships</h1>
+    <govuk-summary-list>
+      <govuk-summary-list-row (onClick)="navigateTo('TOBESET')"
+                              (onKeyupEnter)="navigateTo('TOBESET')"
+                              (onClick2)="navigateTo('TOBESET')"
+                              (onKeyupEnter2)="navigateTo('TOBESET')"
+                              [actionText]="changeActionText()"
+                              [actionText2]="removeActionText()"
+                              key="Royal Institution of Chartered Surveyors (RICS)"
+                              [showAction]="true"
+                              [showAction2]="true">
+      </govuk-summary-list-row>
+      <govuk-summary-list-row (onClick)="navigateTo('TOBESET')"
+                              (onKeyupEnter)="navigateTo('TOBESET')"
+                              (onClick2)="navigateTo('TOBESET')"
+                              (onKeyupEnter2)="navigateTo('TOBESET')"
+                              [actionText]="changeActionText()"
+                              [actionText2]="removeActionText()"
+                              key="Chartered Association of Building Engineers (CABE)"
+                              [showAction]="true"
+                              [showAction2]="true">
+      </govuk-summary-list-row>
+      <govuk-summary-list-row (onClick)="navigateTo('TOBESET')"
+                              (onKeyupEnter)="navigateTo('TOBESET')"
+                              (onClick2)="navigateTo('TOBESET')"
+                              (onKeyupEnter2)="navigateTo('TOBESET')"
+                              [actionText]="changeActionText()"
+                              [actionText2]="removeActionText()"
+                              key="Chartered Institute of Building (CIOB)"
+                              [showAction]="true"
+                              [showAction2]="true">
+      </govuk-summary-list-row>
+      <govuk-summary-list-row (onClick)="navigateTo('TOBESET')"
+                              (onKeyupEnter)="navigateTo('TOBESET')"
+                              (onClick2)="navigateTo('TOBESET')"
+                              (onKeyupEnter2)="navigateTo('TOBESET')"
+                              [actionText]="emptyActionText()"
+                              [actionText2]="removeActionText()"
+                              key="Other"
+                              [showAction]="true"
+                              [showAction2]="true">
+      </govuk-summary-list-row>
+    </govuk-summary-list>
+    <br/>
+    <h1 class="govuk-heading-xl">Do you want to add another membership?</h1>
+
+    <govuk-radio-group hintText="" id="radios-bi-class-selection"  >
+      <table>
+        <tr>
+          <td>
+            <govuk-radio label="Yes"
+                         [value]=""
+                         id="1">
+            </govuk-radio>
+          </td>
+          <td>
+            <govuk-radio label="No"
+                         [value]=""
+                         id="2">
+            </govuk-radio>
+          </td>
+        </tr>
+      </table>
+
+
+    </govuk-radio-group>
+
+
+
+
+  </govuk-body>
 </govuk-formpage>
 
