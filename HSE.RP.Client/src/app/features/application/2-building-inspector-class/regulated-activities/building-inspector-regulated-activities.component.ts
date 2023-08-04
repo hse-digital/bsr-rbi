@@ -111,7 +111,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   override isValid(): boolean {
     this.errorText = "";
     if (this.selections.length == 0)
-      this.errorText = "You must select at least one BSR-regulated activity";
+      this.errorText = "Select a restricted activity"
     return this.selections.length > 0;
   }
 
