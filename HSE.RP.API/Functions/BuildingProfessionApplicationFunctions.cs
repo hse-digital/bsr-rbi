@@ -57,6 +57,7 @@ public class BuildingProfessionApplicationFunctions
     {
 
 
+
         if (applications.Any() && emails.Any(app => app.Id == applications[0].Id))
         {
             return request.CreateObjectResponseAsync(new { IsValid = true, IsValidApplicationNumber = true, PhoneNumber = applications[0].PersonalDetails.ApplicantPhone.PhoneNumber, EmailAddress = "" });

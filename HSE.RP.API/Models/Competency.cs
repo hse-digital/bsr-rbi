@@ -1,14 +1,18 @@
 ﻿using HSE.RP.API.Enums;
+using System.Text.Json.Serialization;
+
 
 namespace HSE.RP.API.Models
 {
     public record Competency
 	{
-        IndependentAssessmentStatus IndependentAssessmentStatus { get; set; } = null;
-        CompetencyAssesesmentOrganisation CompetencyAssesesmentOrganisation { get; set; } = null;
-        NoCompetencyAssessment NoCompetencyAssessment { get; set; } = null;
-        CompetencyDateOfAssessment CompetencyDateOfAssessment { get; set; } = null;
-        CompetencyAssessmentCertificateNumber CompetencyAssessmentCertificateNumber { get; set; } = null;
+
+        public CompetencyIndependentAssessmentStatus CompetencyIndependentAssessmentStatus { get; set; } = null;
+        public CompetencyAssessmentOrganisation CompetencyAssessmentOrganisation { get; set; } = null;
+        public NoCompetencyAssessment NoCompetencyAssessment { get; set; } = null;
+        public CompetencyDateOfAssessment CompetencyDateOfAssessment { get; set; } = null;
+        public CompetencyAssessmentCertificateNumber CompetencyAssessmentCertificateNumber { get; set; } = null;
+
 
     }
 }

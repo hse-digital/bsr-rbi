@@ -55,6 +55,11 @@ export class CompetencySummaryComponent extends PageComponent<string> {
     return !this.phoneNumberHasErrors; */
   }
 
+  async SyncAndContinue() {
+    await this.applicationService.syncCompetency();
+    this.saveAndContinue();
+  }
+
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
       `../${ApplicationTaskListComponent.route}`,
@@ -81,18 +86,18 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   public getIndependentAssessmentStatus(): string {
     return this.applicationService.model.Competency
-      ?.IndependentAssessmentStatus?.IAStatus === 'yes'
+      ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes'
       ? 'Yes'
       : 'No';
   }
 
   public isCompetencyAssessmentStatusYes(): boolean {
-    return this.applicationService.model.Competency?.IndependentAssessmentStatus?.IAStatus === 'yes';
+    return this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes';
   }
 
   public getCompetencyAssessmentOrg(): string {
     return this.applicationService.model.Competency
-      ?.CompetencyAssesesmentOrganisation?.ComAssesesmentOrganisation === 'BSCF'
+      ?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation === 'BSCF'
       ? 'Building Safety Competence Foundation (BSCF)'
       : 'Chartered Association of Building Engineers (CABE)';
   }

@@ -173,6 +173,12 @@ export class ApplicationService {
     );
   }
 
+  async syncCompetency(): Promise<void> {
+    await firstValueFrom(
+      this.httpClient.post(`api/SyncCompetency`, this.model)
+    );
+  }
+
   async syncPersonalDetails(): Promise<void> {
     await firstValueFrom(
       this.httpClient.post(`api/SyncPersonalDetails`, this.model)

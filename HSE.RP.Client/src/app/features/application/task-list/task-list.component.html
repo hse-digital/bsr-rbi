@@ -28,7 +28,7 @@
               <govuk-tag tag *ngIf="child.getStatus(model!) == valueComplete() || child.getStatus(model!) == valueImmutable()" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
               <govuk-tag tag *ngIf="child.getStatus(model!) == valueNotStarted()" class="govuk-tag--grey">NOT STARTED</govuk-tag>
               <govuk-tag tag *ngIf="child.getStatus(model!) == valueInProgress()" class="govuk-tag--grey">IN PROGRESS</govuk-tag>
-              <govuk-tag tag *ngIf="child.getStatus(model!) == valueCannotStart()" class="govuk-tag--grey">CANNOT START</govuk-tag>
+              <govuk-tag tag *ngIf="child.getStatus(model!) == valueCannotStart()" class="govuk-tag--grey">CANNOT START YET</govuk-tag>
             </li>
           </ul>
         </li>

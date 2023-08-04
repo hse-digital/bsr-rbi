@@ -19,8 +19,7 @@
 
   <ng-container *ngIf="verificationOption == 'phone-option'" >
     <govuk-body>We have sent a 6-digit security code to: <b>{{ phoneNumber }}</b>.</govuk-body>
-    <govuk-body>If you did not get a text message, or wish to use a different mobile number, you can ask us to resend the security code.</govuk-body>
-    <govuk-body>If you have not received the text message, or it has timed out <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new security code</a> or <a (click)="showChangeVerificationStep()" (keyup.enter)="showChangeVerificationStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification to your email</a></govuk-body>
+    <govuk-body>If you did not receive the text message, or the security code timed out, ask us to <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new security code</a>, or <a (click)="showChangeVerificationStep()" (keyup.enter)="showChangeVerificationStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification code to your email</a>.</govuk-body>
 
 
     <govuk-input id="security-code" label="Security code" labelClass="govuk-label--s"

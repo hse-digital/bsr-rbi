@@ -94,7 +94,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
 
   override isValid(): boolean {
     if (this.selections.length == 0)
-      this.errorText = 'You must select at least one option';
+      this.errorText = 'Select a category';
     return this.selections.length > 0;
   }
 

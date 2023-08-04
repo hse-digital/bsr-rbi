@@ -211,7 +211,7 @@ export class ReturningApplicationEnterDataComponent {
 
   isPhoneNumberValid() {
     if (!this.phoneNumber) {
-      this.errors.phoneNumber.errorText = 'Enter your phone number';
+      this.errors.phoneNumber.errorText = 'Enter your mobile telephone number';
       this.errors.phoneNumber.hasError = true;
     } else if (
       !PhoneNumberValidator.isValid(this.phoneNumber!.toString() ?? '')

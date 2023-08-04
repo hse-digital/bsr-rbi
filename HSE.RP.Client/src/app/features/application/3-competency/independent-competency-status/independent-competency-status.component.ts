@@ -7,13 +7,13 @@ import { CompetencyRoutes } from '../CompetencyRoutes';
 import { CompetencyAssessmentOrganisationComponent } from '../assesesment-organisation/competency-assesesment-organisation.component';
 import { NoCompetencyAssessmentComponent } from '../no-competency-assessment/no-competency-assessment.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
-import { IndependentAssessmentStatus } from 'src/app/models/independent-assessment-status.model';
+import { CompetencyIndependentAssessmentStatus } from 'src/app/models/competency-independent-assessment-status.model';
 
 @Component({
   selector: 'hse-independent-competency-status',
   templateUrl: './independent-competency-status.component.html',
 })
-export class CompetencyIndependentStatusComponent extends PageComponent<IndependentAssessmentStatus> {
+export class CompetencyIndependentStatusComponent extends PageComponent<CompetencyIndependentAssessmentStatus> {
   public static route: string = CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS;
   static title: string =
     'Competency - Register as a building inspector - GOV.UK';
@@ -35,27 +35,27 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Independ
     }
 
     if (
-      applicationService.model.Competency?.IndependentAssessmentStatus == null
+      applicationService.model.Competency?.CompetencyIndependentAssessmentStatus == null
     ) {
-      applicationService.model.Competency!.IndependentAssessmentStatus =
-        new IndependentAssessmentStatus();
+      applicationService.model.Competency!.CompetencyIndependentAssessmentStatus =
+        new CompetencyIndependentAssessmentStatus();
       this.selectedOption = 'no';
     }
 
     this.selectedOption = applicationService.model.Competency
-      ?.IndependentAssessmentStatus
-      ? applicationService.model.Competency?.IndependentAssessmentStatus
+      ?.CompetencyIndependentAssessmentStatus
+      ? applicationService.model.Competency?.CompetencyIndependentAssessmentStatus
           .IAStatus!
       : 'no';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     if (['no', 'yes'].includes(this.selectedOption)) {
-      applicationService.model.Competency!.IndependentAssessmentStatus!.IAStatus =
+      applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.IAStatus =
         this.selectedOption;
     }
     if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
-      applicationService.model.Competency!.IndependentAssessmentStatus!.CompletionState =
+      applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.Complete;
     }
   }
@@ -87,7 +87,7 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Independ
   }
 
   DerivedIsComplete(value: boolean): void {
-    this.applicationService.model.Competency!.IndependentAssessmentStatus!.CompletionState =
+    this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
       value
         ? ComponentCompletionState.Complete
         : ComponentCompletionState.InProgress;

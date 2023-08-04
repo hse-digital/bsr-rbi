@@ -6,13 +6,13 @@ import { ApplicationService } from '../../../../services/application.service';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { CompetencyAssessmentCertificateNumberComponent } from '../assessment-certificate-number/competency-assessment-certificate-number.component';
-import { CompetencyAssesesmentOrganisation } from 'src/app/models/competency-assesesment-organisation.model';
+import { CompetencyAssessmentOrganisation } from 'src/app/models/competency-assessment-organisation.model';
 
 @Component({
   selector: 'hse-competency-assesesment-organisation',
   templateUrl: './competency-assesesment-organisation.component.html',
 })
-export class CompetencyAssessmentOrganisationComponent extends PageComponent<CompetencyAssesesmentOrganisation> {
+export class CompetencyAssessmentOrganisationComponent extends PageComponent<CompetencyAssessmentOrganisation> {
   public static route: string =
     CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION;
   static title: string =
@@ -31,22 +31,22 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
     this.updateOnSave = true;
 
     if (
-      !applicationService.model.Competency?.CompetencyAssesesmentOrganisation
+      !applicationService.model.Competency?.CompetencyAssessmentOrganisation
     ) {
-      applicationService.model.Competency!.CompetencyAssesesmentOrganisation =
-        new CompetencyAssesesmentOrganisation();
-      applicationService.model.Competency!.CompetencyAssesesmentOrganisation.ComAssesesmentOrganisation =
+      applicationService.model.Competency!.CompetencyAssessmentOrganisation =
+        new CompetencyAssessmentOrganisation();
+      applicationService.model.Competency!.CompetencyAssessmentOrganisation.ComAssessmentOrganisation =
         'CABE';
     }
 
-    applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.CompletionState =
+    applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
       ComponentCompletionState.InProgress;
 
     this.selectedOption =
-      applicationService.model.Competency!.CompetencyAssesesmentOrganisation
-        .ComAssesesmentOrganisation === 'BSCF'
-        ? applicationService.model.Competency!.CompetencyAssesesmentOrganisation
-            .ComAssesesmentOrganisation
+      applicationService.model.Competency!.CompetencyAssessmentOrganisation
+        .ComAssessmentOrganisation === 'BSCF'
+        ? applicationService.model.Competency!.CompetencyAssessmentOrganisation
+            .ComAssessmentOrganisation
         : 'CABE';
 
     this.applicationService = applicationService;
@@ -54,12 +54,12 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     if (['CABE', 'BSCF'].includes(this.selectedOption!)) {
-      applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.ComAssesesmentOrganisation =
+      applicationService.model.Competency!.CompetencyAssessmentOrganisation!.ComAssessmentOrganisation =
         this.selectedOption!;
     }
 
     if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
-      applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.CompletionState =
+      applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
         ComponentCompletionState.Complete;
     }
   }
@@ -83,7 +83,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
   }
 
   DerivedIsComplete(value: boolean): void {
-    this.applicationService.model.Competency!.CompetencyAssesesmentOrganisation!.CompletionState =
+    this.applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
       value
         ? ComponentCompletionState.Complete
         : ComponentCompletionState.InProgress;
