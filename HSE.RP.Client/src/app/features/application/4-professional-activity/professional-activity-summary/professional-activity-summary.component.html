@@ -7,7 +7,8 @@
   <govuk-body>
     <h1 class="govuk-heading-xl">Summary of your professional memberships</h1>
     <govuk-summary-list>
-      <govuk-summary-list-row (onClick)="navigateTo('TOBESET')"
+      <govuk-summary-list-row *ngIf="model!.RICS.CompletionState !== ComponentCompletionState.Complete"
+                              (onClick)="navigateTo('TOBESET')"
                               (onKeyupEnter)="navigateTo('TOBESET')"
                               (onClick2)="navigateTo('TOBESET')"
                               (onKeyupEnter2)="navigateTo('TOBESET')"
@@ -17,7 +18,8 @@
                               [showAction]="true"
                               [showAction2]="true">
       </govuk-summary-list-row>
-      <govuk-summary-list-row (onClick)="navigateTo('TOBESET')"
+      <govuk-summary-list-row *ngIf="model!.CABE.CompletionState !== ComponentCompletionState.Complete"
+                              (onClick)="navigateTo('TOBESET')"
                               (onKeyupEnter)="navigateTo('TOBESET')"
                               (onClick2)="navigateTo('TOBESET')"
                               (onKeyupEnter2)="navigateTo('TOBESET')"
@@ -27,7 +29,8 @@
                               [showAction]="true"
                               [showAction2]="true">
       </govuk-summary-list-row>
-      <govuk-summary-list-row (onClick)="navigateTo('TOBESET')"
+      <govuk-summary-list-row *ngIf="model!.CIOB.CompletionState !== ComponentCompletionState.Complete"
+                              (onClick)="navigateTo('TOBESET')"
                               (onKeyupEnter)="navigateTo('TOBESET')"
                               (onClick2)="navigateTo('TOBESET')"
                               (onKeyupEnter2)="navigateTo('TOBESET')"
@@ -37,7 +40,8 @@
                               [showAction]="true"
                               [showAction2]="true">
       </govuk-summary-list-row>
-      <govuk-summary-list-row (onClick)="navigateTo('TOBESET')"
+      <govuk-summary-list-row *ngIf="model!.OTHER.CompletionState !== ComponentCompletionState.Complete"
+                              (onClick)="navigateTo('TOBESET')"
                               (onKeyupEnter)="navigateTo('TOBESET')"
                               (onClick2)="navigateTo('TOBESET')"
                               (onKeyupEnter2)="navigateTo('TOBESET')"
@@ -49,32 +53,28 @@
       </govuk-summary-list-row>
     </govuk-summary-list>
     <br/>
-    <h1 class="govuk-heading-xl">Do you want to add another membership?</h1>
+    <div *ngIf="!ApplicantProfessionBodyMembershipsHelper.AllCompleted( model!)">
+      <h1 class="govuk-heading-xl">Do you want to add another membership?</h1>
 
-    <govuk-radio-group hintText="" id="radios-bi-class-selection"  >
-      <table>
-        <tr>
-          <td>
-            <govuk-radio label="Yes"
-                         [value]=""
-                         id="1">
-            </govuk-radio>
-          </td>
-          <td>
-            <govuk-radio label="No"
-                         [value]=""
-                         id="2">
-            </govuk-radio>
-          </td>
-        </tr>
-      </table>
-
-
-    </govuk-radio-group>
-
-
-
-
+      <govuk-radio-group hintText="" id="radios-bi-class-selection">
+        <table>
+          <tr>
+            <td>
+              <govuk-radio label="Yes"
+                           [value]=""
+                           id="1">
+              </govuk-radio>
+            </td>
+            <td>
+              <govuk-radio label="No"
+                           [value]=""
+                           id="2">
+              </govuk-radio>
+            </td>
+          </tr>
+        </table>
+      </govuk-radio-group>
+    </div>
   </govuk-body>
 </govuk-formpage>
 
