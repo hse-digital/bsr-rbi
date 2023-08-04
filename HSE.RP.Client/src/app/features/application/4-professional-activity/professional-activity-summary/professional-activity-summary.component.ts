@@ -16,13 +16,14 @@ import { ComponentCompletionState } from '../../../../models/component-completio
 })
 export class ProfessionalActivitySummaryComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
 
-  public static route: string = "professional-activity-summary";
   static title: string = "Professional activity - Register as a building inspector - GOV.UK";
+  public static route: string = 'professional-activity-summary';
   readonly ComponentCompletionState = ComponentCompletionState;
   readonly ApplicantProfessionBodyMembershipsHelper = ApplicantProfessionBodyMembershipsHelper;
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
+  selectedOption: string = 'no';
   override model?: ApplicantProfessionBodyMemberships;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
@@ -35,9 +36,18 @@ export class ProfessionalActivitySummaryComponent extends PageComponent<Applican
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.CompetencyComplete;
+    if (this.selectedOption === "no") {
+      this.model!.CompletionState = ComponentCompletionState.Complete;
+      await this.navigateTo(`application/${this.applicationService.model.id}`); // Back to the task list.
+    }
+    if (this.selectedOption === "yes") {
+      await this.navigateTo('professional-body-memberships'); // Back to the task list.
+    }
    }
 
+  optionClicked(value: string) {
+    this.selectedOption = value;
+  }
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return true;
     //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
@@ -57,6 +67,12 @@ export class ProfessionalActivitySummaryComponent extends PageComponent<Applican
   }
   public navigateTo(route: string) {
     return this.navigationService.navigateRelative(`${route}`, this.activatedRoute);
+  }
+  public navigateToChange(membershipCode: string) {
+    return this.navigationService.navigateRelative(`professional-body-change`, this.activatedRoute, { queryParams: { membershipCode: membershipCode } });
+  }
+  public navigateToRemove(membershipCode: string) {
+    return this.navigationService.navigateRelative(`professional-body-remove`, this.activatedRoute, { queryParams: { membershipCode: membershipCode } });
   }
   public emptyActionText(): string {
     return "";
