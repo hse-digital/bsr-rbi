@@ -1,0 +1,53 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
+  <govuk-error-link
+    *ngFor="let error of validationErrors"
+    anchorId="{{ error.Anchor }}"
+    message="{{ error.Text }}"
+  />
+</govuk-error-summary>
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="false"
+  (saveAndContinue)="saveAndContinue()"
+  (saveAndComeBack)="saveAndComeBack()"
+  [hideBackButton]="true"
+>
+  <div class="govuk-form-group">
+    <h1 class="govuk-heading-l">
+      Provide your [professional body organisation name] membership details
+    </h1>
+
+    <govuk-input
+      id="mem-input-num"
+      label="Membership number"
+      [(model)]="model.MembershipNumber"
+      class="govuk-!-margin-bottom-5 govuk-input--width-10"
+      hintClass="no-margin-top"
+      [errorText]="getMembershipErrorDescription()"
+    />
+
+    <govuk-input
+      id="mem-input-level"
+      label="Current membership level or type"
+      [(model)]="model.MembershipLevel"
+      hint="for example, charted member, fellow, associate"
+      class="govuk-!-margin-bottom-5 govuk-input--width-20"
+      hintClass="no-margin-top"
+      [errorText]="getLevelErrorDescription()"
+    />
+
+    <govuk-input
+      id="mem-input-year"
+      label="When did you achive your current level of membership?"
+      [(model)]="model.MembershipYear"
+      hint="for example, 2023"
+      [maxlength]="4"
+      class="govuk-!-margin-bottom-5 govuk-input--width-4"
+      hintClass="no-margin-top"
+      [errorText]="getYearErrorDescription()"
+    />
+  </div>
+</govuk-formpage>
+

@@ -6,7 +6,8 @@ import { ProfessionalActivityModule } from './application.professional-activity.
 
 export const ProfessionalActivityRoutes = {
     PROFESSIONAL_BODY_MEMBERSHIPS: 'professional-body-memberships',
-    PROFESSIONAL_BODY_SELECTION: 'professional-body-selection'
+    PROFESSIONAL_BODY_SELECTION: 'professional-body-selection',
+    PROFESSIONAL_MEMBERSHIP_INFORMATION: 'professional-membership-information'
 };
 
 @Injectable({ providedIn: 'root' })
