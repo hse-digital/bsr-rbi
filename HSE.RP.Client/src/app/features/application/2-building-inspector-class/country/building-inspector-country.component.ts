@@ -24,6 +24,7 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   photoHasErrors = false;
   public hint = 'Select all that apply';
   public errorText = '';
+  selectedOptionError: boolean = false;
   override model?: BuildingInspectorCountryOfWork;
   public selections: string[] = [];
 
@@ -69,8 +70,10 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
 
     applicationService.model.ApplicationStatus =
       ApplicationStatus.BuildingInspectorClassComplete;
-      applicationService.model.InspectorClass!.InspectorCountryOfWork = demandModel;
-      applicationService.model.InspectorClass!.InspectorCountryOfWork.CompletionState = ComponentCompletionState.Complete;
+    applicationService.model.InspectorClass!.InspectorCountryOfWork =
+      demandModel;
+    applicationService.model.InspectorClass!.InspectorCountryOfWork.CompletionState =
+      ComponentCompletionState.Complete;
   }
 
   override canAccess(
@@ -81,8 +84,8 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   }
 
   override isValid(): boolean {
-    if (this.selections.length == 0)
-      this.errorText = 'Select a country you will be working in';
+    if (this.selections.length == 0) this.selectedOptionError = true;
+    this.errorText = 'Select a country you will be working in';
     return this.selections.length > 0;
   }
 

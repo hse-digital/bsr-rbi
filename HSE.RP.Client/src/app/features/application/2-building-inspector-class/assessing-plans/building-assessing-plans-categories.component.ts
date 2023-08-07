@@ -27,6 +27,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   photoHasErrors = false;
   public hint = 'Select all that apply';
   public errorText = '';
+  selectedOptionError: boolean = false;
 
   override model?: BuildingAssessingPlansCategoriesClass2;
   public selections: string[] = [];
@@ -94,6 +95,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
 
   override isValid(): boolean {
     if (this.selections.length == 0)
+    this.selectedOptionError = true;
       this.errorText = 'Select a category';
     return this.selections.length > 0;
   }

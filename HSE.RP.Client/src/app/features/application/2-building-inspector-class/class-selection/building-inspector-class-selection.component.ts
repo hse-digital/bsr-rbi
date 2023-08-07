@@ -79,7 +79,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   override isValid(): boolean {
     if (!this.model?.Class) {
       this.selectedOptionError = true;
-      this.errorMessage = "Select a class of building inspector you are applying for";
+      this.errorMessage = "Select a category";
       return false;
     }
 

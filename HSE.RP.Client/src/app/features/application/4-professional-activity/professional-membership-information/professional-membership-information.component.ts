@@ -7,7 +7,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { ApplicationService } from 'src/app/services/application.service';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 
-interface PageValidationItem {
+interface IPageValidationItem {
   Text: string;
   Anchor: string;
 }
@@ -43,7 +43,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
     'Professional activity - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
-  validationErrors: PageValidationItem[] = [];
+  validationErrors: IPageValidationItem[] = [];
   override model: ApplicantProfessionalBodyMembership =
     new ApplicantProfessionalBodyMembership();
 

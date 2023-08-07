@@ -1,5 +1,9 @@
 <govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
 
+  <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-bi-class-selection" [message]="errorText" />
+  </govuk-error-summary>
+
   <h1 class="govuk-heading-l">
     <span class="govuk-caption-l">
       Class {{getClassType()}} building inspector
