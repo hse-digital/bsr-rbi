@@ -10,7 +10,7 @@
 
   <govuk-warning message="Your alternative email address will not be published." background="#0"></govuk-warning>
 
-  <govuk-radio-group hintText="Select one option." id="radios-alternative-email" [(model)]="selectedOption">
+  <govuk-radio-group hintText="Select one option." id="applicant-email" [(model)]="selectedOption">
     <govuk-radio label="Yes" value="yes" id="yes" [model]="selectedOption">
       <govuk-input 
       *ngIf="selectedOption === 'yes'"
