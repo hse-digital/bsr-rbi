@@ -187,7 +187,10 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     }
     else if (model?.CompletionState == ComponentCompletionState.Complete && countryModel?.CompletionState == ComponentCompletionState.NotStarted) {
       return TaskStatus.NotStarted;
-    }else if (model?.CompletionState == ComponentCompletionState.InProgress && countryModel?.CompletionState == ComponentCompletionState.InProgress) {
+    } else if (model?.CompletionState == ComponentCompletionState.InProgress && countryModel?.CompletionState == ComponentCompletionState.InProgress) {
+      return TaskStatus.CannotStart;
+    }
+    else if (model?.CompletionState == ComponentCompletionState.InProgress && countryModel?.CompletionState == ComponentCompletionState.Complete) {
       return TaskStatus.CannotStart;
     }
     else if (model?.CompletionState == ComponentCompletionState.Complete && countryModel?.CompletionState == ComponentCompletionState.InProgress) {
