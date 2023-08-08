@@ -41,10 +41,11 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
     if (!applicationService.model.InspectorClass?.InspectorCountryOfWork) {
       applicationService.model.InspectorClass!.InspectorCountryOfWork =
         new BuildingInspectorCountryOfWork();
+    } else {
+      this.model =
+        applicationService.model.InspectorClass?.InspectorCountryOfWork;
+      this.model!.CompletionState = ComponentCompletionState.InProgress;
     }
-
-    this.model =
-      applicationService.model.InspectorClass?.InspectorCountryOfWork;
 
     const demandModel = this.DemandModel();
     const countryKeys = ['England', 'Wales'];
@@ -53,7 +54,7 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       ...countryKeys.filter((key) => demandModel[key] === true)
     );
 
-    this.model!.CompletionState = ComponentCompletionState.InProgress;
+    // this.model!.CompletionState = ComponentCompletionState.InProgress;
     this.applicationService = applicationService;
   }
 
@@ -66,14 +67,18 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       demandModel[value] = true;
     });
 
-    this.model!.CompletionState = ComponentCompletionState.Complete;
+    if (this.selections.length > 0) {
+      this.model!.CompletionState = ComponentCompletionState.Complete;
+      applicationService.model.ApplicationStatus =
+        ApplicationStatus.BuildingInspectorClassComplete;
+    } else {
+      this.model!.CompletionState = ComponentCompletionState.InProgress;
+    }
 
-    applicationService.model.ApplicationStatus =
-      ApplicationStatus.BuildingInspectorClassComplete;
     applicationService.model.InspectorClass!.InspectorCountryOfWork =
       demandModel;
-    applicationService.model.InspectorClass!.InspectorCountryOfWork.CompletionState =
-      ComponentCompletionState.Complete;
+    // applicationService.model.InspectorClass!.InspectorCountryOfWork.CompletionState =
+    //   ComponentCompletionState.Complete;
   }
 
   override canAccess(
