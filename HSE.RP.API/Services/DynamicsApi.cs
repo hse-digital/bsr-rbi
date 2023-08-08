@@ -21,7 +21,7 @@ namespace HSE.RP.API.Services
         {
             retryPolicy = Policy
                 .Handle<FlurlHttpException>()
-                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
             this.dynamicsOptions = dynamicsOptions.Value;
         }
 
