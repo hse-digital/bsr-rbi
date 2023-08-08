@@ -6,6 +6,17 @@
   (saveAndContinue)="saveAndContinue()"
   [hideBackButton]="true"
 >
+  <govuk-error-summary
+    *ngIf="selectedOptionError"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="selectedOptionError"
+      anchorId="chkbox-ib-class2-category-selection"
+      [message]="errorText"
+    />
+  </govuk-error-summary>
   <h1 class="govuk-heading-l">
     <span class="govuk-caption-l">Class 2 specialist building inspector</span>
     Inspection: which category of buildings are you competent to inspect?
@@ -16,8 +27,8 @@
     submitted, assessed plans and associated information, and comply with
     building regulations.
 
-    <br>
-    <br>
+    <br />
+    <br />
 
     <govuk-checkbox-group
       [title]=""

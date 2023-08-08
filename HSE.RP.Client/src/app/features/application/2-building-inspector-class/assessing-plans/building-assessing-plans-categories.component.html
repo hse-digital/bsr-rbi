@@ -6,10 +6,19 @@
   (saveAndContinue)="saveAndContinue()"
   [hideBackButton]="true"
 >
+  <govuk-error-summary
+    *ngIf="selectedOptionError"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="selectedOptionError"
+      anchorId="chkbox-assing-plan-category-selection"
+      [message]="errorText"
+    />
+  </govuk-error-summary>
   <h1 class="govuk-heading-l">
-    <span class="govuk-caption-l">
-      Class 2 building inspector
-    </span>
+    <span class="govuk-caption-l"> Class 2 building inspector </span>
     Assessing plans: which category of building plans are you competent to
     assess?
   </h1>
@@ -19,8 +28,8 @@
     information (for example, material specifications, structural calculations
     and fire strategies) to ensure they comply with building regulations.
 
-    <br>
-    <br>
+    <br />
+    <br />
 
     <govuk-checkbox-group
       [title]=""

@@ -12,7 +12,7 @@ import { IComponentModel } from '../../../../models/component. interface';
 import { ComponentCompletionState } from '../../../../models/component-completion-state.enum';
 
 class YesNoModel implements IComponentModel {
-  YesNo: string = 'no';
+  YesNo: string = '';
   CompletionState: ComponentCompletionState = ComponentCompletionState.NotStarted;
 }
 
@@ -42,6 +42,11 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
     this.updateOnSave = true;
     this.model = new YesNoModel();
 
+    console.log('check techanical', applicationService.model.InspectorClass)
+
+    if(applicationService.model.InspectorClass?.ClassTechnicalManager) {
+      this.model!.YesNo = applicationService.model.InspectorClass?.ClassTechnicalManager;
+    } 
 
     this.applicationService = applicationService;
   }
@@ -66,6 +71,7 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
 
   override isValid(): boolean {
     this.hasErrors = false;
+    this.errorMessage = '';
 
     if (this.model!.YesNo === '') {
       this.hasErrors = true;
