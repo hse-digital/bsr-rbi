@@ -2,13 +2,13 @@
 
 <govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" [hideBackButton]=true (saveAndComeBack)="saveAndComeBack()">
 
+  <govuk-error-summary *ngIf="phoneNumberHasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link anchorId="radios-alternative-phone" message={{errorMessage}} />
+  </govuk-error-summary>
+
   <h1 class="govuk-heading-l">Do you want to add an alternative phone number?</h1>
 
   <govuk-warning message="Your alternative phone number will not be published." background="#0"></govuk-warning>
-
-  <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-alternative-phone" [message]="errorMessage"/>
-  </govuk-error-summary>
 
   <govuk-radio-group hintText="Select one option." id="radios-alternative-phone" [(model)]="selectedOption">
     <govuk-radio label="Yes" value="yes" id="yes" [model]="selectedOption">
