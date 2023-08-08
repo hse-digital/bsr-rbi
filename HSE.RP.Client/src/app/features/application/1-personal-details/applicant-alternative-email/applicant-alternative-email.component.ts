@@ -38,9 +38,9 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<ApplicantE
       applicationService.model.PersonalDetails!.ApplicantAlternativeEmail = { Email: '', CompletionState: ComponentCompletionState.InProgress };
     }
     this.model = applicationService.model.PersonalDetails?.ApplicantAlternativeEmail;
-    if (this.model === "") {
+    if (this.model?.Email === "") {
       this.selectedOption = "no"
-    } else if (this.model) {
+    } else if (this.model?.Email) {
       this.selectedOption = "yes"
     }
   }
@@ -66,9 +66,9 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<ApplicantE
     else if (this.selectedOption === "no") {
       return !this.emailHasErrors
     }
-    else if (this.model == null || this.model == '')
+    else if (this.model?.Email == '')
     {
-      this.emailErrorMessage = "Select yes if you want to provide an alternative email address";
+      this.emailErrorMessage = "Enter your alternative email address";
       this.emailHasErrors = true;
     }
     else{
