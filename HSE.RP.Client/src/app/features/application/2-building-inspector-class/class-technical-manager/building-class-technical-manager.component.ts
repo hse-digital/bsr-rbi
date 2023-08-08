@@ -42,6 +42,11 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
     this.updateOnSave = true;
     this.model = new YesNoModel();
 
+    console.log('check techanical', applicationService.model.InspectorClass)
+
+    if(applicationService.model.InspectorClass?.ClassTechnicalManager) {
+      this.model!.YesNo = applicationService.model.InspectorClass?.ClassTechnicalManager;
+    } 
 
     this.applicationService = applicationService;
   }

@@ -54,7 +54,6 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       ...countryKeys.filter((key) => demandModel[key] === true)
     );
 
-    // this.model!.CompletionState = ComponentCompletionState.InProgress;
     this.applicationService = applicationService;
   }
 
@@ -77,8 +76,7 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
 
     applicationService.model.InspectorClass!.InspectorCountryOfWork =
       demandModel;
-    // applicationService.model.InspectorClass!.InspectorCountryOfWork.CompletionState =
-    //   ComponentCompletionState.Complete;
+ 
   }
 
   override canAccess(

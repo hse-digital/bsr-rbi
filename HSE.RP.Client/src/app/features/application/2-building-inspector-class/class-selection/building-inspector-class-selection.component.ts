@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, QueryList } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
@@ -14,6 +14,8 @@ import { BuildingAssessingPlansCategoriesClass2 } from 'src/app/models/building-
 import { Class2InspectBuildingCategories } from 'src/app/models/class2-inspect-building-categories.model';
 import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-building-categories.model';
 import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
+import { GovukRequiredDirective } from 'src/app/components/required.directive';
+import { IComponentModel } from 'src/app/models/component. interface';
 
 @Component({
   selector: 'hse-building-inspector-class-selection',
@@ -76,8 +78,9 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
 
     this.model = applicationService.model.InspectorClass?.ClassType;
 
-    this.applicationService.model.InspectorClass!.ClassType!.Class =
-      this.model?.Class;
+    // this.applicationService.model.InspectorClass!.ClassType!.Class =
+    //   this.model?.Class;
+
     // reset state if the user changes their input
     if (this.model!.Class !== this.originalOption) {
       // reset all other info to false
@@ -120,7 +123,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
 
     if (!(this.selectedOption > 0) ) {
       this.selectedOptionError = true;
-      this.errorMessage = 'Select a category';
+      this.errorMessage = 'Select a class of building inspector you are applying for';
       return false;
     }
 
