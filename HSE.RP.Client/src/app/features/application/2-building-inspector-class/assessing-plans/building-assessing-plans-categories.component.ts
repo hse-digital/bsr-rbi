@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { PageComponent } from 'src/app/helpers/page.component';
+import { ApplicationService } from 'src/app/services/application.service';
 import {
-  ApplicationService,
-
-} from 'src/app/services/application.service';
-import { BuildingInspectorRouter, BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
+  BuildingInspectorRouter,
+  BuildingInspectorRoutes,
+} from '../BuildingInspectorRoutes';
 import { environment } from 'src/environments/environment';
 import { BuildingClassTechnicalManagerComponent } from '../class-technical-manager/building-class-technical-manager.component';
 import { BuildingAssessingPlansCategoriesClass2 } from 'src/app/models/building-assessing-plans-categories-class2.model';
@@ -18,7 +18,8 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
   templateUrl: './building-assessing-plans-categories.component.html',
 })
 export class BuildingAssessingPlansCategoriesComponent extends PageComponent<BuildingAssessingPlansCategoriesClass2> {
-  public static route: string = BuildingInspectorRoutes.CLASS2_ACCESSING_PLANS_CATEGORIES;
+  public static route: string =
+    BuildingInspectorRoutes.CLASS2_ACCESSING_PLANS_CATEGORIES;
   public id: string = BuildingClassTechnicalManagerComponent.route;
   static title =
     'Building inspector class - Register as a building inspector - GOV.UK';
@@ -35,7 +36,10 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   @Output() onClicked = new EventEmitter();
   @Output() onKeyupEnter = new EventEmitter();
 
-  constructor(activatedRoute: ActivatedRoute, private buildingInspectorRouter : BuildingInspectorRouter) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    private buildingInspectorRouter: BuildingInspectorRouter
+  ) {
     super(activatedRoute);
   }
 
@@ -94,18 +98,30 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   }
 
   override isValid(): boolean {
-    if (this.selections.length == 0)
-    this.selectedOptionError = true;
+    if (this.selections.length == 0) {
+      this.selectedOptionError = true;
       this.errorText = 'Select a category';
+    }
     return this.selections.length > 0;
   }
 
   override navigateNext(): Promise<boolean> {
-    if (this.applicationService.model.InspectorClass?.Activities.Inspection === false && this.applicationService.model.InspectorClass?.Activities.AssessingPlans === true) {
-      return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER);
+    if (
+      this.applicationService.model.InspectorClass?.Activities.Inspection ===
+        false &&
+      this.applicationService.model.InspectorClass?.Activities
+        .AssessingPlans === true
+    ) {
+      return this.buildingInspectorRouter.navigateTo(
+        this.applicationService.model,
+        BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER
+      );
     }
     // redirect to the Class 2 Inspection Categories once that page has been made
-    return this.buildingInspectorRouter.navigateTo(this.applicationService.model, BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES);
+    return this.buildingInspectorRouter.navigateTo(
+      this.applicationService.model,
+      BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES
+    );
   }
 
   DerivedIsComplete(value: boolean): void {

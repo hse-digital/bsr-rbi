@@ -125,9 +125,10 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
 
   override isValid(): boolean {
     this.errorText = '';
-    if (this.selections.length == 0) 
-    this.selectedOptionError = true;
-    this.errorText = 'Select a restricted activity';
+    if (this.selections.length == 0)  {
+      this.selectedOptionError = true;
+      this.errorText = 'Select a restricted activity';
+    }
     return this.selections.length > 0;
   }
 

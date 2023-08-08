@@ -84,8 +84,10 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   }
 
   override isValid(): boolean {
-    if (this.selections.length == 0) this.selectedOptionError = true;
-    this.errorText = 'Select a country you will be working in';
+    if (this.selections.length == 0) {
+      this.selectedOptionError = true;
+      this.errorText = 'Select a country you will be working in';
+    }
     return this.selections.length > 0;
   }
 
