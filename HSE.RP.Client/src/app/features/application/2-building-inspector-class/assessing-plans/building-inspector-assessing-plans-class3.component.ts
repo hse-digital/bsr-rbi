@@ -14,6 +14,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 
 interface AssessingPlans {
   value: string,
+  text: string,
   hint: string
 }
 
@@ -27,16 +28,17 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
   static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   public hint: string = "Select all that apply";
+  errors: boolean = false;
   public errorText: string = "";
   public options: AssessingPlans[] = [
-    {value: "CategoryA", hint: "Content to be finalised"},
-    {value: "CategoryB", hint: "Content to be finalised"},
-    {value: "CategoryC", hint: "Content to be finalised"},
-    {value: "CategoryD", hint: "Content to be finalised"},
-    {value: "CategoryE", hint: "Content to be finalised"},
-    {value: "CategoryF", hint: "Content to be finalised"},
-    {value: "CategoryG", hint: "Content to be finalised"},
-    {value: "CategoryH", hint: "Content to be finalised"},
+    {value: "CategoryA", text:"Category A", hint: "Content to be finalised"},
+    {value: "CategoryB", text:"Category B", hint: "Content to be finalised"},
+    {value: "CategoryC", text:"Category C", hint: "Content to be finalised"},
+    {value: "CategoryD", text:"Category D", hint: "Content to be finalised"},
+    {value: "CategoryE", text:"Category E", hint: "Content to be finalised"},
+    {value: "CategoryF", text:"Category F", hint: "Content to be finalised"},
+    {value: "CategoryG", text:"Category G", hint: "Content to be finalised"},
+    {value: "CategoryH", text:"Category H", hint: "Content to be finalised"},
   ]
 
   override model?: BuildingAssessingPlansCategoriesClass3;
@@ -94,8 +96,12 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
 
 
   override isValid(): boolean {
-    if (this.selections.length == 0)
-      this.errorText = 'You must select at least one option';
+    if (this.selections.length == 0) {
+      this.errorText = 'Select the categories you are applying for';
+      this.errors = true;
+    } else {
+      this.errors = false;
+    }
     return this.selections.length > 0;
   }
 

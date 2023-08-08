@@ -24,6 +24,7 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   modelValid = false;
   photoHasErrors = false;
   public hint = 'Select all that apply';
+  errors: boolean = false;
   public errorText = '';
 
   override model?: Class3InspectBuildingCategories;
@@ -85,8 +86,12 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   }
 
   override isValid(): boolean {
-    if (this.selections.length == 0)
-      this.errorText = 'You must select at least one option';
+    if (this.selections.length == 0) {
+      this.errorText = 'Select the categories you are applying for';
+      this.errors = true;
+    } else {
+      this.errors = false;
+    }
     return this.selections.length > 0;
   }
 
