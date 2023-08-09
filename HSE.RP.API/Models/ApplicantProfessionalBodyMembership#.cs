@@ -13,7 +13,7 @@ public class ApplicantProfessionalBodyMembership
     public string MembershipNumber { get; set; }
     public string MembershipLevel { get; set; }
     public int MembershipYear { get; set; }
-    public ComponentCompletionState CompletionState;
+    public ComponentCompletionState CompletionState { get; set; }
 }
 
 public class ApplicantProfessionBodyMemberships

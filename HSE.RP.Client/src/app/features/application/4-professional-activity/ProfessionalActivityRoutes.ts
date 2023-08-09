@@ -7,12 +7,15 @@ import { ProfessionalActivityModule } from './application.professional-activity.
 export const ProfessionalActivityRoutes = {
     PROFESSIONAL_BODY_MEMBERSHIPS: 'professional-body-memberships',
     PROFESSIONAL_BODY_SELECTION: 'professional-body-selection',
-    PROFESSIONAL_MEMBERSHIP_INFORMATION: 'professional-membership-information'
+    PROFESSIONAL_BODY_SUMMARY: 'professional-body-summary',
+    PROFESSIONAL_BODY_REMOVE: 'professional-body-remove',
+    PROFESSIONAL_BODY_MODIFY: 'professional-body-modify',
 };
 
 @Injectable({ providedIn: 'root' })
 export class ProfessionalActivityRouter {
-  constructor(private navigationService: NavigationService) {}
+  constructor(private navigationService: NavigationService) { }
+
   public navigateTo(
     model: BuildingProfessionalModel,
     component: string

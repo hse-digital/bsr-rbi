@@ -42,9 +42,9 @@ const routes = new HseRoutes([
     ProfessionalBodySelectionComponent.title
   ),
   HseRoute.protected(
-    ProfessionalMembershipInformationComponent.route,
-    ProfessionalMembershipInformationComponent,
-    ProfessionalMembershipInformationComponent.title
+    ProfessionalActivitySummaryComponent.route,
+    ProfessionalActivitySummaryComponent,
+    ProfessionalActivitySummaryComponent.title
   ),
 ]);
 
@@ -55,7 +55,7 @@ const routes = new HseRoutes([
     ProfessionalActivityEmploymentDetailsComponent,
     ProfessionalActivitySummaryComponent,
     ProfessionalBodySelectionComponent,
-    ProfessionalMembershipInformationComponent
+    ProfessionalActivitySummaryComponent
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
