@@ -49,7 +49,7 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
   override async navigateNext(): Promise<boolean> {
     return this.professionalActivityRouter.navigateTo(
       this.applicationService.model,
-      "professional-activity-summary"
+      'professional-activity-summary'
     );
   }
 
@@ -60,48 +60,39 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
     );
   }
 
-  public getMembershipNumber(): string {
-    const memberships: any =
-      this.applicationService.model.ProfessionalMemberships;
-
+  private getValidMembershipField(
+    memberships: any,
+    field: string
+  ): string | number {
     const membershipOrder = ['RICS', 'CABE', 'CIOB', 'OTHER'];
 
     for (const membership of membershipOrder) {
-      if (memberships[membership].MembershipNumber !== '') {
-        return memberships[membership].MembershipNumber;
+      if (
+        memberships[membership][field] !== '' &&
+        memberships[membership][field] !== -1
+      ) {
+        return memberships[membership][field];
       }
     }
 
     return 'None';
   }
 
-  public getMembershipLevel(): string {
+  public getMembershipNumber(): number | string {
     const memberships: any =
       this.applicationService.model.ProfessionalMemberships;
-
-    const membershipOrder = ['RICS', 'CABE', 'CIOB', 'OTHER'];
-
-    for (const membership of membershipOrder) {
-      if (memberships[membership].MembershipLevel !== '') {
-        return memberships[membership].MembershipLevel;
-      }
-    }
-
-    return 'None';
+    return this.getValidMembershipField(memberships, 'MembershipNumber');
   }
 
-  public getMembershipYear(): string {
+  public getMembershipLevel(): number | string {
     const memberships: any =
       this.applicationService.model.ProfessionalMemberships;
+    return this.getValidMembershipField(memberships, 'MembershipLevel');
+  }
 
-    const membershipOrder = ['RICS', 'CABE', 'CIOB', 'OTHER'];
-
-    for (const membership of membershipOrder) {
-      if (memberships[membership].MembershipYear !== -1) {
-        return memberships[membership].MembershipYear;
-      }
-    }
-
-    return 'None';
+  public getMembershipYear(): number | string {
+    const memberships: any =
+      this.applicationService.model.ProfessionalMemberships;
+    return this.getValidMembershipField(memberships, 'MembershipYear');
   }
 }
