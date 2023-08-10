@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ProfessionalActivityRoutes } from '../ProfessionalActivityRoutes';
 import { PageComponent } from 'src/app/helpers/page.component';
 import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
@@ -13,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
   public static route: string =
-    ProfessionalActivityRoutes.PROFESSIONAL_BODY_SELECTION;
+    "professional-body-selection";
   static title: string =
     'Professional activity - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;

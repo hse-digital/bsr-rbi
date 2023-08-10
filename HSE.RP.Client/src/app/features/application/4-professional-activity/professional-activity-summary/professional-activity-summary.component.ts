@@ -9,7 +9,7 @@ import { ApplicationTaskListComponent } from '../../task-list/task-list.componen
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ApplicantProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper } from '../../../../models/applicant-professional-body-membership';
 import { ComponentCompletionState } from '../../../../models/component-completion-state.enum';
-import { ProfessionalActivityRoutes } from '../ProfessionalActivityRoutes';
+import { ProfessionalActivityRoutes } from '../../application-routes';
 
 @Component({
   selector: 'hse-professional-activity-summary',
@@ -18,7 +18,8 @@ import { ProfessionalActivityRoutes } from '../ProfessionalActivityRoutes';
 export class ProfessionalActivitySummaryComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
 
   static title: string = "Professional activity - Register as a building inspector - GOV.UK";
-  public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_BODY_SUMMARY;
+  public static route: string = "professional-activity-summary";
+  //public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_ACTIVITY_SUMMARY;
   readonly ComponentCompletionState = ComponentCompletionState;
   readonly ApplicantProfessionBodyMembershipsHelper = ApplicantProfessionBodyMembershipsHelper;
   production: boolean = environment.production;

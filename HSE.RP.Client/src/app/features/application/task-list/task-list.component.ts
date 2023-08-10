@@ -16,7 +16,6 @@ import { PageComponent } from 'src/app/helpers/page.component';
 //import { ProfessionalActivityPlaceholderComponent } from '../4-professional-activity/professional-activity-placeholder/professional-activity-placeholder.component';
 //import { ApplicationSubmissionPlaceholderComponent } from '../5-application-submission/application-submission-placeholder/application-submission-placeholder.component';
 import { environment } from 'src/environments/environment';
-//import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 import { ApplicantAddressComponent } from '../1-personal-details/applicant-address/applicant-address.component';
 import { ApplicantNameComponent } from '../1-personal-details/applicant-name/applicant-name.component';
@@ -349,13 +348,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             this.getModelStatus(aModel.Competency?.CompetencyIndependentAssessmentStatus),
         },
         {
-          prompt: 'Certificate code',
-          relativeRoute: (): TaskListRoute => {
-            return { route: CompetencyCertificateCodeComponent.route };
-          },
-          getStatus: (): TaskStatus => TaskStatus.CannotStart,
-        },
-        {
           prompt: 'Assessment organisation',
           relativeRoute: (): TaskListRoute => {
             return { route: CompetencyAssessmentOrganisationComponent.route };
@@ -396,12 +388,12 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       ],
     },
     {
-      prompt: 'Professional Activity',
+      prompt: 'Professional memberships and employment',
       relativeRoute: ProfessionalActivityModule.baseRoute,
       show: true,
       children: [
         {
-          prompt: 'Professional body membership',
+          prompt: 'Membership professional bodies',
           relativeRoute: (): TaskListRoute => {
             return { route: ProfessionalBodyMembershipsComponent.route };
           },
@@ -409,19 +401,9 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             TaskStatus.CannotStart, // this.getModelStatus(aModel.ProfessionalMemberships?.IsProfessionBodyRelevantYesNo)
         },
         {
-          prompt: 'Employment type',
+          prompt: 'Employment',
           relativeRoute: (): TaskListRoute => {
             return { route: ProfessionalActivityEmploymentTypeComponent.route };
-          },
-          getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            TaskStatus.CannotStart,
-        },
-        {
-          prompt: 'Employment details',
-          relativeRoute: (): TaskListRoute => {
-            return {
-              route: ProfessionalActivityEmploymentDetailsComponent.route,
-            };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             TaskStatus.CannotStart,
