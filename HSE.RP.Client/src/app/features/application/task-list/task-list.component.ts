@@ -349,13 +349,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             this.getModelStatus(aModel.Competency?.CompetencyIndependentAssessmentStatus),
         },
         {
-          prompt: 'Certificate code',
-          relativeRoute: (): TaskListRoute => {
-            return { route: CompetencyCertificateCodeComponent.route };
-          },
-          getStatus: (): TaskStatus => TaskStatus.CannotStart,
-        },
-        {
           prompt: 'Assessment organisation',
           relativeRoute: (): TaskListRoute => {
             return { route: CompetencyAssessmentOrganisationComponent.route };
@@ -396,12 +389,12 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       ],
     },
     {
-      prompt: 'Professional Activity',
+      prompt: 'Professional memberships and employment',
       relativeRoute: ProfessionalActivityModule.baseRoute,
       show: true,
       children: [
         {
-          prompt: 'Professional body membership',
+          prompt: 'Membership of professional bodies',
           relativeRoute: (): TaskListRoute => {
             return { route: ProfessionalBodyMembershipsComponent.route };
           },
@@ -409,19 +402,9 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             TaskStatus.CannotStart, // this.getModelStatus(aModel.ProfessionalMemberships?.IsProfessionBodyRelevantYesNo)
         },
         {
-          prompt: 'Employment type',
+          prompt: 'Employment',
           relativeRoute: (): TaskListRoute => {
             return { route: ProfessionalActivityEmploymentTypeComponent.route };
-          },
-          getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            TaskStatus.CannotStart,
-        },
-        {
-          prompt: 'Employment details',
-          relativeRoute: (): TaskListRoute => {
-            return {
-              route: ProfessionalActivityEmploymentDetailsComponent.route,
-            };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             TaskStatus.CannotStart,
@@ -457,7 +440,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus => {
             if (this.paymentStatus == this.paymentEnum.Success) {
               return TaskStatus.Complete;
-            } else if (this.paymentStatus == this.paymentEnum.Pending) {
+            } else if (this.paymentStatus == this.paymentEnum.Started) {
               return TaskStatus.InProgress;
             } else {
               return TaskStatus.NotStarted;
