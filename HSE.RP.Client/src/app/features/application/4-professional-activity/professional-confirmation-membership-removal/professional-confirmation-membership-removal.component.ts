@@ -7,7 +7,7 @@ import {
   ProfessionalActivityRoutes,
 } from '../ProfessionalActivityRoutes';
 import { environment } from 'src/environments/environment';
-import { ApplicantProfessionBodyMemberships, ProfessionalBodies } from 'src/app/models/applicant-professional-body-membership';
+import { ApplicantProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper, ProfessionalBodies } from 'src/app/models/applicant-professional-body-membership';
 
 @Component({
   selector: 'hse-professional-confirmation-membership-removal',
@@ -47,7 +47,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
     const memberships = applicationService.model.ProfessionalMemberships;
 
     if(this.selectedOption === 'yes') {
-      memberships.Reset('RICS')
+      ApplicantProfessionBodyMembershipsHelper.Reset('RICS')
     }
 
     applicationService = applicationService;
