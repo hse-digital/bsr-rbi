@@ -16,7 +16,6 @@ import { PageComponent } from 'src/app/helpers/page.component';
 //import { ProfessionalActivityPlaceholderComponent } from '../4-professional-activity/professional-activity-placeholder/professional-activity-placeholder.component';
 //import { ApplicationSubmissionPlaceholderComponent } from '../5-application-submission/application-submission-placeholder/application-submission-placeholder.component';
 import { environment } from 'src/environments/environment';
-//import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 import { ApplicantAddressComponent } from '../1-personal-details/applicant-address/applicant-address.component';
 import { ApplicantNameComponent } from '../1-personal-details/applicant-name/applicant-name.component';

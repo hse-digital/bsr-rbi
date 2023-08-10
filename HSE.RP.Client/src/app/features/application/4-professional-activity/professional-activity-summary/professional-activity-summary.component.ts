@@ -7,22 +7,26 @@ import { ApplicationService } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { ApplicantProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper } from '../../../../models/applicant-professional-body-membership';
+import { ComponentCompletionState } from '../../../../models/component-completion-state.enum';
+import { ProfessionalActivityRoutes } from '../../application-routes';
 
 @Component({
   selector: 'hse-professional-activity-summary',
   templateUrl: './professional-activity-summary.component.html',
 })
-export class ProfessionalActivitySummaryComponent extends PageComponent<string> {
-  DerivedIsComplete(value: boolean): void {
-      
-  }
+export class ProfessionalActivitySummaryComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
 
-  public static route: string = "professional-activity-summary";
   static title: string = "Professional activity - Register as a building inspector - GOV.UK";
+  public static route: string = "professional-activity-summary";
+  //public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_ACTIVITY_SUMMARY;
+  readonly ComponentCompletionState = ComponentCompletionState;
+  readonly ApplicantProfessionBodyMembershipsHelper = ApplicantProfessionBodyMembershipsHelper;
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: string;
+  selectedOption: string = 'no';
+  override model?: ApplicantProfessionBodyMemberships;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
@@ -30,13 +34,22 @@ export class ProfessionalActivitySummaryComponent extends PageComponent<string> 
   }
 
   override onInit(applicationService: ApplicationService): void {
-    //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
+    this.model = applicationService.model.ProfessionalMemberships;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.CompetencyComplete;
+    if (this.selectedOption === "no") {
+      this.model!.CompletionState = ComponentCompletionState.Complete;
+      await this.navigateTo(`application/${this.applicationService.model.id}`); // Back to the task list.
+    }
+    if (this.selectedOption === "yes") {
+      await this.navigateTo('professional-body-memberships'); // Back to the task list.
+    }
    }
 
+  optionClicked(value: string) {
+    this.selectedOption = value;
+  }
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return true;
     //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
@@ -53,6 +66,24 @@ export class ProfessionalActivitySummaryComponent extends PageComponent<string> 
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
+  }
+  public navigateTo(route: string) {
+    return this.navigationService.navigateRelative(`${route}`, this.activatedRoute);
+  }
+  public navigateToChange(membershipCode: string) {
+    return this.navigationService.navigateRelative(`professional-body-change`, this.activatedRoute, { queryParams: { membershipCode: membershipCode } });
+  }
+  public navigateToRemove(membershipCode: string) {
+    return this.navigationService.navigateRelative(`professional-body-remove`, this.activatedRoute, { queryParams: { membershipCode: membershipCode } });
+  }
+  public emptyActionText(): string {
+    return "";
+  }
+  public changeActionText(): string {
+    return "change";
+  }
+  public removeActionText(): string {
+    return "remove";
   }
 
 }

@@ -74,7 +74,7 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
   override isValid(): boolean {
     if (this.selections.length == 0)
       this.errorMessage =
-        'You must select the declaration checkbox to agree to be registered as a Class 1 building inpsector';
+        'You must select the declaration checkbox to agree to be registered as a Class 1 building inspector';
     return this.selections.length > 0;
   }
 

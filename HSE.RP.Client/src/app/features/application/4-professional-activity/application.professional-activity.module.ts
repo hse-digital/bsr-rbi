@@ -44,9 +44,14 @@ const routes = new HseRoutes([
     ProfessionalBodySelectionComponent.title
   ),
   HseRoute.protected(
-    ProfessionalMembershipInformationComponent.route,
-    ProfessionalMembershipInformationComponent,
-    ProfessionalMembershipInformationComponent.title
+    ProfessionalActivitySummaryComponent.route,
+    ProfessionalActivitySummaryComponent,
+    ProfessionalActivitySummaryComponent.title
+  ),
+  HseRoute.protected(
+    ProfessionalBodyMembershipsComponent.route,
+    ProfessionalBodyMembershipsComponent,
+    ProfessionalBodyMembershipsComponent.title
   ),
   HseRoute.protected(
     ProfessionalIndividualMembershipDetailsComponent.route,
