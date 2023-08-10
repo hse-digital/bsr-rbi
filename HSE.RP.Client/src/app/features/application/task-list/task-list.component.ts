@@ -457,7 +457,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus => {
             if (this.paymentStatus == this.paymentEnum.Success) {
               return TaskStatus.Complete;
-            } else if (this.paymentStatus == this.paymentEnum.Pending) {
+            } else if (this.paymentStatus == this.paymentEnum.Started) {
               return TaskStatus.InProgress;
             } else {
               return TaskStatus.NotStarted;

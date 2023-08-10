@@ -271,7 +271,7 @@ namespace HSE.RP.API.Services
         public async Task CreatePayment(BuildingProfessionApplicationPayment buildingProfessionApplicationPayment)
         {
             var payment = buildingProfessionApplicationPayment.Payment;
-            var existingPayment = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"bsr_service eq 'Regulating Profession Application' and bsr_transactionid eq '{payment.Reference}'"));
+            var existingPayment = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"bsr_service eq 'RBI' and bsr_transactionid eq '{payment.Reference}'"));
             if (!existingPayment.value.Any())
             {
                 await dynamicsApi.Create("bsr_payments", new DynamicsPayment
