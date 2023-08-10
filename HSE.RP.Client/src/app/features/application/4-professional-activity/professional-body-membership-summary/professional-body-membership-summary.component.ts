@@ -74,7 +74,8 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     return this.navigationService.navigateRelative(`professional-body-change`, this.activatedRoute, { queryParams: { membershipCode: membershipCode } });
   }
   public navigateToRemove(membershipCode: string) {
-    return this.navigationService.navigateRelative(`professional-body-remove`, this.activatedRoute, { queryParams: { membershipCode: membershipCode } });
+    // console.log('Membership Code Summary:', membershipCode);
+    return this.navigationService.navigateRelative(`professional-confirmation-membership-removal`, this.activatedRoute, { queryParams: { membershipCode: membershipCode } });
   }
   public emptyActionText(): string {
     return "";

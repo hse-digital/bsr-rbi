@@ -7,7 +7,11 @@ import {
   ProfessionalActivityRoutes,
 } from '../ProfessionalActivityRoutes';
 import { environment } from 'src/environments/environment';
-import { ApplicantProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper, ProfessionalBodies } from 'src/app/models/applicant-professional-body-membership';
+import {
+  ApplicantProfessionBodyMemberships,
+  ApplicantProfessionBodyMembershipsHelper,
+  ProfessionalBodies,
+} from 'src/app/models/applicant-professional-body-membership';
 
 @Component({
   selector: 'hse-professional-confirmation-membership-removal',
@@ -25,6 +29,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
   // override model?: string;
   selectedOption: string = '';
   errorMessage: string = '';
+  membershipCode: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -33,24 +38,29 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
   ) {
     super(activatedRoute);
     this.updateOnSave = true;
+    // this.activatedRoute.params.subscribe((params) => {
+    //   console.log('Params Removal', params);
+    //   this.membershipCode = params['membershipCode'];
+    //   console.log('Membership Code Removal:', this.membershipCode);
+    // });
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe(query => {
+      this.membershipCode = query['membershipCode'];
+    });
 
+    console.log('Membership Code Removal:', this.membershipCode);
     this.applicationService = applicationService;
-
   }
-  override async onSave(
-    applicationService: ApplicationService
-  ): Promise<void> {
-
+  override async onSave(applicationService: ApplicationService): Promise<void> {
     const memberships = applicationService.model.ProfessionalMemberships;
 
-    if(this.selectedOption === 'yes') {
-      ApplicantProfessionBodyMembershipsHelper.Reset('RICS')
+    if (this.selectedOption === 'yes') {
+      let result = ApplicantProfessionBodyMembershipsHelper.Reset('CABE');
+      memberships.CABE = result;
+      applicationService.model.ProfessionalMemberships = memberships;
     }
-
-    applicationService = applicationService;
   }
   override canAccess(
     applicationService: ApplicationService,
