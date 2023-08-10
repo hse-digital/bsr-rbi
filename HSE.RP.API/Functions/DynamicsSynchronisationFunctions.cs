@@ -251,7 +251,7 @@ public class DynamicsSynchronisationFunctions
                     BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                     ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                     ClassId = BuildingInspectorClassNames.Ids[selectedRegistrationClassId],
-                    StatusCode = selectedRegistrationClassId == (int)BuildingInspectorClassType.Class1 ? (int)BuildingInspectorRegistrationClassStatus.Applied : (int)BuildingInspectorRegistrationClassStatus.Registered,
+                    StatusCode = selectedRegistrationClassId == (int)BuildingInspectorClassType.Class1 ? (int)BuildingInspectorRegistrationClassStatus.Registered : (int)BuildingInspectorRegistrationClassStatus.Applied,
                     StateCode = 0
                 };
                 await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);

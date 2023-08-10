@@ -74,6 +74,9 @@ namespace HSE.RP.API.Services
                                       jobRoleReferenceId: $"/bsr_jobroles({DynamicsJobRole.Ids["building_inspector"]})"
                                       ); ;
             var dynamicsContact = modelDefinition.BuildDynamicsEntity(contact);
+
+
+
             var existingContact = await FindExistingContactAsync(contact.FirstName, contact.LastName, contact.Email, contact.PhoneNumber);
 
 
@@ -92,7 +95,7 @@ namespace HSE.RP.API.Services
         private async Task<BuildingProfessionApplicationModel> CreateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel, Contact contact)
         {
             var modelDefinition = dynamicsModelDefinitionFactory.GetDefinitionFor<BuildingProfessionApplication, DynamicsBuildingProfessionApplication>();
-            var buildingProfessionApplication = new BuildingProfessionApplication(ContactId: contact.Id, BuildingProfessionTypeCode: BuildingProfessionType.BuildingInspector);
+            var buildingProfessionApplication = new BuildingProfessionApplication(ContactId: contact.Id, BuildingProfessionTypeCode: BuildingProfessionType.BuildingInspector, StatusCode: BuildingProfessionApplicationStatus.InProgress);
             var dynamicsBuildingProfessionApplication = modelDefinition.BuildDynamicsEntity(buildingProfessionApplication);
             var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsBuildingProfessionApplication);
             var buildingProfessionalApplicationId = ExtractEntityIdFromHeader(response.Headers);
@@ -268,7 +271,7 @@ namespace HSE.RP.API.Services
         public async Task CreatePayment(BuildingProfessionApplicationPayment buildingProfessionApplicationPayment)
         {
             var payment = buildingProfessionApplicationPayment.Payment;
-            var existingPayment = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"bsr_service eq 'Regulating Profession Application' and bsr_transactionid eq '{payment.Reference}'"));
+            var existingPayment = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"bsr_service eq 'RBI' and bsr_transactionid eq '{payment.Reference}'"));
             if (!existingPayment.value.Any())
             {
                 await dynamicsApi.Create("bsr_payments", new DynamicsPayment
