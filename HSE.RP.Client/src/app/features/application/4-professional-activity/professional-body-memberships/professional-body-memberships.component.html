@@ -7,6 +7,18 @@
   (saveAndComeBack)="saveAndComeBack()"
   [hideBackButton]="true"
 >
+  <govuk-error-summary
+    *ngIf="hasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="!modelValid"
+      anchorId="class-technical-manager"
+      message="{{ errorMessage }}"
+    />
+  </govuk-error-summary>
+
   <h1 class="govuk-heading-l">Membership of professional bodies</h1>
   <govuk-body>
     For example, Royal Institution of Chartered Surveyors (RICS), Chartered
@@ -31,9 +43,9 @@
 
     <govuk-radio-group
       hintText=" "
+      [errorText]=errorMessage
       id="professional-body-membership"
       [(model)]="selectedOption"
-     
     >
       <govuk-radio
         class=""
@@ -52,3 +64,4 @@
     </govuk-radio-group>
   </govuk-body>
 </govuk-formpage>
+

@@ -1,0 +1,46 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+<govuk-formpage
+  saveAndContinueText="Continue"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="saveAndContinue()"
+  [hideBackButton]="true"
+>
+  <govuk-error-summary
+    *ngIf="hasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="!modelValid"
+      anchorId="class-technical-manager"
+      message="{{ errorMessage }}"
+    />
+  </govuk-error-summary>
+  <h1 class="govuk-heading-l">
+    Are you sure you want to remove [professional body] membership from your
+    application?
+  </h1>
+  <govuk-body>
+    <govuk-radio-group
+      hintText=" "
+      [errorText]="errorMessage"
+      id="professional-body-membership"
+      [(model)]="selectedOption"
+    >
+      <govuk-radio
+        class=""
+        label="Yes"
+        value="yes"
+        id="yes"
+        [model]="selectedOption"
+      >
+      </govuk-radio>
+      <govuk-radio
+        label="No"
+        value="no"
+        id="no"
+        [model]="selectedOption"
+      ></govuk-radio>
+    </govuk-radio-group>
+  </govuk-body>
+</govuk-formpage>

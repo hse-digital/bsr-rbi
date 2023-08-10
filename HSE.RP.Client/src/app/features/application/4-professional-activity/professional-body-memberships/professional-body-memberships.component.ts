@@ -20,7 +20,7 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
   production: boolean = environment.production;
   modelValid: boolean = false;
   errorMessage: string = '';
-  selectedOption: string = 'no';
+  selectedOption: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -40,14 +40,14 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     ) {
       applicationService.model.ProfessionalMemberships =
         new ApplicantProfessionBodyMemberships();
-      this.selectedOption = 'no';
+      this.selectedOption = '';
     }
 
     this.selectedOption = applicationService.model.ProfessionalMemberships
       .IsProfessionBodyRelevantYesNo
       ? applicationService.model.ProfessionalMemberships
           .IsProfessionBodyRelevantYesNo!
-      : 'no';
+      : '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -55,11 +55,6 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
       applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo =
         this.selectedOption;
     }
-
-    // if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
-    //   applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
-    //     ComponentCompletionState.Complete;
-    // }
   }
 
   override canAccess(
@@ -70,7 +65,14 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
   }
 
   override isValid(): boolean {
-    return true;
+    this.hasErrors = false;
+    this.errorMessage = ''
+    if (this.selectedOption === '') {
+      this.hasErrors = true;
+      this.errorMessage = 'Select one option';
+    }
+
+    return !this.hasErrors;
   }
 
   override navigateNext(): Promise<boolean> {
