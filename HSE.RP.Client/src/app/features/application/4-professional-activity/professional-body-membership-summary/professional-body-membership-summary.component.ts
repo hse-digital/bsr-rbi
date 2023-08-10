@@ -12,13 +12,13 @@ import { ComponentCompletionState } from '../../../../models/component-completio
 import { ProfessionalActivityRoutes } from '../../application-routes';
 
 @Component({
-  selector: 'hse-professional-activity-summary',
-  templateUrl: './professional-activity-summary.component.html',
+  selector: 'hse-professional-body-membership-summary',
+  templateUrl: './professional-body-membership-summary.component.html',
 })
-export class ProfessionalActivitySummaryComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
+export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
 
   static title: string = "Professional activity - Register as a building inspector - GOV.UK";
-  public static route: string = "professional-activity-summary";
+  public static route: string = "professional-body-membership-summary";
   //public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_ACTIVITY_SUMMARY;
   readonly ComponentCompletionState = ComponentCompletionState;
   readonly ApplicantProfessionBodyMembershipsHelper = ApplicantProfessionBodyMembershipsHelper;

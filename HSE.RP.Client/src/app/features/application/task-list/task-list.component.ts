@@ -40,7 +40,7 @@ import { CompetencySummaryComponent } from '../3-competency/competency-summary/c
 import { ProfessionalBodyMembershipsComponent } from '../4-professional-activity/professional-body-memberships/professional-body-memberships.component';
 import { ProfessionalActivityEmploymentTypeComponent } from '../4-professional-activity/employment-type/professional-activity-employment-type.component';
 import { ProfessionalActivityEmploymentDetailsComponent } from '../4-professional-activity/employment-details/professional-activity-employment-details.component';
-import { ProfessionalActivitySummaryComponent } from '../4-professional-activity/professional-activity-summary/professional-activity-summary.component';
+import { ProfessionalBodyMembershipSummaryComponent } from '../4-professional-activity/professional-body-membership-summary/professional-body-membership-summary.component';
 import { ApplicationSummaryComponent } from '../5-application-submission/application-summary/application-summary.component';
 import { PaymentConfirmationComponent } from '../5-application-submission/payment/payment-confirmation/payment-confirmation.component';
 
@@ -412,7 +412,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           prompt: 'Summary',
           relativeRoute: (): TaskListRoute => {
             return {
-              route: ProfessionalActivitySummaryComponent.route,
+              route: '',
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>

@@ -11,7 +11,7 @@ import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { ProfessionalBodyMembershipsComponent } from './professional-body-memberships/professional-body-memberships.component';
 import { ProfessionalActivityEmploymentTypeComponent } from './employment-type/professional-activity-employment-type.component';
 import { ProfessionalActivityEmploymentDetailsComponent } from './employment-details/professional-activity-employment-details.component';
-import { ProfessionalActivitySummaryComponent } from './professional-activity-summary/professional-activity-summary.component';
+import { ProfessionalBodyMembershipSummaryComponent } from './professional-body-membership-summary/professional-body-membership-summary.component';
 import { ProfessionalBodySelectionComponent } from './professional-body-selection/professional-body-selection.component';
 import { ProfessionalMembershipInformationComponent } from './professional-membership-information/professional-membership-information.component';
 import { ProfessionalIndividualMembershipDetailsComponent } from './professional-individual-membership-details/professional-individual-membership-details.component';
@@ -34,19 +34,14 @@ const routes = new HseRoutes([
     ProfessionalActivityEmploymentDetailsComponent.title
   ),
   HseRoute.protected(
-    ProfessionalActivitySummaryComponent.route,
-    ProfessionalActivitySummaryComponent,
-    ProfessionalActivitySummaryComponent.title
+    ProfessionalBodyMembershipSummaryComponent.route,
+    ProfessionalBodyMembershipSummaryComponent,
+    ProfessionalBodyMembershipSummaryComponent.title
   ),
   HseRoute.protected(
     ProfessionalBodySelectionComponent.route,
     ProfessionalBodySelectionComponent,
     ProfessionalBodySelectionComponent.title
-  ),
-  HseRoute.protected(
-    ProfessionalActivitySummaryComponent.route,
-    ProfessionalActivitySummaryComponent,
-    ProfessionalActivitySummaryComponent.title
   ),
   HseRoute.protected(
     ProfessionalBodyMembershipsComponent.route,
@@ -70,7 +65,7 @@ const routes = new HseRoutes([
     ProfessionalBodyMembershipsComponent,
     ProfessionalActivityEmploymentTypeComponent,
     ProfessionalActivityEmploymentDetailsComponent,
-    ProfessionalActivitySummaryComponent,
+    ProfessionalBodyMembershipSummaryComponent,
     ProfessionalBodySelectionComponent,
     ProfessionalMembershipInformationComponent,
     ProfessionalIndividualMembershipDetailsComponent,

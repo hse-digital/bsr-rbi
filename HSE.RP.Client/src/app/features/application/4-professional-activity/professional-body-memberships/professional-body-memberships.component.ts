@@ -11,6 +11,7 @@ import { ProfessionalBodySelectionComponent } from '../professional-body-selecti
   selector: 'hse-professional-body-memberships',
   templateUrl: './professional-body-memberships.component.html',
 })
+
 export class ProfessionalBodyMembershipsComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
   // public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_BODY_MEMBERSHIPS;
 
