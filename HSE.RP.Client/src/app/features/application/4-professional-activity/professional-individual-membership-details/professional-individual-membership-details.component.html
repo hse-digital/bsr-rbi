@@ -1,0 +1,64 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="saveAndContinue()"
+  [hideBackButton]="true"
+>
+  <govuk-body>
+    <h1 class="govuk-heading-l">
+      Check your [professional body organisation name] membership details
+    </h1>
+
+    <govuk-summary-list>
+      <govuk-summary-list-row
+        key="Membership number"
+        [showAction]="true"
+        (onClick)="
+          navigateTo(
+            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
+          )
+        "
+        (onKeyupEnter)="
+          navigateTo(
+            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
+          )
+        "
+        >{{ getMembershipNumber() }}
+      </govuk-summary-list-row>
+
+      <govuk-summary-list-row
+        key="Membership Type"
+        [showAction]="true"
+        (onClick)="
+          navigateTo(
+            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
+          )
+        "
+        (onKeyupEnter)="
+          navigateTo(
+            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
+          )
+        "
+        >{{ getMembershipLevel() }}
+      </govuk-summary-list-row>
+
+      <govuk-summary-list-row
+        key="Year"
+        [showAction]="true"
+        (onClick)="
+          navigateTo(
+            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
+          )
+        "
+        (onKeyupEnter)="
+          navigateTo(
+            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
+          )
+        "
+        >{{ getMembershipYear() }}
+      </govuk-summary-list-row>
+    </govuk-summary-list>
+  </govuk-body>
+</govuk-formpage>

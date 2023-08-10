@@ -11,7 +11,8 @@ public class BuildingProfessionApplicationModelDefinition : DynamicsModelDefinit
         return new DynamicsBuildingProfessionApplication(bsr_applicantid: $"/contacts({entity.ContactId})",
             bsr_buildingprofessiontypecode: entity.BuildingProfessionTypeCode,
             bsr_buildingprofessionapplicationid: entity.Id,
-            bsr_hasindependentassessment: entity.HasIndependentAssessment
+            bsr_hasindependentassessment: entity.HasIndependentAssessment,
+            statuscode: (int)entity.StatusCode
             ); 
     }
 
@@ -21,7 +22,8 @@ public class BuildingProfessionApplicationModelDefinition : DynamicsModelDefinit
             ContactId: dynamicsEntity.bsr_applicantid,
             ApplicationReturnId: dynamicsEntity.bsr_buildingproappid,
             BuildingProfessionTypeCode: dynamicsEntity.bsr_buildingprofessiontypecode,
-            HasIndependentAssessment: dynamicsEntity.bsr_hasindependentassessment
+            HasIndependentAssessment: dynamicsEntity.bsr_hasindependentassessment,
+            StatusCode: (BuildingProfessionApplicationStatus)dynamicsEntity.statuscode
             );
     }
 }   

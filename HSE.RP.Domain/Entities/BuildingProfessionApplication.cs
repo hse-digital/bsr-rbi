@@ -11,7 +11,8 @@ public record BuildingProfessionApplication(
     string AssessmentOrganisationId = null,
     string AsessmentCertificateNumber = null,
     bool? HasIndependentAssessment = false,
-    DateOnly? AssessmentdDate = null
+    DateOnly? AssessmentdDate = null,
+    BuildingProfessionApplicationStatus? StatusCode = null
 
     ) : Entity(Id);
 
@@ -36,4 +37,17 @@ public record DynamicsBuildingProfessionApplication(
 public enum BuildingProfessionType
 {
     BuildingInspector = 760_810_000
+}
+
+
+public enum BuildingProfessionApplicationStatus
+{
+    Ready = 760_810_002,
+    InProgress = 760_810_001,
+    HoldPendingIASO = 760_810_003,
+    HoldPendingInformationCorrection = 760_810_004,
+    Completed = 760_810_005,
+    Terminated = 760_810_007,
+    EscalatedToAuditTeam = 760_810_006,
+    AwaitingDecisionReview = 760_810_008
 }
