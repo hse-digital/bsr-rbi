@@ -25,7 +25,7 @@
                 <a *ngIf="child.getStatus(model!) != valueCannotStart() && child.getStatus(model!) != valueImmutable()" class="govuk-link" (keyup.enter)="navigateTo(parent, child)" (click)="navigateTo(parent, child)" tabindex="0" role="link">{{child.prompt}}</a>
                 <span *ngIf="child.getStatus(model!) == valueCannotStart() || child.getStatus(model!) == valueImmutable() ">{{child.prompt}}</span>
               </span>
-              <govuk-tag tag *ngIf="child.getStatus(model!) == valueComplete() || child.getStatus(model!) == valueImmutable()" class="govuk-tag--darkblue">COMPLETE</govuk-tag>
+              <govuk-tag tag *ngIf="child.getStatus(model!) == valueComplete() || child.getStatus(model!) == valueImmutable()" class="govuk-tag--darkblue">COMPLETED</govuk-tag>
               <govuk-tag tag *ngIf="child.getStatus(model!) == valueNotStarted()" class="govuk-tag--grey">NOT STARTED</govuk-tag>
               <govuk-tag tag *ngIf="child.getStatus(model!) == valueInProgress()" class="govuk-tag--grey">IN PROGRESS</govuk-tag>
               <govuk-tag tag *ngIf="child.getStatus(model!) == valueCannotStart()" class="govuk-tag--grey">CANNOT START YET</govuk-tag>
