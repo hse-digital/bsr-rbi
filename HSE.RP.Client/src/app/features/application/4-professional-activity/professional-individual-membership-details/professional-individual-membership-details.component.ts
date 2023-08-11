@@ -7,6 +7,8 @@ import {
   ProfessionalActivityRouter,
   ProfessionalActivityRoutes,
 } from '../ProfessionalActivityRoutes';
+import { ApplicantProfessionBodyMembershipsHelper } from 'src/app/models/applicant-professional-body-membership';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-professional-individual-membership-details',
@@ -41,9 +43,21 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
       this.getProfessionalBodyOrgName(this.membershipCode);
     });
   }
-  override async onSave(
-    applicationService: ApplicationService
-  ): Promise<void> {}
+  override async onSave(applicationService: ApplicationService): Promise<void> {
+    if (this.membershipCode === 'CABE') {
+      applicationService.model.ProfessionalMemberships.CABE.CompletionState =
+        ComponentCompletionState.Complete;
+    } else if (this.membershipCode === 'RICS') {
+      applicationService.model.ProfessionalMemberships.RICS.CompletionState =
+        ComponentCompletionState.Complete;
+    } else if (this.membershipCode === 'CIOB') {
+      applicationService.model.ProfessionalMemberships.CIOB.CompletionState =
+        ComponentCompletionState.Complete;
+    } else if (this.membershipCode === 'OTHER') {
+      applicationService.model.ProfessionalMemberships.OTHER.CompletionState =
+        ComponentCompletionState.Complete;
+    }
+  }
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot

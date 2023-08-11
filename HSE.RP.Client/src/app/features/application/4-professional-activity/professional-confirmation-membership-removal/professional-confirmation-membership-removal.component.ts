@@ -32,6 +32,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
   selectedOption: string = '';
   errorMessage: string = '';
   membershipCode: string = '';
+  PROFESSIONAL_BODY_ORG_NAME: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -46,6 +47,8 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
     this.activatedRoute.queryParams.subscribe((params) => {
       this.membershipCode = params['queryParams'];
     });
+
+    this.getProfessionalBodyOrgName(this.membershipCode)
 
     this.applicationService = applicationService;
   }
@@ -90,5 +93,18 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
       ProfessionalBodyMembershipSummaryComponent.route,
       this.activatedRoute
     );
+  }
+
+  private getProfessionalBodyOrgName(membershipCode: string): void {
+    const professionalBodyOrgNames: { [code: string]: string } = {
+      RICS: 'Royal Institution of Chartered Surveyors (RICS)',
+      CABE: 'Chartered Association of Building Engineers (CABE)',
+      CIOB: 'Chartered Institute of Building (CIOB)',
+      OTHER: 'OTHER',
+    };
+
+    this.PROFESSIONAL_BODY_ORG_NAME =
+      professionalBodyOrgNames[membershipCode] || '';
+    this.PROFESSIONAL_BODY_ORG_NAME;
   }
 }
