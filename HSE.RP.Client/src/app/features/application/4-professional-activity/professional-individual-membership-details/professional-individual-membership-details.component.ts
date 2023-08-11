@@ -103,7 +103,7 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
     return this.getValidMembershipField(memberships, 'MembershipYear');
   }
 
-  private getProfessionalBodyOrgName(membershipCode: string): string {
+  private getProfessionalBodyOrgName(membershipCode: string): void {
     const professionalBodyOrgNames: { [code: string]: string } = {
       RICS: 'Royal Institution of Chartered Surveyors (RICS)',
       CABE: 'Chartered Association of Building Engineers (CABE)',
@@ -113,6 +113,6 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
 
     this.PROFESSIONAL_BODY_ORG_NAME =
       professionalBodyOrgNames[membershipCode] || '';
-    return this.PROFESSIONAL_BODY_ORG_NAME;
+    this.PROFESSIONAL_BODY_ORG_NAME;
   }
 }
