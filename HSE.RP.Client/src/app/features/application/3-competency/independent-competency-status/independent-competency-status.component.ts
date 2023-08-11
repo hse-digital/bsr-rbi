@@ -21,7 +21,7 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
   modelValid: boolean = false;
   photoHasErrors = false;
   errorMessage: string = '';
-  selectedOption: string = 'no';
+  selectedOption: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -39,7 +39,7 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
     ) {
       applicationService.model.Competency!.CompetencyIndependentAssessmentStatus =
         new CompetencyIndependentAssessmentStatus();
-      this.selectedOption = 'no';
+      this.selectedOption = '';
     }
 
     this.selectedOption = applicationService.model.Competency
@@ -68,7 +68,15 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
   }
 
   override isValid(): boolean {
-    return true;
+    this.hasErrors = false;
+    this.errorMessage = '';
+
+    if (this.selectedOption === '') {
+      this.hasErrors = true;
+      this.errorMessage = 'Select one option';
+    }
+
+    return !this.hasErrors;
   }
 
   override navigateNext(): Promise<boolean> {

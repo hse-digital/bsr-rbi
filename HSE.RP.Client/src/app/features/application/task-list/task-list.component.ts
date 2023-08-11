@@ -172,34 +172,48 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     }
   }
 
-  getCountryStatus(
+  determineTaskStatus(
     model?: IComponentModel,
     countryModel?: IComponentModel
   ): TaskStatus {
     if (!model?.CompletionState) {
       return TaskStatus.CannotStart;
     } else if (
-      model?.CompletionState == ComponentCompletionState.Complete && countryModel?.CompletionState == ComponentCompletionState.NotStarted
+      model?.CompletionState == ComponentCompletionState.Complete &&
+      countryModel?.CompletionState == ComponentCompletionState.NotStarted
     ) {
       return TaskStatus.NotStarted;
-    } else if (model?.CompletionState == ComponentCompletionState.InProgress && countryModel?.CompletionState == ComponentCompletionState.NotStarted) {
+    } else if (
+      model?.CompletionState == ComponentCompletionState.InProgress &&
+      countryModel?.CompletionState == ComponentCompletionState.NotStarted
+    ) {
       return TaskStatus.CannotStart;
-    }
-    else if (model?.CompletionState == ComponentCompletionState.Complete && countryModel?.CompletionState == ComponentCompletionState.NotStarted) {
+    } else if (
+      model?.CompletionState == ComponentCompletionState.Complete &&
+      countryModel?.CompletionState == ComponentCompletionState.NotStarted
+    ) {
       return TaskStatus.NotStarted;
-    } else if (model?.CompletionState == ComponentCompletionState.InProgress && countryModel?.CompletionState == ComponentCompletionState.InProgress) {
+    } else if (
+      model?.CompletionState == ComponentCompletionState.InProgress &&
+      countryModel?.CompletionState == ComponentCompletionState.InProgress
+    ) {
       return TaskStatus.CannotStart;
-    }
-    else if (model?.CompletionState == ComponentCompletionState.InProgress && countryModel?.CompletionState == ComponentCompletionState.Complete) {
+    } else if (
+      model?.CompletionState == ComponentCompletionState.InProgress &&
+      countryModel?.CompletionState == ComponentCompletionState.Complete
+    ) {
       return TaskStatus.CannotStart;
-    }
-    else if (model?.CompletionState == ComponentCompletionState.Complete && countryModel?.CompletionState == ComponentCompletionState.InProgress) {
+    } else if (
+      model?.CompletionState == ComponentCompletionState.Complete &&
+      countryModel?.CompletionState == ComponentCompletionState.InProgress
+    ) {
       return TaskStatus.InProgress;
-    }
-    else if (model?.CompletionState == ComponentCompletionState.Complete && countryModel?.CompletionState == ComponentCompletionState.Complete) {
+    } else if (
+      model?.CompletionState == ComponentCompletionState.Complete &&
+      countryModel?.CompletionState == ComponentCompletionState.Complete
+    ) {
       return TaskStatus.Complete;
-    }
-    else {
+    } else {
       return TaskStatus.None;
     }
   }
@@ -320,7 +334,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: BuildingInspectorCountryComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getCountryStatus(
+            this.determineTaskStatus(
               aModel.InspectorClass?.ClassType,
               aModel.InspectorClass?.InspectorCountryOfWork
             ),
@@ -346,7 +360,12 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: CompetencyIndependentStatusComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(aModel.Competency?.CompetencyIndependentAssessmentStatus),
+            this.determineTaskStatus(
+              aModel.InspectorClass?.InspectorCountryOfWork,
+              aModel.Competency?.CompetencyIndependentAssessmentStatus
+            ),
+
+          // this.getModelStatus(aModel.Competency?.CompetencyIndependentAssessmentStatus),
         },
         {
           prompt: 'Assessment organisation',
@@ -354,7 +373,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: CompetencyAssessmentOrganisationComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(
+            this.determineTaskStatus(
+              aModel.Competency?.CompetencyIndependentAssessmentStatus,
               aModel.Competency?.CompetencyAssessmentOrganisation
             ),
         },
@@ -366,7 +386,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(
+            this.determineTaskStatus(
+              aModel.Competency?.CompetencyAssessmentOrganisation,
               aModel.Competency?.CompetencyAssessmentCertificateNumber
             ),
         },
@@ -376,7 +397,10 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: CompetencyAssessmentDateComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(aModel.Competency?.CompetencyDateOfAssessment),
+            this.determineTaskStatus(
+              aModel.Competency?.CompetencyAssessmentCertificateNumber,
+              aModel.Competency?.CompetencyDateOfAssessment
+            ),
         },
         {
           prompt: 'Summary',

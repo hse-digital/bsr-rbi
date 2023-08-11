@@ -36,7 +36,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
       applicationService.model.Competency!.CompetencyAssessmentOrganisation =
         new CompetencyAssessmentOrganisation();
       applicationService.model.Competency!.CompetencyAssessmentOrganisation.ComAssessmentOrganisation =
-        'CABE';
+        '';
     }
 
     applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
@@ -44,10 +44,10 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
 
     this.selectedOption =
       applicationService.model.Competency!.CompetencyAssessmentOrganisation
-        .ComAssessmentOrganisation === 'BSCF'
+        .ComAssessmentOrganisation
         ? applicationService.model.Competency!.CompetencyAssessmentOrganisation
             .ComAssessmentOrganisation
-        : 'CABE';
+        : '';
 
     this.applicationService = applicationService;
   }
@@ -72,7 +72,15 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
   }
 
   override isValid(): boolean {
-    return true;
+    this.hasErrors = false;
+    this.errorMessage = '';
+
+    if (this.selectedOption === '') {
+      this.hasErrors = true;
+      this.errorMessage = 'Select one option';
+    }
+
+    return !this.hasErrors;
   }
 
   override navigateNext(): Promise<boolean> {
