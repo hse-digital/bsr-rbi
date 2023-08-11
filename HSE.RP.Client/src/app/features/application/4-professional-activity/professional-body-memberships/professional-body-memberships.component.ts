@@ -11,7 +11,6 @@ import { ProfessionalBodySelectionComponent } from '../professional-body-selecti
   selector: 'hse-professional-body-memberships',
   templateUrl: './professional-body-memberships.component.html',
 })
-
 export class ProfessionalBodyMembershipsComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
   // public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_BODY_MEMBERSHIPS;
 
@@ -67,7 +66,7 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
 
   override isValid(): boolean {
     this.hasErrors = false;
-    this.errorMessage = ''
+    this.errorMessage = '';
     if (this.selectedOption === '') {
       this.hasErrors = true;
       this.errorMessage = 'Select one option';
@@ -77,11 +76,23 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
   }
 
   override navigateNext(): Promise<boolean> {
+    if (this.selectedOption === 'no') {
+      return this.navigationService.navigateRelative(
+        ProfessionalActivityEmploymentTypeComponent.route,
+        this.activatedRoute
+      );
+    }
+    if (this.selectedOption === 'yes') {
+      return this.navigationService.navigateRelative(
+        `professional-body-selection`,
+        this.activatedRoute
+      );
+    }
+
     return this.navigationService.navigateRelative(
       ProfessionalActivityEmploymentTypeComponent.route,
       this.activatedRoute
     );
-
   }
   DerivedIsComplete(value: boolean): void {
     // this.applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =

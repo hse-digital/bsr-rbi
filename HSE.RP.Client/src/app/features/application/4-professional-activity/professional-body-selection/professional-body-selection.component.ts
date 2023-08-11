@@ -4,6 +4,9 @@ import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-pro
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { ApplicationService } from 'src/app/services/application.service';
 import { environment } from 'src/environments/environment';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ProfessionalIndividualMembershipDetailsComponent } from '../professional-individual-membership-details/professional-individual-membership-details.component';
+import { ProfessionalMembershipInformationComponent } from '../professional-membership-information/professional-membership-information.component';
 
 @Component({
   selector: 'hse-professional-body-selection',
@@ -11,10 +14,10 @@ import { environment } from 'src/environments/environment';
   styles: [],
 })
 export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
-  public static route: string =
-    "professional-body-selection";
+  public static route: string = 'professional-body-selection';
   static title: string =
     'Professional activity - Register as a building inspector - GOV.UK';
+  readonly ComponentCompletionState = ComponentCompletionState;
   production: boolean = environment.production;
   modelValid: boolean = false;
   errorMessage: string = '';
@@ -38,6 +41,8 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
     }
 
     const memberships = applicationService.model.ProfessionalMemberships;
+    this.model = memberships;
+
     this.selectedOption =
       memberships.RICS.MembershipBodyCode ||
       memberships.CABE.MembershipBodyCode ||
@@ -69,6 +74,25 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
     return true;
   }
   override async navigateNext(): Promise<boolean> {
-    return true;
+    const queryParams = this.selectedOption;
+    if (['RICS', 'CABE', 'CIOB'].includes(this.selectedOption)) {
+      return this.navigationService.navigateRelative(
+        ProfessionalMembershipInformationComponent.route,
+        this.activatedRoute,
+        { queryParams }
+      );
+    }
+    return this.navigationService.navigateRelative(
+      ProfessionalIndividualMembershipDetailsComponent.route,
+      this.activatedRoute,
+      { queryParams }
+    ); // Back to the task list.
+  }
+
+  public navigateTo(route: string) {
+    return this.navigationService.navigateRelative(
+      `${route}`,
+      this.activatedRoute
+    );
   }
 }

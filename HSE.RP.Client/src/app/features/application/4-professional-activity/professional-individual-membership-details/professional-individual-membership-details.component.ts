@@ -23,6 +23,8 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
   modelValid: boolean = false;
   photoHasErrors = false;
   override model?: string;
+  membershipCode: string = '';
+  PROFESSIONAL_BODY_ORG_NAME: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -33,7 +35,12 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
     this.updateOnSave = false;
   }
 
-  override onInit(applicationService: ApplicationService): void {}
+  override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.membershipCode = params['queryParams'];
+      this.getProfessionalBodyOrgName(this.membershipCode);
+    });
+  }
   override async onSave(
     applicationService: ApplicationService
   ): Promise<void> {}
@@ -49,7 +56,7 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
   override async navigateNext(): Promise<boolean> {
     return this.professionalActivityRouter.navigateTo(
       this.applicationService.model,
-      'professional-activity-summary'
+      'professional-body-membership-summary'
     );
   }
 
@@ -94,5 +101,18 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
     const memberships: any =
       this.applicationService.model.ProfessionalMemberships;
     return this.getValidMembershipField(memberships, 'MembershipYear');
+  }
+
+  private getProfessionalBodyOrgName(membershipCode: string): string {
+    const professionalBodyOrgNames: { [code: string]: string } = {
+      RICS: 'Royal Institution of Chartered Surveyors (RICS)',
+      CABE: 'Chartered Association of Building Engineers (CABE)',
+      CIOB: 'Chartered Institute of Building (CIOB)',
+      OTHER: 'OTHER',
+    };
+
+    this.PROFESSIONAL_BODY_ORG_NAME =
+      professionalBodyOrgNames[membershipCode] || '';
+    return this.PROFESSIONAL_BODY_ORG_NAME;
   }
 }

@@ -58,6 +58,11 @@ const routes = new HseRoutes([
     ProfessionalConfirmationMembershipRemovalComponent,
     ProfessionalConfirmationMembershipRemovalComponent.title
   ),
+  HseRoute.protected(
+    ProfessionalMembershipInformationComponent.route,
+    ProfessionalMembershipInformationComponent,
+    ProfessionalMembershipInformationComponent.title
+  ),
 ]);
 
 @NgModule({

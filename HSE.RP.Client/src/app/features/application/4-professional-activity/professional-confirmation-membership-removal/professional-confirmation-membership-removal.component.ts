@@ -12,6 +12,8 @@ import {
   ApplicantProfessionBodyMembershipsHelper,
   ProfessionalBodies,
 } from 'src/app/models/applicant-professional-body-membership';
+import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
+import { ProfessionalBodyMembershipSummaryComponent } from '../professional-body-membership-summary/professional-body-membership-summary.component';
 
 @Component({
   selector: 'hse-professional-confirmation-membership-removal',
@@ -38,27 +40,31 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
   ) {
     super(activatedRoute);
     this.updateOnSave = true;
-    // this.activatedRoute.params.subscribe((params) => {
-    //   console.log('Params Removal', params);
-    //   this.membershipCode = params['membershipCode'];
-    //   console.log('Membership Code Removal:', this.membershipCode);
-    // });
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.activatedRoute.queryParams.subscribe(query => {
-      this.membershipCode = query['membershipCode'];
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.membershipCode = params['queryParams'];
     });
 
-    console.log('Membership Code Removal:', this.membershipCode);
     this.applicationService = applicationService;
   }
   override async onSave(applicationService: ApplicationService): Promise<void> {
     const memberships = applicationService.model.ProfessionalMemberships;
 
     if (this.selectedOption === 'yes') {
-      let result = ApplicantProfessionBodyMembershipsHelper.Reset('CABE');
-      memberships.CABE = result;
+      let result = ApplicantProfessionBodyMembershipsHelper.Reset(
+        this.membershipCode
+      );
+      if (this.membershipCode === 'CABE') {
+        memberships.CABE = result;
+      } else if (this.membershipCode === 'RICS') {
+        memberships.RICS = result;
+      } else if (this.membershipCode === 'CIOB') {
+        memberships.CIOB = result;
+      } else if (this.membershipCode === 'OTHER') {
+        memberships.OTHER = result;
+      }
       applicationService.model.ProfessionalMemberships = memberships;
     }
   }
@@ -78,7 +84,11 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
 
     return !this.hasErrors;
   }
-  override async navigateNext(): Promise<boolean> {
-    return true;
+
+  override navigateNext(): Promise<boolean> {
+    return this.navigationService.navigateRelative(
+      ProfessionalBodyMembershipSummaryComponent.route,
+      this.activatedRoute
+    );
   }
 }

@@ -5,6 +5,7 @@ import { PageComponent } from 'src/app/helpers/page.component';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { ApplicationService } from 'src/app/services/application.service';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
+import { ProfessionalIndividualMembershipDetailsComponent } from '../professional-individual-membership-details/professional-individual-membership-details.component';
 
 interface IPageValidationItem {
   Text: string;
@@ -36,8 +37,7 @@ const ERROR_MESSAGES = {
   styles: [],
 })
 export class ProfessionalMembershipInformationComponent extends PageComponent<ApplicantProfessionalBodyMembership> {
-  public static route: string =
-'professional-membership-information';
+  public static route: string = 'professional-membership-information';
   static title: string =
     'Professional activity - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
@@ -45,6 +45,8 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
   validationErrors: IPageValidationItem[] = [];
   override model: ApplicantProfessionalBodyMembership =
     new ApplicantProfessionalBodyMembership();
+  membershipCode: string = '';
+  PROFESSIONAL_BODY_ORG_NAME: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -52,6 +54,13 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
+
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.membershipCode = params['queryParams'];
+
+      this.getProfessionalBodyOrgName(this.membershipCode);
+    });
+
     this.initializeModel(applicationService);
   }
 
@@ -76,7 +85,6 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
         break;
       }
     }
-
   }
 
   override canAccess(
@@ -134,7 +142,12 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
   }
 
   override async navigateNext(): Promise<boolean> {
-    return true;
+    const queryParams = this.membershipCode;
+    return this.navigationService.navigateRelative(
+      ProfessionalIndividualMembershipDetailsComponent.route,
+      this.activatedRoute,
+      { queryParams }
+    ); // Back to the task list.
   }
 
   isDateNumber(dateNumber: string | undefined): boolean {
@@ -210,5 +223,18 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
 
     this.model.MembershipYear =
       membershipYears.find((year) => year !== -1) || -1;
+  }
+
+  private getProfessionalBodyOrgName(membershipCode: string): string {
+    const professionalBodyOrgNames: { [code: string]: string } = {
+      RICS: 'Royal Institution of Chartered Surveyors (RICS)',
+      CABE: 'Chartered Association of Building Engineers (CABE)',
+      CIOB: 'Chartered Institute of Building (CIOB)',
+      OTHER: 'OTHER',
+    };
+
+    this.PROFESSIONAL_BODY_ORG_NAME =
+      professionalBodyOrgNames[membershipCode] || '';
+    return this.PROFESSIONAL_BODY_ORG_NAME;
   }
 }
