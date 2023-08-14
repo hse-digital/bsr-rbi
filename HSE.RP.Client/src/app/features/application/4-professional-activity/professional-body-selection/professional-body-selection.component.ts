@@ -29,15 +29,14 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
 
-    if (!applicationService.model.ProfessionalMemberships) {
-      applicationService.model.ProfessionalMemberships =
-        new ApplicantProfessionBodyMemberships();
-    }
 
     if (applicationService.model.ProfessionalMemberships == null) {
       applicationService.model.ProfessionalMemberships =
         new ApplicantProfessionBodyMemberships();
       this.selectedOption = 'OTHER';
+    }
+    else{
+      this.model = applicationService.model.ProfessionalMemberships;
     }
 
     const memberships = applicationService.model.ProfessionalMemberships;
@@ -68,11 +67,13 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return true;
+    return this.applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo === 'yes';
   }
+
   override isValid(): boolean {
     return true;
   }
+
   override async navigateNext(): Promise<boolean> {
     const queryParams = this.selectedOption;
     if (['RICS', 'CABE', 'CIOB'].includes(this.selectedOption)) {

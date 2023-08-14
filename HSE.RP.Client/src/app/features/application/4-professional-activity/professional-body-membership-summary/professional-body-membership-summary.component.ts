@@ -46,7 +46,11 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
 
   override async onSave(
     applicationService: ApplicationService
-  ): Promise<void> {}
+  ): Promise<void> {
+    this.model!.CompletionState = ComponentCompletionState.Complete;
+    this.applicationService.model.ProfessionalMemberships = this.model!;
+
+  }
 
   optionClicked(value: string) {
     this.selectedOption = value;
@@ -68,19 +72,23 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   override navigateNext(): Promise<boolean> {
     if (this.selectedOption === 'no') {
       this.model!.CompletionState = ComponentCompletionState.Complete;
-      return this.navigateTo(`application/${this.applicationService.model.id}`); // Back to the task list.
+      return this.navigateTo(`../../../application/${this.applicationService.model.id}`); // Back to the task list.
     }
     if (this.selectedOption === 'yes') {
-      return this.navigateTo('professional-body-selection'); // Back to the task list.
+      return this.navigateTo('professional-body-selection'); // To professional body selection page.
     }
     return this.navigateTo(`application/${this.applicationService.model.id}`); // Back to the task list.
   }
+
+
   public navigateTo(route: string) {
     return this.navigationService.navigateRelative(
       `${route}`,
       this.activatedRoute
     );
   }
+
+
   public navigateToChange(membershipCode: string) {
     return this.navigationService.navigateRelative(
       `professional-body-change`,
@@ -89,7 +97,6 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     );
   }
   public navigateToRemove(membershipCode: string) {
-    // console.log('Membership Code Summary:', membershipCode);
     const queryParams = membershipCode;
     return this.navigationService.navigateRelative(
       `professional-confirmation-membership-removal`,

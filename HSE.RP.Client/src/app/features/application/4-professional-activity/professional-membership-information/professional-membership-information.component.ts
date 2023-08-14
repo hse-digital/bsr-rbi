@@ -72,7 +72,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
       for (const type of Object.values(MembershipType)) {
         memberships[type].MembershipNumber = '';
         memberships[type].MembershipLevel = '';
-        memberships[type].MembershipYear = -1;
+        memberships[type].MembershipYear;
       }
     };
 
@@ -137,7 +137,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
     return this.validationErrors.length === 0;
   }
 
-  getDateOfMembership(): number {
+  getDateOfMembership(): number | undefined {
     return this.model.MembershipYear;
   }
 

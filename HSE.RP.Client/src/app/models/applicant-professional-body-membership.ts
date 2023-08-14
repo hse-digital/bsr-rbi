@@ -7,7 +7,7 @@ export class ApplicantProfessionalBodyMembership implements IComponentModel {
   MembershipBodyCode: string = '';
   MembershipNumber: string = '';
   MembershipLevel: string = '';
-  MembershipYear: number = -1;
+  MembershipYear?: number;
   CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
 }
 
@@ -19,7 +19,7 @@ export class ApplicantProfessionalBodyMembership implements IComponentModel {
 export class ApplicantProfessionBodyMemberships implements IComponentModel {
   constructor() {
   }
-  CompletionState?: ComponentCompletionState;
+  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
   IsProfessionBodyRelevantYesNo: string = 'no';
   RICS: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.RICS.BodyCode);
   CABE: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CABE.BodyCode);
