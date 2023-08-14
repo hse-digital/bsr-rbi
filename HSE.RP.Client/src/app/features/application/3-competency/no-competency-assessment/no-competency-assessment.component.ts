@@ -23,7 +23,6 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
   photoHasErrors = false;
   public hint = '';
   errorMessage: string = '';
-  public selections: string[] = [];
   override model?: NoCompetencyAssessment;
 
   @Output() onClicked = new EventEmitter();
@@ -45,25 +44,20 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
 
     const demandModel = this.DemandModel();
     const declarationKeys = ['Declaration'];
-
-    this.selections.push(
-      ...declarationKeys.filter((key) => demandModel[key] === true)
-    );
-
+    
     this.applicationService = applicationService;
   }
   override async onSave(applicationService: ApplicationService): Promise<void> {
     const demandModel = this.DemandModel();
-    demandModel.Declaration = false;
-
-    this.selections.forEach((value: keyof typeof demandModel) => {
-      demandModel[value] = true;
-    });
+    demandModel.Declaration = true;
 
     if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
       applicationService.model.Competency!.NoCompetencyAssessment!.CompletionState =
         ComponentCompletionState.Complete;
+      applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
+        ComponentCompletionState.Complete;
     }
+
   }
   override canAccess(
     applicationService: ApplicationService,
@@ -72,10 +66,7 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
     return true;
   }
   override isValid(): boolean {
-    if (this.selections.length == 0)
-      this.errorMessage =
-        'You must select the declaration checkbox to agree to be registered as a Class 1 building inspector';
-    return this.selections.length > 0;
+    return true;
   }
 
   override async navigateNext(): Promise<boolean> {

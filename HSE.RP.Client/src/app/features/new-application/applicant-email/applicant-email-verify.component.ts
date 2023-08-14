@@ -130,7 +130,7 @@ export class ApplicantEmailVerifyComponent extends PageComponent<NumberComponent
     } else if (this.isOtpInvalidLength) {
       return 'You must enter your 6 digit security code';
     } else if (this.otpError) {
-      return 'Enter the correct security code';
+      return 'Your 6-digit verification code is incorrect or has expired. Request a new verification code by clicking "resend the security code" link on this page.';
     } else {
       return 'You must enter your 6 digit security code';
     }
