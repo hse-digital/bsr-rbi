@@ -58,6 +58,10 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
     if (this.model && ['no', 'yes'].includes(this.model?.YesNo)) {
       applicationService.model.InspectorClass!.ClassTechnicalManager = this.model?.YesNo;
     }
+
+
+    applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.Complete;    
+
   }
 
   override canAccess(

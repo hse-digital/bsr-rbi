@@ -2,7 +2,7 @@
 
 <govuk-formpage
   saveAndContinueText="Save and continue"
-  [hideSaveAndComeBack]="false"
+  [hideSaveAndComeBack]="true"
   (saveAndContinue)="saveAndContinue()"
   (saveAndComeBack)="saveAndComeBack()"
   [hideBackButton]="true"
@@ -23,46 +23,17 @@
     You will be registered as a class 1 building inspector
   </h1>
 
-  <govuk-warning
-    message="Class 1 includes unqualified trainees and qualified inspectors waiting for independent assessment."
-    background="#0"
-  ></govuk-warning>
-
   <govuk-body>
-    If you are a competent building inspector, you should
-    <a
-      href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm"
-      class="govuk-link"
-      target="_blank"
-      >ask the Building Safety Regulator to change your assessed class on the
-      public register.</a
-    >
+    A class 1 building inspector must be supervised by a registered building
+    inspector to do BSR-regulated activities, for example assessing plans and
+    inspecting buildings.
 
     <p>
-      A class 1 building inspector must assess plans and inspect
-      buildings(BSR-regulated activities) only under the supervision of a
-      registered building inspector.
+      To register as a class 2, 3 or 4 building inspector, you must have passed
+      BSR-approved competency assessment. When you have passed competency
+      assessment, you should ask BSR to change your class on the public
+      register.
     </p>
 
-    <govuk-checkbox-group
-      [title]=""
-      [hint]="hint"
-      [errorText]="errorMessage"
-      [(model)]="selections"
-      [id]="id"
-      #field
-      [govukRequired]="field"
-    >
-      <govuk-checkbox
-        #checkbox
-        (onKeyupEnter)="onKeyupEnter.emit()"
-        [id]="id"
-        [model]="selections"
-        text="I declare that, while I am a class 1 building inspector, I will engage in BSR-regulated activities only under supervision of a registered building inspector."
-        value="Declaration"
-        (onClicked)="optionClicked()"
-        hint=""
-      />
-    </govuk-checkbox-group>
   </govuk-body>
 </govuk-formpage>
