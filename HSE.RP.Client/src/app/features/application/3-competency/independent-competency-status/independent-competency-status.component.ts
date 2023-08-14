@@ -32,7 +32,7 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-    
+
     if (!applicationService.model.Competency) {
       applicationService.model.Competency = {};
     }
@@ -60,6 +60,10 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
       this.applicationService.model.Competency!
         .CompetencyIndependentAssessmentStatus!.CompletionState;
 
+    const IASTATUS =
+      this.applicationService.model.Competency!
+        .CompetencyIndependentAssessmentStatus!.IAStatus;
+
     if (this.selectedOption === '' && STATUS === 0) {
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.InProgress;
@@ -78,15 +82,22 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
     } else if (this.selectedOption === 'yes' && STATUS === 1) {
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === 'no' && STATUS === 2) {
+    } else if (this.selectedOption !== IASTATUS && STATUS === 2) {
+      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
+        ComponentCompletionState.InProgress;
+    } else if (this.selectedOption !== IASTATUS && STATUS === 2) {
+      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
+        ComponentCompletionState.InProgress;
+    } else if (this.selectedOption === IASTATUS && STATUS === 2) {
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.Complete;
-    } else if (this.selectedOption === 'yes' && STATUS === 2) {
+    } else if (this.selectedOption === IASTATUS && STATUS === 2) {
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.Complete;
     }
 
-    this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.IAStatus = this.selectedOption;
+    this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.IAStatus =
+      this.selectedOption;
 
     if (!this.hasErrors) {
       this.triggerScreenReaderNotification();
