@@ -77,7 +77,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
 
     if (this.selectedOption === '') {
       this.hasErrors = true;
-      this.errorMessage = 'Select one option';
+      this.errorMessage = 'Select an assessment organisation';
     }
 
     return !this.hasErrors;
