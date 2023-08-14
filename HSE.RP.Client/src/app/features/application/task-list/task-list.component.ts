@@ -222,44 +222,51 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     }
   }
 
-  determineSummaryTaskStatus(
-    completionStates: ComponentCompletionState[]
-  ): TaskStatus {
-    const allComplete = completionStates.every(
-      (state) => state === ComponentCompletionState.Complete
-    );
-    return allComplete ? TaskStatus.None : TaskStatus.CannotStart;
+  determinPersonalSummaryTask(model?: PersonalDetails): TaskStatus {
+    if (
+      model?.ApplicantName!.CompletionState! ===
+        ComponentCompletionState.Complete &&
+      model?.ApplicantPhone?.CompletionState ===
+        ComponentCompletionState.Complete &&
+      model?.ApplicantAlternativePhone?.CompletionState ===
+        ComponentCompletionState.Complete &&
+      model?.ApplicantEmail?.CompletionState ===
+        ComponentCompletionState.Complete &&
+      model?.ApplicantAlternativeEmail?.CompletionState ===
+        ComponentCompletionState.Complete &&
+      model?.ApplicantDateOfBirth?.CompletionState ===
+        ComponentCompletionState.Complete &&
+      model?.ApplicantNationalInsuranceNumber?.CompletionState ===
+        ComponentCompletionState.Complete
+    ) {
+      return TaskStatus.None;
+    } else return TaskStatus.CannotStart;
   }
 
-  determinePersonalSummaryTask(model?: PersonalDetails): TaskStatus {
-    const completionStates = [
-      model?.ApplicantName?.CompletionState!,
-      model?.ApplicantPhone?.CompletionState!,
-      model?.ApplicantAlternativePhone?.CompletionState!,
-      model?.ApplicantEmail?.CompletionState!,
-      model?.ApplicantAlternativeEmail?.CompletionState!,
-      model?.ApplicantDateOfBirth?.CompletionState!,
-      model?.ApplicantNationalInsuranceNumber?.CompletionState!,
-    ];
-    return this.determineSummaryTaskStatus(completionStates);
+  determinCompetencySummaryTask(model?: Competency): TaskStatus {
+    if (
+      model?.CompetencyIndependentAssessmentStatus!.CompletionState! ===
+        ComponentCompletionState.Complete &&
+      model?.CompetencyAssessmentOrganisation!.CompletionState! ===
+        ComponentCompletionState.Complete &&
+      model?.CompetencyDateOfAssessment!.CompletionState! ===
+        ComponentCompletionState.Complete &&
+      model?.CompetencyAssessmentCertificateNumber!.CompletionState! ===
+        ComponentCompletionState.Complete
+    ) {
+      return TaskStatus.None;
+    } else return TaskStatus.CannotStart;
   }
 
-  determineClassSummaryTask(model?: BuildingInspectorClass): TaskStatus {
-    const completionStates = [
-      model?.ClassType?.CompletionState!,
-      model?.InspectorCountryOfWork?.CompletionState!,
-    ];
-    return this.determineSummaryTaskStatus(completionStates);
-  }
-
-  determineCompetencySummaryTask(model?: Competency): TaskStatus {
-    const completionStates = [
-      model?.CompetencyIndependentAssessmentStatus?.CompletionState!,
-      model?.CompetencyAssessmentOrganisation?.CompletionState!,
-      model?.CompetencyDateOfAssessment?.CompletionState!,
-      model?.CompetencyAssessmentCertificateNumber?.CompletionState!,
-    ];
-    return this.determineSummaryTaskStatus(completionStates);
+  determinClassSummaryTask(model?: BuildingInspectorClass): TaskStatus {
+    if (
+      model?.ClassType!.CompletionState! ===
+        ComponentCompletionState.Complete &&
+      model?.InspectorCountryOfWork!.CompletionState! ===
+        ComponentCompletionState.Complete
+    ) {
+      return TaskStatus.None;
+    } else return TaskStatus.CannotStart;
   }
 
   hideCompetencySection() {
@@ -355,7 +362,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: PersonalDetailRoutes.SUMMARY };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determinePersonalSummaryTask(aModel.PersonalDetails),
+            this.determinPersonalSummaryTask(aModel.PersonalDetails),
         },
       ],
     },
@@ -389,7 +396,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: BuildingInspectorSummaryComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determineClassSummaryTask(aModel.InspectorClass),
+            this.determinClassSummaryTask(aModel.InspectorClass),
         },
       ],
     },
@@ -452,7 +459,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: CompetencySummaryComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determineCompetencySummaryTask(aModel.Competency),
+            this.determinCompetencySummaryTask(aModel.Competency),
         },
       ],
     },
