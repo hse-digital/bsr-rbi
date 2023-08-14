@@ -10,6 +10,7 @@ export const ProfessionalActivityRoutes = {
   PROFESSIONAL_MEMBERSHIP_INFORMATION: 'professional-membership-information',
   PROFESSIONAL_INDIVIDUAL_MEMEBERSHIP_DETAILS:
     'professional-individual-membership-details',
+    PROFESSIONAL_CONFIRMATION_MEMBERSHIP_REMOVAL: 'professional-confirmation-membership-removal'
 };
 
 @Injectable({ providedIn: 'root' })

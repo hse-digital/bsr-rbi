@@ -6,7 +6,7 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { ApplicationService } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
-import { ProfessionalActivitySummaryComponent } from '../professional-activity-summary/professional-activity-summary.component';
+import { ProfessionalBodyMembershipSummaryComponent } from '../professional-body-membership-summary/professional-body-membership-summary.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 
 @Component({
@@ -15,7 +15,7 @@ import { ApplicationStatus } from 'src/app/models/application-status.enum';
 })
 export class ProfessionalActivityEmploymentDetailsComponent extends PageComponent<string> {
   DerivedIsComplete(value: boolean): void {
-      
+
   }
 
   public static route: string = "professional-activity-employment-details";
@@ -53,7 +53,7 @@ export class ProfessionalActivityEmploymentDetailsComponent extends PageComponen
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ProfessionalActivitySummaryComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(ProfessionalBodyMembershipSummaryComponent.route, this.activatedRoute);
   }
 
 }

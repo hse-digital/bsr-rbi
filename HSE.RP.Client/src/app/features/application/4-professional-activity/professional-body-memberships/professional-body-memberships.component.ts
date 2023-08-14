@@ -6,6 +6,7 @@ import { ApplicationService } from '../../../../services/application.service';
 import { ProfessionalActivityEmploymentTypeComponent } from '../employment-type/professional-activity-employment-type.component';
 import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
 import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-professional-body-memberships',
@@ -20,7 +21,7 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
   production: boolean = environment.production;
   modelValid: boolean = false;
   errorMessage: string = '';
-  selectedOption: string = 'no';
+  selectedOption: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -32,7 +33,13 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     if (!applicationService.model.ProfessionalMemberships) {
       applicationService.model.ProfessionalMemberships =
         new ApplicantProfessionBodyMemberships();
+        this.model = applicationService.model.ProfessionalMemberships;
     }
+    else{
+      this.model = applicationService.model.ProfessionalMemberships;
+    }
+
+
 
     if (
       applicationService.model.ProfessionalMemberships
@@ -40,14 +47,14 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     ) {
       applicationService.model.ProfessionalMemberships =
         new ApplicantProfessionBodyMemberships();
-      this.selectedOption = 'no';
+      this.selectedOption = '';
     }
 
     this.selectedOption = applicationService.model.ProfessionalMemberships
       .IsProfessionBodyRelevantYesNo
       ? applicationService.model.ProfessionalMemberships
           .IsProfessionBodyRelevantYesNo!
-      : 'no';
+      : '';
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -55,11 +62,6 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
       applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo =
         this.selectedOption;
     }
-
-    // if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
-    //   applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
-    //     ComponentCompletionState.Complete;
-    // }
   }
 
   override canAccess(
@@ -70,15 +72,36 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
   }
 
   override isValid(): boolean {
-    return true;
+    this.hasErrors = false;
+    this.errorMessage = '';
+    if (this.selectedOption === '') {
+      this.hasErrors = true;
+      this.errorMessage = 'Select one option';
+    }
+
+    return !this.hasErrors;
   }
 
   override navigateNext(): Promise<boolean> {
+    if (this.selectedOption === 'no') {
+      this.model!.CompletionState = ComponentCompletionState.Complete;
+      this.applicationService.model.ProfessionalMemberships = this.model!;
+      return this.navigationService.navigateRelative(
+        ProfessionalActivityEmploymentTypeComponent.route,
+        this.activatedRoute
+      );
+    }
+    if (this.selectedOption === 'yes') {
+      return this.navigationService.navigateRelative(
+        `professional-body-selection`,
+        this.activatedRoute
+      );
+    }
+
     return this.navigationService.navigateRelative(
       ProfessionalActivityEmploymentTypeComponent.route,
       this.activatedRoute
     );
-
   }
   DerivedIsComplete(value: boolean): void {
     // this.applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =

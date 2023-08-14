@@ -12,6 +12,7 @@ export const CompetencyRoutes = {
   COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER:
     'competency-assessment-certificate-number',
   SUMMARY: 'competency-summary',
+  TASK_LIST: '',
 };
 
 @Injectable({ providedIn: 'root' })

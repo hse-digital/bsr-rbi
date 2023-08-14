@@ -24,6 +24,9 @@ import { ComponentCompletionState } from '../models/component-completion-state.e
 
 @Component({ template: '' })
 export abstract class PageComponent<T> implements OnInit {
+// This implementation should really extend the generic to an IComponentModel as in the export statement below ,
+// but it's breaking too much at the moment to fix this up, just don't have the time.
+//export abstract class PageComponent<T extends IComponentModel> implements OnInit {
   model?: T;
   processing: boolean = false;
   hasErrors: boolean = false;

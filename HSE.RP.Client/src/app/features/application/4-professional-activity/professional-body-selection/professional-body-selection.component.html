@@ -19,6 +19,9 @@
       [(model)]="selectedOption"
     >
       <govuk-radio
+        *ngIf="
+          model!.RICS.CompletionState !== ComponentCompletionState.Complete
+        "
         class=""
         label="Royal Institution of Chartered Surveyors (RICS)"
         value="RICS"
@@ -27,19 +30,35 @@
       >
       </govuk-radio>
       <govuk-radio
+        *ngIf="
+          model!.CABE.CompletionState !== ComponentCompletionState.Complete
+        "
         label="Chartered Association of Building Engineers (CABE)"
         value="CABE"
         id="CABE"
         [model]="selectedOption"
       ></govuk-radio>
       <govuk-radio
+        *ngIf="
+          model!.CIOB.CompletionState !== ComponentCompletionState.Complete
+        "
         label="Chartered Institute of Building (CIOB)"
         value="CIOB"
         id="CIOB"
         [model]="selectedOption"
       ></govuk-radio>
-      <div class="govuk-radios__divider">or</div>
+      <div
+        *ngIf="
+          model!.OTHER.CompletionState !== ComponentCompletionState.Complete
+        "
+        class="govuk-radios__divider"
+      >
+        or
+      </div>
       <govuk-radio
+        *ngIf="
+          model!.OTHER.CompletionState !== ComponentCompletionState.Complete
+        "
         label="Other"
         value="OTHER"
         id="OTHER"
