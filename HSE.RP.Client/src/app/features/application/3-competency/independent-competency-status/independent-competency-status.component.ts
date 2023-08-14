@@ -35,7 +35,8 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
     }
 
     if (
-      applicationService.model.Competency?.CompetencyIndependentAssessmentStatus == null
+      applicationService.model.Competency
+        ?.CompetencyIndependentAssessmentStatus == null
     ) {
       applicationService.model.Competency!.CompetencyIndependentAssessmentStatus =
         new CompetencyIndependentAssessmentStatus();
@@ -44,8 +45,8 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
 
     this.selectedOption = applicationService.model.Competency
       ?.CompetencyIndependentAssessmentStatus
-      ? applicationService.model.Competency?.CompetencyIndependentAssessmentStatus
-          .IAStatus!
+      ? applicationService.model.Competency
+          ?.CompetencyIndependentAssessmentStatus.IAStatus!
       : 'no';
   }
 
@@ -54,7 +55,11 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
       applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.IAStatus =
         this.selectedOption;
     }
-    if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
+
+    if (this.selectedOption === 'no') {
+      applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
+        ComponentCompletionState.InProgress;
+    } else if (this.selectedOption === 'yes') {
       applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.Complete;
     }
@@ -73,7 +78,8 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
 
     if (this.selectedOption === '') {
       this.hasErrors = true;
-      this.errorMessage = 'Select one option';
+      this.errorMessage =
+        'Select yes if you have completed a BSR-approved competency assessment';
     }
 
     return !this.hasErrors;
