@@ -1,0 +1,77 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+
+  <govuk-body>
+    <h1 class="govuk-heading-xl">Summary of your professional memberships</h1>
+    <govuk-summary-list>
+      <govuk-summary-list-row *ngIf="model!.RICS.CompletionState === ComponentCompletionState.Complete"
+                              (onClick)="navigateToChange('RICS')"
+                              (onKeyupEnter)="navigateToChange('RICS')"
+                              (onClick2)="navigateToRemove('RICS')"
+                              (onKeyupEnter2)="navigateToRemove('RICS')"
+                              [actionText]="changeActionText()"
+                              [actionText2]="removeActionText()"
+                              key="Royal Institution of Chartered Surveyors (RICS)"
+                              [showAction]="true"
+                              [showAction2]="true">
+      </govuk-summary-list-row>
+      <govuk-summary-list-row *ngIf="model!.CABE.CompletionState === ComponentCompletionState.Complete"
+                              (onClick)="navigateToChange('CABE')"
+                              (onKeyupEnter)="navigateToChange('CABE')"
+                              (onClick2)="navigateToRemove('CABE')"
+                              (onKeyupEnter2)="navigateToRemove('CABE')"
+                              [actionText]="changeActionText()"
+                              [actionText2]="removeActionText()"
+                              key="Chartered Association of Building Engineers (CABE)"
+                              [showAction]="true"
+                              [showAction2]="true">
+      </govuk-summary-list-row>
+      <govuk-summary-list-row *ngIf="model!.CIOB.CompletionState === ComponentCompletionState.Complete"
+                              (onClick)="navigateToChange('CIOB')"
+                              (onKeyupEnter)="navigateToChange('CIOB')"
+                              (onClick2)="navigateToRemove('CIOB')"
+                              (onKeyupEnter2)="navigateToRemove('CIOB')"
+                              [actionText]="changeActionText()"
+                              [actionText2]="removeActionText()"
+                              key="Chartered Institute of Building (CIOB)"
+                              [showAction]="true"
+                              [showAction2]="true">
+      </govuk-summary-list-row>
+      <govuk-summary-list-row *ngIf="model!.OTHER.CompletionState === ComponentCompletionState.Complete"
+                              (onClick)="navigateToChange('OTHER')"
+                              (onKeyupEnter)="navigateToChange('OTHER')"
+                              (onClick2)="navigateToRemove('OTHER')"
+                              (onKeyupEnter2)="navigateToRemove('OTHER')"
+                              [actionText]="emptyActionText()"
+                              [actionText2]="removeActionText()"
+                              key="Other"
+                              [showAction]="true"
+                              [showAction2]="true">
+      </govuk-summary-list-row>
+    </govuk-summary-list>
+    <br/>
+    <div *ngIf="!ApplicantProfessionBodyMembershipsHelper.AllCompleted( model!)">
+      <h1 class="govuk-heading-xl">Do you want to add another membership?</h1>
+
+      <govuk-radio-group hintText="" id="radios-bi-class-selection">
+              <govuk-radio class=""
+                           (onRadioClicked)="optionClicked('yes')"
+                           label="Yes"
+                           value="yes"
+                           id="yes"
+                           [model]="selectedOption">
+              </govuk-radio>
+              <govuk-radio label="No"
+                           (onRadioClicked)="optionClicked('no')"
+                           value="no"
+                           id="no"
+                           [model]="selectedOption">
+
+              </govuk-radio>
+      </govuk-radio-group>
+    </div>
+  </govuk-body>
+</govuk-formpage>

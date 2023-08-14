@@ -14,9 +14,10 @@ import { BuildingInspectorClassModule } from './2-building-inspector-class/appli
 import { CompetencyModule } from './3-competency/application.competency.module';
 import { ProfessionalActivityModule } from './4-professional-activity/application.professional-activity.module';
 import { ApplicationSubmissionModule } from './5-application-submission/application.application-submission.module';
+import { BuildingInspectorRouter, CompetencyRouter, PersonalDetailRouter, ProfessionalActivityRouter } from './application-routes';
 
 
-const routes = new HseRoutes([//NewApplicationTaskListComponent
+const routes = new HseRoutes([
   HseRoute.protected(ApplicationTaskListComponent.route, ApplicationTaskListComponent, ApplicationTaskListComponent.title),
   HseRoute.forLoadChildren(ApplicationPersonalDetailsModule.baseRoute, () => import('./1-personal-details/application.personal-details.module').then(m => m.ApplicationPersonalDetailsModule)),
   HseRoute.forLoadChildren(BuildingInspectorClassModule.baseRoute, () => import('./2-building-inspector-class/application.building-inspector-class.module').then(m => m.BuildingInspectorClassModule)),
@@ -28,7 +29,6 @@ const routes = new HseRoutes([//NewApplicationTaskListComponent
 @NgModule({
   declarations: [
     ApplicationTaskListComponent,
-    //NewApplicationTaskListComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
@@ -38,7 +38,7 @@ const routes = new HseRoutes([//NewApplicationTaskListComponent
     FormsModule,
     HttpClientModule
   ],
-  providers: [HttpClient, ApplicationService, CookiesBannerService, ...routes.getProviders()],
+  providers: [HttpClient, ApplicationService, CookiesBannerService, PersonalDetailRouter, BuildingInspectorRouter, CompetencyRouter, ProfessionalActivityRouter,  ...routes.getProviders()],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

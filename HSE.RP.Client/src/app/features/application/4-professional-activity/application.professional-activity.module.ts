@@ -11,10 +11,11 @@ import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { ProfessionalBodyMembershipsComponent } from './professional-body-memberships/professional-body-memberships.component';
 import { ProfessionalActivityEmploymentTypeComponent } from './employment-type/professional-activity-employment-type.component';
 import { ProfessionalActivityEmploymentDetailsComponent } from './employment-details/professional-activity-employment-details.component';
-import { ProfessionalActivitySummaryComponent } from './professional-activity-summary/professional-activity-summary.component';
+import { ProfessionalBodyMembershipSummaryComponent } from './professional-body-membership-summary/professional-body-membership-summary.component';
 import { ProfessionalBodySelectionComponent } from './professional-body-selection/professional-body-selection.component';
 import { ProfessionalMembershipInformationComponent } from './professional-membership-information/professional-membership-information.component';
 import { ProfessionalIndividualMembershipDetailsComponent } from './professional-individual-membership-details/professional-individual-membership-details.component';
+import { ProfessionalConfirmationMembershipRemovalComponent } from './professional-confirmation-membership-removal/professional-confirmation-membership-removal.component';
 
 const routes = new HseRoutes([
   HseRoute.protected(
@@ -33,9 +34,9 @@ const routes = new HseRoutes([
     ProfessionalActivityEmploymentDetailsComponent.title
   ),
   HseRoute.protected(
-    ProfessionalActivitySummaryComponent.route,
-    ProfessionalActivitySummaryComponent,
-    ProfessionalActivitySummaryComponent.title
+    ProfessionalBodyMembershipSummaryComponent.route,
+    ProfessionalBodyMembershipSummaryComponent,
+    ProfessionalBodyMembershipSummaryComponent.title
   ),
   HseRoute.protected(
     ProfessionalBodySelectionComponent.route,
@@ -43,14 +44,24 @@ const routes = new HseRoutes([
     ProfessionalBodySelectionComponent.title
   ),
   HseRoute.protected(
-    ProfessionalMembershipInformationComponent.route,
-    ProfessionalMembershipInformationComponent,
-    ProfessionalMembershipInformationComponent.title
+    ProfessionalBodyMembershipsComponent.route,
+    ProfessionalBodyMembershipsComponent,
+    ProfessionalBodyMembershipsComponent.title
   ),
   HseRoute.protected(
     ProfessionalIndividualMembershipDetailsComponent.route,
     ProfessionalIndividualMembershipDetailsComponent,
     ProfessionalIndividualMembershipDetailsComponent.title
+  ),
+  HseRoute.protected(
+    ProfessionalConfirmationMembershipRemovalComponent.route,
+    ProfessionalConfirmationMembershipRemovalComponent,
+    ProfessionalConfirmationMembershipRemovalComponent.title
+  ),
+  HseRoute.protected(
+    ProfessionalMembershipInformationComponent.route,
+    ProfessionalMembershipInformationComponent,
+    ProfessionalMembershipInformationComponent.title
   ),
 ]);
 
@@ -59,10 +70,11 @@ const routes = new HseRoutes([
     ProfessionalBodyMembershipsComponent,
     ProfessionalActivityEmploymentTypeComponent,
     ProfessionalActivityEmploymentDetailsComponent,
-    ProfessionalActivitySummaryComponent,
+    ProfessionalBodyMembershipSummaryComponent,
     ProfessionalBodySelectionComponent,
     ProfessionalMembershipInformationComponent,
     ProfessionalIndividualMembershipDetailsComponent,
+    ProfessionalConfirmationMembershipRemovalComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

@@ -7,7 +7,7 @@ export class ApplicantProfessionalBodyMembership implements IComponentModel {
   MembershipBodyCode: string = '';
   MembershipNumber: string = '';
   MembershipLevel: string = '';
-  MembershipYear: number = -1;
+  MembershipYear?: number;
   CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
 }
 
@@ -16,53 +16,54 @@ export class ApplicantProfessionalBodyMembership implements IComponentModel {
 ///       membership. A CompletionState of Completed, show the member has selected and fully entered
 ///       a membership for that organisation.
 
-export class ApplicantProfessionBodyMemberships {
+export class ApplicantProfessionBodyMemberships implements IComponentModel {
   constructor() {
-    this.Reset(ProfessionalBodies.RICS.BodyCode);
-    this.Reset(ProfessionalBodies.CABE.BodyCode);
-    this.Reset(ProfessionalBodies.CIOB.BodyCode);
-    this.Reset(ProfessionalBodies.OTHER.BodyCode);
   }
+  CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
   IsProfessionBodyRelevantYesNo: string = 'no';
-  RICS: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
-  CABE: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
-  CIOB: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
-  OTHER: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
+  RICS: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.RICS.BodyCode);
+  CABE: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CABE.BodyCode);
+  CIOB: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CIOB.BodyCode);
+  OTHER: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.OTHER.BodyCode);
+
+}
+export class ApplicantProfessionBodyMembershipsHelper {
+
+  static AnyCompleted(instance: ApplicantProfessionBodyMemberships): boolean {
+    return (instance.RICS.CompletionState === ComponentCompletionState.Complete) ||
+      (instance.CABE.CompletionState === ComponentCompletionState.Complete) ||
+      (instance.CIOB.CompletionState === ComponentCompletionState.Complete) ||
+      (instance.OTHER.CompletionState === ComponentCompletionState.Complete);
+  }
+  static AllCompleted(instance: ApplicantProfessionBodyMemberships): boolean {
+    var a = instance.RICS.CompletionState === ComponentCompletionState.Complete;
+    var b = instance.CABE.CompletionState === ComponentCompletionState.Complete;
+    var c = instance.CIOB.CompletionState === ComponentCompletionState.Complete;
+    var d = instance.OTHER.CompletionState === ComponentCompletionState.Complete;
+    return a && b && c && d;
+  }
+
+
   // Resets the professional body passed in, as if it were deleted.
-  Reset(bodyCode: string): void
-  {
+  static Reset(bodyCode: string): ApplicantProfessionalBodyMembership {
+    var memberShip = new ApplicantProfessionalBodyMembership();
+    memberShip.MembershipBodyCode = bodyCode;
+    memberShip.CompletionState = ComponentCompletionState.NotStarted;
     switch (bodyCode) {
       case ProfessionalBodies.RICS.BodyCode:
-        {
-          this.RICS = new ApplicantProfessionalBodyMembership();
-          this.RICS.MembershipBodyCode = ProfessionalBodies.RICS.BodyCode;
-          break;
-        }
       case ProfessionalBodies.CABE.BodyCode:
-        {
-          this.CABE = new ApplicantProfessionalBodyMembership();
-          this.CABE.MembershipBodyCode = ProfessionalBodies.CABE.BodyCode;
-          break;
-        }
       case ProfessionalBodies.CIOB.BodyCode:
-        {
-          this.CIOB = new ApplicantProfessionalBodyMembership();
-          this.CIOB.MembershipBodyCode = ProfessionalBodies.CIOB.BodyCode;
-          break;
-        }
       case ProfessionalBodies.OTHER.BodyCode:
-        {
-          this.OTHER = new ApplicantProfessionalBodyMembership();
-          this.OTHER.MembershipBodyCode = ProfessionalBodies.OTHER.BodyCode;
-          break;
-        }
+        break;
       default:
         {
           throw new Error(`Unknown professional body code of ${bodyCode} passed into the reset method.`);
         }
     }
+    return memberShip;
   }
 }
+
 
 export class ApplicantProfessionalBodyOrganisation {
   constructor(code: string, description: string, requestMembershipDetail: boolean) {

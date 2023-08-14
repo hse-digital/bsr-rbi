@@ -7,6 +7,8 @@ import {
   ProfessionalActivityRouter,
   ProfessionalActivityRoutes,
 } from '../ProfessionalActivityRoutes';
+import { ApplicantProfessionBodyMembershipsHelper } from 'src/app/models/applicant-professional-body-membership';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-professional-individual-membership-details',
@@ -23,6 +25,8 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
   modelValid: boolean = false;
   photoHasErrors = false;
   override model?: string;
+  membershipCode: string = '';
+  PROFESSIONAL_BODY_ORG_NAME: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -33,15 +37,32 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
     this.updateOnSave = false;
   }
 
-  override onInit(applicationService: ApplicationService): void {}
-  override async onSave(
-    applicationService: ApplicationService
-  ): Promise<void> {}
+  override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.membershipCode = params['queryParams'];
+      this.getProfessionalBodyOrgName(this.membershipCode);
+    });
+  }
+  override async onSave(applicationService: ApplicationService): Promise<void> {
+    if (this.membershipCode === 'CABE') {
+      applicationService.model.ProfessionalMemberships.CABE.CompletionState =
+        ComponentCompletionState.Complete;
+    } else if (this.membershipCode === 'RICS') {
+      applicationService.model.ProfessionalMemberships.RICS.CompletionState =
+        ComponentCompletionState.Complete;
+    } else if (this.membershipCode === 'CIOB') {
+      applicationService.model.ProfessionalMemberships.CIOB.CompletionState =
+        ComponentCompletionState.Complete;
+    } else if (this.membershipCode === 'OTHER') {
+      applicationService.model.ProfessionalMemberships.OTHER.CompletionState =
+        ComponentCompletionState.Complete;
+    }
+  }
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return true;
+    return this.applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo === 'yes';
   }
   override isValid(): boolean {
     return true;
@@ -49,7 +70,7 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
   override async navigateNext(): Promise<boolean> {
     return this.professionalActivityRouter.navigateTo(
       this.applicationService.model,
-      'professional-activity-summary'
+      'professional-body-membership-summary'
     );
   }
 
@@ -94,5 +115,18 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
     const memberships: any =
       this.applicationService.model.ProfessionalMemberships;
     return this.getValidMembershipField(memberships, 'MembershipYear');
+  }
+
+  private getProfessionalBodyOrgName(membershipCode: string): void {
+    const professionalBodyOrgNames: { [code: string]: string } = {
+      RICS: 'Royal Institution of Chartered Surveyors (RICS)',
+      CABE: 'Chartered Association of Building Engineers (CABE)',
+      CIOB: 'Chartered Institute of Building (CIOB)',
+      OTHER: 'OTHER',
+    };
+
+    this.PROFESSIONAL_BODY_ORG_NAME =
+      professionalBodyOrgNames[membershipCode] || '';
+    this.PROFESSIONAL_BODY_ORG_NAME;
   }
 }

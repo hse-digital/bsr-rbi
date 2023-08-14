@@ -16,7 +16,6 @@ import { PageComponent } from 'src/app/helpers/page.component';
 //import { ProfessionalActivityPlaceholderComponent } from '../4-professional-activity/professional-activity-placeholder/professional-activity-placeholder.component';
 //import { ApplicationSubmissionPlaceholderComponent } from '../5-application-submission/application-submission-placeholder/application-submission-placeholder.component';
 import { environment } from 'src/environments/environment';
-//import { PayAndSubmitComponent } from '../5-application-submission/pay-and-submit-application/pay-and-submit.component';
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 import { ApplicantAddressComponent } from '../1-personal-details/applicant-address/applicant-address.component';
 import { ApplicantNameComponent } from '../1-personal-details/applicant-name/applicant-name.component';
@@ -41,7 +40,7 @@ import { CompetencySummaryComponent } from '../3-competency/competency-summary/c
 import { ProfessionalBodyMembershipsComponent } from '../4-professional-activity/professional-body-memberships/professional-body-memberships.component';
 import { ProfessionalActivityEmploymentTypeComponent } from '../4-professional-activity/employment-type/professional-activity-employment-type.component';
 import { ProfessionalActivityEmploymentDetailsComponent } from '../4-professional-activity/employment-details/professional-activity-employment-details.component';
-import { ProfessionalActivitySummaryComponent } from '../4-professional-activity/professional-activity-summary/professional-activity-summary.component';
+import { ProfessionalBodyMembershipSummaryComponent } from '../4-professional-activity/professional-body-membership-summary/professional-body-membership-summary.component';
 import { ApplicationSummaryComponent } from '../5-application-submission/application-summary/application-summary.component';
 import { PaymentConfirmationComponent } from '../5-application-submission/payment/payment-confirmation/payment-confirmation.component';
 
@@ -474,7 +473,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: ProfessionalBodyMembershipsComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            TaskStatus.CannotStart, // this.getModelStatus(aModel.ProfessionalMemberships?.IsProfessionBodyRelevantYesNo)
+            this.getModelStatus(aModel.ProfessionalMemberships)
         },
         {
           prompt: 'Employment',
@@ -488,7 +487,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           prompt: 'Summary',
           relativeRoute: (): TaskListRoute => {
             return {
-              route: ProfessionalActivitySummaryComponent.route,
+              route: '',
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
