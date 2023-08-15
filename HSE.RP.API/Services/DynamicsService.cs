@@ -138,6 +138,24 @@ namespace HSE.RP.API.Services
             }
         }
 
+        private async Task<DynamicsBuildingInspectorProfessionalBodyMembership> FindExistingBuildingProfessionalBodyMembership(string membershipBodyId, string buidingProfessionApplicationId)
+        {
+            try
+            {
+                var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership>>("bsr_biprofessionalmemberships", new[]
+                 {
+                        ("$filter", $"_bsr_biapplicationid_value eq '{buidingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{membershipBodyId}'")
+
+                    });
+
+                return response.value.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         private async Task<DynamicsBuildingInspectorRegistrationCountry> FindExistingBuildingInspectorRegistrationCountry(string countryId, string buidingProfessionApplicationId)
         {
             try
@@ -480,6 +498,48 @@ namespace HSE.RP.API.Services
                     var response = await dynamicsApi.Update($"bsr_biregactivities({existingRegistrationActivity.bsr_biregactivityId})", dynamicsBuildingInspectorRegistraionActivity);
                     var buildingInspectorRegistrationActivityId = ExtractEntityIdFromHeader(response.Headers);
                     return buildingInspectorRegistrationActivity with { Id = buildingInspectorRegistrationActivityId };
+                }
+            }
+
+        }
+
+        public async Task<BuildingInspectorProfessionalBodyMembership> CreateOrUpdateBuildingInspectorProfessionalBodyMembership(BuildingInspectorProfessionalBodyMembership buildingInspectorProfessionalBodyMembership)
+        {
+
+            var dynamicsBuildingInspectorProfessionalBodyMembership = new DynamicsBuildingInspectorProfessionalBodyMembership(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorProfessionalBodyMembership.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorProfessionalBodyMembership.BuildingInspectorId})",
+                professionalBodyRefId: $"/accounts({buildingInspectorProfessionalBodyMembership.ProfessionalBodyId})",
+                bsr_membershipnumber: buildingInspectorProfessionalBodyMembership.MembershipNumber,
+                bsr_currentmembershiplevelortype: buildingInspectorProfessionalBodyMembership.CurrentMembershipLevelOrType,
+                yearRefId: $"/bsr_years({buildingInspectorProfessionalBodyMembership.YearId})"
+                );
+
+            //If the membership has an id then we need to update it
+            if (buildingInspectorProfessionalBodyMembership.Id is not null)
+            {
+                var response = await dynamicsApi.Update($"bsr_biprofessionalmemberships({buildingInspectorProfessionalBodyMembership.Id})", dynamicsBuildingInspectorProfessionalBodyMembership);
+                var buildingInspectorRegistrationClassId = ExtractEntityIdFromHeader(response.Headers);
+                return buildingInspectorProfessionalBodyMembership with { Id = buildingInspectorRegistrationClassId };
+            }
+            else
+            {
+                //Check if an entry for this membership already exists
+                var existingProfessionalBodyMembership = await FindExistingBuildingProfessionalBodyMembership(buildingInspectorProfessionalBodyMembership.ProfessionalBodyId, buildingInspectorProfessionalBodyMembership.BuildingProfessionApplicationId);
+
+                //If no entry exists then create a new one
+                if (existingProfessionalBodyMembership == null)
+                {
+                    var response = await dynamicsApi.Create("bsr_biprofessionalmemberships", dynamicsBuildingInspectorProfessionalBodyMembership);
+                    var buildingInspectorProfessionalBodyMembershipId = ExtractEntityIdFromHeader(response.Headers);
+                    return buildingInspectorProfessionalBodyMembership with { Id = buildingInspectorProfessionalBodyMembershipId };
+                }
+                //If an entry exists then update it
+                else
+                {
+                    var response = await dynamicsApi.Update($"bsr_biprofessionalmemberships({existingProfessionalBodyMembership.bsr_biprofessionalmembershipid})", dynamicsBuildingInspectorProfessionalBodyMembership);
+                    var buildingInspectorProfessionalBodyMembershipId = ExtractEntityIdFromHeader(response.Headers);
+                    return buildingInspectorProfessionalBodyMembership with { Id = buildingInspectorProfessionalBodyMembershipId };
                 }
             }
 
