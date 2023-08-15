@@ -88,6 +88,9 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
     this.selections.forEach((value: keyof typeof demandModel) => {
       demandModel[value] = true;
     });
+
+    this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+          ComponentCompletionState.InProgress;
   }
 
   override canAccess(
@@ -124,11 +127,11 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
     );
   }
 
-  DerivedIsComplete(value: boolean): void {
-    this.DemandModel().CompletionState = value
-      ? ComponentCompletionState.Complete
-      : ComponentCompletionState.InProgress;
-  }
+  // DerivedIsComplete(value: boolean): void {
+  //   this.DemandModel().CompletionState = value
+  //     ? ComponentCompletionState.Complete
+  //     : ComponentCompletionState.InProgress;
+  // }
 
   public DemandModel(): BuildingAssessingPlansCategoriesClass2 {
     if (this.model === undefined || this.model === null) {

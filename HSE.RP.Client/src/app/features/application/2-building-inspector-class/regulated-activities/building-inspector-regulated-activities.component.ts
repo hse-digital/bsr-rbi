@@ -110,6 +110,9 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
     this.selections.forEach((value: any) => {
       this.DemandModel()[value] = true;
     });
+
+    this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+    ComponentCompletionState.InProgress;
   }
 
   override canAccess(
