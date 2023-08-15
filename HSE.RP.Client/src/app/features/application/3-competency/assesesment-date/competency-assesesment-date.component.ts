@@ -49,7 +49,10 @@ type DoaValidationItem = {
 const ERROR_MESSAGES = {
   DATE_ASSESSMENT_REQUIRED: 'Enter your date of assessment',
   DAY_REQUIRED: 'Your date of assessment must include a day',
+  DAY_VALIDATION:
+    'Your day value it should be less than or equal 31 and not less than 1',
   MONTH_REQUIRED: 'Your date of assessment must include a month',
+  MONTH_VALIDATION: 'Your month value it should be less than or equal 12 and not less than 1',
   YEAR_REQUIRED: 'Your date of assessment must include a year',
   YEAR_FORMAT:
     'Your date of assessment must include all four numbers of the year, for example 1981, not just 81.',
@@ -121,6 +124,7 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
 
   override isValid(): boolean {
     this.validationErrors = [];
+
     if (!this.model?.day && !this.model?.month && !this.model?.year) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.DATE_ASSESSMENT_REQUIRED,
@@ -129,14 +133,15 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
       return false;
     }
 
-    if (!this.isDateNumber(this.model?.day)) {
+    if (!this.isDateNumber(this.model?.day) || !this.isDayValid(Number(this.model?.day))) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.DAY_REQUIRED,
         Anchor: 'doa-input-day',
       });
     }
 
-    if (!this.isDateNumber(this.model?.month)) {
+
+    if (!this.isDateNumber(this.model?.month) || !this.isMonthValid(Number(this.model?.month))) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.MONTH_REQUIRED,
         Anchor: 'doa-input-month',
@@ -191,5 +196,13 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
       return this.validationErrors[0].Text;
     }
     return '';
+  }
+
+  isDayValid(day: number) {
+    return day <= 31 && day >= 1;
+  }
+
+  isMonthValid(month: number) {
+    return month <= 12 && month >= 1;
   }
 }
