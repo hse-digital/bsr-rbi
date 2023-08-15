@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Numerics;
 using System.Text.Json.Serialization;
 
@@ -12,7 +13,9 @@ public record BuildingInspectorProfessionalBodyMembership(
     string ProfessionalBodyId = null,
     string MembershipNumber = null,
     string CurrentMembershipLevelOrType = null,
-    string YearId = null
+    string YearId = null,
+    int? StateCode = null,
+    int? StatusCode = null
     ) : Entity(Id);
 
 public record DynamicsBuildingInspectorProfessionalBodyMembership(
@@ -20,14 +23,20 @@ public record DynamicsBuildingInspectorProfessionalBodyMembership(
     string bsr_biprofessionalmembershipid = null,
     [property: JsonPropertyName("bsr_biapplicationid@odata.bind")]
     string buidingProfessionApplicationReferenceId = null,
+    string _bsr_biapplicationid_value = null,
     [property: JsonPropertyName("bsr_buildinginspectorid@odata.bind")]
     string contactRefId = null,
+    string _bsr_buildinginspectorid_value = null,
     [property: JsonPropertyName("bsr_professionalbodyid@odata.bind")]
     string professionalBodyRefId = null,
+    string _bsr_professionalbodyid_value = null,
     string bsr_membershipnumber = null,
     string bsr_currentmembershiplevelortype = null,
     [property: JsonPropertyName("bsr_yearid@odata.bind")]
-    string yearRefId = null
+    string yearRefId = null,
+    string _bsr_yearid_value = null,
+    int? statuscode = null,
+    int? statecode = null
 ) : DynamicsEntity<BuildingInspectorProfessionalBodyMembership>;
 
 

@@ -263,6 +263,15 @@ namespace HSE.RP.API.Services
 
             return response.value;
         }
+        public async Task<List<DynamicsBuildingInspectorProfessionalBodyMembership>> GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId(string applicationId)
+        {
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership>>("bsr_biprofessionalmemberships", new[]
+            {
+            ("$filter", $"_bsr_biapplicationid_value eq '{applicationId}'")
+            });
+
+            return response.value;
+        }
 
         public async Task<List<DynamicsBuildingInspectorRegistrationActivity>> GetRegistrationActivitiesUsingApplicationId(string applicationId)
         {
@@ -512,6 +521,8 @@ namespace HSE.RP.API.Services
                 professionalBodyRefId: $"/accounts({buildingInspectorProfessionalBodyMembership.ProfessionalBodyId})",
                 bsr_membershipnumber: buildingInspectorProfessionalBodyMembership.MembershipNumber,
                 bsr_currentmembershiplevelortype: buildingInspectorProfessionalBodyMembership.CurrentMembershipLevelOrType,
+                statuscode: buildingInspectorProfessionalBodyMembership.StatusCode ?? 1,
+                statecode: buildingInspectorProfessionalBodyMembership.StateCode ?? 0,
                 yearRefId: $"/bsr_years({buildingInspectorProfessionalBodyMembership.YearId})"
                 );
 

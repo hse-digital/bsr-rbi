@@ -229,31 +229,54 @@ public class DynamicsSynchronisationFunctions
     public async Task SynchroniseProfessionalBodyMemberships([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
     {
         var buildingProfessionApplicationModel = orchestrationContext.GetInput<BuildingProfessionApplicationModel>();
+        var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
+        var dynamicsProfessionalMemberships = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorProfessionalBodyMembership>>(nameof(GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
-        if (buildingProfessionApplicationModel.ProfessionalMemberships.IsProfessionBodyRelevantYesNo == "no")
+        if (dynamicsBuildingProfessionApplication != null)
         {
-            //No need to synchronise professional body memberships
-        }
-        else
-        {
-            var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
-
-            if (dynamicsBuildingProfessionApplication != null)
+            if (dynamicsProfessionalMemberships != null)
             {
-                //Check each professional body membership and update accordingly
-                if(buildingProfessionApplicationModel.ProfessionalMemberships.CABE.CompletionState == ComponentCompletionState.Complete)
+                if (buildingProfessionApplicationModel.ProfessionalMemberships.IsProfessionBodyRelevantYesNo == "no")
                 {
-                    var professionalBody  = new BuildingInspectorProfessionalBodyMembership
+                    //Check for existing memberships and set to inactive
+                    foreach (var membership in dynamicsProfessionalMemberships)
+                    {
+                        var professionalBody = new BuildingInspectorProfessionalBodyMembership
+                        {
+                            Id = membership.bsr_biprofessionalmembershipid,
+                            StatusCode = 2,
+                            StateCode = 1,
+                            BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                            BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                            ProfessionalBodyId = membership._bsr_professionalbodyid_value,
+                            MembershipNumber = membership.bsr_membershipnumber,
+                            CurrentMembershipLevelOrType = membership.bsr_currentmembershiplevelortype,
+                            YearId = membership._bsr_yearid_value
+                        };
+                        await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
+                    }
+                }
+            }
+            else
+            {
+
+                //Check each professional body membership and update accordingly
+                if (buildingProfessionApplicationModel.ProfessionalMemberships.CABE.CompletionState == ComponentCompletionState.Complete)
+                {
+                    var professionalBody = new BuildingInspectorProfessionalBodyMembership
                     {
                         BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                         BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                         ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["CABE"],
                         MembershipNumber = buildingProfessionApplicationModel.ProfessionalMemberships.CABE.MembershipNumber,
                         CurrentMembershipLevelOrType = buildingProfessionApplicationModel.ProfessionalMemberships.CABE.MembershipLevel,
-                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.CABE.MembershipYear]
+                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.CABE.MembershipYear],
+                        StatusCode = 1,
+                        StateCode = 0
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
                 }
+
                 if (buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.CompletionState == ComponentCompletionState.Complete)
                 {
                     var professionalBody = new BuildingInspectorProfessionalBodyMembership
@@ -263,7 +286,9 @@ public class DynamicsSynchronisationFunctions
                         ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["CIOB"],
                         MembershipNumber = buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.MembershipNumber,
                         CurrentMembershipLevelOrType = buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.MembershipLevel,
-                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.MembershipYear]
+                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.MembershipYear],
+                        StatusCode = 1,
+                        StateCode = 0
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
                 }
@@ -276,7 +301,9 @@ public class DynamicsSynchronisationFunctions
                         ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["RICS"],
                         MembershipNumber = buildingProfessionApplicationModel.ProfessionalMemberships.RICS.MembershipNumber,
                         CurrentMembershipLevelOrType = buildingProfessionApplicationModel.ProfessionalMemberships.RICS.MembershipLevel,
-                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.RICS.MembershipYear]
+                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.RICS.MembershipYear],
+                        StatusCode = 1,
+                        StateCode = 0
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
                 }
@@ -289,13 +316,18 @@ public class DynamicsSynchronisationFunctions
                         ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["OTHER"],
                         MembershipNumber = buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipNumber,
                         CurrentMembershipLevelOrType = buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipLevel,
-                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipYear]
+                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipYear],
+                        StatusCode = 1,
+                        StateCode = 0
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
                 }
 
+
             }
         }
+
+
 
 
     }
@@ -1009,6 +1041,12 @@ public class DynamicsSynchronisationFunctions
     public Task<List<DynamicsBuildingInspectorRegistrationClass>> GetRegistrationClassesUsingApplicationId([ActivityTrigger] string applicationId)
     {
         return dynamicsService.GetRegistrationClassesUsingApplicationId(applicationId);
+    }
+
+    [Function(nameof(GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId))]
+    public Task<List<DynamicsBuildingInspectorProfessionalBodyMembership>> GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId([ActivityTrigger] string applicationId)
+    {
+        return dynamicsService.GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId(applicationId);
     }
 
     [Function(nameof(GetRegistrationCountriesUsingApplicationId))]

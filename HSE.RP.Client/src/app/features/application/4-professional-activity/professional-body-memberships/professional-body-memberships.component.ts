@@ -82,8 +82,9 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     return !this.hasErrors;
   }
 
-  override navigateNext(): Promise<boolean> {
+  override async navigateNext(): Promise<boolean> {
     if (this.selectedOption === 'no') {
+      await this.applicationService.syncProfessionalBodyMemberships();
       this.model!.CompletionState = ComponentCompletionState.Complete;
       this.applicationService.model.ProfessionalMemberships = this.model!;
       return this.navigationService.navigateRelative(
@@ -102,6 +103,7 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
       ProfessionalActivityEmploymentTypeComponent.route,
       this.activatedRoute
     );
+
   }
   DerivedIsComplete(value: boolean): void {
     // this.applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
@@ -109,4 +111,6 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     //     ? ComponentCompletionState.Complete
     //     : ComponentCompletionState.InProgress;
   }
+
+
 }
