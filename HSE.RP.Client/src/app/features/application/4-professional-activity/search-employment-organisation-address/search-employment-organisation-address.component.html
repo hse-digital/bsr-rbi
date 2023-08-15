@@ -1,0 +1,11 @@
+<hse-address [addressName]="'Find the address of [organisation name]'"
+             [showOptionalAddressLineOne]="true"
+             [selfAddress]="true"
+             [address]="model"
+             [addressBodyText]="addressBodyText"
+             [addressOrgStep]= "'select'"
+             [searchMode]="searchMode"
+             (onAddressConfirmed)="addressConfirmed($event)"
+             (onChangeStep)="changeStep($event)" />
+
+             

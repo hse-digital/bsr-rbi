@@ -13,6 +13,8 @@ export class AddressComponent implements OnInit {
   @Input() searchMode: AddressSearchMode = AddressSearchMode.HomeAddress;
   @Input() address?: AddressModel;
   @Input() addressName!: string;
+  @Input() addressBodyText?: string;
+  @Input() addressOrgStep?: string;
   @Input() selfAddress = false;
   @Input() showOptionalAddressLineOne = false;
   @Output() onAddressConfirmed = new EventEmitter();

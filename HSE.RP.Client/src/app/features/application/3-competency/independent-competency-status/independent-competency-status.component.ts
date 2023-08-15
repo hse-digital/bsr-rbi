@@ -64,36 +64,12 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
       this.applicationService.model.Competency!
         .CompetencyIndependentAssessmentStatus!.IAStatus;
 
-    if (this.selectedOption === '' && STATUS === 0) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === '' && STATUS === 1) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === 'no' && STATUS === 0) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === 'no' && STATUS === 1) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === 'yes' && STATUS === 0) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === 'yes' && STATUS === 1) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption !== IASTATUS && STATUS === 2) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption !== IASTATUS && STATUS === 2) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === IASTATUS && STATUS === 2) {
+    if (this.selectedOption === IASTATUS && STATUS === 2) {
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.Complete;
-    } else if (this.selectedOption === IASTATUS && STATUS === 2) {
+    }  else {
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.Complete;
+        ComponentCompletionState.InProgress;
     }
 
     this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.IAStatus =
