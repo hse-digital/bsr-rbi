@@ -5,6 +5,7 @@ using AutoMapper;
 using Flurl;
 using Flurl.Http;
 using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using HSE.RP.API.Enums;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Models;
@@ -234,9 +235,10 @@ public class DynamicsSynchronisationFunctions
 
         if (dynamicsBuildingProfessionApplication != null)
         {
-            if (dynamicsProfessionalMemberships != null)
+
+            if (buildingProfessionApplicationModel.ProfessionalMemberships.IsProfessionBodyRelevantYesNo == "no")
             {
-                if (buildingProfessionApplicationModel.ProfessionalMemberships.IsProfessionBodyRelevantYesNo == "no")
+                if (dynamicsProfessionalMemberships != null)
                 {
                     //Check for existing memberships and set to inactive
                     foreach (var membership in dynamicsProfessionalMemberships)
@@ -260,7 +262,8 @@ public class DynamicsSynchronisationFunctions
             else
             {
 
-                //Check each professional body membership and update accordingly
+                //Check each body and update/create as required
+
                 if (buildingProfessionApplicationModel.ProfessionalMemberships.CABE.CompletionState == ComponentCompletionState.Complete)
                 {
                     var professionalBody = new BuildingInspectorProfessionalBodyMembership
@@ -273,6 +276,21 @@ public class DynamicsSynchronisationFunctions
                         YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.CABE.MembershipYear],
                         StatusCode = 1,
                         StateCode = 0
+                    };
+                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
+                }
+                else if(buildingProfessionApplicationModel.ProfessionalMemberships.CABE.CompletionState != ComponentCompletionState.Complete)
+                {
+                    var professionalBody = new BuildingInspectorProfessionalBodyMembership
+                    {
+                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                        BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                        ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["CABE"],
+                        MembershipNumber = null,
+                        CurrentMembershipLevelOrType = null,
+                        YearId = null,
+                        StatusCode = 2,
+                        StateCode = 1
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
                 }
@@ -292,6 +310,22 @@ public class DynamicsSynchronisationFunctions
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
                 }
+                else if (buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.CompletionState != ComponentCompletionState.Complete)
+                {
+                    var professionalBody = new BuildingInspectorProfessionalBodyMembership
+                    {
+                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                        BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                        ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["CIOB"],
+                        MembershipNumber = null,
+                        CurrentMembershipLevelOrType = null,
+                        YearId = null,
+                        StatusCode = 2,
+                        StateCode = 1
+                    };
+                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
+                }
+
                 if (buildingProfessionApplicationModel.ProfessionalMemberships.RICS.CompletionState == ComponentCompletionState.Complete)
                 {
                     var professionalBody = new BuildingInspectorProfessionalBodyMembership
@@ -307,6 +341,22 @@ public class DynamicsSynchronisationFunctions
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
                 }
+                else if (buildingProfessionApplicationModel.ProfessionalMemberships.RICS.CompletionState != ComponentCompletionState.Complete)
+                {
+                    var professionalBody = new BuildingInspectorProfessionalBodyMembership
+                    {
+                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                        BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                        ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["RICS"],
+                        MembershipNumber = null,
+                        CurrentMembershipLevelOrType = null,
+                        YearId = null,
+                        StatusCode = 2,
+                        StateCode = 1
+                    };
+                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
+                }
+
                 if (buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.CompletionState == ComponentCompletionState.Complete)
                 {
                     var professionalBody = new BuildingInspectorProfessionalBodyMembership
@@ -322,10 +372,26 @@ public class DynamicsSynchronisationFunctions
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
                 }
+                else if (buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.CompletionState != ComponentCompletionState.Complete)
+                {
+                    var professionalBody = new BuildingInspectorProfessionalBodyMembership
+                    {
+                        BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                        BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                        ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["OTHER"],
+                        MembershipNumber = null,
+                        CurrentMembershipLevelOrType = null,
+                        YearId = null,
+                        StatusCode = 2,
+                        StateCode = 1
+                    };
+                    await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), professionalBody);
+                }
 
 
             }
         }
+        
 
 
 
