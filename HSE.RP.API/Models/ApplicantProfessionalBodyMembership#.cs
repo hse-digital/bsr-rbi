@@ -23,4 +23,6 @@ public class ApplicantProfessionBodyMemberships
     public ApplicantProfessionalBodyMembership CABE { get; set; }
     public ApplicantProfessionalBodyMembership CIOB { get; set; }
     public ApplicantProfessionalBodyMembership OTHER{ get; set; }
+    public ComponentCompletionState CompletionState { get; set; }
+
 }

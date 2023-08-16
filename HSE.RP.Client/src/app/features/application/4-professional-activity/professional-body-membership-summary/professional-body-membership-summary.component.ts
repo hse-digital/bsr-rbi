@@ -13,6 +13,7 @@ import {
 } from '../../../../models/applicant-professional-body-membership';
 import { ComponentCompletionState } from '../../../../models/component-completion-state.enum';
 import { ProfessionalActivityRoutes } from '../../application-routes';
+import { ProfessionalActivityEmploymentTypeComponent } from '../employment-type/professional-activity-employment-type.component';
 
 @Component({
   selector: 'hse-professional-body-membership-summary',
@@ -72,7 +73,9 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   override navigateNext(): Promise<boolean> {
     if (this.selectedOption === 'no') {
       this.model!.CompletionState = ComponentCompletionState.Complete;
-      return this.navigateTo(`../../../application/${this.applicationService.model.id}`); // Back to the task list.
+      return this.navigationService.navigateRelative(
+        ProfessionalActivityEmploymentTypeComponent.route,
+        this.activatedRoute);
     }
     if (this.selectedOption === 'yes') {
       return this.navigateTo('professional-body-selection'); // To professional body selection page.
@@ -90,10 +93,11 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
 
 
   public navigateToChange(membershipCode: string) {
+    const queryParams = membershipCode;
     return this.navigationService.navigateRelative(
-      `professional-body-change`,
+      `professional-membership-information`,
       this.activatedRoute,
-      { queryParams: { membershipCode: membershipCode } }
+      { queryParams }
     );
   }
   public navigateToRemove(membershipCode: string) {
@@ -112,5 +116,10 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
   public removeActionText(): string {
     return 'remove';
+  }
+
+  async SyncAndContinue() {
+    await this.applicationService.syncProfessionalBodyMemberships();
+    this.saveAndContinue();
   }
 }
