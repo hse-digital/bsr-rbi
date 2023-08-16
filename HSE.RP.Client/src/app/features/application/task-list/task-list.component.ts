@@ -191,6 +191,37 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     }
   }
 
+  getClassSelectionModelStatus(
+    model?: IComponentModel,
+    buildingModel?: BuildingProfessionalModel
+  ): TaskStatus {
+    const classSelection = buildingModel?.InspectorClass?.ClassType.Class;
+    const competencyStatus =
+      buildingModel?.Competency?.CompetencyIndependentAssessmentStatus
+        ?.IAStatus;
+    const competencyCompletion =
+      buildingModel?.Competency?.CompetencyIndependentAssessmentStatus
+        ?.CompletionState;
+
+    if (
+      classSelection !== 1 &&
+      competencyStatus === 'no' &&
+      competencyCompletion === ComponentCompletionState.Complete
+    ) {
+      return TaskStatus.Immutable;
+    } else if (!model?.CompletionState) {
+      return TaskStatus.NotStarted;
+    } else if (model?.CompletionState == ComponentCompletionState.Complete) {
+      return TaskStatus.Complete;
+    } else if (model?.CompletionState == ComponentCompletionState.InProgress) {
+      return TaskStatus.InProgress;
+    } else if (model?.CompletionState == ComponentCompletionState.NotStarted) {
+      return TaskStatus.NotStarted;
+    } else {
+      return TaskStatus.None;
+    }
+  }
+
   determineTaskStatus(
     model?: IComponentModel,
     countryModel?: IComponentModel
@@ -419,7 +450,10 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: BuildingInspectorClassSelectionComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(aModel.InspectorClass?.ClassType),
+            this.getClassSelectionModelStatus(
+              aModel.InspectorClass?.ClassType,
+              aModel
+            ),
         },
         {
           show: true,
