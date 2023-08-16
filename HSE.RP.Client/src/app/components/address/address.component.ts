@@ -1,6 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { GetInjector } from 'src/app/helpers/injector.helper';
 import { AddressResponseModel } from 'src/app/models/address-response.model';
 import { AddressModel } from 'src/app/models/address.model';
+import { NavigationService } from 'src/app/services/navigation.service';
 
 @Component({
   selector: 'hse-address',
@@ -14,7 +16,8 @@ export class AddressComponent implements OnInit {
   @Input() address?: AddressModel;
   @Input() addressName!: string;
   @Input() addressBodyText?: string;
-  @Input() addressOrgStep?: string;
+  @Input() title?: string;
+  @Input() addressManualyDisplayStep?: string;
   @Input() selfAddress = false;
   @Input() showOptionalAddressLineOne = false;
   @Output() onAddressConfirmed = new EventEmitter();
@@ -25,6 +28,9 @@ export class AddressComponent implements OnInit {
 
   step = 'find';
   private history: string[] = [];
+  private injector: Injector = GetInjector();
+  protected navigationService: NavigationService =
+  this.injector.get(NavigationService);
 
   ngOnInit(): void {
     if(this.address) {
@@ -94,6 +100,11 @@ export class AddressComponent implements OnInit {
     }
   }
 
+  navigateManualAddress() {
+    console.log('hello click')
+    return this.navigationService.navigate('personal-details/applicant-address');
+
+  }
 }
 
 export enum AddressSearchMode {

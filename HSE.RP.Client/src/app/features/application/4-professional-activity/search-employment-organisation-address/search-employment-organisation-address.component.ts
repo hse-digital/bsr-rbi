@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ProfessionalActivityRoutes } from '../ProfessionalActivityRoutes';
 import { PageComponent } from 'src/app/helpers/page.component';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
@@ -24,6 +24,11 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   production: boolean = environment.production;
   modelValid: boolean = false;
   searchMode = AddressSearchMode.HomeAddress;
+  title = 'Organisation Address';
+  // step = 'find';
+  // private history: string[] = [];
+
+  // @Output() onChangeStep = new EventEmitter();
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -66,4 +71,28 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   changeStep(event: any) {
     return;
   }
+
+  getAddressName() {
+    return 'Find the address of [organisation name]';
+  }
+
+  // enterManualAddress() {
+  //   this.changeStepTo('manual');
+  // }
+
+  // private changeStepTo(step: string) {
+  //   this.history.push(this.step);
+  //   this.step = step;
+  //   this.resetFocus();
+  //   this.onChangeStep.emit(this.step);
+  // }
+
+  // resetFocus() {
+  //   const mainHeader = document.querySelector('#gouvk-header-service-name');
+  //   if (mainHeader) {
+  //     (mainHeader as HTMLElement).focus();
+  //     (mainHeader as HTMLElement).blur();
+  //   }
+  // }
+
 }
