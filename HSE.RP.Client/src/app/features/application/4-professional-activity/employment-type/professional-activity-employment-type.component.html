@@ -3,10 +3,47 @@
 
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
+  <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-bi-class-selection" [message]="errorMessage" />
+  </govuk-error-summary>
 
-  <h1 class="govuk-heading-l">Employment type details</h1>
-  <govuk-body>
-  Please enter your employment type details
- </govuk-body>
+  <h1 class="govuk-heading-l">What class of building inspector are you applying for?</h1>
+
+  <govuk-radio-group hintText="Select one option." id="radios-bi-class-selection" [(model)]="model" [errorText]="errorMessage">
+    <govuk-radio 
+      label="Employee of a public sector building control body"
+      [value]="model"
+      id="1"
+      [model]="model" 
+      [hint]="'A class 1 building inspector is an unqualified trainee and must work under the supervision of a registered building inspector.'">
+    </govuk-radio>
+
+    <govuk-radio 
+      label="Employee of a private sector building control body"
+      value="PrivateSector"
+      id="2"
+      [model]="model"
+      [hint]="'A class 2 building inspector is competent to work without supervision on standard buildings.'">
+    </govuk-radio>
+
+    <govuk-radio 
+      label="Other"
+      value="Other"
+      id="3"
+      [model]="model"
+      [hint]="'A class 3 building inspector is competent to work without supervision on all building types including nonstandard or high-risk buildings or both.'">
+    </govuk-radio>
+
+    <govuk-radio 
+      label="Currently Unemployed"
+      value="Unemployed"
+      id="4"
+      [model]="model"
+      [hint]="'A class 3 building inspector is competent to work without supervision on all building types including nonstandard or high-risk buildings or both.'">
+  </govuk-radio>
+  </govuk-radio-group>
+
+
+
 </govuk-formpage>
 

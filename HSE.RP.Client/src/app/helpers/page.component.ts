@@ -79,6 +79,7 @@ export abstract class PageComponent<T> implements OnInit {
       //------------------------------------------------------------------------------
       // If the model implements IComponentModel, set the completion state to complete
       //------------------------------------------------------------------------------
+      console.log("page component" + this.model)
       if (this.modelImplementsIComponent(this.model)) {
         var componentModel = this.model as IComponentModel;
         componentModel.CompletionState = ComponentCompletionState.Complete;

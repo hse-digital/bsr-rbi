@@ -8,12 +8,13 @@ import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ProfessionalActivityEmploymentDetailsComponent } from '../employment-details/professional-activity-employment-details.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { EmploymentType } from 'src/app/models/employment-type';
 
 @Component({
   selector: 'hse-professional-activity-employment-type',
   templateUrl: './professional-activity-employment-type.component.html',
 })
-export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<string> {
+export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<EmploymentType> {
   DerivedIsComplete(value: boolean): void {
 
   }
@@ -23,7 +24,9 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<s
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: string;
+  // override model?: EmploymentType;
+  selectedOptionError: boolean = false;
+  errorMessage: string = "";
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
@@ -31,11 +34,13 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<s
   }
 
   override onInit(applicationService: ApplicationService): void {
-    //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
+    this.model = applicationService.model.ProfessionalActivity.EmploymentType
+    console.log(this.model)
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.ProfessionalActivityComplete;
+    console.log(this.model)
+    applicationService.model.ProfessionalActivity.EmploymentType = this.model;
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
