@@ -523,7 +523,7 @@ namespace HSE.RP.API.Services
                 bsr_currentmembershiplevelortype: buildingInspectorProfessionalBodyMembership.CurrentMembershipLevelOrType,
                 statuscode: buildingInspectorProfessionalBodyMembership.StatusCode ?? 1,
                 statecode: buildingInspectorProfessionalBodyMembership.StateCode ?? 0,
-                yearRefId: $"/bsr_years({buildingInspectorProfessionalBodyMembership.YearId})"
+                yearRefId: buildingInspectorProfessionalBodyMembership.YearId is  null ? null : $"/bsr_years({buildingInspectorProfessionalBodyMembership.YearId})"
                 );
 
             //If the membership has an id then we need to update it
