@@ -90,10 +90,11 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
 
 
   public navigateToChange(membershipCode: string) {
+    const queryParams = membershipCode;
     return this.navigationService.navigateRelative(
-      `professional-body-change`,
+      `professional-membership-information`,
       this.activatedRoute,
-      { queryParams: { membershipCode: membershipCode } }
+      { queryParams }
     );
   }
   public navigateToRemove(membershipCode: string) {
@@ -112,5 +113,10 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
   public removeActionText(): string {
     return 'remove';
+  }
+
+  async SyncAndContinue() {
+    await this.applicationService.syncProfessionalBodyMemberships();
+    this.saveAndContinue();
   }
 }

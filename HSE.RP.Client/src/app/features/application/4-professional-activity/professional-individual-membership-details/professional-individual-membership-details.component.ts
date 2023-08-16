@@ -43,19 +43,32 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
       this.getProfessionalBodyOrgName(this.membershipCode);
     });
   }
+
   override async onSave(applicationService: ApplicationService): Promise<void> {
     if (this.membershipCode === 'CABE') {
       applicationService.model.ProfessionalMemberships.CABE.CompletionState =
         ComponentCompletionState.Complete;
+        applicationService.model.ProfessionalMemberships.CABE.MembershipNumber = this.getMembershipNumber() ?? '';
+        applicationService.model.ProfessionalMemberships.CABE.MembershipLevel = this.getMembershipLevel() ?? '';
+        applicationService.model.ProfessionalMemberships.CABE.MembershipYear = Number(this.getMembershipYear());
     } else if (this.membershipCode === 'RICS') {
       applicationService.model.ProfessionalMemberships.RICS.CompletionState =
         ComponentCompletionState.Complete;
+        applicationService.model.ProfessionalMemberships.RICS.MembershipNumber = this.getMembershipNumber() ?? '';
+        applicationService.model.ProfessionalMemberships.RICS.MembershipLevel = this.getMembershipLevel() ?? '';
+        applicationService.model.ProfessionalMemberships.RICS.MembershipYear = Number(this.getMembershipYear());
     } else if (this.membershipCode === 'CIOB') {
       applicationService.model.ProfessionalMemberships.CIOB.CompletionState =
         ComponentCompletionState.Complete;
+        applicationService.model.ProfessionalMemberships.CIOB.MembershipNumber = this.getMembershipNumber() ?? '';
+        applicationService.model.ProfessionalMemberships.CIOB.MembershipLevel = this.getMembershipLevel() ?? '';
+        applicationService.model.ProfessionalMemberships.CIOB.MembershipYear = Number(this.getMembershipYear());
     } else if (this.membershipCode === 'OTHER') {
       applicationService.model.ProfessionalMemberships.OTHER.CompletionState =
         ComponentCompletionState.Complete;
+        applicationService.model.ProfessionalMemberships.OTHER.MembershipNumber = this.getMembershipNumber() ?? '';
+        applicationService.model.ProfessionalMemberships.OTHER.MembershipLevel = this.getMembershipLevel() ?? '';
+        applicationService.model.ProfessionalMemberships.OTHER.MembershipYear = Number(this.getMembershipYear());
     }
   }
   override canAccess(
@@ -81,40 +94,56 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
     );
   }
 
-  private getValidMembershipField(
-    memberships: any,
-    field: string
-  ): string | number {
-    const membershipOrder = ['RICS', 'CABE', 'CIOB', 'OTHER'];
 
-    for (const membership of membershipOrder) {
-      if (
-        memberships[membership][field] !== '' &&
-        memberships[membership][field] !== -1
-      ) {
-        return memberships[membership][field];
+  public getMembershipNumber(): string | undefined{
+      if (this.membershipCode === 'CABE') {
+        return this.applicationService.model.ProfessionalMemberships.CABE.MembershipNumber;
+      } else if (this.membershipCode === 'RICS') {
+        return this.applicationService.model.ProfessionalMemberships.RICS.MembershipNumber;
+
+      } else if (this.membershipCode === 'CIOB') {
+        return this.applicationService.model.ProfessionalMemberships.CIOB.MembershipNumber;
+
+      } else if (this.membershipCode === 'OTHER') {
+        return this.applicationService.model.ProfessionalMemberships.OTHER.MembershipNumber;
       }
+      else {
+        return undefined;
+      }
+  }
+
+  public getMembershipLevel(): string | undefined{
+    if (this.membershipCode === 'CABE') {
+      return this.applicationService.model.ProfessionalMemberships.CABE.MembershipLevel;
+    } else if (this.membershipCode === 'RICS') {
+      return this.applicationService.model.ProfessionalMemberships.RICS.MembershipLevel;
+
+    } else if (this.membershipCode === 'CIOB') {
+      return this.applicationService.model.ProfessionalMemberships.CIOB.MembershipLevel;
+
+    } else if (this.membershipCode === 'OTHER') {
+      return this.applicationService.model.ProfessionalMemberships.OTHER.MembershipLevel;
     }
-
-    return 'None';
+    else {
+      return undefined;
+    }
   }
 
-  public getMembershipNumber(): number | string {
-    const memberships: any =
-      this.applicationService.model.ProfessionalMemberships;
-    return this.getValidMembershipField(memberships, 'MembershipNumber');
-  }
+  public getMembershipYear(): number | undefined {
+    if (this.membershipCode === 'CABE') {
+      return this.applicationService.model.ProfessionalMemberships.CABE.MembershipYear;
+    } else if (this.membershipCode === 'RICS') {
+      return this.applicationService.model.ProfessionalMemberships.RICS.MembershipYear;
 
-  public getMembershipLevel(): number | string {
-    const memberships: any =
-      this.applicationService.model.ProfessionalMemberships;
-    return this.getValidMembershipField(memberships, 'MembershipLevel');
-  }
+    } else if (this.membershipCode === 'CIOB') {
+      return this.applicationService.model.ProfessionalMemberships.CIOB.MembershipYear;
 
-  public getMembershipYear(): number | string {
-    const memberships: any =
-      this.applicationService.model.ProfessionalMemberships;
-    return this.getValidMembershipField(memberships, 'MembershipYear');
+    } else if (this.membershipCode === 'OTHER') {
+      return this.applicationService.model.ProfessionalMemberships.OTHER.MembershipYear;
+    }
+    else {
+      return undefined;
+    }
   }
 
   private getProfessionalBodyOrgName(membershipCode: string): void {

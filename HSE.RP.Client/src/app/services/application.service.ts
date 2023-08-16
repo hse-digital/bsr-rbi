@@ -190,4 +190,10 @@ export class ApplicationService {
       this.httpClient.post(`api/SyncBuildingInspectorClass`, this.model)
     );
   }
+
+  async syncProfessionalBodyMemberships(): Promise<void> {
+    await firstValueFrom(
+      this.httpClient.post(`api/SyncProfessionalBodyMemberships`, this.model)
+    );
+  }
 }
