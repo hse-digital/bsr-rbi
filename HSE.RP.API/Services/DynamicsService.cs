@@ -555,6 +555,15 @@ namespace HSE.RP.API.Services
             }
 
         }
+
+        public async Task<string[]>  GetPublicSectorBodies()
+        {
+            var publicSectorBodies = await dynamicsApi.Get<DynamicsResponse<DynamicsAccount>>("accounts", ("$filter", $"_bsr_accounttype_accountid_value eq '{DynamicsAccountType.Ids["local-authority"]}'"));
+
+            string[] publicSectorBodyNames = publicSectorBodies.value.Select(x=>x.name).ToArray();
+
+            return publicSectorBodyNames;
+        }
     }
 
 

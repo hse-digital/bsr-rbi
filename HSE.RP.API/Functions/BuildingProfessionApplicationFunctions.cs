@@ -191,6 +191,14 @@ public class BuildingProfessionApplicationFunctions
 
         return await request.CreateObjectResponseAsync(payments);
     }
+
+    [Function(nameof(GetPublicSectorBodies))]
+    public async Task<HttpResponseData> GetPublicSectorBodies([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{nameof(GetPublicSectorBodies)}")] HttpRequestData request)
+    {
+        var publicSectorBodies = await dynamicsService.GetPublicSectorBodies();
+
+        return await request.CreateObjectResponseAsync(publicSectorBodies);
+    }
 }
 
 public class CustomHttpResponseData
