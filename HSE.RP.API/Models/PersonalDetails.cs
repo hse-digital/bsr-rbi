@@ -6,7 +6,7 @@ namespace HSE.RP.API.Models
     public record PersonalDetails
     {
         public ApplicantName ApplicantName { get; set; }
-        public BuildingAddress ApplicantAddress { get; set; }
+        public AddressModel ApplicantAddress { get; set; }
         public ApplicantPhone ApplicantPhone { get; set; }
         public ApplicantPhone ApplicantAlternativePhone { get; set; }
         public ApplicantEmail ApplicantEmail { get; set; }
