@@ -49,5 +49,6 @@ public enum BuildingProfessionApplicationStatus
     Completed = 760_810_005,
     Terminated = 760_810_007,
     EscalatedToAuditTeam = 760_810_006,
-    AwaitingDecisionReview = 760_810_008
+    AwaitingDecisionReview = 760_810_008,
+    New = 760_810_009
 }

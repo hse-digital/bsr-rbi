@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
-import { ApplicationService, } from '../../../../services/application.service';
+import { ApplicationService } from '../../../../services/application.service';
 import { BuildingInspectorCountryComponent } from '../country/building-inspector-country.component';
 import { BuildingInspectorRegulatedActivitiesComponent } from '../regulated-activities/building-inspector-regulated-activities.component';
 import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
@@ -20,16 +20,21 @@ import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-b
 })
 export class BuildingInspectorClassSelectionComponent extends PageComponent<ClassSelection> {
   public static route: string = BuildingInspectorRoutes.CLASS_SELECTION;
-  static title: string = "Building inspector class - Register as a building inspector - GOV.UK";
+  static title: string =
+    'Building inspector class - Register as a building inspector - GOV.UK';
 
   production: boolean = environment.production;
 
   BuildingInspectorClassType = BuildingInspectorClassType;
   selectedOptionError: boolean = false;
-  errorMessage: string = "";
-  originalOption?: BuildingInspectorClassType = this.applicationService.model.InspectorClass?.ClassType.Class;
+  errorMessage: string = '';
+  originalOption?: BuildingInspectorClassType =
+    this.applicationService.model.InspectorClass?.ClassType.Class;
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService
+  ) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
@@ -37,14 +42,51 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   override onInit(applicationService: ApplicationService): void {
     this.model = applicationService.model.InspectorClass?.ClassType;
     // if the user visits this page for the first time, set status to in progress until user saves and continues
-    if (applicationService.model.InspectorClass?.ClassType.Class === BuildingInspectorClassType.ClassNone) {
-      applicationService.model.InspectorClass!.ClassType = { Class: BuildingInspectorClassType.ClassNone, CompletionState: ComponentCompletionState.InProgress };
+    if (
+      applicationService.model.InspectorClass?.ClassType.Class ===
+      BuildingInspectorClassType.ClassNone
+    ) {
+      applicationService.model.InspectorClass!.ClassType = {
+        Class: BuildingInspectorClassType.ClassNone,
+        CompletionState: ComponentCompletionState.InProgress,
+      };
     }
-    
+  }
+
+  override async saveAndComeBack(): Promise<void> {
+    this.processing = true;
+
+    const STATUS =
+      this.applicationService.model.InspectorClass?.ClassType.CompletionState;
+
+    if (this.model?.Class === this.originalOption && STATUS === 2) {
+      this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+        ComponentCompletionState.Complete;
+    } else {
+      this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+        ComponentCompletionState.InProgress;
+    }
+
+    this.applicationService.model.InspectorClass!.ClassType.Class =
+      this.model?.Class;
+
+    if (!this.hasErrors) {
+      this.triggerScreenReaderNotification();
+      this.applicationService.updateLocalStorage();
+      await this.applicationService.updateApplication();
+    } else {
+      this.focusAndUpdateErrors();
+    }
+
+    this.processing = false;
+
+    const taskListRoute: string = `application/${this.applicationService.model.id}`;
+    this.navigationService.navigate(taskListRoute);
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.InspectorClass!.ClassType!.Class = this.model?.Class;
+    this.applicationService.model.InspectorClass!.ClassType!.Class =
+      this.model?.Class;
     // reset state if the user changes their input
     if (this.model!.Class !== this.originalOption) {
       // reset all other info to false
@@ -54,32 +96,45 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
         CompletionState: ComponentCompletionState.NotStarted,
       };
 
-      this.applicationService.model.InspectorClass!.AssessingPlansClass2 = new BuildingAssessingPlansCategoriesClass2();
-      this.applicationService.model.InspectorClass!.AssessingPlansClass3 = new BuildingAssessingPlansCategoriesClass3();
-      this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories = new Class2InspectBuildingCategories();
-      this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
+      this.applicationService.model.InspectorClass!.AssessingPlansClass2 =
+        new BuildingAssessingPlansCategoriesClass2();
+      this.applicationService.model.InspectorClass!.AssessingPlansClass3 =
+        new BuildingAssessingPlansCategoriesClass3();
+      this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories =
+        new Class2InspectBuildingCategories();
+      this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories =
+        new Class3InspectBuildingCategories();
 
       //cannot be class 4 if you select class 1
       if (this.model?.Class === BuildingInspectorClassType.Class1) {
-        this.applicationService.model.InspectorClass!.ClassTechnicalManager = "no"      
+        this.applicationService.model.InspectorClass!.ClassTechnicalManager =
+          'no';
+        this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+          ComponentCompletionState.Complete;
+      } else {
+        this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+          ComponentCompletionState.InProgress;
       }
     }
   }
-  
 
-  override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
+  override canAccess(
+    applicationService: ApplicationService,
+    routeSnapshot: ActivatedRouteSnapshot
+  ): boolean {
     // if (this.applicationService.model.ApplicationStatus === ApplicationStatus.PersonalDetailsComplete) {
     //   return true;
     // }
 
-    // return false;    
-    return true
+    // return false;
+    return true;
   }
 
   override isValid(): boolean {
     if (!this.model?.Class) {
       this.selectedOptionError = true;
-      this.errorMessage = "Select a class of building inspector you are applying for";
+      this.errorMessage =
+        'Select a class of building inspector you are applying for';
       return false;
     }
 
@@ -92,17 +147,15 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
         BuildingInspectorCountryComponent.route,
         this.activatedRoute
       );
-    }
-    else {
+    } else {
       return this.navigationService.navigateRelative(
         BuildingInspectorRegulatedActivitiesComponent.route,
         this.activatedRoute
-      )
+      );
     }
   }
 
   DerivedIsComplete(value: boolean): void {
     // this.applicationService.model.BuildingInspectorClass!.ClassSelection!.CompletionState = value ? ComponentCompletionState.Complete : ComponentCompletionState.InProgress;
   }
-
 }

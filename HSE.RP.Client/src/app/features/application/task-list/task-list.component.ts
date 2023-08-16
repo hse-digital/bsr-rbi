@@ -73,6 +73,7 @@ interface ITaskListParent {
   children: ITaskListChild[];
 }
 interface ITaskListChild {
+  show?: boolean;
   prompt: string;
   relativeRoute(): TaskListRoute;
   getStatus(model: BuildingProfessionalModel): TaskStatus;
@@ -152,6 +153,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     this.model = applicationService.model;
     this.checkingStatus = false;
     if (this.isInspectorClassOne()) this.hideCompetencySection();
+
+    this.showCompetencyAssement();
   }
 
   private isInspectorClassOne() {
@@ -159,6 +162,19 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       this.model?.InspectorClass?.ClassType.Class ==
       BuildingInspectorClassType.Class1
     );
+  }
+
+  private showCompetencyAssement(): void {
+    if (
+      this.applicationService.model.Competency
+        ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'no'
+    ) {
+      this.taskItems[2].children
+        .filter(
+          (x) => x.prompt !== 'Independent assessment' && x.prompt !== 'Summary'
+        )
+        .map((x) => (x.show = false));
+    }
   }
 
   getModelStatus(model?: IComponentModel): TaskStatus {
@@ -244,6 +260,13 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   determinCompetencySummaryTask(model?: Competency): TaskStatus {
     if (
+      this.applicationService.model.Competency
+        ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'no' &&
+      model?.CompetencyIndependentAssessmentStatus!.CompletionState! ===
+        ComponentCompletionState.Complete
+    ) {
+      return TaskStatus.None;
+    } else if (
       model?.CompetencyIndependentAssessmentStatus!.CompletionState! ===
         ComponentCompletionState.Complete &&
       model?.CompetencyAssessmentOrganisation!.CompletionState! ===
@@ -268,6 +291,16 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     } else return TaskStatus.CannotStart;
   }
 
+  determinProfessionalMembershipSummaryTask(
+    model?: ApplicantProfessionBodyMemberships
+  ): TaskStatus {
+    if (model?.CompletionState === ComponentCompletionState.Complete) {
+      return TaskStatus.None;
+    } else {
+      return TaskStatus.CannotStart;
+    }
+  }
+
   hideCompetencySection() {
     this.taskItems[2].show = false;
   }
@@ -284,6 +317,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       show: true,
       children: [
         {
+          show: true,
           prompt: 'Name',
           relativeRoute: (): TaskListRoute => {
             return {
@@ -294,6 +328,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             TaskStatus.Complete,
         },
         {
+          show: true,
           prompt: 'Email address',
           relativeRoute: (): TaskListRoute => {
             return { route: '' };
@@ -302,6 +337,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             TaskStatus.Immutable,
         },
         {
+          show: true,
           prompt: 'Telephone number',
           relativeRoute: (): TaskListRoute => {
             return { route: '' };
@@ -310,6 +346,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             TaskStatus.Immutable,
         },
         {
+          show: true,
           prompt: 'Date of birth',
           relativeRoute: (): TaskListRoute => {
             return { route: PersonalDetailRoutes.DATE_OF_BIRTH };
@@ -318,6 +355,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             this.getModelStatus(aModel.PersonalDetails?.ApplicantDateOfBirth),
         },
         {
+          show: true,
           prompt: 'Home address',
           relativeRoute: (): TaskListRoute => {
             return { route: PersonalDetailRoutes.ADDRESS };
@@ -326,6 +364,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             this.getModelStatus(aModel.PersonalDetails?.ApplicantAddress),
         },
         {
+          show: true,
           prompt: 'Alternative email address',
           relativeRoute: (): TaskListRoute => {
             return { route: PersonalDetailRoutes.ALT_EMAIL };
@@ -336,6 +375,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             ),
         },
         {
+          show: true,
           prompt: 'Alternative telephone number',
           relativeRoute: (): TaskListRoute => {
             return { route: PersonalDetailRoutes.ALT_PHONE };
@@ -346,6 +386,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             ),
         },
         {
+          show: true,
           prompt: 'National Insurance number',
           relativeRoute: (): TaskListRoute => {
             return { route: PersonalDetailRoutes.NATIONAL_INS_NUMBER };
@@ -356,6 +397,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             ),
         },
         {
+          show: true,
           prompt: 'Summary',
           relativeRoute: (): TaskListRoute => {
             return { route: PersonalDetailRoutes.SUMMARY };
@@ -371,6 +413,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       show: true,
       children: [
         {
+          show: true,
           prompt: 'Class selection',
           relativeRoute: (): TaskListRoute => {
             return { route: BuildingInspectorClassSelectionComponent.route };
@@ -379,6 +422,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             this.getModelStatus(aModel.InspectorClass?.ClassType),
         },
         {
+          show: true,
           prompt: 'Country',
           relativeRoute: (): TaskListRoute => {
             return { route: BuildingInspectorCountryComponent.route };
@@ -390,6 +434,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             ),
         },
         {
+          show: true,
           prompt: 'Summary',
           relativeRoute: (): TaskListRoute => {
             return { route: BuildingInspectorSummaryComponent.route };
@@ -405,6 +450,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       show: true,
       children: [
         {
+          show: true,
           prompt: 'Independent assessment',
           relativeRoute: (): TaskListRoute => {
             return { route: CompetencyIndependentStatusComponent.route };
@@ -418,6 +464,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           // this.getModelStatus(aModel.Competency?.CompetencyIndependentAssessmentStatus),
         },
         {
+          show: true,
           prompt: 'Assessment organisation',
           relativeRoute: (): TaskListRoute => {
             return { route: CompetencyAssessmentOrganisationComponent.route };
@@ -429,6 +476,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             ),
         },
         {
+          show: true,
           prompt: 'Assessment certificate number',
           relativeRoute: (): TaskListRoute => {
             return {
@@ -442,6 +490,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             ),
         },
         {
+          show: true,
           prompt: 'Date of assessment',
           relativeRoute: (): TaskListRoute => {
             return { route: CompetencyAssessmentDateComponent.route };
@@ -453,6 +502,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             ),
         },
         {
+          show: true,
           prompt: 'Summary',
           relativeRoute: (): TaskListRoute => {
             return { route: CompetencySummaryComponent.route };
@@ -468,14 +518,16 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       show: true,
       children: [
         {
+          show: true,
           prompt: 'Membership of professional bodies',
           relativeRoute: (): TaskListRoute => {
             return { route: ProfessionalBodyMembershipsComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(aModel.ProfessionalMemberships)
+            this.getModelStatus(aModel.ProfessionalMemberships),
         },
         {
+          show: true,
           prompt: 'Employment',
           relativeRoute: (): TaskListRoute => {
             return { route: ProfessionalActivityEmploymentTypeComponent.route };
@@ -484,14 +536,17 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             TaskStatus.CannotStart,
         },
         {
+          show: true,
           prompt: 'Summary',
           relativeRoute: (): TaskListRoute => {
             return {
-              route: '',
+              route: ProfessionalBodyMembershipSummaryComponent.route,
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            TaskStatus.None,
+            this.determinProfessionalMembershipSummaryTask(
+              aModel.ProfessionalMemberships
+            ),
         },
       ],
     },
@@ -501,6 +556,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       show: true,
       children: [
         {
+          show: true,
           prompt: 'Application summary',
           relativeRoute: (): TaskListRoute => {
             return { route: ApplicationSummaryComponent.route };
@@ -509,6 +565,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             TaskStatus.None,
         },
         {
+          show: true,
           prompt: 'Pay your fee and submit your application',
           relativeRoute: (): TaskListRoute => this.paymentRoute!,
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus => {

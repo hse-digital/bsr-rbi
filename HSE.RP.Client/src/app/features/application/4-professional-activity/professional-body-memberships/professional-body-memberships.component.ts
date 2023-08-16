@@ -33,13 +33,10 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     if (!applicationService.model.ProfessionalMemberships) {
       applicationService.model.ProfessionalMemberships =
         new ApplicantProfessionBodyMemberships();
-        this.model = applicationService.model.ProfessionalMemberships;
-    }
-    else{
+      this.model = applicationService.model.ProfessionalMemberships;
+    } else {
       this.model = applicationService.model.ProfessionalMemberships;
     }
-
-
 
     if (
       applicationService.model.ProfessionalMemberships
@@ -57,11 +54,45 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
       : '';
   }
 
+  override async saveAndComeBack(): Promise<void> {
+    this.processing = true;
+
+    const STATUS =
+    this.applicationService.model.ProfessionalMemberships.CompletionState;
+
+    const IS_PROFESSIONALBODY_RELEVENT_YES_NO =
+      this.applicationService.model.ProfessionalMemberships
+        .IsProfessionBodyRelevantYesNo;
+
+    if (this.selectedOption === IS_PROFESSIONALBODY_RELEVENT_YES_NO && STATUS === 2) {
+      this.applicationService.model.ProfessionalMemberships.CompletionState =
+        ComponentCompletionState.Complete;
+    } else {
+      this.applicationService.model.ProfessionalMemberships.CompletionState =
+        ComponentCompletionState.InProgress;
+    }
+
+    if (!this.hasErrors) {
+      this.triggerScreenReaderNotification();
+      this.applicationService.updateLocalStorage();
+      await this.applicationService.updateApplication();
+    } else {
+      this.focusAndUpdateErrors();
+    }
+    this.processing = false;
+
+    const taskListRoute: string = `application/${this.applicationService.model.id}`;
+    this.navigationService.navigate(taskListRoute);
+  }
+
   override async onSave(applicationService: ApplicationService): Promise<void> {
     if (['no', 'yes'].includes(this.selectedOption)) {
       applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo =
         this.selectedOption;
     }
+
+    this.applicationService.model.ProfessionalMemberships.CompletionState =
+      ComponentCompletionState.Complete;
   }
 
   override canAccess(
@@ -76,7 +107,8 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     this.errorMessage = '';
     if (this.selectedOption === '') {
       this.hasErrors = true;
-      this.errorMessage = 'Select one option';
+      this.errorMessage =
+        'Select whether you hold a membership with a professional body or not';
     }
 
     return !this.hasErrors;

@@ -72,6 +72,9 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
     this.selections.forEach((value: keyof typeof demandModel) => {
       demandModel[value] = true;
     });
+
+    this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+    ComponentCompletionState.InProgress;
   }
 
   override canAccess(
