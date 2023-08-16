@@ -20,7 +20,7 @@ export class ApplicantProfessionBodyMemberships implements IComponentModel {
   constructor() {
   }
   CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
-  IsProfessionBodyRelevantYesNo: string = 'no';
+  IsProfessionBodyRelevantYesNo: string = '';
   RICS: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.RICS.BodyCode);
   CABE: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CABE.BodyCode);
   CIOB: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CIOB.BodyCode);

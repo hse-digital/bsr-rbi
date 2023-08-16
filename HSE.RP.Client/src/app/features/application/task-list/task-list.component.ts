@@ -153,7 +153,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     this.model = applicationService.model;
     this.checkingStatus = false;
     if (this.isInspectorClassOne()) this.hideCompetencySection();
-    
+
     this.showCompetencyAssement();
   }
 
@@ -289,6 +289,16 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     ) {
       return TaskStatus.None;
     } else return TaskStatus.CannotStart;
+  }
+
+  determinProfessionalMembershipSummaryTask(
+    model?: ApplicantProfessionBodyMemberships
+  ): TaskStatus {
+    if (model?.CompletionState === ComponentCompletionState.Complete) {
+      return TaskStatus.None;
+    } else {
+      return TaskStatus.CannotStart;
+    }
   }
 
   hideCompetencySection() {
@@ -530,11 +540,13 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           prompt: 'Summary',
           relativeRoute: (): TaskListRoute => {
             return {
-              route: '',
+              route: ProfessionalBodyMembershipSummaryComponent.route,
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            TaskStatus.None,
+            this.determinProfessionalMembershipSummaryTask(
+              aModel.ProfessionalMemberships
+            ),
         },
       ],
     },

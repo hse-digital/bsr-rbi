@@ -8,6 +8,10 @@ import { CompetencyAssessmentOrganisationComponent } from '../assesesment-organi
 import { NoCompetencyAssessmentComponent } from '../no-competency-assessment/no-competency-assessment.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { CompetencyIndependentAssessmentStatus } from 'src/app/models/competency-independent-assessment-status.model';
+import { CompetencyAssessmentOrganisation } from 'src/app/models/competency-assessment-organisation.model';
+import { CompetencyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
+import { CompetencyDateOfAssessment } from 'src/app/models/competency-date-of-assessment.model';
+import { NoCompetencyAssessment } from 'src/app/models/no-competency-assessment.model';
 
 @Component({
   selector: 'hse-independent-competency-status',
@@ -64,36 +68,12 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
       this.applicationService.model.Competency!
         .CompetencyIndependentAssessmentStatus!.IAStatus;
 
-    if (this.selectedOption === '' && STATUS === 0) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === '' && STATUS === 1) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === 'no' && STATUS === 0) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === 'no' && STATUS === 1) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === 'yes' && STATUS === 0) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === 'yes' && STATUS === 1) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption !== IASTATUS && STATUS === 2) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption !== IASTATUS && STATUS === 2) {
-      this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.InProgress;
-    } else if (this.selectedOption === IASTATUS && STATUS === 2) {
+    if (this.selectedOption === IASTATUS && STATUS === 2) {
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.Complete;
-    } else if (this.selectedOption === IASTATUS && STATUS === 2) {
+    } else {
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
-        ComponentCompletionState.Complete;
+        ComponentCompletionState.InProgress;
     }
 
     this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.IAStatus =
@@ -119,12 +99,21 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
     }
 
     if (this.selectedOption === 'no') {
+      applicationService.model.Competency!.CompetencyAssessmentOrganisation =
+        new CompetencyAssessmentOrganisation();
+      applicationService.model.Competency!.CompetencyAssessmentCertificateNumber =
+        new CompetencyAssessmentCertificateNumber();
+      applicationService.model.Competency!.CompetencyDateOfAssessment =
+        new CompetencyDateOfAssessment();
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.InProgress;
     } else if (this.selectedOption === 'yes') {
+      this.applicationService.model.Competency!.NoCompetencyAssessment =
+        new NoCompetencyAssessment();
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.Complete;
     }
+    
   }
 
   override canAccess(
