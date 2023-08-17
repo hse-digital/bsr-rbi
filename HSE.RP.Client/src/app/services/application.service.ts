@@ -167,6 +167,14 @@ export class ApplicationService {
     );
   }
 
+  async getPublicSectorBodies(): Promise<string[]> {
+    return await firstValueFrom(
+      this.httpClient.get<string[]>(
+        `api/GetPublicSectorBodies`
+      )
+    );
+  }
+
   async syncDeclaration(): Promise<void> {
     await firstValueFrom(
       this.httpClient.post(`api/SyncDeclaration`, this.model)
@@ -196,4 +204,6 @@ export class ApplicationService {
       this.httpClient.post(`api/SyncProfessionalBodyMemberships`, this.model)
     );
   }
+
+
 }

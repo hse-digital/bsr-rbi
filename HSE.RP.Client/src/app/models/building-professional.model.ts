@@ -1,3 +1,4 @@
+import { ApplicantEmploymentDetails } from './applicant-employment-details';
 import { ApplicantProfessionBodyMemberships } from './applicant-professional-body-membership';
 import { ApplicationStatus } from './application-status.enum';
 import { BuildingInspectorClass } from './building-inspector-class.model';
@@ -15,6 +16,7 @@ export class BuildingProfessionalModel implements IComponentModel {
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
   ProfessionalMemberships: ApplicantProfessionBodyMemberships =
     new ApplicantProfessionBodyMemberships();
+  EmploymentDetails: ApplicantEmploymentDetails = new ApplicantEmploymentDetails();
   private _completionState: ComponentCompletionState =
     ComponentCompletionState.NotStarted;
   //TODO test StageStatus and replace ApplicationStatus

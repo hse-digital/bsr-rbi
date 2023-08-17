@@ -1,0 +1,16 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+
+  <h1 class="govuk-heading-l">Find the public sector building control body that employs you</h1>
+
+ <govuk-input-autocomplete label="Search by name" labelClass="govuk-label--s" id="organisation-name"
+ hint="Search for public sector building control body by name."
+ [(model)]="this.model!.EmployerName" #field [govukRequired]="field"
+ [values]="filteredPublicSectorBodies!" (onDebounce)="searchCompanies($event)" (onSelectedValue)="selectCompanyName($event)"
+ [errorText]="getErrorDescription(publicSectorBodyNameHasErrors, 'Enter the name of the organisation you are employed by')"/>
+
+</govuk-formpage>
+
