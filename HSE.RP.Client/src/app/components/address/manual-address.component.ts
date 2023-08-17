@@ -18,6 +18,7 @@ export class ManualAddressComponent {
   @Output() onAddressEntered = new EventEmitter<AddressModel>();
   @Input() addressName?: string;
   @Input() selfAddress = false;
+  @Input() title?: string;
 
   postcodeHasErrors = false;
   postcodeErrorMessage?: string;
@@ -96,7 +97,9 @@ export class ManualAddressComponent {
   }
 
   getTitle() {
-    return 'Enter home address manually';
+    // return 'Enter home address manually';
+
+    return this.title ? `Enter ${this.title} manually` : 'Enter home address manually';
   }
 
   warningMessage(): string {

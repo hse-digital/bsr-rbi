@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GetInjector } from 'src/app/helpers/injector.helper';
 import { AddressResponseModel } from 'src/app/models/address-response.model';
 import { AddressModel } from 'src/app/models/address.model';
@@ -31,6 +32,8 @@ export class AddressComponent implements OnInit {
   private injector: Injector = GetInjector();
   protected navigationService: NavigationService =
   this.injector.get(NavigationService);
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     if(this.address) {
@@ -102,7 +105,7 @@ export class AddressComponent implements OnInit {
 
   navigateManualAddress() {
     console.log('hello click')
-    return this.navigationService.navigate('personal-details/applicant-address');
+    return this.router.navigateByUrl('/personal-details/applicant-address');
 
   }
 }

@@ -53,6 +53,7 @@
         [addressName]="addressName"
         [selfAddress]="selfAddress"
         [searchMode]="searchMode"
+        [title]="title"
         (onSearchAgain)="searchAgain()"
         (onAddressEntered)="manualAddressEntered($event)"
       />
@@ -65,43 +66,16 @@
         (onSearchAgain)="searchAgain()"
         (onEnterManualAddress)="enterManualAddress()"
       />
+
       <govuk-body *ngIf="addressManualyDisplayStep == 'manual'"
-        ><a class="govuk-link" role="link" tabindex="0" (click)="navigateManualAddress()"
+        ><a
+          class="govuk-link"
+          role="link"
+          tabindex="0"
+          (click)="enterManualAddress()"
           >Enter address manually</a
         ></govuk-body
       >
     </div>
   </div>
 </div>
-
-<!-- <ng-template #homeManualAddress>
-  <select-address
-    *ngIf="step == 'select'"
-    [addressName]="addressName"
-    [selfAddress]="selfAddress"
-    [addressResponse]="addressResponse"
-    [searchModel]="searchModel"
-    [title]="title"
-    (onAddressSelected)="addressSelected($event)"
-    (onSearchAgain)="searchAgain()"
-    (onEnterManualAddress)="enterManualAddress()"
-  />
-</ng-template>
-
-<ng-template #orgManualAddress>
-  <select-address
-    *ngIf="addressManualyDisplayStep == 'manual'"
-    [addressName]="addressName"
-    [selfAddress]="selfAddress"
-    [addressResponse]="addressResponse"
-    [searchModel]="searchModel"
-    [title]="title"
-    (onAddressSelected)="addressSelected($event)"
-    (onSearchAgain)="searchAgain()"
-    (onEnterManualAddress)="enterManualAddress()"
-  />
-</ng-template> -->
-
-<!-- <manual-address *ngIf="step == 'manual', then homeManualAddress; else orgManualAddress" [addressName]="addressName" [selfAddress]="selfAddress" [searchMode]="searchMode"  (onSearchAgain)="searchAgain()" (onAddressEntered)="manualAddressEntered($event)" /> -->
-
-<!-- <govuk-body><a class="govuk-link" (keyup.enter)="onEnterManualAddress.emit()" (click)="onEnterManualAddress.emit()" role="link" tabindex="0">Enter address manually</a></govuk-body> -->
