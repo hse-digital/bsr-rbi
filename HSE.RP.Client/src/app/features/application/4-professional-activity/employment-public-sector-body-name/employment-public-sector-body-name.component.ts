@@ -11,6 +11,7 @@ import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { promises } from 'fs';
 import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-details';
 import { EmployerName } from 'src/app/models/employment-employer-name';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-employment-public-sector-body-name',
@@ -49,7 +50,10 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.ProfessionalActivityComplete;
+
+    this.model!.CompletionState = ComponentCompletionState.Complete;
+    this.applicationService.model.EmploymentDetails.EmployerName=this.model;
+
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
@@ -67,7 +71,7 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ProfessionalBodyMembershipSummaryComponent.route, this.activatedRoute);
+    return this.navigationService.navigateRelative(ProfessionalBodyMembershipSummaryComponent.route, this.activatedRoute); //update to address
   }
 
   async searchCompanies(company: string) {
