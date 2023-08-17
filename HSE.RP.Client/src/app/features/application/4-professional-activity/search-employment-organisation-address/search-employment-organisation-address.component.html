@@ -1,0 +1,18 @@
+<hse-address [addressName]="getAddressName()"
+             [showOptionalAddressLineOne]="true"
+             [selfAddress]="true"
+             [address]="model"
+             [addressBodyText]="addressBodyText"
+             [title]="title"
+             [addressManualyDisplayStep]= "'manual'"
+             [searchMode]="searchMode"
+             (onAddressConfirmed)="addressConfirmed($event)"
+             (onChangeStep)="changeStep($event)">
+        
+            </hse-address>
+
+                  <!-- <govuk-body 
+                ><a class="govuk-link" role="link" tabindex="0"
+                  >Enter address manually</a
+                ></govuk-body
+              > -->
