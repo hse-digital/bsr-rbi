@@ -11,6 +11,7 @@ export const CompetencyRoutes = {
   COMPETENCY_ASSESSMENT_DATE: 'competency-assesesment-date',
   COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER:
     'competency-assessment-certificate-number',
+  CONFIRMATION_IA_UPDATE: 'confirmation-ia-update',
   SUMMARY: 'competency-summary',
   TASK_LIST: '',
 };

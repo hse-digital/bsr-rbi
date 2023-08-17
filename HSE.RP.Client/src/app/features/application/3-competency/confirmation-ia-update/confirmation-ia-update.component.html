@@ -1,0 +1,47 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+<govuk-formpage
+  saveAndContinueText="Continue"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="navigateNext()"
+  [hideBackButton]="true"
+>
+  <govuk-error-summary
+    *ngIf="hasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="!modelValid"
+      anchorId="competency-assesesment-organisation"
+      message="{{ errorMessage }}"
+    />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-m">
+    You must change your class before you can update your assessment status.
+  </h1>
+
+  <govuk-body>
+    <govuk-radio-group
+      hintText=""
+      [errorText]="errorMessage"
+      id="confirmation-ia.update"
+      [(model)]="selectedOption"
+    >
+      <govuk-radio
+        class=""
+        label="I want to change my class and then update my assessment status"
+        value="yes"
+        id="Yes"
+        [model]="selectedOption"
+      >
+      </govuk-radio>
+      <govuk-radio
+        label="I do not want to change class or assessment status"
+        value="no"
+        id="No"
+        [model]="selectedOption"
+      ></govuk-radio>
+    </govuk-radio-group>
+  </govuk-body>
+</govuk-formpage>
