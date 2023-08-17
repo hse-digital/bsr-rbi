@@ -104,6 +104,8 @@ export abstract class PageComponent<T> implements OnInit {
   }
 
   async saveAndComeBack(): Promise<void> {
+    console.log("clicked")
+
     this.processing = true;
     let canSave = this.requiredFieldsAreEmpty() || this.isValid();
     this.hasErrors = !canSave;
