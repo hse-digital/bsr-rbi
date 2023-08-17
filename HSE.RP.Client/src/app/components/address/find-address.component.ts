@@ -16,6 +16,7 @@ export class FindAddressComponent {
   @Input() searchMode: AddressSearchMode = AddressSearchMode.HomeAddress;
   @Input() searchModel!: { postcode?: string, addressLineOne?: string };
   @Input() addressName!: string;
+  @Input() addressBodyText?: string;
   @Input() selfAddress = false;
   @Input() showOptionalAddressLineOne = false;
   @Output() public onSearchPerformed = new EventEmitter<AddressResponseModel>();

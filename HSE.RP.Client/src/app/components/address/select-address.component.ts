@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { GovukErrorSummaryComponent } from 'hse-angular';
 import { AddressResponseModel } from 'src/app/models/address-response.model';
 import { AddressModel } from 'src/app/models/address.model';
@@ -7,25 +14,29 @@ import { TitleService } from 'src/app/services/title.service';
 
 @Component({
   selector: 'select-address',
-  templateUrl: './select-address.component.html'
+  templateUrl: './select-address.component.html',
 })
 export class SelectAddressComponent {
-
   addressHasErrors = false;
   selectedAddress?: AddressModel;
 
   @Input() addressName!: string;
   @Input() addressResponse?: AddressResponseModel;
-  @Input() searchModel: { postcode?: string, addressLine1?: string } = {}
+  @Input() searchModel: { postcode?: string; addressLine1?: string } = {};
   @Input() selfAddress = false;
+  @Input() title?: string;
 
   @Output() onAddressSelected = new EventEmitter<AddressModel>();
   @Output() onSearchAgain = new EventEmitter();
   @Output() onEnterManualAddress = new EventEmitter();
 
-  @ViewChildren("summaryError") summaryError?: QueryList<GovukErrorSummaryComponent>;
+  @ViewChildren('summaryError')
+  summaryError?: QueryList<GovukErrorSummaryComponent>;
 
-  constructor(public applicationService: ApplicationService, private titleService: TitleService) { }
+  constructor(
+    public applicationService: ApplicationService,
+    private titleService: TitleService
+  ) {}
 
   continue() {
     this.addressHasErrors = !this.selectedAddress;
@@ -37,7 +48,10 @@ export class SelectAddressComponent {
     }
   }
 
-  getErrorDescription(showError: boolean, errorMessage: string): string | undefined {
+  getErrorDescription(
+    showError: boolean,
+    errorMessage: string
+  ): string | undefined {
     return this.addressHasErrors && showError ? errorMessage : undefined;
   }
 
@@ -46,6 +60,6 @@ export class SelectAddressComponent {
   }
 
   getTitle() {
-    return "Select your home address";
+    return this.title ? `Select your ${this.title}` : 'Select your home address';
   }
 }
