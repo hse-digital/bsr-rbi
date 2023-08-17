@@ -5,9 +5,12 @@ import { ApplicantName } from "./applicant-name.model";
 import { ApplicantNationalInsuranceNumber } from "./applicant-national-insurance-number.model";
 import { ApplicantPhone } from "./applicant-phone-model";
 import { EmployerName } from "./employment-employer-name";
+import { EmploymentTypeSelection } from "./employment-type-selection.model";
 
 export class ApplicantEmploymentDetails {
-  EmployerType?: string = '';
+  EmploymentTypeSelection?: EmploymentTypeSelection = new EmploymentTypeSelection();
   EmployerName?: EmployerName = new EmployerName();
+  EmployerAddress?: AddressModel = new AddressModel();
+
 }
 

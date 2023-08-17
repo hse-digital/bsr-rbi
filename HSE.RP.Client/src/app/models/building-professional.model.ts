@@ -18,9 +18,9 @@ export class BuildingProfessionalModel implements IComponentModel {
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
   ProfessionalMemberships: ApplicantProfessionBodyMemberships =
     new ApplicantProfessionBodyMemberships();
-  EmploymentDetails: ApplicantEmploymentDetails = new ApplicantEmploymentDetails();
   private _completionState: ComponentCompletionState =
     ComponentCompletionState.NotStarted;
+
   //TODO test StageStatus and replace ApplicationStatus
   StageStatus: Record<string, StageCompletionState> = {
     EmailVerification: StageCompletionState.Incomplete,

@@ -37,12 +37,12 @@ export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<Empl
   override async onInit(applicationService: ApplicationService): Promise<void> {
 
 
-    if(!this.applicationService.model.EmploymentDetails)
+    if(!this.applicationService.model.ProfessionalActivity.EmploymentDetails)
     {
-      this.applicationService.model.EmploymentDetails = new ApplicantEmploymentDetails()
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails = new ApplicantEmploymentDetails()
     }
 
-      this.model = this.applicationService.model.EmploymentDetails.EmployerName;
+      this.model = this.applicationService.model.ProfessionalActivity.EmploymentDetails.EmployerName;
 
 
   }
@@ -50,7 +50,7 @@ export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<Empl
   override async onSave(applicationService: ApplicationService): Promise<void> {
 
     this.model!.CompletionState = ComponentCompletionState.Complete;
-    this.applicationService.model.EmploymentDetails.EmployerName=this.model;
+    this.applicationService.model.ProfessionalActivity.EmploymentDetails.EmployerName=this.model;
 
    }
 

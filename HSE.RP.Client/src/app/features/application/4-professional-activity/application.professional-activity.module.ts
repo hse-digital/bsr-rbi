@@ -94,7 +94,7 @@ const routes = new HseRoutes([
     ProfessionalIndividualMembershipDetailsComponent,
     ProfessionalConfirmationMembershipRemovalComponent,
     EmploymentPublicSectorBodyNameComponent,
-    EmploymentPrivateSectorBodyNameComponent
+    EmploymentPrivateSectorBodyNameComponent,
     SearchEmploymentOrganisationAddressComponent,
   ],
   imports: [
