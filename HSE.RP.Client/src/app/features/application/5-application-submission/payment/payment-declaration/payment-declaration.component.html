@@ -4,24 +4,35 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <h1 class="govuk-heading-l">Declaration</h1>
+      <h1 class="govuk-heading-l">
+        Declaration
+      </h1>
 
-      <govuk-body>By submitting this application to register, you are confirming that the details you are providing are correct.</govuk-body>
-      <govuk-body>You must not give false or misleading information to the Building Safety Regulator. Knowingly or recklessly giving false or misleading information is a criminal offence punishable by up to 2 years in prison.</govuk-body>
-
-      <h2 class="govuk-heading-m">Confirm that you agree to</h2>
+      <govuk-body>
+        In applying to become a registered building inspector I acknowledge:
+      </govuk-body>
 
       <govuk-list classes='govuk-list--bullet'>
-        <govuk-list-item text="abide by the BSR's code of conduct" />
-        <govuk-list-item text="the conditions of BSR registration" />
+        <govuk-list-item text="By submitting this application to register, the details I am providing are correct, and that knowingly or recklessly giving false or misleading information to the BSR is a criminal offence" />
+        <govuk-list-item text="I will only undertake building control work unsupervised for which I am registered in the appropriate class, category and restricted activity for that work" />
+        <govuk-list-item text="I will only undertake building control work for which I am not registered under the supervision of a Registered Building Inspector of the appropriate class, category and restricted activity for that work" />
+        <govuk-list-item text="I will comply with the Code of Conduct for Registered Building Inspectors" />
+        <govuk-list-item text="I will co-operate fully with BSR in discharging its duties" />
+        <govuk-list-item text="I will abide by any limitations or conditions placed on my registration by BSR" />
+        <govuk-list-item text="I will notify BSR of material changes to my circumstances, as specified in the rules of registration." />
       </govuk-list>
 
-      <govuk-body>We may ask you for written evidence to support your application.</govuk-body>
-      <govuk-body>Once you have submitted your application, you cannot use this service to amend your answers.</govuk-body>
+      <govuk-inset-text>
+        We may ask you for written evidence to support your application.
+      </govuk-inset-text>
 
+      <govuk-body>
+        Once you have submitted your application, you cannot use this service to amend your answers.
+      </govuk-body>
 
-      <govuk-button (onClick)="saveAndContinue()" [disabled]="loading" [isLoading]="loading">Declare and continue to payment</govuk-button>
-      <save-and-come-back (onClick)="saveAndComeBack()" />
+      <govuk-button (onClick)="saveAndContinue()" [disabled]="loading" [isLoading]="loading">
+        Agree and continue to payment
+      </govuk-button>
 
     </div>
   </div>
