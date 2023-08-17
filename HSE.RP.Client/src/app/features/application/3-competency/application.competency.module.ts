@@ -15,6 +15,8 @@ import { CompetencyAssessmentDateComponent } from './assesesment-date/competency
 import { CompetencySummaryComponent } from './competency-summary/competency-summary.component';
 import { NoCompetencyAssessmentComponent } from './no-competency-assessment/no-competency-assessment.component';
 import { CompetencyAssessmentCertificateNumberComponent } from './assessment-certificate-number/competency-assessment-certificate-number.component';
+import { ConfirmationIaUpdateComponent } from './confirmation-ia-update/confirmation-ia-update.component';
+import { BuildingInspectorClassModule } from '../2-building-inspector-class/application.building-inspector-class.module';
 
 const routes = new HseRoutes([
   HseRoute.protected(
@@ -52,6 +54,11 @@ const routes = new HseRoutes([
     CompetencySummaryComponent,
     CompetencySummaryComponent.title
   ),
+  HseRoute.protected(
+    ConfirmationIaUpdateComponent.route,
+    ConfirmationIaUpdateComponent,
+    ConfirmationIaUpdateComponent.title
+  ),
 ]);
 
 @NgModule({
@@ -63,6 +70,7 @@ const routes = new HseRoutes([
     CompetencyAssessmentDateComponent,
     CompetencySummaryComponent,
     NoCompetencyAssessmentComponent,
+    ConfirmationIaUpdateComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
@@ -71,6 +79,7 @@ const routes = new HseRoutes([
     CommonModule,
     FormsModule,
     HttpClientModule,
+    BuildingInspectorClassModule,
   ],
   providers: [
     HttpClient,

@@ -11,9 +11,11 @@
 
     <govuk-summary-list *ngIf="!isCompetencyAssessmentStatusYes()">
       <govuk-summary-list-row
-        (onClick)="navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)"
+        (onClick)="
+          navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)
+        "
         (onKeyupEnter)="
-          navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)
+          navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)
         "
         key="Assessment"
         [showAction]="true"
@@ -23,9 +25,11 @@
 
     <govuk-summary-list *ngIf="isCompetencyAssessmentStatusYes()">
       <govuk-summary-list-row
-        (onClick)="navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)"
+        (onClick)="
+          navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)
+        "
         (onKeyupEnter)="
-          navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)
+          navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)
         "
         key="Assessment"
         [showAction]="true"
