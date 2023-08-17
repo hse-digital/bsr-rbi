@@ -15,19 +15,19 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 import { CompaniesService } from 'src/app/services/companies.service';
 
 @Component({
-  selector: 'hse-employment-public-sector-body-name',
-  templateUrl: './employment-public-sector-body-name.component.html',
+  selector: 'hse-employment-private-sector-body-name',
+  templateUrl: './employment-private-sector-body-name.component.html',
 })
-export class EmploymentPublicSectorBodyNameComponent extends PageComponent<EmployerName> {
+export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<EmployerName> {
   DerivedIsComplete(value: boolean): void {
 
   }
 
-  public static route: string = "employment-public-sector-body-name";
+  public static route: string = "employment-private-sector-body-name";
   static title: string = "Employment - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
-  publicSectorBodyNameHasErrors = false;
+  privateSectorBodyNameHasErrors = false;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService, private companiesService: CompaniesService) {
     super(activatedRoute);
@@ -61,15 +61,12 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
   }
 
 
-
   override isValid(): boolean {
 
-    this.publicSectorBodyNameHasErrors = !FieldValidations.IsNotNullOrWhitespace(this.model?.EmployerName)
+    this.privateSectorBodyNameHasErrors = !FieldValidations.IsNotNullOrWhitespace(this.model?.EmployerName)
 
-    return !this.publicSectorBodyNameHasErrors;
+    return !this.privateSectorBodyNameHasErrors;
   }
-
-
 
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(ProfessionalBodyMembershipSummaryComponent.route, this.activatedRoute); //update to address
@@ -78,7 +75,7 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
   companies: string[] = [];
   async searchCompanies(company: string) {
     if (company?.length > 2) {
-      var response = await this.companiesService.SearchCompany(company, "local-authority");
+      var response = await this.companiesService.SearchCompany(company, "other");
       this.companies = response.Companies.map(x => x.Name);
     }
   }

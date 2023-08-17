@@ -1,0 +1,26 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+
+<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+
+  <govuk-error-summary
+  *ngIf="hasErrors"
+  title="There is a problem"
+  #summaryError
+>
+  <govuk-error-link
+    *ngIf="privateSectorBodyNameHasErrors"
+    anchorId="input-organisation-name"
+    message="Enter the name of the organisation you are employed by"
+  />
+</govuk-error-summary>
+
+  <h1 class="govuk-heading-l">Find the organisation that employs you</h1>
+
+ <govuk-input-autocomplete label="Search by organisation name" labelClass="govuk-label--s" id="organisation-name"
+ hint="Type part of the organisation name to begin. If the name does not show in the drop down list, enter the organisation's full name manually"
+ [(model)]="this.model!.EmployerName" #field [govukRequired]="field"
+ [values]="companies" (onDebounce)="searchCompanies($event)" (onSelectedValue)="selectCompanyName($event)"
+ [errorText]="getErrorDescription(privateSectorBodyNameHasErrors, 'Enter the name of the organisation you are employed by')"/>
+
+</govuk-formpage>
