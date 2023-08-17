@@ -64,7 +64,7 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
 
   override isValid(): boolean {
 
-    this.publicSectorBodyNameHasErrors = !FieldValidations.IsNotNullOrWhitespace(this.model?.EmployerName)
+    this.publicSectorBodyNameHasErrors = !FieldValidations.IsNotNullOrWhitespace(this.model?.FullName)
 
     return !this.publicSectorBodyNameHasErrors;
   }
@@ -84,7 +84,7 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
   }
 
   selectCompanyName(company: string) {
-    this.model!.EmployerName = company;
+    this.model!.FullName = company;
   }
 
 
