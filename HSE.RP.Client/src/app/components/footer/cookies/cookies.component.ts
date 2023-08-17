@@ -10,6 +10,7 @@ export class CookiesComponent implements OnInit {
   static title: string = "Cookies - Register a high-rise building - GOV.UK";
 
   cookieModel?: string;
+  errorMessage?: string;
 
   constructor(public cookiesBannerService: CookiesBannerService) { }
 
@@ -22,10 +23,14 @@ export class CookiesComponent implements OnInit {
   saveCookieSettings() {
     if (this.cookieModel === "true"){
       this.cookiesBannerService.acceptCookies(false);
+      this.cookiesBannerService.refreshPage();
+      this.cookiesBannerService.removeConfirmationBanner();
     } else if (this.cookieModel === "false") {
       this.cookiesBannerService.rejectCookies(false);
+      this.cookiesBannerService.refreshPage();
+      this.cookiesBannerService.removeConfirmationBanner();
     }
-    this.cookiesBannerService.refreshPage();
-    this.cookiesBannerService.removeConfirmationBanner();
+
+    if (this.cookieModel === undefined) { this.errorMessage = "Select yes if you accept analytics cookies"; }
   }
 }
