@@ -39,15 +39,15 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
 
   override onInit(applicationService: ApplicationService): void {
 
-    this.model = applicationService.model.ProfessionalActivity.EmploymentTypeSelection;
+    this.model = applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection;
     // if the user visits this page for the first time, set status to in progress until user saves and continues
-    if (applicationService.model.ProfessionalActivity.EmploymentTypeSelection?.EmploymentType === EmploymentType.None) {
-      applicationService.model.ProfessionalActivity.EmploymentTypeSelection = { EmploymentType: EmploymentType.None, CompletionState: ComponentCompletionState.InProgress };
+    if (applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection?.EmploymentType === EmploymentType.None) {
+      applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection = { EmploymentType: EmploymentType.None, CompletionState: ComponentCompletionState.InProgress };
     }
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ProfessionalActivity.EmploymentTypeSelection = this.model;
+    applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection = this.model;
   }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {

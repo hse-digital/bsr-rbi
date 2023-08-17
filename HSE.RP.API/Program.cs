@@ -5,7 +5,11 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using HSE.RP.API.Enums;
 using HSE.RP.API.Models;
+using HSE.RP.API.Models.CompaniesHouse;
+using HSE.RP.API.Models.LocalAuthority;
+using HSE.RP.API.Models.OrdnanceSurvey;
 using HSE.RP.API.Services;
+using HSE.RP.API.Services.CompanySearch;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSEPortal.API.Models.Payment;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,16 +33,21 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
     serviceCollection.Configure<SwaOptions>(builderContext.Configuration.GetSection(SwaOptions.Swa));
     serviceCollection.AddTransient<DynamicsModelDefinitionFactory>();
 
-
-
     serviceCollection.AddTransient<DynamicsService>();
     serviceCollection.AddTransient<DynamicsApi>();
     serviceCollection.AddTransient<OTPService>();
     serviceCollection.AddTransient<NotificationService>();
+    serviceCollection.AddTransient<CompanySearchService>();
+    serviceCollection.AddTransient<CompanySearchFactory>();
+
 
     serviceCollection.AddSingleton(_ => new MapperConfiguration(config =>
     {
+        config.AddProfile<OrdnanceSurveyPostcodeResponseProfile>();
         config.AddProfile<PaymentProfile>();
+        config.AddProfile<CompaniesHouseSearchResponseProfile>();
+        config.AddProfile<LocalAuthoritiesSearchResponseProfile>();
+
     }).CreateMapper());
 }
 
