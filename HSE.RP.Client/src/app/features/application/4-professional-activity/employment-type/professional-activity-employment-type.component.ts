@@ -34,14 +34,15 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
   }
 
   override onInit(applicationService: ApplicationService): void {
-    this.model = applicationService.model.ProfessionalActivity.EmploymentType
+    this.model = applicationService.model.ProfessionalActivity.EmploymentType;
     console.log(this.model)
+    console.log(applicationService.model)
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     console.log(this.model)
     applicationService.model.ProfessionalActivity.EmploymentType = this.model;
-   }
+  }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return true;

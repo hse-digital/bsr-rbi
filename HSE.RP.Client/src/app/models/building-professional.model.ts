@@ -13,12 +13,12 @@ export class BuildingProfessionalModel implements IComponentModel {
   PersonalDetails?: PersonalDetails = new PersonalDetails();
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   Competency?: Competency = new Competency();
+  ProfessionalActivity: ProfessionalActivity = new ProfessionalActivity();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
   ProfessionalMemberships: ApplicantProfessionBodyMemberships =
     new ApplicantProfessionBodyMemberships();
   private _completionState: ComponentCompletionState =
     ComponentCompletionState.NotStarted;
-  ProfessionalActivity: ProfessionalActivity = new ProfessionalActivity();
   //TODO test StageStatus and replace ApplicationStatus
   StageStatus: Record<string, StageCompletionState> = {
     EmailVerification: StageCompletionState.Incomplete,

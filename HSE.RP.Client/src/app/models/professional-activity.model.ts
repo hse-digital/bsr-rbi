@@ -2,7 +2,6 @@ import { ApplicantProfessionalBodyMembership } from "./applicant-professional-bo
 import { EmploymentType } from "./employment-type";
 
 export class ProfessionalActivity {
-    ApplicantProfessionalBodyMembership?: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership()
-
+  ApplicantProfessionalBodyMembership?: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership()
   EmploymentType?: EmploymentType = new EmploymentType();
 }
