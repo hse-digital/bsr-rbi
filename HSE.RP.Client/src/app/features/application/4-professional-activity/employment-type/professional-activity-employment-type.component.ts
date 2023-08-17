@@ -8,12 +8,16 @@ import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { ProfessionalActivityEmploymentDetailsComponent } from '../employment-details/professional-activity-employment-details.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { EmploymentTypeSelection } from 'src/app/models/employment-type-selection.model';
+import { EmploymentType } from 'src/app/models/employment-type.enum';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+
 
 @Component({
   selector: 'hse-professional-activity-employment-type',
   templateUrl: './professional-activity-employment-type.component.html',
 })
-export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<string> {
+export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<EmploymentTypeSelection> {
   DerivedIsComplete(value: boolean): void {
 
   }
@@ -23,7 +27,10 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<s
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  override model?: string;
+  // override model?: EmploymentType;
+  selectedOptionError: boolean = false;
+  errorMessage: string = "";
+  EmploymentType = EmploymentType;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
@@ -31,12 +38,17 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<s
   }
 
   override onInit(applicationService: ApplicationService): void {
-    //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
+
+    this.model = applicationService.model.ProfessionalActivity.EmploymentTypeSelection;
+    // if the user visits this page for the first time, set status to in progress until user saves and continues
+    if (applicationService.model.ProfessionalActivity.EmploymentTypeSelection?.EmploymentType === EmploymentType.None) {
+      applicationService.model.ProfessionalActivity.EmploymentTypeSelection = { EmploymentType: EmploymentType.None, CompletionState: ComponentCompletionState.InProgress };
+    }
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus = ApplicationStatus.ProfessionalActivityComplete;
-   }
+    applicationService.model.ProfessionalActivity.EmploymentTypeSelection = this.model;
+  }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return true;
@@ -46,10 +58,13 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<s
 
 
   override isValid(): boolean {
-    return true;
-/*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
-    return !this.phoneNumberHasErrors; */
+    if (!this.model?.EmploymentType) {
+      this.selectedOptionError = true;
+      this.errorMessage = "Select your current employment status";
+      return false;
+    }
 
+    return true;
   }
 
   override navigateNext(): Promise<boolean> {

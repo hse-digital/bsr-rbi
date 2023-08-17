@@ -4,10 +4,11 @@
     <govuk-error-link anchorId="input-postcode" message="{{postcodeErrorText}}" />
   </govuk-error-summary>
 
-  <h1 class="govuk-heading-l">Your home address</h1>
+  <h1 class="govuk-heading-l">{{addressName}}</h1>
 
-  <govuk-body>We collect your home address so we can write to you independently of any employer if required.</govuk-body>
-  <govuk-warning message="{{warningMessage()}}" background="#0"/>
+  <govuk-body *ngIf="!addressBodyText">We collect your home address so we can write to you independently of any employer if required.</govuk-body>
+  <govuk-body *ngIf="addressBodyText">{{addressBodyText}}</govuk-body>
+  <govuk-warning *ngIf="!addressBodyText" message="{{warningMessage()}}" background="#0"/>
   <!--<govuk-warning message="We have sent your application number and instructions on how to return to {{model!.PersonalDetails!.ApplicantEmail}}" background="#0"></govuk-warning>-->
 
   <govuk-input id="postcode" label="Postcode"
