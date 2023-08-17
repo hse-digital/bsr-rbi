@@ -79,7 +79,6 @@ export abstract class PageComponent<T> implements OnInit {
       //------------------------------------------------------------------------------
       // If the model implements IComponentModel, set the completion state to complete
       //------------------------------------------------------------------------------
-      console.log("page component" + this.model)
       if (this.modelImplementsIComponent(this.model)) {
         var componentModel = this.model as IComponentModel;
         componentModel.CompletionState = ComponentCompletionState.Complete;
@@ -102,6 +101,8 @@ export abstract class PageComponent<T> implements OnInit {
   }
 
   async saveAndComeBack(): Promise<void> {
+    console.log("clicked")
+
     this.processing = true;
     let canSave = this.requiredFieldsAreEmpty() || this.isValid();
     this.hasErrors = !canSave;

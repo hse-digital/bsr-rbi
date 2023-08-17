@@ -1,7 +1,7 @@
 import { ApplicantProfessionalBodyMembership } from "./applicant-professional-body-membership";
-import { EmploymentType } from "./employment-type";
+import { EmploymentTypeSelection } from "./employment-type-selection.model";
 
 export class ProfessionalActivity {
-  ApplicantProfessionalBodyMembership?: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership()
-  EmploymentType?: EmploymentType = new EmploymentType();
+  ApplicantProfessionalBodyMembership?: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
+  EmploymentTypeSelection?: EmploymentTypeSelection = new EmploymentTypeSelection();
 }
