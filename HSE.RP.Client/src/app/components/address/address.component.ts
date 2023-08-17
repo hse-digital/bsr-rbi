@@ -29,11 +29,6 @@ export class AddressComponent implements OnInit {
 
   step = 'find';
   private history: string[] = [];
-  private injector: Injector = GetInjector();
-  protected navigationService: NavigationService =
-  this.injector.get(NavigationService);
-
-  constructor(private router: Router) {}
 
   ngOnInit(): void {
     if(this.address) {
@@ -101,12 +96,6 @@ export class AddressComponent implements OnInit {
       (mainHeader as HTMLElement).focus();
       (mainHeader as HTMLElement).blur();
     }
-  }
-
-  navigateManualAddress() {
-    console.log('hello click')
-    return this.router.navigateByUrl('/personal-details/applicant-address');
-
   }
 }
 

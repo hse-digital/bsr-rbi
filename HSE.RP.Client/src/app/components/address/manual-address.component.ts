@@ -97,8 +97,6 @@ export class ManualAddressComponent {
   }
 
   getTitle() {
-    // return 'Enter home address manually';
-
     return this.title ? `Enter ${this.title} manually` : 'Enter home address manually';
   }
 
