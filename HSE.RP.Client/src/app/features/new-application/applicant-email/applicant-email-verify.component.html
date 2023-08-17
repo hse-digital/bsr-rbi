@@ -6,15 +6,16 @@
     <govuk-error-link anchorId="input-security-code" [message]="getOtpError()" />
   </govuk-error-summary>
 
-  <h1 class="govuk-heading-l">Verify your email address</h1>
+  <h1 class="govuk-heading-l">Security code</h1>
 
   <govuk-body>
     We have sent a 6-digit security code to: {{email}}
   </govuk-body>
 
-  <govuk-body>If you cannot find the email, check your spam folder. If you still cannot find it, or it has timed out, <a class="govuk-link" [routerLink]="['/new-application/applicant-email']">generate a new security code</a>.</govuk-body>
 
-  <govuk-body>If you did not get an email, or wish to use a different email address, ask us to<a class="govuk-link" [routerLink]="['/new-application/applicant-email']"> resend the email</a> or <a class="govuk-link" [routerLink]="['/new-application/applicant-email']">enter a different email.</a></govuk-body>
+  <govuk-body>If you cannot find the email, check your spam folder. If you still cannot find the email, or the code has expired, <a class="govuk-link" [routerLink]="['/new-application/applicant-email']">generate a new security code</a>.</govuk-body>
+
+  <govuk-body>If you did not receive the email, ask us<a class="govuk-link" [routerLink]="['/new-application/applicant-email']"> to resend it</a>. Or if you want to use a different email address, you can <a class="govuk-link" [routerLink]="['/new-application/applicant-email']">enter a different email.</a></govuk-body>
 
 
   <govuk-input id="email-verify" label="Security code"
