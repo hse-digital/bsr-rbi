@@ -12,6 +12,7 @@ import { promises } from 'fs';
 import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-details';
 import { EmployerName } from 'src/app/models/employment-employer-name';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { CompaniesService } from 'src/app/services/companies.service';
 
 @Component({
   selector: 'hse-employment-public-sector-body-name',
@@ -27,17 +28,14 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
   production: boolean = environment.production;
   modelValid: boolean = false;
   publicSectorBodyNameHasErrors = false;
-  publicSectorBodies?: string[];
-  filteredPublicSectorBodies?: string[];
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
+  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService, private companiesService: CompaniesService) {
     super(activatedRoute);
     this.updateOnSave = false;
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
 
-    this.publicSectorBodies = await this.applicationService.getPublicSectorBodies();
 
     if(!this.applicationService.model.EmploymentDetails)
     {
@@ -74,10 +72,12 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
     return this.navigationService.navigateRelative(ProfessionalBodyMembershipSummaryComponent.route, this.activatedRoute); //update to address
   }
 
+  companies: string[] = [];
   async searchCompanies(company: string) {
-
-      var response = this.publicSectorBodies?.filter(x=>x.toLocaleLowerCase().includes(company))
-      this.filteredPublicSectorBodies = response?.slice(0,20);
+    if (company?.length > 2) {
+      var response = await this.companiesService.SearchCompany(company, "local-authority");
+      this.companies = response.Companies.map(x => x.Name);
+    }
   }
 
   selectCompanyName(company: string) {
