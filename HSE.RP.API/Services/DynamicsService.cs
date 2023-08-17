@@ -12,6 +12,7 @@ using HSE.RP.API.Extensions;
 using HSE.RP.API.Model;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.DynamicsSynchronisation;
+using HSE.RP.API.Models.LocalAuthority;
 using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSE.RP.Domain.Entities;
@@ -555,6 +556,33 @@ namespace HSE.RP.API.Services
             }
 
         }
+
+        public async Task<string[]>  GetPublicSectorBodies()
+        {
+            var publicSectorBodies = await dynamicsApi.Get<DynamicsResponse<DynamicsAccount>>("accounts", ("$filter", $"_bsr_accounttype_accountid_value eq '{DynamicsAccountType.Ids["local-authority"]}'"));
+
+            string[] publicSectorBodyNames = publicSectorBodies.value.Select(x=>x.name).ToArray();
+
+            return publicSectorBodyNames;
+        }
+
+        public Task<DynamicsOrganisationsSearchResponse> SearchSocialHousingOrganisations(string authorityName)
+        {
+            return SearchOrganisations(authorityName, DynamicsOptions.SocialHousingTypeId);
+        }
+
+        private Task<DynamicsOrganisationsSearchResponse> SearchOrganisations(string authorityName, string accountTypeId)
+        {
+            return dynamicsApi.Get<DynamicsOrganisationsSearchResponse>("accounts",
+                new[] { ("$filter", $"_bsr_accounttype_accountid_value eq '{accountTypeId}' and contains(name, '{authorityName.EscapeSingleQuote()}')"), ("$select", "name") });
+        }
+
+        public Task<DynamicsOrganisationsSearchResponse> SearchLocalAuthorities(string authorityName)
+        {
+            return SearchOrganisations(authorityName, dynamicsOptions.LocalAuthorityTypeId);
+        }
+
+
     }
 
 

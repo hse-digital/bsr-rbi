@@ -1,12 +1,48 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
 
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Save and Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=true>
+
+  <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-bi-employment-selection" [message]="errorMessage" />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">Your employment</h1>
+
+  <govuk-radio-group hintText="Select your primary form of employment" id="radios-bi-employment-selection" [(model)]="model!.EmploymentType" [errorText]="errorMessage">
+    <govuk-radio 
+      label="Employee of a public sector building control body"
+      [value]="EmploymentType.PublicSector"
+      id="1"
+      [model]="model!.EmploymentType" 
+      [hint]="'For example a local authority, shared services partnership, or BRS'">
+    </govuk-radio>
+
+    <govuk-radio 
+      label="Employee of a private sector building control body"
+      [value]="EmploymentType.PrivateSector"
+      id="2"
+      [model]="model!.EmploymentType"
+      [hint]="'For example, a registered building control approver, limited company, or partnership'">
+    </govuk-radio>
+
+    <govuk-radio 
+      label="Other"
+      [value]="EmploymentType.Other"
+      id="3"
+      [model]="model!.EmploymentType"
+      [hint]="'For example, a self-employed consultant or other employment'">
+    </govuk-radio>
+
+    <govuk-radio 
+      label="Currently Unemployed"
+      [value]="EmploymentType.Unemployed"
+      id="4"
+      [model]="model!.EmploymentType">
+  </govuk-radio>
+  </govuk-radio-group>
 
 
-  <h1 class="govuk-heading-l">Employment type details</h1>
-  <govuk-body>
-  Please enter your employment type details
- </govuk-body>
+
 </govuk-formpage>
 

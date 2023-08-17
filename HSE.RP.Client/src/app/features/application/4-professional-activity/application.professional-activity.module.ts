@@ -16,6 +16,8 @@ import { ProfessionalBodySelectionComponent } from './professional-body-selectio
 import { ProfessionalMembershipInformationComponent } from './professional-membership-information/professional-membership-information.component';
 import { ProfessionalIndividualMembershipDetailsComponent } from './professional-individual-membership-details/professional-individual-membership-details.component';
 import { ProfessionalConfirmationMembershipRemovalComponent } from './professional-confirmation-membership-removal/professional-confirmation-membership-removal.component';
+import { EmploymentPublicSectorBodyNameComponent } from './employment-public-sector-body-name/employment-public-sector-body-name.component';
+import { EmploymentPrivateSectorBodyNameComponent } from './employment-private-sector-body-name/employment-private-sector-body-name.component';
 import { SearchEmploymentOrganisationAddressComponent } from './search-employment-organisation-address/search-employment-organisation-address.component';
 
 const routes = new HseRoutes([
@@ -65,6 +67,16 @@ const routes = new HseRoutes([
     ProfessionalMembershipInformationComponent.title
   ),
   HseRoute.protected(
+    EmploymentPublicSectorBodyNameComponent.route,
+    EmploymentPublicSectorBodyNameComponent,
+    EmploymentPublicSectorBodyNameComponent.title
+  ),
+  HseRoute.protected(
+    EmploymentPrivateSectorBodyNameComponent.route,
+    EmploymentPrivateSectorBodyNameComponent,
+    EmploymentPrivateSectorBodyNameComponent.title
+  ),
+  HseRoute.protected(
     SearchEmploymentOrganisationAddressComponent.route,
     SearchEmploymentOrganisationAddressComponent,
     SearchEmploymentOrganisationAddressComponent.title
@@ -81,6 +93,8 @@ const routes = new HseRoutes([
     ProfessionalMembershipInformationComponent,
     ProfessionalIndividualMembershipDetailsComponent,
     ProfessionalConfirmationMembershipRemovalComponent,
+    EmploymentPublicSectorBodyNameComponent,
+    EmploymentPrivateSectorBodyNameComponent,
     SearchEmploymentOrganisationAddressComponent,
   ],
   imports: [

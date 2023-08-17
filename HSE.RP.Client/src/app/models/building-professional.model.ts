@@ -1,3 +1,4 @@
+import { ApplicantEmploymentDetails } from './applicant-employment-details';
 import { ApplicantProfessionBodyMemberships } from './applicant-professional-body-membership';
 import { ApplicationStatus } from './application-status.enum';
 import { BuildingInspectorClass } from './building-inspector-class.model';
@@ -5,6 +6,7 @@ import { Competency } from './competency.model';
 import { ComponentCompletionState } from './component-completion-state.enum';
 import { IComponentModel } from './component. interface';
 import { PersonalDetails } from './personal-details.model';
+import { ProfessionalActivity } from './professional-activity.model';
 import { StageCompletionState } from './stage-completion-state.enum';
 
 export class BuildingProfessionalModel implements IComponentModel {
@@ -12,11 +14,13 @@ export class BuildingProfessionalModel implements IComponentModel {
   PersonalDetails?: PersonalDetails = new PersonalDetails();
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   Competency?: Competency = new Competency();
+  ProfessionalActivity: ProfessionalActivity = new ProfessionalActivity();
   ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
   ProfessionalMemberships: ApplicantProfessionBodyMemberships =
     new ApplicantProfessionBodyMemberships();
   private _completionState: ComponentCompletionState =
     ComponentCompletionState.NotStarted;
+
   //TODO test StageStatus and replace ApplicationStatus
   StageStatus: Record<string, StageCompletionState> = {
     EmailVerification: StageCompletionState.Incomplete,

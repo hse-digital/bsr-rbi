@@ -567,7 +567,9 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: ProfessionalActivityEmploymentTypeComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            TaskStatus.CannotStart,
+            this.getModelStatus(
+              aModel.ProfessionalActivity?.EmploymentDetails.EmploymentTypeSelection
+            ),
         },
         {
           show: true,
