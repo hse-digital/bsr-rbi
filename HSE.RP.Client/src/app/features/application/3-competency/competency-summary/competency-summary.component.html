@@ -7,7 +7,7 @@
   [hideBackButton]="true"
 >
   <govuk-body>
-    <h1 class="govuk-heading-l">Summary of your competency assessment</h1>
+    <h1 class="govuk-heading-l">Summary of your independent assessment</h1>
 
     <govuk-summary-list *ngIf="!isCompetencyAssessmentStatusYes()">
       <govuk-summary-list-row
@@ -17,7 +17,7 @@
         (onKeyupEnter)="
           navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)
         "
-        key="Assessment"
+        key="Independent assessment status"
         [showAction]="true"
         >{{ getIndependentAssessmentStatus() }}
       </govuk-summary-list-row>
@@ -31,7 +31,7 @@
         (onKeyupEnter)="
           navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)
         "
-        key="Assessment"
+        key="Independent assessment status"
         [showAction]="true"
         >{{ getIndependentAssessmentStatus() }}
       </govuk-summary-list-row>
@@ -43,7 +43,7 @@
         (onKeyupEnter)="
           navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION)
         "
-        key="Provider"
+        key="Assessment organisation"
         [showAction]="true"
         >{{ getCompetencyAssessmentOrg() }}
       </govuk-summary-list-row>
@@ -54,14 +54,14 @@
         (onKeyupEnter)="
           navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER)
         "
-        key="Certificate number"
+        key="Assessment certificate number"
         [showAction]="true"
         >{{ getCompetencyAssessmentCertificateNo() }}
       </govuk-summary-list-row>
       <govuk-summary-list-row
         (onClick)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE)"
         (onKeyupEnter)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE)"
-        key="Date of assessment certificate"
+        key="Date of assessment"
         [showAction]="true"
         >{{ GetFormattedDateofBirth() }}
       </govuk-summary-list-row>
