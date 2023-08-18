@@ -72,7 +72,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
 
     // 3-4 character prefix (CABE or BSCF) with a 20 character max string so CABE1262IJSBFAHS840.
     let prefix = this.certificateNumber.slice(0, 4);
-    if (prefix !== this.organisationPrefix) {
+    if (prefix.toLowerCase() !== this.organisationPrefix.toLowerCase()) {
       this.errorMessage = "You must enter an assessment certificate number in the correct format";
       this.hasErrors = true;
 
