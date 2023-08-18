@@ -1,21 +1,9 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-<govuk-formpage
-  saveAndContinueText="Save and continue"
-  [hideSaveAndComeBack]="true"
-  (saveAndContinue)="saveAndContinue()"
-  [hideBackButton]="true"
->
-  <govuk-error-summary
-    *ngIf="hasErrors"
-    title="There is a problem"
-    #summaryError
-  >
-    <govuk-error-link
-      *ngIf="!modelValid"
-      anchorId="class-technical-manager"
-      message="{{ errorMessage }}"
-    />
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]="true"
+  (saveAndContinue)="saveAndContinue()" [hideBackButton]="true">
+  <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="!modelValid" anchorId="class-technical-manager" message="{{ errorMessage }}" />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">
@@ -23,24 +11,15 @@
   </h1>
 
   <govuk-body>
-    A class 4 technical manager is competent to supervise the BSR-regulated
-    activities (assessing plans and inspection) done by registered building
-    inspectors.
-
-    <govuk-radio-group
-      hintText=" "
-      [errorText]=errorMessage
-      id="radios-technical-manager"
-      [(model)]="model!.YesNo"
-    >
-      <govuk-radio label="Yes" value="yes" id="yes" [model]="model!.YesNo">
-      </govuk-radio>
-      <govuk-radio
-        label="No"
-        value="no"
-        id="no"
-        [model]="model!.YesNo"
-      ></govuk-radio>
-    </govuk-radio-group>
+    To register as a class 4 technical manager you must be competent to do all BSR-regulated activities (for example,
+    assessing plans and inspections) for all categories of class 2 or class 3 building inspectors.
   </govuk-body>
+
+  <govuk-warning background="#0" message="Your class will be published in the public register" />
+
+  <govuk-radio-group hintText=" " [errorText]=errorMessage id="radios-technical-manager" [(model)]="model!.YesNo">
+    <govuk-radio label="Yes" value="yes" id="yes" [model]="model!.YesNo">
+    </govuk-radio>
+    <govuk-radio label="No" value="no" id="no" [model]="model!.YesNo"></govuk-radio>
+  </govuk-radio-group>
 </govuk-formpage>
