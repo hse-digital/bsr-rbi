@@ -63,6 +63,8 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
   }
 
   override isValid(): boolean {
+    this.certificateNumber = this.certificateNumber.trim()
+
     if (!FieldValidations.IsNotNullOrWhitespace(this.certificateNumber))
     {
       this.errorMessage = "Enter your assessment certificate number";
