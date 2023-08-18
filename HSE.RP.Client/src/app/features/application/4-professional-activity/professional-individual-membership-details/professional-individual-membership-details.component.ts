@@ -18,7 +18,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 export class ProfessionalIndividualMembershipDetailsComponent extends PageComponent<string> {
   ProfessionalActivityRoutes = ProfessionalActivityRoutes;
   public static route: string =
-    ProfessionalActivityRoutes.PROFESSIONAL_INDIVIDUAL_MEMEBERSHIP_DETAILS;
+    "professional-individual-membership-details";
   static title: string =
     'Professional activity - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;

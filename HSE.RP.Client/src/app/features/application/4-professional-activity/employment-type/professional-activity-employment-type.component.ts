@@ -11,6 +11,10 @@ import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { EmploymentTypeSelection } from 'src/app/models/employment-type-selection.model';
 import { EmploymentType } from 'src/app/models/employment-type.enum';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { EmploymentOtherNameComponent } from '../employment-other-name/employment-other-name.component';
+import { EmploymentPublicSectorBodyNameComponent } from '../employment-public-sector-body-name/employment-public-sector-body-name.component';
+import { TaskListItemComponent } from 'src/app/components/task-list-item/task-list-item.component';
+import { GovukTaskListComponent } from 'hse-angular';
 
 
 @Component({
@@ -68,7 +72,23 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ProfessionalActivityEmploymentDetailsComponent.route, this.activatedRoute);
+
+    if(this.model?.EmploymentType == EmploymentType.Other)
+    {
+      return this.navigationService.navigateRelative(EmploymentOtherNameComponent.route, this.activatedRoute);
+    }
+    if(this.model?.EmploymentType == EmploymentType.PublicSector)
+    {
+      return this.navigationService.navigateRelative(EmploymentPublicSectorBodyNameComponent.route, this.activatedRoute);
+    }
+    if(this.model?.EmploymentType == EmploymentType.PrivateSector)
+    {
+      return this.navigationService.navigateRelative(ProfessionalActivityEmploymentTypeComponent.route, this.activatedRoute);
+    }
+    else{
+      return this.navigationService.navigateRelative(ApplicationTaskListComponent.route, this.activatedRoute); //TODO update to summary
+    }
+
   }
 
 }

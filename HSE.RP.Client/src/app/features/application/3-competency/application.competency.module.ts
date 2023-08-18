@@ -9,7 +9,6 @@ import { ApplicationService } from '../../../services/application.service';
 import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { CompetencyIndependentStatusComponent } from './independent-competency-status/independent-competency-status.component';
-import { CompetencyCertificateCodeComponent } from './certificate-code/competency-certificate-code.component';
 import { CompetencyAssessmentOrganisationComponent } from './assesesment-organisation/competency-assesesment-organisation.component';
 import { CompetencyAssessmentDateComponent } from './assesesment-date/competency-assesesment-date.component';
 import { CompetencySummaryComponent } from './competency-summary/competency-summary.component';
@@ -23,11 +22,6 @@ const routes = new HseRoutes([
     CompetencyIndependentStatusComponent.route,
     CompetencyIndependentStatusComponent,
     CompetencyIndependentStatusComponent.title
-  ),
-  HseRoute.protected(
-    CompetencyCertificateCodeComponent.route,
-    CompetencyCertificateCodeComponent,
-    CompetencyCertificateCodeComponent.title
   ),
   HseRoute.protected(
     CompetencyAssessmentOrganisationComponent.route,
@@ -64,7 +58,6 @@ const routes = new HseRoutes([
 @NgModule({
   declarations: [
     CompetencyIndependentStatusComponent,
-    CompetencyCertificateCodeComponent,
     CompetencyAssessmentOrganisationComponent,
     CompetencyAssessmentCertificateNumberComponent,
     CompetencyAssessmentDateComponent,

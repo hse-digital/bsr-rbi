@@ -15,8 +15,7 @@ import { ApplicantAlternativeEmailComponent } from '../../1-personal-details/app
   styles: [],
 })
 export class SearchEmploymentOrganisationAddressComponent extends PageComponent<AddressModel> {
-  public static route: string =
-    ProfessionalActivityRoutes.SEARCH_EMPLOYEMENT_ORG_ADDRESS;
+  public static route: string = "search-empoloyment-org-address"
   static title: string =
     'Professional activity - Register as a building inspector - GOV.UK';
 
