@@ -42,7 +42,7 @@ export class AddressComponent implements OnInit {
   }
 
   searchPerformed(addressResponse: AddressResponseModel) {
-    if (addressResponse.Results.length > 0) {
+    if (addressResponse.Results.length > 0 && addressResponse.TotalResults < 100) {
       this.addressResponse = addressResponse;
       if (this.addressResponse.Results.length == 1) {
         this.address = this.addressResponse.Results[0];
@@ -50,7 +50,10 @@ export class AddressComponent implements OnInit {
       } else {
         this.changeStepTo(addressResponse.TotalResults < 100 ? "select" : "too-many");
       }
-    } else {
+    } else if (addressResponse.Results.length > 0 && addressResponse.TotalResults > 100){
+      this.changeStepTo("too-many");
+    }
+    else {
       this.changeStepTo("not-found");
     }
   }
