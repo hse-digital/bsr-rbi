@@ -9,17 +9,19 @@
 
   <h1 class="govuk-heading-l">What class of building inspector are you applying for?</h1>
 
-  <govuk-radio-group hintText="Select one option." id="radios-bi-class-selection" [(model)]="model!.Class" [errorText]="errorMessage">
+  <govuk-warning message="Your building inspector class will be published on the public register" background="#0"/>
+
+  <govuk-radio-group hintText="Select one" id="radios-bi-class-selection" [(model)]="model!.Class" [errorText]="errorMessage">
     <govuk-radio 
-      label="Class 1 building inspector"
+      label="Class 1"
       [value]="BuildingInspectorClassType.Class1"
       id="1"
       [model]="model!.Class" 
-      [hint]="'A class 1 building inspector is an unqualified trainee and must work under the supervision of a registered building inspector.'">
+      [hint]="'A class 1 building inspector has no BSR-approved competence assessment and must work under supervision of a class 2, 3 or 4 registered building inspector.'">
     </govuk-radio>
 
     <govuk-radio 
-      label="Class 2 building inspector"
+      label="Class 2"
       [value]="BuildingInspectorClassType.Class2"
       id="2"
       [model]="model!.Class"
@@ -27,18 +29,22 @@
     </govuk-radio>
 
     <govuk-radio 
-      label="Class 3 specialist building inspector"
+      label="Class 3 specialist"
       [value]="BuildingInspectorClassType.Class3"
       id="3"
       [model]="model!.Class"
-      [hint]="'A class 3 building inspector is competent to work without supervision on all building types including nonstandard or high-risk buildings or both.'">
+      [hint]="'A class 3 building inspector is competent to work without supervision on non-standard buildings, or both non-standard and high-risk buildings.'">
     </govuk-radio>
   </govuk-radio-group>
 
   <br>
 
   <govuk-body>
-    If you select class 2 or 3, we will ask later if you also intent to register as a class 4 technical manager.
+    If you select class 2 or 3, we will ask later if you also intend to register as a class 4 technical manager.
+  </govuk-body>
+
+  <govuk-body>
+    To register as a class 4 technical manager you must be competent to do all BSR-regulated activities (for example, assessing plans and inspections) for all categories of class 2 or class 3 building inspectors.
   </govuk-body>
 
 </govuk-formpage>
