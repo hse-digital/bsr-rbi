@@ -61,6 +61,8 @@
         *ngIf="step == 'confirm'"
         [addressName]="addressName"
         [selfAddress]="selfAddress"
+        [addressManualyDisplayStep]="addressManualyDisplayStep"
+        [orgFullName]="orgFullName"
         (onAddressConfirmed)="addressConfirmed()"
         [address]="address!"
         (onSearchAgain)="searchAgain()"

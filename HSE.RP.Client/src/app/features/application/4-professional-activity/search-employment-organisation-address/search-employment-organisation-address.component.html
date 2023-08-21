@@ -1,20 +1,14 @@
-<hse-address [addressName]="getAddressName()"
-             [showOptionalAddressLineOne]="true"
-             [selfAddress]="true"
-             [address]="model"
-             [addressBodyText]="addressBodyText"
-             [title]="orgTitle"
-             [addressManualyDisplayStep]= "'manual'"
-             [searchMode]="searchMode"
-             (onAddressConfirmed)="addressConfirmed($event)"
-             (onChangeStep)="changeStep($event)">
-
-            </hse-address>
-
-                  <!-- <govuk-body
-                ><a class="govuk-link" role="link" tabindex="0"
-                  >Enter address manually</a
-                ></govuk-body
-              > -->
-
-              <div>{{applicationService.model.ProfessionalActivity.EmploymentDetails | json}}</div>
+<hse-address
+  [addressName]="getAddressName()"
+  [showOptionalAddressLineOne]="true"
+  [selfAddress]="true"
+  [address]="model"
+  [addressBodyText]="addressBodyText"
+  [title]="orgTitle"
+  [addressManualyDisplayStep]="'manual'"
+  [orgFullName]="orgFullName"
+  [searchMode]="searchMode"
+  (onAddressConfirmed)="addressConfirmed($event)"
+  (onChangeStep)="changeStep($event)"
+>
+</hse-address>

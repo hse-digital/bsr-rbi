@@ -60,6 +60,6 @@ export class SelectAddressComponent {
   }
 
   getTitle() {
-    return this.title ? `Select the address of  ${this.title}` : 'Select your home address';
+    return this.title ? this.title : 'Select your home address';
   }
 }
