@@ -72,7 +72,7 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   }
 
   getAddressName() {
-    return 'Find the address of [organisation name]';
+    return `Find the address of ${this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName?.FullName}`;
   }
 
   // enterManualAddress() {
