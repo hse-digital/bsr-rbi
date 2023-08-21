@@ -3,7 +3,7 @@
              [selfAddress]="true"
              [address]="model"
              [addressBodyText]="addressBodyText"
-             [title]="title"
+             [title]="orgTitle"
              [addressManualyDisplayStep]= "'manual'"
              [searchMode]="searchMode"
              (onAddressConfirmed)="addressConfirmed($event)"
@@ -16,3 +16,5 @@
                   >Enter address manually</a
                 ></govuk-body
               > -->
+
+              <div>{{applicationService.model.ProfessionalActivity.EmploymentDetails | json}}</div>

@@ -15,7 +15,7 @@ import { ApplicantAlternativeEmailComponent } from '../../1-personal-details/app
   styles: [],
 })
 export class SearchEmploymentOrganisationAddressComponent extends PageComponent<AddressModel> {
-  public static route: string = "search-empoloyment-org-address"
+  public static route: string = 'search-empoloyment-org-address';
   static title: string =
     'Professional activity - Register as a building inspector - GOV.UK';
 
@@ -23,7 +23,7 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   production: boolean = environment.production;
   modelValid: boolean = false;
   searchMode = AddressSearchMode.HomeAddress;
-  title = 'Organisation Address';
+  orgTitle? = '';
   // step = 'find';
   // private history: string[] = [];
 
@@ -72,7 +72,12 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   }
 
   getAddressName() {
-    return `Find the address of ${this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName?.FullName}`;
+    this.orgTitle =
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName?.FullName;
+    return `Find the address of ${
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!
+        .EmployerName?.FullName
+    }`;
   }
 
   // enterManualAddress() {
@@ -93,5 +98,4 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   //     (mainHeader as HTMLElement).blur();
   //   }
   // }
-
 }
