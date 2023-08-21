@@ -23,6 +23,7 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
   modelValid: boolean = false;
   errorMessage: string = '';
   selectedOption: string = '';
+  existingSelection: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -41,11 +42,27 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
     const memberships = applicationService.model.ProfessionalMemberships;
     this.model = memberships;
 
-    this.selectedOption =
+    this.existingSelection =
       memberships.RICS.MembershipBodyCode ||
       memberships.CABE.MembershipBodyCode ||
       memberships.CIOB.MembershipBodyCode ||
       memberships.OTHER.MembershipBodyCode;
+
+    // if (
+    //   memberships.RICS.CompletionState === ComponentCompletionState.Complete ||
+    //   memberships.CABE.CompletionState === ComponentCompletionState.Complete ||
+    //   memberships.CIOB.CompletionState === ComponentCompletionState.Complete ||
+    //   memberships.OTHER.CompletionState === ComponentCompletionState.Complete 
+    // ) {
+    //   this.selectedOption = ''
+    // } else {
+
+    // }
+      this.selectedOption =
+        memberships.RICS.MembershipBodyCode ||
+        memberships.CABE.MembershipBodyCode ||
+        memberships.CIOB.MembershipBodyCode ||
+        memberships.OTHER.MembershipBodyCode;
   }
   override async onSave(applicationService: ApplicationService): Promise<void> {
     const memberships = applicationService.model.ProfessionalMemberships;
@@ -73,7 +90,18 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
   }
 
   override isValid(): boolean {
-    return true;
+    this.hasErrors = false;
+    this.errorMessage = '';
+    if (
+      this.selectedOption === '' ||
+      this.selectedOption === this.existingSelection
+    ) {
+      this.hasErrors = true;
+      this.errorMessage =
+        'Select a professional body you are a member of. If yours is not listed, select "other"';
+    }
+
+    return !this.hasErrors;
   }
 
   override async navigateNext(): Promise<boolean> {

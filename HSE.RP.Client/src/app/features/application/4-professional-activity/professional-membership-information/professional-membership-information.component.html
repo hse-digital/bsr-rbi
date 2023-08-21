@@ -9,14 +9,14 @@
 </govuk-error-summary>
 <govuk-formpage
   saveAndContinueText="Save and continue"
-  [hideSaveAndComeBack]="false"
+  [hideSaveAndComeBack]="true"
   (saveAndContinue)="saveAndContinue()"
   (saveAndComeBack)="saveAndComeBack()"
   [hideBackButton]="true"
 >
   <div class="govuk-form-group">
     <h1 class="govuk-heading-l">
-      Provide your {{PROFESSIONAL_BODY_ORG_NAME}} membership details
+      Provide your {{PROFESSIONAL_BODY_ORG_NAME}} membership information
     </h1>
 
     <govuk-input
