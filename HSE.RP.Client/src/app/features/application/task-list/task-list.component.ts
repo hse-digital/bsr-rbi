@@ -570,7 +570,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getModelStatus(
               aModel.ProfessionalActivity?.EmploymentDetails
-                ?.EmploymentTypeSelection
             ),
         },
         {

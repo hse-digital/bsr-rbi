@@ -15,6 +15,7 @@ import { EmploymentOtherNameComponent } from '../employment-other-name/employmen
 import { EmploymentPublicSectorBodyNameComponent } from '../employment-public-sector-body-name/employment-public-sector-body-name.component';
 import { TaskListItemComponent } from 'src/app/components/task-list-item/task-list-item.component';
 import { GovukTaskListComponent } from 'hse-angular';
+import { EmploymentPrivateSectorBodyNameComponent } from '../employment-private-sector-body-name/employment-private-sector-body-name.component';
 
 
 @Component({
@@ -45,8 +46,12 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
 
     this.model = applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection;
     // if the user visits this page for the first time, set status to in progress until user saves and continues
-    if (applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType === EmploymentType.None) {
-      applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection = { EmploymentType: EmploymentType.None, CompletionState: ComponentCompletionState.InProgress };
+    if (applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType === EmploymentType.None)
+    {
+      applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection = { EmploymentType: EmploymentType.None, CompletionState: ComponentCompletionState.InProgress};
+    }
+    if(applicationService.model.ProfessionalActivity.EmploymentDetails?.CompletionState!=ComponentCompletionState.Complete){
+      applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.InProgress;
     }
   }
 
@@ -83,10 +88,11 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
     }
     if(this.model?.EmploymentType == EmploymentType.PrivateSector)
     {
-      return this.navigationService.navigateRelative(ProfessionalActivityEmploymentTypeComponent.route, this.activatedRoute);
+      return this.navigationService.navigateRelative(EmploymentPrivateSectorBodyNameComponent.route, this.activatedRoute);
     }
     else{
-      return this.navigationService.navigateRelative(ApplicationTaskListComponent.route, this.activatedRoute); //TODO update to summary
+      return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
+
     }
 
   }
