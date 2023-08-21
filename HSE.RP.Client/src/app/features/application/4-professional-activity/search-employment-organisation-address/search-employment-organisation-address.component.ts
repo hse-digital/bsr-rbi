@@ -8,6 +8,7 @@ import { AddressModel } from 'src/app/models/address.model';
 import { AddressSearchMode } from 'src/app/components/address/address.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicantAlternativeEmailComponent } from '../../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
+import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 
 @Component({
   selector: 'hse-search-employment-organisation-address',
@@ -62,7 +63,7 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
     await this.applicationService.updateApplication();
 
     this.navigationService.navigateRelative(
-      ApplicantAlternativeEmailComponent.route,
+      ProfessionalMembershipAndEmploymentSummaryComponent.route,
       this.activatedRoute
     );
   }

@@ -43,7 +43,8 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return true;
+    return this.applicationService.model.ProfessionalMemberships.CompletionState==ComponentCompletionState.Complete
+    && this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerAddress?.CompletionState==ComponentCompletionState.Complete
     //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
   }
 
@@ -54,7 +55,7 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
   }
 
   async SyncAndContinue() {
-    await this.applicationService.syncCompetency();
+    //await this.applicationService.syncCompetency();
     this.saveAndContinue();
   }
 
