@@ -1,9 +1,7 @@
-import { Component, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { GetInjector } from 'src/app/helpers/injector.helper';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AddressResponseModel } from 'src/app/models/address-response.model';
 import { AddressModel } from 'src/app/models/address.model';
-import { NavigationService } from 'src/app/services/navigation.service';
+
 
 @Component({
   selector: 'hse-address',
@@ -19,6 +17,7 @@ export class AddressComponent implements OnInit {
   @Input() addressBodyText?: string;
   @Input() title?: string;
   @Input() addressManualyDisplayStep?: string;
+  @Input() orgFullName?: string;
   @Input() selfAddress = false;
   @Input() showOptionalAddressLineOne = false;
   @Output() onAddressConfirmed = new EventEmitter();
