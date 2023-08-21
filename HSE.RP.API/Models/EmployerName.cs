@@ -7,6 +7,8 @@ namespace HSE.RP.API.Models
     {
         public string FullName { get; set; } = string.Empty;
 
+        public string OtherBusinessSelection { get; set; } = string.Empty;
+
         public ComponentCompletionState CompletionState { get; set; } = ComponentCompletionState.NotStarted;
     }
 }

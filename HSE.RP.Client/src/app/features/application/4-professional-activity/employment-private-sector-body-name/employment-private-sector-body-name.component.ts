@@ -37,22 +37,23 @@ export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<Empl
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
-    if(!this.applicationService.model.ProfessionalActivity.EmploymentDetails.EmployerName)
+    if(!this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerName)
     {
-      this.applicationService.model.ProfessionalActivity.EmploymentDetails.EmployerName = new EmployerName()
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName = new EmployerName()
     }
 
-    this.model = this.applicationService.model.ProfessionalActivity.EmploymentDetails.EmployerName;
+    this.model = this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
 
-    this.applicationService.model.ProfessionalActivity.EmploymentDetails.EmployerName=this.model;
+    this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName=this.model;
 
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return this.applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection!.CompletionState == ComponentCompletionState.Complete && this.applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection!.EmploymentType == EmploymentType.PrivateSector;
+    return this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmploymentTypeSelection?.CompletionState == ComponentCompletionState.Complete
+    && this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmploymentTypeSelection?.EmploymentType == EmploymentType.PrivateSector;
 
   }
 
