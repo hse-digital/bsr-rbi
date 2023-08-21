@@ -4,5 +4,5 @@ import { EmploymentTypeSelection } from "./employment-type-selection.model";
 
 export class ProfessionalActivity {
   ApplicantProfessionalBodyMembership?: ApplicantProfessionalBodyMembership = new ApplicantProfessionalBodyMembership();
-  EmploymentDetails: ApplicantEmploymentDetails = new ApplicantEmploymentDetails();
+  EmploymentDetails?: ApplicantEmploymentDetails = new ApplicantEmploymentDetails();
 }

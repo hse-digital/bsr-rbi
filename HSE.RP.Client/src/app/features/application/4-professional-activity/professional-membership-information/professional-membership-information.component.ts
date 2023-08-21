@@ -24,11 +24,12 @@ const ERROR_MESSAGES = {
   INPUT_MEMBERSHIPLEVEL_REQUIRED: 'Enter your current membership level or type',
   INPUT_MEMBERSHIP_REQUIRED: 'Enter your membership number',
   YEAR_ACHIVED_REQUIRED:
-    'Enter the year in which you obtained your current membership level or type',
+    'Enter the year you obtained your current membership level or type',
   YEAR_REQUIRED: 'Your date of membership include a year',
   YEAR_FORMAT: 'Your date of membership must be today or a date in the past',
   YEAR_IN_PRESENT_OR_PAST:
     'Your date of membership must be today or a date in the past',
+  YEAR_VALIDATION_ERROR: 'Enter the year in full, for example 1984'
 };
 
 @Component({
@@ -119,7 +120,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
       const membershipYear = Number(this.model.MembershipYear);
       if (isNaN(membershipYear) || membershipYear < 1000) {
         this.validationErrors.push({
-          Text: ERROR_MESSAGES.YEAR_FORMAT,
+          Text: ERROR_MESSAGES.YEAR_VALIDATION_ERROR,
           Anchor: 'mem-input-year',
         });
       } else {
@@ -201,25 +202,25 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
 
     const { RICS, CABE, CIOB, OTHER } = memberships;
 
-    if(this.membershipCode == "RICS")
+    if(memberships.RICS.MembershipBodyCode == "RICS")
     {
       this.model.MembershipNumber = RICS.MembershipNumber ?? '';
       this.model.MembershipLevel = RICS.MembershipLevel ?? '';
-      this.model.MembershipYear = RICS.MembershipYear ?? undefined;;
+      this.model.MembershipYear = RICS.MembershipYear ?? undefined;
     }
-    else if(this.membershipCode == "CABE")
+    else if(memberships.CABE.MembershipBodyCode  == "CABE")
     {
       this.model.MembershipNumber = CABE.MembershipNumber ?? '';
       this.model.MembershipLevel = CABE.MembershipLevel ?? '';
-      this.model.MembershipYear = CABE.MembershipYear ?? undefined;;
+      this.model.MembershipYear = CABE.MembershipYear ?? undefined;
     }
-    else if(this.membershipCode == "CIOB")
+    else if(memberships.CIOB.MembershipBodyCode == "CIOB")
     {
       this.model.MembershipNumber = CIOB.MembershipNumber ?? '';
       this.model.MembershipLevel = CIOB.MembershipLevel ?? '';
-      this.model.MembershipYear = CIOB.MembershipYear ?? undefined;;
+      this.model.MembershipYear = CIOB.MembershipYear ?? undefined;
     }
-    else if(this.membershipCode == "OTHER")
+    else if(memberships.OTHER.MembershipBodyCode  == "OTHER")
     {
       this.model.MembershipNumber = OTHER.MembershipNumber ?? '';
       this.model.MembershipLevel = OTHER.MembershipLevel ?? '';
