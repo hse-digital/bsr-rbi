@@ -24,6 +24,8 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
   errorMessage: string = '';
   selectedOption: string = '';
   existingSelection: string = '';
+  existingStatus?: ComponentCompletionState =
+    ComponentCompletionState.NotStarted;
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -42,27 +44,50 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
     const memberships = applicationService.model.ProfessionalMemberships;
     this.model = memberships;
 
-    this.existingSelection =
-      memberships.RICS.MembershipBodyCode ||
-      memberships.CABE.MembershipBodyCode ||
-      memberships.CIOB.MembershipBodyCode ||
-      memberships.OTHER.MembershipBodyCode;
+    if (
+      memberships.RICS.CompletionState === ComponentCompletionState.Complete
+    ) {
+      this.existingSelection = memberships.RICS.MembershipBodyCode;
+      this.existingStatus = memberships.RICS.CompletionState;
+    } else if (
+      memberships.CABE.CompletionState === ComponentCompletionState.Complete
+    ) {
+      this.existingSelection = memberships.CABE.MembershipBodyCode;
+      this.existingStatus = memberships.CABE.CompletionState;
+    } else if (
+      memberships.CIOB.CompletionState === ComponentCompletionState.Complete
+    ) {
+      this.existingSelection = memberships.CIOB.MembershipBodyCode;
+      this.existingStatus = memberships.CIOB.CompletionState;
+    } else if (
+      memberships.OTHER.CompletionState === ComponentCompletionState.Complete
+    ) {
+      this.existingSelection = memberships.OTHER.MembershipBodyCode;
+      this.existingStatus = memberships.OTHER.CompletionState;
+    }
 
-    // if (
-    //   memberships.RICS.CompletionState === ComponentCompletionState.Complete ||
-    //   memberships.CABE.CompletionState === ComponentCompletionState.Complete ||
-    //   memberships.CIOB.CompletionState === ComponentCompletionState.Complete ||
-    //   memberships.OTHER.CompletionState === ComponentCompletionState.Complete 
-    // ) {
-    //   this.selectedOption = ''
-    // } else {
-
-    // }
+    if (
+      this.existingSelection === '' &&
+      this.existingStatus !== ComponentCompletionState.Complete
+    ) {
+      this.selectedOption = '';
+    } else if (
+      this.existingSelection !== '' &&
+      this.existingStatus === ComponentCompletionState.Complete
+    ) {
+      this.selectedOption = '';
+    } else if (
+      this.existingSelection === '' &&
+      this.existingStatus === ComponentCompletionState.Complete
+    ) {
+      this.selectedOption = '';
+    } else {
       this.selectedOption =
         memberships.RICS.MembershipBodyCode ||
         memberships.CABE.MembershipBodyCode ||
         memberships.CIOB.MembershipBodyCode ||
         memberships.OTHER.MembershipBodyCode;
+    }
   }
   override async onSave(applicationService: ApplicationService): Promise<void> {
     const memberships = applicationService.model.ProfessionalMemberships;
@@ -92,10 +117,7 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
   override isValid(): boolean {
     this.hasErrors = false;
     this.errorMessage = '';
-    if (
-      this.selectedOption === '' ||
-      this.selectedOption === this.existingSelection
-    ) {
+    if (this.selectedOption === '') {
       this.hasErrors = true;
       this.errorMessage =
         'Select a professional body you are a member of. If yours is not listed, select "other"';
@@ -124,5 +146,19 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
       `${route}`,
       this.activatedRoute
     );
+  }
+
+  public display(): boolean {
+    const memberships = this.applicationService.model.ProfessionalMemberships;
+
+    if (
+      memberships.RICS.CompletionState === ComponentCompletionState.Complete &&
+      memberships.CABE.CompletionState === ComponentCompletionState.Complete &&
+      memberships.CIOB.CompletionState === ComponentCompletionState.Complete
+    ) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
