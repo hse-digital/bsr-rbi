@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Azure;
 using Flurl.Http;
 using Flurl.Util;
 using HSE.RP.API.Extensions;
@@ -582,7 +583,13 @@ namespace HSE.RP.API.Services
             return SearchOrganisations(authorityName, dynamicsOptions.LocalAuthorityTypeId);
         }
 
+        public async Task<DynamicsYear> GetDynamicsYear(string year)
+        {
+            var dynamicsYear = await dynamicsApi.Get<DynamicsResponse<DynamicsYear>>("bsr_years", ("$filter", $"bsr_name eq '{year}'"));
 
+            return dynamicsYear.value.FirstOrDefault();
+
+        }
     }
 
 

@@ -21,8 +21,7 @@ import { ProfessionalBodyMembershipSummaryComponent } from '../professional-body
   styles: [],
 })
 export class ProfessionalConfirmationMembershipRemovalComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
-  public static route: string =
-    ProfessionalActivityRoutes.PROFESSIONAL_CONFIRMATION_MEMBERSHIP_REMOVAL;
+  public static route: string = "professional-confirmation-membership-removal";
   static title: string =
     'Professional activity - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;

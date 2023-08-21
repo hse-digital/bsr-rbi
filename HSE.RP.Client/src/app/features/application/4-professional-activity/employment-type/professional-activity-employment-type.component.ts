@@ -11,6 +11,11 @@ import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { EmploymentTypeSelection } from 'src/app/models/employment-type-selection.model';
 import { EmploymentType } from 'src/app/models/employment-type.enum';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { EmploymentOtherNameComponent } from '../employment-other-name/employment-other-name.component';
+import { EmploymentPublicSectorBodyNameComponent } from '../employment-public-sector-body-name/employment-public-sector-body-name.component';
+import { TaskListItemComponent } from 'src/app/components/task-list-item/task-list-item.component';
+import { GovukTaskListComponent } from 'hse-angular';
+import { EmploymentPrivateSectorBodyNameComponent } from '../employment-private-sector-body-name/employment-private-sector-body-name.component';
 
 
 @Component({
@@ -41,8 +46,12 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
 
     this.model = applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection;
     // if the user visits this page for the first time, set status to in progress until user saves and continues
-    if (applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType === EmploymentType.None) {
-      applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection = { EmploymentType: EmploymentType.None, CompletionState: ComponentCompletionState.InProgress };
+    if (applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType === EmploymentType.None)
+    {
+      applicationService.model.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection = { EmploymentType: EmploymentType.None, CompletionState: ComponentCompletionState.InProgress};
+    }
+    if(applicationService.model.ProfessionalActivity.EmploymentDetails?.CompletionState!=ComponentCompletionState.Complete){
+      applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.InProgress;
     }
   }
 
@@ -68,7 +77,24 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ProfessionalActivityEmploymentDetailsComponent.route, this.activatedRoute);
+
+    if(this.model?.EmploymentType == EmploymentType.Other)
+    {
+      return this.navigationService.navigateRelative(EmploymentOtherNameComponent.route, this.activatedRoute);
+    }
+    if(this.model?.EmploymentType == EmploymentType.PublicSector)
+    {
+      return this.navigationService.navigateRelative(EmploymentPublicSectorBodyNameComponent.route, this.activatedRoute);
+    }
+    if(this.model?.EmploymentType == EmploymentType.PrivateSector)
+    {
+      return this.navigationService.navigateRelative(EmploymentPrivateSectorBodyNameComponent.route, this.activatedRoute);
+    }
+    else{
+      return this.navigationService.navigate(`application/${this.applicationService.model.id}`);
+
+    }
+
   }
 
 }
