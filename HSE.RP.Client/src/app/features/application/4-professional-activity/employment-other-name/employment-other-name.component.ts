@@ -60,9 +60,12 @@ export class EmploymentOtherNameComponent extends PageComponent<EmployerName>  {
   override isValid(): boolean {
     this.noOptionSelectedError = false;
     this.invalidNameError = false;
-
     this.noOptionSelectedError = !FieldValidations.IsNotNullOrWhitespace(this.model?.OtherBusinessSelection)
-    this.otherNameHasErrors = !FieldValidations.IsNotNullOrWhitespace(this.model?.FullName) || this.noOptionSelectedError
+
+    if(this.model?.OtherBusinessSelection == "yes")
+    {
+      this.otherNameHasErrors = !FieldValidations.IsNotNullOrWhitespace(this.model?.FullName) || this.noOptionSelectedError
+    }
 
     this.otherNameHasErrors == this.otherNameHasErrors || this.noOptionSelectedError
 
