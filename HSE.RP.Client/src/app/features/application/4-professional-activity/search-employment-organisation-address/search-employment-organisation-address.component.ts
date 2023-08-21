@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ProfessionalActivityRoutes } from '../ProfessionalActivityRoutes';
 import { PageComponent } from 'src/app/helpers/page.component';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { ApplicationService } from 'src/app/services/application.service';
@@ -16,7 +15,7 @@ import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professi
   styles: [],
 })
 export class SearchEmploymentOrganisationAddressComponent extends PageComponent<AddressModel> {
-  public static route: string = "search-empoloyment-org-address"
+  public static route: string = 'search-empoloyment-org-address';
   static title: string =
     'Professional activity - Register as a building inspector - GOV.UK';
 
@@ -24,11 +23,8 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   production: boolean = environment.production;
   modelValid: boolean = false;
   searchMode = AddressSearchMode.HomeAddress;
-  title = 'Organisation Address';
-  // step = 'find';
-  // private history: string[] = [];
-
-  // @Output() onChangeStep = new EventEmitter();
+  orgTitle? = '';
+  orgFullName?: string;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -38,7 +34,10 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
     this.updateOnSave = true;
   }
 
-  override onInit(applicationService: ApplicationService): void {}
+  override onInit(applicationService: ApplicationService): void {
+    this.orgFullName =
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerName?.FullName;
+  }
   override async onSave(
     applicationService: ApplicationService
   ): Promise<void> {}
@@ -73,26 +72,16 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   }
 
   getAddressName() {
-    return `Find the address of ${this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName?.FullName}`;
+    const employerFullName =
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails
+        ?.EmployerName?.FullName;
+
+    if (employerFullName) {
+      this.orgTitle = `Select the address of ${employerFullName}`;
+      return `Find the address of ${employerFullName}`;
+    } else {
+      this.orgTitle = 'Select your business address';
+      return 'Find the address of your business';
+    }
   }
-
-  // enterManualAddress() {
-  //   this.changeStepTo('manual');
-  // }
-
-  // private changeStepTo(step: string) {
-  //   this.history.push(this.step);
-  //   this.step = step;
-  //   this.resetFocus();
-  //   this.onChangeStep.emit(this.step);
-  // }
-
-  // resetFocus() {
-  //   const mainHeader = document.querySelector('#gouvk-header-service-name');
-  //   if (mainHeader) {
-  //     (mainHeader as HTMLElement).focus();
-  //     (mainHeader as HTMLElement).blur();
-  //   }
-  // }
-
 }

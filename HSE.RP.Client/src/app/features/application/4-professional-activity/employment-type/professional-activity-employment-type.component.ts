@@ -39,7 +39,7 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService) {
     super(activatedRoute);
-    this.updateOnSave = false;
+    this.updateOnSave = true;
   }
 
   override onInit(applicationService: ApplicationService): void {
