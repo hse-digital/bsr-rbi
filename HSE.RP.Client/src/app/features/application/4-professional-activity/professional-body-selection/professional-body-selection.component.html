@@ -64,7 +64,7 @@
         "
         class="govuk-radios__divider"
       >
-        or
+        <span *ngIf="display()">or</span>
       </div>
       <govuk-radio
         *ngIf="
