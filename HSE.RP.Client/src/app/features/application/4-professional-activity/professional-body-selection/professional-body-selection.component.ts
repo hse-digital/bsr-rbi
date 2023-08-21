@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ProfessionalIndividualMembershipDetailsComponent } from '../professional-individual-membership-details/professional-individual-membership-details.component';
 import { ProfessionalMembershipInformationComponent } from '../professional-membership-information/professional-membership-information.component';
+import { ProfessionalBodyMembershipSummaryComponent } from '../professional-body-membership-summary/professional-body-membership-summary.component';
 
 @Component({
   selector: 'hse-professional-body-selection',
@@ -21,7 +22,8 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
   production: boolean = environment.production;
   modelValid: boolean = false;
   errorMessage: string = '';
-  selectedOption: string = 'OTHER';
+  selectedOption: string = '';
+  existingSelection: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -29,24 +31,38 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
 
-
     if (applicationService.model.ProfessionalMemberships == null) {
       applicationService.model.ProfessionalMemberships =
         new ApplicantProfessionBodyMemberships();
-      this.selectedOption = 'OTHER';
-    }
-    else{
+      this.selectedOption = '';
+    } else {
       this.model = applicationService.model.ProfessionalMemberships;
     }
 
     const memberships = applicationService.model.ProfessionalMemberships;
     this.model = memberships;
 
-    this.selectedOption =
+    this.existingSelection =
       memberships.RICS.MembershipBodyCode ||
       memberships.CABE.MembershipBodyCode ||
       memberships.CIOB.MembershipBodyCode ||
       memberships.OTHER.MembershipBodyCode;
+
+    // if (
+    //   memberships.RICS.CompletionState === ComponentCompletionState.Complete ||
+    //   memberships.CABE.CompletionState === ComponentCompletionState.Complete ||
+    //   memberships.CIOB.CompletionState === ComponentCompletionState.Complete ||
+    //   memberships.OTHER.CompletionState === ComponentCompletionState.Complete 
+    // ) {
+    //   this.selectedOption = ''
+    // } else {
+
+    // }
+      this.selectedOption =
+        memberships.RICS.MembershipBodyCode ||
+        memberships.CABE.MembershipBodyCode ||
+        memberships.CIOB.MembershipBodyCode ||
+        memberships.OTHER.MembershipBodyCode;
   }
   override async onSave(applicationService: ApplicationService): Promise<void> {
     const memberships = applicationService.model.ProfessionalMemberships;
@@ -67,11 +83,25 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return this.applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo === 'yes';
+    return (
+      this.applicationService.model.ProfessionalMemberships
+        .IsProfessionBodyRelevantYesNo === 'yes'
+    );
   }
 
   override isValid(): boolean {
-    return true;
+    this.hasErrors = false;
+    this.errorMessage = '';
+    if (
+      this.selectedOption === '' ||
+      this.selectedOption === this.existingSelection
+    ) {
+      this.hasErrors = true;
+      this.errorMessage =
+        'Select a professional body you are a member of. If yours is not listed, select "other"';
+    }
+
+    return !this.hasErrors;
   }
 
   override async navigateNext(): Promise<boolean> {
@@ -84,9 +114,8 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
       );
     }
     return this.navigationService.navigateRelative(
-      ProfessionalIndividualMembershipDetailsComponent.route,
-      this.activatedRoute,
-      { queryParams }
+      ProfessionalBodyMembershipSummaryComponent.route,
+      this.activatedRoute
     ); // Back to the task list.
   }
 
