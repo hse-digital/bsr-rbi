@@ -38,6 +38,8 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
         new ApplicantProfessionBodyMemberships();
       this.selectedOption = '';
     } else {
+      this.selectedOption = '';
+    } else {
       this.model = applicationService.model.ProfessionalMemberships;
     }
 
@@ -136,6 +138,8 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
       );
     }
     return this.navigationService.navigateRelative(
+      ProfessionalBodyMembershipSummaryComponent.route,
+      this.activatedRoute
       ProfessionalBodyMembershipSummaryComponent.route,
       this.activatedRoute
     ); // Back to the task list.
