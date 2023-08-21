@@ -20,6 +20,7 @@ import { EmploymentPublicSectorBodyNameComponent } from './employment-public-sec
 import { EmploymentPrivateSectorBodyNameComponent } from './employment-private-sector-body-name/employment-private-sector-body-name.component';
 import { SearchEmploymentOrganisationAddressComponent } from './search-employment-organisation-address/search-employment-organisation-address.component';
 import { EmploymentOtherNameComponent } from './employment-other-name/employment-other-name.component';
+import { ProfessionalMembershipAndEmploymentSummaryComponent } from './professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 
 const routes = new HseRoutes([
   HseRoute.protected(
@@ -87,6 +88,11 @@ const routes = new HseRoutes([
     EmploymentOtherNameComponent,
     EmploymentOtherNameComponent.title
   ),
+  HseRoute.protected(
+    ProfessionalMembershipAndEmploymentSummaryComponent.route,
+    ProfessionalMembershipAndEmploymentSummaryComponent,
+    ProfessionalMembershipAndEmploymentSummaryComponent.title
+  ),
 ]);
 
 @NgModule({
@@ -103,6 +109,7 @@ const routes = new HseRoutes([
     EmploymentPrivateSectorBodyNameComponent,
     EmploymentOtherNameComponent,
     SearchEmploymentOrganisationAddressComponent,
+    ProfessionalMembershipAndEmploymentSummaryComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),

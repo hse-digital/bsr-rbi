@@ -1,0 +1,123 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-formpage
+  saveAndContinueText="Continue"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="SyncAndContinue()"
+  [hideBackButton]="true"
+>
+  <govuk-body>
+    <h1 class="govuk-heading-l">
+      Summary of your professional memberships and employment
+    </h1>
+
+    <govuk-summary-list>
+      <govuk-summary-list-row
+        (onClick)="navigateTo('professional-body-membership-summary')"
+        (onKeyupEnter)="navigateTo('professional-body-membership-summary')"
+        key="Membership of professional bodies"
+        [showAction]="true"
+      >
+        <dd
+          *ngFor="let membership of getProfessionalBodyMemberships()"
+          class="govuk-summary-list__value"
+        >
+          membership
+        </dd>
+      </govuk-summary-list-row>
+
+      <govuk-summary-list-row
+        (onClick)="navigateTo('professional-activity-employment-type')"
+        (onKeyupEnter)="navigateTo('professional-activity-employment-type')"
+        key="Employment type"
+        [showAction]="true"
+      >
+        <dd class="govuk-summary-list__value">{{ getEmploymentType() }}</dd>
+      </govuk-summary-list-row>
+
+      <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 1"
+        (onClick)="navigateTo('employment-public-sector-body-name')"
+        (onKeyupEnter)="navigateTo('employment-public-sector-body-name')"
+        key="{{ getEmploymentTypeTitle() }}"
+        [showAction]="true"
+      >
+        <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
+      </govuk-summary-list-row>
+
+
+      <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 2"
+        (onClick)="navigateTo('employment-private-sector-body-name')"
+        (onKeyupEnter)="navigateTo('employment-private-sector-body-name')"
+        key="{{ getEmploymentTypeTitle() }}"
+        [showAction]="true"
+      >
+        <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
+      </govuk-summary-list-row>
+
+
+      <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 3"
+        (onClick)="navigateTo('employment-other-name')"
+        (onKeyupEnter)="navigateTo('employment-other-name')"
+        key="{{ getEmploymentTypeTitle() }}"
+        [showAction]="true"
+      >
+        <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
+      </govuk-summary-list-row>
+
+
+      <govuk-summary-list-row *ngIf="!isUnemployed()"
+        (onClick)="navigateTo('search-empoloyment-org-address')"
+        (onKeyupEnter)="navigateTo('search-empoloyment-org-address')"
+        key="{{ getEmploymentAddressTitle() }}"
+        [showAction]="true"
+      >
+        <div>
+          <div
+            *ngIf="
+              applicationService.model.ProfessionalActivity?.EmploymentDetails
+                ?.EmployerAddress
+            "
+          >
+            {{
+              applicationService.model.ProfessionalActivity.EmploymentDetails
+                ?.EmployerAddress?.Address
+            }}
+          </div>
+          <div
+            *ngIf="
+              applicationService.model.ProfessionalActivity?.EmploymentDetails
+                ?.EmployerAddress?.AddressLineTwo
+            "
+          >
+            {{
+              applicationService.model.ProfessionalActivity.EmploymentDetails
+                ?.EmployerAddress?.AddressLineTwo
+            }}
+          </div>
+          <div
+            *ngIf="
+              applicationService.model.ProfessionalActivity?.EmploymentDetails
+                ?.EmployerAddress?.Town
+            "
+          >
+            {{
+              applicationService.model.ProfessionalActivity.EmploymentDetails
+                ?.EmployerAddress?.Town
+            }}
+          </div>
+          <div
+            *ngIf="
+              applicationService.model.ProfessionalActivity?.EmploymentDetails
+                ?.EmployerAddress?.Postcode
+            "
+          >
+            {{
+              applicationService.model.ProfessionalActivity.EmploymentDetails
+                ?.EmployerAddress?.Postcode
+            }}
+          </div>
+        </div></govuk-summary-list-row
+      >
+    </govuk-summary-list>
+  </govuk-body>
+</govuk-formpage>
