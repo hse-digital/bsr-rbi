@@ -201,25 +201,25 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
 
     const { RICS, CABE, CIOB, OTHER } = memberships;
 
-    if(this.membershipCode == "RICS")
+    if(memberships.RICS.MembershipBodyCode == "RICS")
     {
       this.model.MembershipNumber = RICS.MembershipNumber ?? '';
       this.model.MembershipLevel = RICS.MembershipLevel ?? '';
-      this.model.MembershipYear = RICS.MembershipYear ?? undefined;;
+      this.model.MembershipYear = RICS.MembershipYear ?? undefined;
     }
-    else if(this.membershipCode == "CABE")
+    else if(memberships.CABE.MembershipBodyCode  == "CABE")
     {
       this.model.MembershipNumber = CABE.MembershipNumber ?? '';
       this.model.MembershipLevel = CABE.MembershipLevel ?? '';
-      this.model.MembershipYear = CABE.MembershipYear ?? undefined;;
+      this.model.MembershipYear = CABE.MembershipYear ?? undefined;
     }
-    else if(this.membershipCode == "CIOB")
+    else if(memberships.CIOB.MembershipBodyCode == "CIOB")
     {
       this.model.MembershipNumber = CIOB.MembershipNumber ?? '';
       this.model.MembershipLevel = CIOB.MembershipLevel ?? '';
-      this.model.MembershipYear = CIOB.MembershipYear ?? undefined;;
+      this.model.MembershipYear = CIOB.MembershipYear ?? undefined;
     }
-    else if(this.membershipCode == "OTHER")
+    else if(memberships.OTHER.MembershipBodyCode  == "OTHER")
     {
       this.model.MembershipNumber = OTHER.MembershipNumber ?? '';
       this.model.MembershipLevel = OTHER.MembershipLevel ?? '';

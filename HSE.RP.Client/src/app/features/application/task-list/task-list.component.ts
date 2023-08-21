@@ -65,6 +65,7 @@ import { PersonalDetails } from 'src/app/models/personal-details.model';
 import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
 import { Competency } from 'src/app/models/competency.model';
 import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
+import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-details';
 
 interface ITaskListParent {
   prompt: string;
@@ -323,9 +324,10 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   }
 
   determinProfessionalMembershipSummaryTask(
-    model?: ApplicantProfessionBodyMemberships
+    model?: ApplicantProfessionBodyMemberships,
+    employeeModel?: ApplicantEmploymentDetails
   ): TaskStatus {
-    if (model?.CompletionState === ComponentCompletionState.Complete) {
+    if (model?.CompletionState === ComponentCompletionState.Complete && employeeModel?.CompletionState === ComponentCompletionState.Complete) {
       return TaskStatus.None;
     } else {
       return TaskStatus.CannotStart;
@@ -568,7 +570,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getModelStatus(
-              aModel.ProfessionalActivity?.EmploymentDetails.EmploymentTypeSelection
+              aModel.ProfessionalActivity?.EmploymentDetails
+                ?.EmploymentTypeSelection
             ),
         },
         {
@@ -581,7 +584,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.determinProfessionalMembershipSummaryTask(
-              aModel.ProfessionalMemberships
+              aModel.ProfessionalMemberships,
+              aModel.ProfessionalActivity.EmploymentDetails
             ),
         },
       ],
