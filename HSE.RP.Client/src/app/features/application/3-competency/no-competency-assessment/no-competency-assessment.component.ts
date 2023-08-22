@@ -44,7 +44,7 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
 
     const demandModel = this.DemandModel();
     const declarationKeys = ['Declaration'];
-    
+
     this.applicationService = applicationService;
   }
   override async onSave(applicationService: ApplicationService): Promise<void> {
