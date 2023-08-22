@@ -1,9 +1,46 @@
-<h1 class="govuk-heading-l">{{getTitle()}}</h1>
+<h1 class="govuk-heading-l">{{ getTitle() }}</h1>
 
 <govuk-inset-text>
-  <address-description [address]="address"/>
+  <address-description [address]="address" />
 </govuk-inset-text>
 
-<govuk-button (onClick)="confirm()">Confirm</govuk-button>
-<govuk-body><a class="govuk-link" (keyup.enter)="onSearchAgain.emit()" (click)="onSearchAgain.emit()" role="link" tabindex="0">Search again</a></govuk-body>
-<govuk-body><a class="govuk-link" (keyup.enter)="onEnterManualAddress.emit()" (click)="onEnterManualAddress.emit()" role="link" tabindex="0">Enter address manually</a></govuk-body>
+<!-- <govuk-button (onClick)="confirm()">Confirm</govuk-button> -->
+<ng-container
+  *ngIf="addressManualyDisplayStep; then employeebtn; else personalbtn"
+>
+</ng-container>
+
+<govuk-body
+  ><a
+    class="govuk-link"
+    (keyup.enter)="onSearchAgain.emit()"
+    (click)="onSearchAgain.emit()"
+    role="link"
+    tabindex="0"
+    >Search again</a
+  ></govuk-body
+>
+
+<ng-container
+  *ngIf="!addressManualyDisplayStep; then personalmanuallink"
+></ng-container>
+
+<ng-template #personalbtn>
+  <govuk-button (onClick)="confirm()">Confirm</govuk-button>
+</ng-template>
+<ng-template #employeebtn>
+  <govuk-button (onClick)="confirm()">Save and confirm</govuk-button>
+</ng-template>
+
+<ng-template #personalmanuallink>
+  <govuk-body
+    ><a
+      class="govuk-link"
+      (keyup.enter)="onEnterManualAddress.emit()"
+      (click)="onEnterManualAddress.emit()"
+      role="link"
+      tabindex="0"
+      >Enter address manually</a
+    ></govuk-body
+  >
+</ng-template>
