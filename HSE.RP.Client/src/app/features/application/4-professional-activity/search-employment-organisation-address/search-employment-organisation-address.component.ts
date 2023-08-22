@@ -6,8 +6,6 @@ import { environment } from 'src/environments/environment';
 import { AddressModel } from 'src/app/models/address.model';
 import { AddressSearchMode } from 'src/app/components/address/address.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
-import { ApplicantAlternativeEmailComponent } from '../../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
-import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 
 @Component({
   selector: 'hse-search-employment-organisation-address',
@@ -54,17 +52,9 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
     return true;
   }
 
-  async addressConfirmed(address: AddressModel) {
-    this.applicationService.model.PersonalDetails!.ApplicantAddress = address;
-    this.applicationService.model.PersonalDetails!.ApplicantAddress.CompletionState =
-      ComponentCompletionState.Complete;
-
-    await this.applicationService.updateApplication();
-
-
-    this.navigationService.navigateRelative(
-      ProfessionalMembershipAndEmploymentSummaryComponent.route,
-      this.activatedRoute
+  addressConfirmed(address: AddressModel) {
+    return this.navigationService.navigate(
+      `application/${this.applicationService.model.id}`
     );
   }
 
