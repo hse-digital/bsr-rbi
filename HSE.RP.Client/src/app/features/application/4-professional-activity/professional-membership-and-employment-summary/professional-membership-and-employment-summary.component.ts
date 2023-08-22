@@ -43,8 +43,9 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return this.applicationService.model.ProfessionalMemberships.CompletionState==ComponentCompletionState.Complete
-    && this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerAddress?.CompletionState==ComponentCompletionState.Complete
+    return true;
+    // return this.applicationService.model.ProfessionalMemberships.CompletionState==ComponentCompletionState.Complete
+    // && this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerAddress?.CompletionState==ComponentCompletionState.Complete
     //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
   }
 
@@ -85,18 +86,18 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
     let professionalBodyMemberships: string[] = [];
     //if this.applicationService.model.ProfessionalMemberships members completion state is complete then add body name to array
     if (this.applicationService.model.ProfessionalMemberships.CABE.CompletionState === ComponentCompletionState.Complete) {
-      professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames[(this.applicationService.model.ProfessionalMemberships.CABE.MembershipBodyCode)]);
+      professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames["CABE"]);
     }
     if (this.applicationService.model.ProfessionalMemberships.CIOB.CompletionState === ComponentCompletionState.Complete) {
-      professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames[(this.applicationService.model.ProfessionalMemberships.CIOB.MembershipBodyCode)]);
+      professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames["CIOB"]);
     }
 
     if (this.applicationService.model.ProfessionalMemberships.RICS.CompletionState === ComponentCompletionState.Complete) {
-      professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames[(this.applicationService.model.ProfessionalMemberships.RICS.MembershipBodyCode)]);
+      professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames["RICS"]);
     }
 
     if (this.applicationService.model.ProfessionalMemberships.OTHER.CompletionState === ComponentCompletionState.Complete) {
-      professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames[(this.applicationService.model.ProfessionalMemberships.OTHER.MembershipBodyCode)]);
+      professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames["OTHER"]);
     }
 
     return professionalBodyMemberships;

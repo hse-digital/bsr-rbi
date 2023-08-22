@@ -13,17 +13,18 @@
 
     <govuk-summary-list>
       <govuk-summary-list-row
+        class="govuk-summary-list__key"
         (onClick)="navigateTo('professional-body-membership-summary')"
         (onKeyupEnter)="navigateTo('professional-body-membership-summary')"
         key="Membership of professional bodies"
         [showAction]="true"
       >
-        <dd
+        <div
           *ngFor="let membership of getProfessionalBodyMemberships()"
-          class="govuk-summary-list__value"
+
         >
-          membership
-        </dd>
+          <govuk-body>{{ membership }}</govuk-body>
+      </div>
       </govuk-summary-list-row>
 
       <govuk-summary-list-row
@@ -32,7 +33,7 @@
         key="Employment type"
         [showAction]="true"
       >
-        <dd class="govuk-summary-list__value">{{ getEmploymentType() }}</dd>
+        <dd class="govuk-summary-list__value">{{ getEmploymentTypeName() }}</dd>
       </govuk-summary-list-row>
 
       <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 1"

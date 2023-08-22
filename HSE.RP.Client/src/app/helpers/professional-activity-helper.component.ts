@@ -4,10 +4,10 @@ export class ProfessionalActivityHelper {
 
   static professionalBodyNames: Record<string,string> =
   {
-      ["RICS"]: "Royal Institution of Chartered Surveyors (RISC)",
-      ["CABE"]: "Chartered Association of Building Engineers (CABE)",
-      ["CIOB"]: "Chartered Institute of Building (CIOB)",
-      ["OTHER"]: "Other"
+      "RICS": "Royal Institution of Chartered Surveyors (RICS)",
+      "CABE": "Chartered Association of Building Engineers (CABE)",
+      "CIOB": "Chartered Institute of Building (CIOB)",
+      "OTHER": "Other"
   }
 
   static employmentTypeNames: Record<EmploymentType,string> =

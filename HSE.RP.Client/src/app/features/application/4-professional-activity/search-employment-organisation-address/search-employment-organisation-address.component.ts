@@ -61,6 +61,7 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
 
     await this.applicationService.updateApplication();
 
+
     this.navigationService.navigateRelative(
       ProfessionalMembershipAndEmploymentSummaryComponent.route,
       this.activatedRoute
