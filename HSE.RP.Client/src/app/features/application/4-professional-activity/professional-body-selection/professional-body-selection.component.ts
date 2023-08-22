@@ -102,6 +102,9 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
         selectedOption === 'CIOB' ? selectedOption : '';
       memberships.OTHER.MembershipBodyCode =
         selectedOption === 'OTHER' ? selectedOption : '';
+      if (selectedOption === 'OTHER') {
+        memberships.OTHER.CompletionState = ComponentCompletionState.Complete;
+      }
     }
   }
   override canAccess(
@@ -161,4 +164,5 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
       return true;
     }
   }
+
 }
