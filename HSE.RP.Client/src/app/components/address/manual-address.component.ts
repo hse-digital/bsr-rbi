@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { ApplicationService } from 'src/app/services/application.service';
 import { AddressSearchMode } from './address.component';
 import { GovukErrorSummaryComponent } from 'hse-angular';
@@ -9,27 +16,35 @@ import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 
 @Component({
   selector: 'manual-address',
-  templateUrl: './manual-address.component.html'
+  templateUrl: './manual-address.component.html',
 })
 export class ManualAddressComponent {
-
   @Input() searchMode: AddressSearchMode = AddressSearchMode.HomeAddress;
   @Output() onSearchAgain = new EventEmitter();
   @Output() onAddressEntered = new EventEmitter<AddressModel>();
   @Input() addressName?: string;
   @Input() selfAddress = false;
   @Input() title?: string;
+  @Input() addressManualyDisplayStep?: string;
+  @Input() orgFullName?: string;
 
   postcodeHasErrors = false;
   postcodeErrorMessage?: string;
   hasErrors = false;
   errorMessage?: string;
 
-  model: AddressModel = { IsManual: true, CompletionState: ComponentCompletionState.Complete }
+  model: AddressModel = {
+    IsManual: true,
+    CompletionState: ComponentCompletionState.Complete,
+  };
 
-  @ViewChildren("summaryError") summaryError?: QueryList<GovukErrorSummaryComponent>;
+  @ViewChildren('summaryError')
+  summaryError?: QueryList<GovukErrorSummaryComponent>;
 
-  constructor(public applicationService: ApplicationService, private titleService: TitleService) { }
+  constructor(
+    public applicationService: ApplicationService,
+    private titleService: TitleService
+  ) {}
 
   confirmAddress() {
     if (this.isModelValid()) {
@@ -49,8 +64,11 @@ export class ManualAddressComponent {
     this.addressOneIsValid = this.isAddressOneValid();
     this.townOrCityIsValid = this.isTownOrCityValid();
     this.postcodeIsValid = this.isPostcodeValid();
-    
-    this.hasErrors = !this.addressOneIsValid || !this.townOrCityIsValid || !this.postcodeIsValid;
+
+    this.hasErrors =
+      !this.addressOneIsValid ||
+      !this.townOrCityIsValid ||
+      !this.postcodeIsValid;
 
     return !this.hasErrors;
   }
@@ -78,17 +96,20 @@ export class ManualAddressComponent {
   }
 
   get anchorId() {
-    if(!this.addressOneIsValid) {
-      return "input-address-line-one";
+    if (!this.addressOneIsValid) {
+      return 'input-address-line-one';
     } else if (!this.townOrCityIsValid) {
-      return "input-town-or-city";
+      return 'input-town-or-city';
     } else if (!FieldValidations.IsNotNullOrWhitespace(this.model.Postcode)) {
-      return "input-postcode";
+      return 'input-postcode';
     }
-    return "";
+    return '';
   }
 
-  getErrorDescription(showError: boolean, errorMessage: string): string | undefined {
+  getErrorDescription(
+    showError: boolean,
+    errorMessage: string
+  ): string | undefined {
     return this.hasErrors && showError ? errorMessage : undefined;
   }
 
@@ -97,11 +118,19 @@ export class ManualAddressComponent {
   }
 
   getTitle() {
-    return this.title ? `Enter ${this.title} manually` : 'Enter home address manually';
+    let localTitle = 'Enter home address manually';
+
+    if (this.addressManualyDisplayStep === 'manual') {
+      if (this.orgFullName !== '') {
+        localTitle = `Enter address manually for ${this.orgFullName}`;
+      } else {
+        localTitle = 'Enter business address manually';
+      }
+    }
+    return localTitle;
   }
 
   warningMessage(): string {
-    return "Your home address will not be published unless it is also your business address.";
+    return 'Your home address will not be published unless it is also your business address.';
   }
-
 }

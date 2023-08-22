@@ -54,6 +54,8 @@
         [selfAddress]="selfAddress"
         [searchMode]="searchMode"
         [title]="title"
+        [addressManualyDisplayStep]="addressManualyDisplayStep"
+        [orgFullName]="orgFullName"
         (onSearchAgain)="searchAgain()"
         (onAddressEntered)="manualAddressEntered($event)"
       />
@@ -61,6 +63,8 @@
         *ngIf="step == 'confirm'"
         [addressName]="addressName"
         [selfAddress]="selfAddress"
+        [addressManualyDisplayStep]="addressManualyDisplayStep"
+        [orgFullName]="orgFullName"
         (onAddressConfirmed)="addressConfirmed()"
         [address]="address!"
         (onSearchAgain)="searchAgain()"

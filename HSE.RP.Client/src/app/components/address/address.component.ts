@@ -1,9 +1,7 @@
-import { Component, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { GetInjector } from 'src/app/helpers/injector.helper';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AddressResponseModel } from 'src/app/models/address-response.model';
 import { AddressModel } from 'src/app/models/address.model';
-import { NavigationService } from 'src/app/services/navigation.service';
+
 
 @Component({
   selector: 'hse-address',
@@ -19,6 +17,7 @@ export class AddressComponent implements OnInit {
   @Input() addressBodyText?: string;
   @Input() title?: string;
   @Input() addressManualyDisplayStep?: string;
+  @Input() orgFullName?: string;
   @Input() selfAddress = false;
   @Input() showOptionalAddressLineOne = false;
   @Output() onAddressConfirmed = new EventEmitter();
@@ -42,7 +41,7 @@ export class AddressComponent implements OnInit {
   }
 
   searchPerformed(addressResponse: AddressResponseModel) {
-    if (addressResponse.Results.length > 0) {
+    if (addressResponse.Results.length > 0 && addressResponse.TotalResults < 100) {
       this.addressResponse = addressResponse;
       if (this.addressResponse.Results.length == 1) {
         this.address = this.addressResponse.Results[0];
@@ -50,7 +49,10 @@ export class AddressComponent implements OnInit {
       } else {
         this.changeStepTo(addressResponse.TotalResults < 100 ? "select" : "too-many");
       }
-    } else {
+    } else if (addressResponse.Results.length > 0 && addressResponse.TotalResults > 100){
+      this.changeStepTo("too-many");
+    }
+    else {
       this.changeStepTo("not-found");
     }
   }

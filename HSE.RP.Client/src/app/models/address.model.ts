@@ -14,5 +14,5 @@ export class AddressModel implements IComponentModel {
     Country?: string;
     AdministrativeArea?: string;
     Postcode?: string;
-    CompletionState?: ComponentCompletionState;
+    CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
   }

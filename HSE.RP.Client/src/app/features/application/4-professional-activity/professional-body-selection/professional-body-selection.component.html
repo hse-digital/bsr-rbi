@@ -1,12 +1,23 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
 <govuk-formpage
-  saveAndContinueText="Save and continue"
-  [hideSaveAndComeBack]="false"
+  saveAndContinueText="Continue"
+  [hideSaveAndComeBack]="true"
   (saveAndContinue)="saveAndContinue()"
   (saveAndComeBack)="saveAndComeBack()"
   [hideBackButton]="true"
 >
+  <govuk-error-summary
+    *ngIf="hasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="!modelValid"
+      anchorId="class-technical-manager"
+      message="{{ errorMessage }}"
+    />
+  </govuk-error-summary>
   <h1 class="govuk-heading-l">Which professional body are you a member of?</h1>
   <govuk-body>
     <p>
@@ -53,7 +64,7 @@
         "
         class="govuk-radios__divider"
       >
-        or
+        <span *ngIf="display()">or</span>
       </div>
       <govuk-radio
         *ngIf="

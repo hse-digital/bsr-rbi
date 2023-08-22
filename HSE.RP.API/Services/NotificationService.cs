@@ -71,7 +71,7 @@ namespace HSE.RP.API.Services
 
             string jwtToken = GenerateSecurityToken(notificationAPIKey.apiKey);
 
-            var expirationTime = DateTime.UtcNow.Hour + 1;
+            var expirationTime = DateTime.UtcNow.AddHours(1);
 
 
             try
@@ -96,7 +96,7 @@ namespace HSE.RP.API.Services
                     personalisation = new Dictionary<string, dynamic>()
                     {
                         { "security code", otpToken },
-                        { "expiration_time", expirationTime.ToString() + ":00" },
+                        { "expiration_time", expirationTime.ToString()},
                         { "link", swaOptions.Url }
                     }
                 }
@@ -130,7 +130,7 @@ namespace HSE.RP.API.Services
 
             string jwtToken = GenerateSecurityToken(notificationAPIKey.apiKey);
 
-            var expirationTime = DateTime.UtcNow.Hour + 1;
+            var expirationTime = DateTime.UtcNow.AddHours(1);
 
 
             try
@@ -155,7 +155,7 @@ namespace HSE.RP.API.Services
                     personalisation = new Dictionary<string, dynamic>()
                     {
                         { "security code", otpToken },
-                        { "expiration_time", expirationTime.ToString() + ":00" }
+                        { "expiration_time", expirationTime.ToString()}
                     }
                 }
                 );

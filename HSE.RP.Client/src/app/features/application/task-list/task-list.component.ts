@@ -33,7 +33,6 @@ import { BuildingInspectorClassSelectionComponent } from '../2-building-inspecto
 import { BuildingInspectorSummaryComponent } from '../2-building-inspector-class/building-inspector-summary/building-inspector-summary.component';
 import { BuildingInspectorCountryComponent } from '../2-building-inspector-class/country/building-inspector-country.component';
 import { CompetencyIndependentStatusComponent } from '../3-competency/independent-competency-status/independent-competency-status.component';
-import { CompetencyCertificateCodeComponent } from '../3-competency/certificate-code/competency-certificate-code.component';
 import { CompetencyAssessmentOrganisationComponent } from '../3-competency/assesesment-organisation/competency-assesesment-organisation.component';
 import { CompetencyAssessmentDateComponent } from '../3-competency/assesesment-date/competency-assesesment-date.component';
 import { CompetencySummaryComponent } from '../3-competency/competency-summary/competency-summary.component';
@@ -65,6 +64,7 @@ import { PersonalDetails } from 'src/app/models/personal-details.model';
 import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
 import { Competency } from 'src/app/models/competency.model';
 import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
+import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-details';
 
 interface ITaskListParent {
   prompt: string;
@@ -323,9 +323,10 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   }
 
   determinProfessionalMembershipSummaryTask(
-    model?: ApplicantProfessionBodyMemberships
+    model?: ApplicantProfessionBodyMemberships,
+    employeeModel?: ApplicantEmploymentDetails
   ): TaskStatus {
-    if (model?.CompletionState === ComponentCompletionState.Complete) {
+    if (model?.CompletionState === ComponentCompletionState.Complete && employeeModel?.CompletionState === ComponentCompletionState.Complete) {
       return TaskStatus.None;
     } else {
       return TaskStatus.CannotStart;
@@ -568,7 +569,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getModelStatus(
-              aModel.ProfessionalActivity?.EmploymentDetails.EmploymentTypeSelection
+              aModel.ProfessionalActivity?.EmploymentDetails
             ),
         },
         {
@@ -581,7 +582,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.determinProfessionalMembershipSummaryTask(
-              aModel.ProfessionalMemberships
+              aModel.ProfessionalMemberships,
+              aModel.ProfessionalActivity.EmploymentDetails
             ),
         },
       ],

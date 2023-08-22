@@ -31,14 +31,14 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
   errors: boolean = false;
   public errorText: string = "";
   public options: AssessingPlans[] = [
-    {value: "CategoryA", text:"Category A", hint: "Content to be finalised"},
-    {value: "CategoryB", text:"Category B", hint: "Content to be finalised"},
-    {value: "CategoryC", text:"Category C", hint: "Content to be finalised"},
-    {value: "CategoryD", text:"Category D", hint: "Content to be finalised"},
-    {value: "CategoryE", text:"Category E", hint: "Content to be finalised"},
-    {value: "CategoryF", text:"Category F", hint: "Content to be finalised"},
-    {value: "CategoryG", text:"Category G", hint: "Content to be finalised"},
-    {value: "CategoryH", text:"Category H", hint: "Content to be finalised"},
+    {value: "CategoryA", text:"Category A", hint: "Residential dwelling houses (single household) less than 7.5m in height"},
+    {value: "CategoryB", text:"Category B", hint: "Residential flats and dwelling houses, less than 11m in height"},
+    {value: "CategoryC", text:"Category C", hint: "Residential flats and dwelling houses, 11m or more but less than 18m in height"},
+    {value: "CategoryD", text:"Category D", hint: "All building types and uses less than 7.5m in height"},
+    {value: "CategoryE", text:"Category E", hint: "All building types 7.5m or more but less than 11m in height"},
+    {value: "CategoryF", text:"Category F", hint: "All building types 11m or more but less than 18m in height"},
+    {value: "CategoryG", text:"Category G", hint: "All building types, including standard and non-standard but excluding high-risk, with no height limit"},
+    {value: "CategoryH", text:"Category H", hint: "All building types, including high-risk"},
   ]
 
   override model?: BuildingAssessingPlansCategoriesClass3;
