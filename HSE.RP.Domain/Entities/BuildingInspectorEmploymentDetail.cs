@@ -9,7 +9,8 @@ public record BuildingInspectorEmploymentDetail(
     string Name = null,
     string BuildingProfessionApplicationId = null,
     string BuildingInspectorId = null,
-    string EmployerId = null,
+    string EmployerIdContact = null,
+    string EmployerIdAccount = null,
     string EmploymentTypeId = null,
     bool IsCurrent = false,
     int? StateCode = null,
@@ -23,8 +24,10 @@ public record DynamicsBuildingInspectorEmploymentDetail(
     string buildingProfessionApplicationReferenceId = null,
     [property: JsonPropertyName("bsr_buildinginspectorid@odata.bind")]
     string contactRefId = null,
-    [property: JsonPropertyName("bsr_biemployerid@odata.bind")]
-    string employerId = null,
+    [property: JsonPropertyName("bsr_biemployerid_contact@odata.bind")]
+    string employerIdContact = null,
+    [property: JsonPropertyName("bsr_biemployerid_account@odata.bind")]
+    string employerIdAccount = null,
     [property: JsonPropertyName("bsr_employmenttypeid@odata.bind")]
     string employmentTypeId = null,
     bool bsr_iscurrent = false,

@@ -52,10 +52,17 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
     return true;
   }
 
-  addressConfirmed(address: AddressModel) {
+  async addressConfirmed(address: AddressModel) {
+    this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerAddress =
+      address;
+
+    this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerAddress.CompletionState =
+      ComponentCompletionState.Complete;
+
+    await this.applicationService.updateApplication();
+
     return this.navigationService.navigateRelative(
-      `professional-membership-and-employment-summary`, this.activatedRoute
-    );
+      `professional-membership-and-employment-summary`, this.activatedRoute);
   }
 
   changeStep(event: any) {

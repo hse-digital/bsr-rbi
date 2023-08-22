@@ -543,6 +543,53 @@ namespace HSE.RP.API.Services
 
         }
 
+        public async Task<BuildingInspectorEmploymentDetail> CreateOrUpdateBuildingInspectorEmploymentDetails(BuildingInspectorEmploymentDetail buildingInspectorEmploymentDetail)
+        {
+
+            var dynamicsBuildingInspectorEmploymentDetail = new DynamicsBuildingInspectorEmploymentDetail(
+                buildingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorEmploymentDetail.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorEmploymentDetail.BuildingInspectorId})",
+                employerIdContact: buildingInspectorEmploymentDetail.EmployerIdContact,
+                employerIdAccount: buildingInspectorEmploymentDetail.EmployerIdAccount,
+                bsr_iscurrent: buildingInspectorEmploymentDetail.IsCurrent,
+                statuscode: buildingInspectorEmploymentDetail.StatusCode,
+                statecode: buildingInspectorEmploymentDetail.StateCode,
+                employmentTypeId: $"/bsr_employmenttypes({buildingInspectorEmploymentDetail.EmploymentTypeId})"
+                );
+
+            //If the employment detail has an id then we need to update it
+            if (buildingInspectorEmploymentDetail.Id is not null)
+            {
+                var response = await dynamicsApi.Update($"bsr_biemploymentdetails({buildingInspectorEmploymentDetail.Id})", dynamicsBuildingInspectorEmploymentDetail);
+                var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
+                return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
+            }
+            else
+            {
+                //Check if an entry for this demployment, already exists
+                var existingRegistrationActivity = await GetEmploymentDetailsUsingId(buildingInspectorEmploymentDetail.BuildingProfessionApplicationId);
+
+                //If no entry exists then create a new one
+                if (existingRegistrationActivity == null)
+                {
+                    
+                    var response = await dynamicsApi.Create("bsr_biemploymentdetails", dynamicsBuildingInspectorEmploymentDetail);
+                    var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
+                    return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
+               
+                }
+                //If an entry exists then update it
+                else
+                {
+                    var response = await dynamicsApi.Update($"bsr_biemploymentdetails({existingRegistrationActivity.bsr_biemploymentdetailid})", dynamicsBuildingInspectorEmploymentDetail);
+                    var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
+                    return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
+                }
+            }
+
+        }
+
+
         public async Task<string[]> GetPublicSectorBodies()
         {
             var publicSectorBodies = await dynamicsApi.Get<DynamicsResponse<DynamicsAccount>>("accounts", ("$filter", $"_bsr_accounttype_accountid_value eq '{DynamicsAccountType.Ids["local-authority"]}'"));
@@ -591,6 +638,7 @@ namespace HSE.RP.API.Services
                 var employerId = ExtractEntityIdFromHeader(response.Headers);
                 employer = await dynamicsApi.Get<DynamicsResponse<DynamicsAccount>>("accounts",
                                                ("$filter", $"accountid eq '{employerId}'"));
+                return employer.value.FirstOrDefault();
             }
 
 
@@ -631,49 +679,6 @@ namespace HSE.RP.API.Services
             return response.value.FirstOrDefault();
         }
 
-        public async Task<BuildingInspectorEmploymentDetail> CreateOrUpdateBuildingInspectorEmploymentDetails(BuildingInspectorEmploymentDetail buildingInspectorEmploymentDetail)
-        {
-
-            var dynamicsBuildingInspectorEmploymentDetail = new DynamicsBuildingInspectorEmploymentDetail(
-                bsr_name: buildingInspectorEmploymentDetail.Name,
-                buildingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorEmploymentDetail.BuildingProfessionApplicationId})",
-                contactRefId: $"/contacts(${buildingInspectorEmploymentDetail.BuildingInspectorId})",
-                employerId: buildingInspectorEmploymentDetail.EmployerId,
-                bsr_iscurrent: buildingInspectorEmploymentDetail.IsCurrent,
-                statuscode: buildingInspectorEmploymentDetail.StatusCode,
-                statecode: buildingInspectorEmploymentDetail.StateCode,
-                employmentTypeId: $"/bsr_employmenttypes({buildingInspectorEmploymentDetail.EmploymentTypeId})"
-                );
-
-            //If the employment detail has an id then we need to update it
-            if (buildingInspectorEmploymentDetail.Id is not null)
-            {
-                var response = await dynamicsApi.Update($"bsr_biregactivities({buildingInspectorEmploymentDetail.Id})", dynamicsBuildingInspectorEmploymentDetail);
-                var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
-                return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
-            }
-            else
-            {
-                //Check if an entry for this demployment, already exists
-                var existingRegistrationActivity = await GetEmploymentDetailsUsingId(buildingInspectorEmploymentDetail.BuildingProfessionApplicationId);
-
-                //If no entry exists then create a new one
-                if (existingRegistrationActivity == null)
-                {
-                    var response = await dynamicsApi.Create("bsr_biemploymentdetails", dynamicsBuildingInspectorEmploymentDetail);
-                    var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
-                    return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
-                }
-                //If an entry exists then update it
-                else
-                {
-                    var response = await dynamicsApi.Update($"bsr_biemploymentdetails({existingRegistrationActivity._bsr_biapplicationid_value})", dynamicsBuildingInspectorEmploymentDetail);
-                    var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
-                    return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
-                }
-            }
-
-        }
 
 
     }

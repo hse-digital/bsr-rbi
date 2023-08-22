@@ -21,6 +21,7 @@ public record DynamicsAccount(
     [property: JsonPropertyName("bsr_accounttype_accountId@odata.bind")]
     string accountTypeReferenceId = null,
     string bsr_otherorganisationtype = null,
+    string _bsr_accounttype_accountid_value = null,
     YesNoOption? bsr_manualaddress = null);
 
 public static class DynamicsAccountType

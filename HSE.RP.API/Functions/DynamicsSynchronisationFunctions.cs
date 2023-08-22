@@ -145,10 +145,10 @@ public class DynamicsSynchronisationFunctions
 
         var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
 
-        var dynamicsEmploymentDetails = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorEmploymentDetail>>(nameof(GetEmploymentDetailsUsingId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+        var dynamicsEmploymentDetails = await orchestrationContext.CallActivityAsync<DynamicsBuildingInspectorEmploymentDetail>(nameof(GetEmploymentDetailsUsingId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
-        string employerId = null;
-
+        string employerIdContact = null;
+        string employerIdAccount = null;
         //Lookup employer
         if((buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PublicSector
             || buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PrivateSector
@@ -157,29 +157,32 @@ public class DynamicsSynchronisationFunctions
         {
             //Lookup employer relationship in accounts table
             var employerDetails = await orchestrationContext.CallActivityAsync<DynamicsAccount>(nameof(CreateOrUpdateEmployer), buildingProfessionApplicationModel);
-            employerId = $"/accounts(${ employerDetails.accountid})";
+
+            employerIdAccount = $"/accounts({employerDetails.accountid})";
 
         }
         else if(buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other
             && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection == "no")
         {
-            employerId = $"/contacts(${dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})";
+            employerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})";
 
         }
 
         var employmentDetails = new BuildingInspectorEmploymentDetail
         {
+                Id = dynamicsEmploymentDetails?.bsr_biemploymentdetailid ?? null,
                 BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                 BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
-                EmployerId = employerId,
+                EmployerIdAccount = employerIdAccount,
+                EmployerIdContact = employerIdContact,
                 EmploymentTypeId = BuildingInspectorEmploymentTypeSelection.Ids[(int)buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType],
                 IsCurrent = true,
-                StatusCode = 2,
-                StateCode = 1
+                StatusCode = 1,
+                StateCode = 0
         };
 
         //Create or update employment
-        await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorProfessionalBodyMembership), employmentDetails);
+       await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorEmploymentDetails), employmentDetails);
 
     }
 
@@ -1192,10 +1195,18 @@ public class DynamicsSynchronisationFunctions
         return dynamicsService.GetEmploymentDetailsUsingId(applicationId);
     }
 
+
+
     [Function(nameof(GetContactUsingId))]
     public Task<DynamicsContact> GetContactUsingId([ActivityTrigger] string contactId)
     {
         return dynamicsService.GetContactUsingId(contactId);
+    }
+
+    [Function(nameof(CreateOrUpdateEmployer))]
+    public Task<DynamicsAccount> CreateOrUpdateEmployer([ActivityTrigger] BuildingProfessionApplicationModel buildingProfessionApplicationModel)
+    {
+        return dynamicsService.CreateOrUpdateEmployer(buildingProfessionApplicationModel);
     }
 
     [Function(nameof(GetRegistrationClassesUsingApplicationId))]
@@ -1303,11 +1314,6 @@ public class DynamicsSynchronisationFunctions
         await dynamicsService.CreatePayment(buildingProfessionApplicationPayment);
     }
 
-    [Function(nameof(CreateOrUpdateEmployer))]
-    public async Task CreateOrUpdateEmployer([ActivityTrigger] BuildingProfessionApplicationModel buildingProfessionApplicationModel)
-    {
-        await dynamicsService.CreateOrUpdateEmployer(buildingProfessionApplicationModel);
-    }
 
     [Function(nameof(GetPaymentStatus))]
     public async Task<PaymentResponseModel> GetPaymentStatus([ActivityTrigger] string paymentId)
