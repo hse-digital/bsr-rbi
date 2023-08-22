@@ -9,6 +9,7 @@ import {
 } from '../ProfessionalActivityRoutes';
 import { ApplicantProfessionBodyMembershipsHelper } from 'src/app/models/applicant-professional-body-membership';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ProfessionalMembershipInformationComponent } from '../professional-membership-information/professional-membership-information.component';
 
 @Component({
   selector: 'hse-professional-individual-membership-details',
@@ -158,4 +159,15 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
       professionalBodyOrgNames[membershipCode] || '';
     this.PROFESSIONAL_BODY_ORG_NAME;
   }
+
+  public changeMembershipDetails() {
+    const queryParams = this.membershipCode;
+    return this.navigationService.navigateRelative(
+      ProfessionalMembershipInformationComponent.route,
+      this.activatedRoute,
+      { queryParams }
+    ); // Back to the task list.
+    
+  }
+
 }
