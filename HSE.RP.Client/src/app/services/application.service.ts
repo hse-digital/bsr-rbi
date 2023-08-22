@@ -205,5 +205,11 @@ export class ApplicationService {
     );
   }
 
+  async syncEmploymentDetails(): Promise<void> {
+    await firstValueFrom(
+      this.httpClient.post(`api/SyncEmploymentDetails`, this.model)
+    );
+  }
+
 
 }

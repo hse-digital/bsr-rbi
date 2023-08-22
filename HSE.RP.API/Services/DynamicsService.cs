@@ -117,9 +117,6 @@ namespace HSE.RP.API.Services
 
                     });
 
-
-
-
             return response.value.FirstOrDefault();
         }
 
@@ -143,56 +140,43 @@ namespace HSE.RP.API.Services
 
         private async Task<DynamicsBuildingInspectorProfessionalBodyMembership> FindExistingBuildingProfessionalBodyMembership(string membershipBodyId, string buidingProfessionApplicationId)
         {
-            try
-            {
-                var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership>>("bsr_biprofessionalmemberships", new[]
-                 {
+
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership>>("bsr_biprofessionalmemberships", new[]
+             {
                         ("$filter", $"_bsr_biapplicationid_value eq '{buidingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{membershipBodyId}'")
 
                     });
 
-                return response.value.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return response.value.FirstOrDefault();
+
         }
 
         private async Task<DynamicsBuildingInspectorRegistrationCountry> FindExistingBuildingInspectorRegistrationCountry(string countryId, string buidingProfessionApplicationId)
         {
-            try
-            {
-                var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorRegistrationCountry>>("bsr_biregcountries", new[]
-                 {
+
+
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorRegistrationCountry>>("bsr_biregcountries", new[]
+             {
                         ("$filter", $"_bsr_biapplicationid_value eq '{buidingProfessionApplicationId}' and _bsr_countryid_value eq '{countryId}'")
 
                     });
 
-                return response.value.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return response.value.FirstOrDefault();
+
+
         }
 
         private async Task<DynamicsBuildingInspectorRegistrationActivity> FindExistingBuildingInspectorRegistrationActivity(string activityId, string categoryId, string buidingProfessionApplicationId)
         {
-            try
-            {
-                var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorRegistrationActivity>>("bsr_biregactivities", new[]
-                 {
+
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorRegistrationActivity>>("bsr_biregactivities", new[]
+             {
                         ("$filter", $"_bsr_biapplicationid_value eq '{buidingProfessionApplicationId}' and _bsr_biactivityid_value eq '{activityId}' and _bsr_bibuildingcategoryid_value eq '{categoryId}'")
 
                     });
 
-                return response.value.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return response.value.FirstOrDefault();
+
         }
 
 
@@ -594,8 +578,8 @@ namespace HSE.RP.API.Services
                     bsr_manualaddress = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.IsManual is null ? null : buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.IsManual is true ? YesNoOption.Yes : YesNoOption.No,
                     //[property: JsonPropertyName("bsr_Address1CountryCode@odata.bind")]
                     countryReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country is null ? null :
-                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "England" ? $"/bsr_countries({ BuildingInspectorCountryNames.Ids["England"]})" :
-                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "Wales" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["Wales"]})": 
+                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "England" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["England"]})" :
+                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "Wales" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["Wales"]})" :
                                          null,
                     //[property: JsonPropertyName("bsr_accounttype_accountId@odata.bind")]
                     accountTypeReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == Enums.EmploymentType.PublicSector ? $"/bsr_accounttypes({DynamicsAccountType.Ids["public-sector-building-control-body"]})" :
@@ -638,13 +622,57 @@ namespace HSE.RP.API.Services
 
         }
 
-        public async Task<List<DynamicsBuildingInspectorEmploymentDetail>> GetEmploymentDetailsUsingId(string applicationId)
+        public async Task<DynamicsBuildingInspectorEmploymentDetail> GetEmploymentDetailsUsingId(string applicationId)
         {
             var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorEmploymentDetail>>("bsr_biemploymentdetails", new[]
             {
             ("$filter", $"_bsr_biapplicationid_value eq '{applicationId}'")
             });
-            return response.value;
+            return response.value.FirstOrDefault();
+        }
+
+        public async Task<BuildingInspectorEmploymentDetail> CreateOrUpdateBuildingInspectorEmploymentDetails(BuildingInspectorEmploymentDetail buildingInspectorEmploymentDetail)
+        {
+
+            var dynamicsBuildingInspectorEmploymentDetail = new DynamicsBuildingInspectorEmploymentDetail(
+                bsr_name: buildingInspectorEmploymentDetail.Name,
+                buildingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorEmploymentDetail.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts(${buildingInspectorEmploymentDetail.BuildingInspectorId})",
+                employerId: buildingInspectorEmploymentDetail.EmployerId,
+                bsr_iscurrent: buildingInspectorEmploymentDetail.IsCurrent,
+                statuscode: buildingInspectorEmploymentDetail.StatusCode,
+                statecode: buildingInspectorEmploymentDetail.StateCode,
+                employmentTypeId: $"/bsr_employmenttypes({buildingInspectorEmploymentDetail.EmploymentTypeId})"
+                );
+
+            //If the employment detail has an id then we need to update it
+            if (buildingInspectorEmploymentDetail.Id is not null)
+            {
+                var response = await dynamicsApi.Update($"bsr_biregactivities({buildingInspectorEmploymentDetail.Id})", dynamicsBuildingInspectorEmploymentDetail);
+                var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
+                return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
+            }
+            else
+            {
+                //Check if an entry for this demployment, already exists
+                var existingRegistrationActivity = await GetEmploymentDetailsUsingId(buildingInspectorEmploymentDetail.BuildingProfessionApplicationId);
+
+                //If no entry exists then create a new one
+                if (existingRegistrationActivity == null)
+                {
+                    var response = await dynamicsApi.Create("bsr_biemploymentdetails", dynamicsBuildingInspectorEmploymentDetail);
+                    var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
+                    return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
+                }
+                //If an entry exists then update it
+                else
+                {
+                    var response = await dynamicsApi.Update($"bsr_biemploymentdetails({existingRegistrationActivity._bsr_biapplicationid_value})", dynamicsBuildingInspectorEmploymentDetail);
+                    var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
+                    return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
+                }
+            }
+
         }
 
 

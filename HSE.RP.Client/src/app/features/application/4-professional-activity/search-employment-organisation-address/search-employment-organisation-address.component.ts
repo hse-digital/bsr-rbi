@@ -53,8 +53,8 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   }
 
   addressConfirmed(address: AddressModel) {
-    return this.navigationService.navigate(
-      `application/${this.applicationService.model.id}`
+    return this.navigationService.navigateRelative(
+      `professional-membership-and-employment-summary`, this.activatedRoute
     );
   }
 

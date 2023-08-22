@@ -56,7 +56,7 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
   }
 
   async SyncAndContinue() {
-    //await this.applicationService.syncCompetency();
+    await this.applicationService.syncEmploymentDetails();
     this.saveAndContinue();
   }
 
