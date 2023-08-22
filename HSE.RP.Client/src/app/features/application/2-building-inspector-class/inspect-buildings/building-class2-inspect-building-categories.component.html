@@ -23,9 +23,13 @@
   </h1>
 
   <govuk-body>
-    Competent means you can inspect buildings to ensure they comply with
-    submitted, assessed plans and associated information, and comply with
-    building regulations.
+    Competent to inspect means you can inspect buildings to ensure they comply with submitted, assessed plans and associated information, and comply with building regulations.
+    <br />
+    <br />
+    Your category will be published on the register
+    <br />
+    <br />
+    To register as a class 4 technical manager you must be competent to do all BSR regulated activities (assessing plans and inspections) for all categories of class 2 or class 3 building inspectors.
 
     <br />
     <br />
@@ -47,7 +51,7 @@
         text="Category A"
         value="CategoryA"
         (onClicked)="optionClicked()"
-        hint=""
+        hint="Residential dwelling houses (single household) less than 7.5m in height"
       />
       <govuk-checkbox
         #checkbox
@@ -57,7 +61,7 @@
         value="CategoryB"
         (onClicked)="optionClicked()"
         [id]="id"
-        hint=""
+        hint="Residential flats and dwelling houses, less than 11m in height"
       />
       <govuk-checkbox
         #checkbox
@@ -67,7 +71,7 @@
         value="CategoryC"
         (onClicked)="optionClicked()"
         [id]="id"
-        hint=""
+        hint="Residential flats and dwelling houses, 11m or more but less than 18m in height"
       />
       <govuk-checkbox
         #checkbox
@@ -77,7 +81,7 @@
         value="CategoryD"
         (onClicked)="optionClicked()"
         [id]="id"
-        hint=""
+        hint="All building types and uses less than 7.5m in height"
       />
       <govuk-checkbox
         #checkbox
@@ -87,7 +91,7 @@
         value="CategoryE"
         (onClicked)="optionClicked()"
         [id]="id"
-        hint=""
+        hint="All building types 7.5m or more but less than 11m in height"
       />
       <govuk-checkbox
         #checkbox
@@ -97,7 +101,7 @@
         value="CategoryF"
         (onClicked)="optionClicked()"
         [id]="id"
-        hint=""
+        hint="All building types 11m or more but less than 18m in height"
       />
     </govuk-checkbox-group>
   </govuk-body>
