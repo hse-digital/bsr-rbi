@@ -81,7 +81,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
     this.errorMessage = '';
     if (this.selectedOption === '') {
       this.hasErrors = true;
-      this.errorMessage = 'Select one option';
+      this.errorMessage = 'Select whether you want to delete a professional body membership or not';
     }
 
     return !this.hasErrors;

@@ -8,57 +8,34 @@
 >
   <govuk-body>
     <h1 class="govuk-heading-l">
-      Check your {{PROFESSIONAL_BODY_ORG_NAME}} membership details
+      Check your {{ PROFESSIONAL_BODY_ORG_NAME }} membership details
     </h1>
 
     <govuk-summary-list>
       <govuk-summary-list-row
         key="Membership number"
         [showAction]="true"
-        (onClick)="
-          navigateTo(
-            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
-          )
-        "
-        (onKeyupEnter)="
-          navigateTo(
-            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
-          )
-        "
+        (onClick)="changeMembershipDetails()"
+        (onKeyupEnter)="changeMembershipDetails()"
         >{{ getMembershipNumber() }}
       </govuk-summary-list-row>
 
       <govuk-summary-list-row
         key="Membership Type"
         [showAction]="true"
-        (onClick)="
-          navigateTo(
-            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
-          )
-        "
-        (onKeyupEnter)="
-          navigateTo(
-            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
-          )
-        "
+        (onClick)="changeMembershipDetails()"
+        (onKeyupEnter)="changeMembershipDetails()"
         >{{ getMembershipLevel() }}
       </govuk-summary-list-row>
 
       <govuk-summary-list-row
         key="Year"
         [showAction]="true"
-        (onClick)="
-          navigateTo(
-            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
-          )
-        "
-        (onKeyupEnter)="
-          navigateTo(
-            ProfessionalActivityRoutes.PROFESSIONAL_MEMBERSHIP_INFORMATION
-          )
-        "
+        (onClick)="changeMembershipDetails()"
+        (onKeyupEnter)="changeMembershipDetails()"
         >{{ getMembershipYear() }}
       </govuk-summary-list-row>
     </govuk-summary-list>
   </govuk-body>
 </govuk-formpage>
+

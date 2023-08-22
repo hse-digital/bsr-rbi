@@ -1,11 +1,15 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
 <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
-  <govuk-error-link
+  <!-- <govuk-error-link
     *ngFor="let error of validationErrors"
     anchorId="{{ error.Anchor }}"
     message="{{ error.Text }}"
-  />
+  /> -->
+  <ng-container
+    *ngIf="isSingleMessage; then singleErrorDisplay; else multipleErrorDisplay"
+  >
+  </ng-container>
 </govuk-error-summary>
 <govuk-formpage
   saveAndContinueText="Save and continue"
@@ -16,7 +20,7 @@
 >
   <div class="govuk-form-group">
     <h1 class="govuk-heading-l">
-      Provide your {{PROFESSIONAL_BODY_ORG_NAME}} membership information
+      Provide your {{ PROFESSIONAL_BODY_ORG_NAME }} membership information
     </h1>
 
     <govuk-input
@@ -51,3 +55,17 @@
   </div>
 </govuk-formpage>
 
+<ng-template #singleErrorDisplay>
+  <govuk-error-link
+    *ngFor="let error of singleValidationErrors"
+    anchorId="{{ error.Anchor }}"
+    message="{{ error.Text }}"
+  />
+</ng-template>
+<ng-template #multipleErrorDisplay>
+  <govuk-error-link
+    *ngFor="let error of validationErrors"
+    anchorId="{{ error.Anchor }}"
+    message="{{ error.Text }}"
+  />
+</ng-template>
