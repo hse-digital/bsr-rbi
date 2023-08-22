@@ -18,6 +18,7 @@ using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSE.RP.Domain.Entities;
 using Microsoft.Extensions.Options;
+using Microsoft.Identity.Client;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace HSE.RP.API.Services
@@ -525,7 +526,7 @@ namespace HSE.RP.API.Services
                 bsr_currentmembershiplevelortype: buildingInspectorProfessionalBodyMembership.CurrentMembershipLevelOrType,
                 statuscode: buildingInspectorProfessionalBodyMembership.StatusCode ?? 1,
                 statecode: buildingInspectorProfessionalBodyMembership.StateCode ?? 0,
-                yearRefId: buildingInspectorProfessionalBodyMembership.YearId is  null ? null : $"/bsr_years({buildingInspectorProfessionalBodyMembership.YearId})"
+                yearRefId: buildingInspectorProfessionalBodyMembership.YearId is null ? null : $"/bsr_years({buildingInspectorProfessionalBodyMembership.YearId})"
                 );
 
             //If the membership has an id then we need to update it
@@ -558,13 +559,59 @@ namespace HSE.RP.API.Services
 
         }
 
-        public async Task<string[]>  GetPublicSectorBodies()
+        public async Task<string[]> GetPublicSectorBodies()
         {
             var publicSectorBodies = await dynamicsApi.Get<DynamicsResponse<DynamicsAccount>>("accounts", ("$filter", $"_bsr_accounttype_accountid_value eq '{DynamicsAccountType.Ids["local-authority"]}'"));
 
-            string[] publicSectorBodyNames = publicSectorBodies.value.Select(x=>x.name).ToArray();
+            string[] publicSectorBodyNames = publicSectorBodies.value.Select(x => x.name).ToArray();
 
             return publicSectorBodyNames;
+        }
+
+        public async Task<DynamicsAccount> CreateOrUpdateEmployer(BuildingProfessionApplicationModel buildingProfessionApplicationModel)
+        {
+            var employer = await dynamicsApi.Get<DynamicsResponse<DynamicsAccount>>("accounts",
+                                                           ("$filter", $"name eq '{buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.FullName}'" +
+                                                           $" and address1_postalcode eq '{buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Postcode}'"));
+
+            if (employer.value.Count() == 0)
+            {
+                //Create a new account
+                var dynamicsAccount = new DynamicsAccount()
+                {
+                    name = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.FullName,
+                    address1_addresstypecode = 3,
+                    address1_line1 = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Address,
+                    address1_line2 = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.AddressLineTwo,
+                    address1_city = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Town,
+                    //address1_county = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress,
+                    address1_country = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country,
+                    address1_postalcode = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Postcode,
+                    bsr_address1uprn = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.UPRN,
+                    bsr_address1usrn = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.USRN,
+                    bsr_address1lacode = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.CustodianCode,
+                    bsr_address1ladescription = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.CustodianDescription,
+                    bsr_manualaddress = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.IsManual is null ? null : buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.IsManual is true ? YesNoOption.Yes : YesNoOption.No,
+                    //[property: JsonPropertyName("bsr_Address1CountryCode@odata.bind")]
+                    countryReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country is null ? null :
+                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "England" ? $"/bsr_countries({ BuildingInspectorCountryNames.Ids["England"]})" :
+                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "Wales" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["Wales"]})": 
+                                         null,
+                    //[property: JsonPropertyName("bsr_accounttype_accountId@odata.bind")]
+                    accountTypeReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == Enums.EmploymentType.PublicSector ? $"/bsr_accounttypes({DynamicsAccountType.Ids["public-sector-building-control-body"]})" :
+                    buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == Enums.EmploymentType.PrivateSector ? $"/bsr_accounttypes({DynamicsAccountType.Ids["private-sector-building-control-body"]})" :
+                    $"/bsr_accounttypes({DynamicsAccountType.Ids["other"]})"
+                };
+
+                var response = await dynamicsApi.Create("accounts", dynamicsAccount);
+                var employerId = ExtractEntityIdFromHeader(response.Headers);
+                employer = await dynamicsApi.Get<DynamicsResponse<DynamicsAccount>>("accounts",
+                                               ("$filter", $"accountid eq '{employerId}'"));
+            }
+
+
+
+            return employer.value.FirstOrDefault();
         }
 
         public Task<DynamicsOrganisationsSearchResponse> SearchSocialHousingOrganisations(string authorityName)
@@ -590,6 +637,17 @@ namespace HSE.RP.API.Services
             return dynamicsYear.value.FirstOrDefault();
 
         }
+
+        public async Task<List<DynamicsBuildingInspectorEmploymentDetail>> GetEmploymentDetailsUsingId(string applicationId)
+        {
+            var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorEmploymentDetail>>("bsr_biemploymentdetails", new[]
+            {
+            ("$filter", $"_bsr_biapplicationid_value eq '{applicationId}'")
+            });
+            return response.value;
+        }
+
+
     }
 
 

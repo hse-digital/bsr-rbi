@@ -36,6 +36,13 @@ public class DynamicsSynchronisationFunctions
         this.integrationOptions = integrationOptions.Value;
     }
 
+    [Function(nameof(SyncEmploymentDetails))]
+    public async Task<HttpResponseData> SyncEmploymentDetails([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    {
+        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseEmploymentDetails), buildingProfessionApplicationModel);
+        return request.CreateResponse();
+    }
 
     [Function(nameof(SyncDeclaration))]
     public async Task<HttpResponseData> SyncDeclaration([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
@@ -128,6 +135,75 @@ public class DynamicsSynchronisationFunctions
             }).ToArray();
 
             await Task.WhenAll(paymentSyncTasks);
+        }
+    }
+
+    [Function(nameof(SynchroniseEmploymentDetails))]
+    public async Task SynchroniseEmploymentDetails([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
+    {
+        var buildingProfessionApplicationModel = orchestrationContext.GetInput<BuildingProfessionApplicationModel>();
+
+        var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
+
+        var dynamicsEmploymentDetails = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorEmploymentDetail>>(nameof(GetEmploymentDetailsUsingId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+
+        string employerId = null;
+
+        //Lookup employer
+        if((buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PublicSector
+            || buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PrivateSector
+            || buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other 
+            && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection=="yes"))
+        {
+            //Lookup employer relationship in accounts table
+            var employerDetails = await orchestrationContext.CallActivityAsync<DynamicsAccount>(nameof(CreateOrUpdateEmployer), buildingProfessionApplicationModel);
+            employerId = $"/accounts(${ employerDetails.accountid})";
+
+        }
+        else if(buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other
+            && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection == "no")
+        {
+            var dynamicsContact = await orchestrationContext.CallActivityAsync<DynamicsContact>(nameof(GetContactUsingId), dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid);
+            employerId = $"/contacts(${dynamicsContact.contactid})";
+
+        }
+
+        var employmentDetails = new BuildingInspectorEmploymentDetail
+        {
+                BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                EmployerId = employerId,
+                EmploymentTypeId = BuildingInspectorEmploymentTypeSelection.Ids[(int)buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType],
+                IsCurrent = true,
+                StatusCode = 2,
+                StateCode = 1
+        };
+
+        
+
+        //Check if employment details exist and update as required
+        if (dynamicsBuildingProfessionApplication != null)
+        {
+
+            foreach (DynamicsBuildingInspectorEmploymentDetail employmentDetail in dynamicsEmploymentDetails)
+            {
+
+                //Check if existing employment matches the new employment details
+                if (employmentDetail!=null)
+                {
+
+                }
+                else
+                {
+                    //Set existing employment to inactive and create new employment
+                }
+            }
+
+        }
+        //otherwise create new employment details
+        else
+        {
+
         }
     }
 
@@ -1128,6 +1204,12 @@ public class DynamicsSynchronisationFunctions
         return dynamicsService.GetBuildingProfessionApplicationUsingId(applicationId);
     }
 
+    [Function(nameof(GetEmploymentDetailsUsingId))]
+    public Task<List<DynamicsBuildingInspectorEmploymentDetail>> GetEmploymentDetailsUsingId([ActivityTrigger] string applicationId)
+    {
+        return dynamicsService.GetEmploymentDetailsUsingId(applicationId);
+    }
+
     [Function(nameof(GetContactUsingId))]
     public Task<DynamicsContact> GetContactUsingId([ActivityTrigger] string contactId)
     {
@@ -1221,7 +1303,7 @@ public class DynamicsSynchronisationFunctions
     {
         return dynamicsService.UpdateBuildingProfessionApplication(buildingProfessionApplication, new DynamicsBuildingProfessionApplication
         {
-
+            statuscode = (int) BuildingProfessionApplicationStatus.Submitted
         });
     }
 
@@ -1237,6 +1319,12 @@ public class DynamicsSynchronisationFunctions
     public async Task CreateOrUpdatePayment([ActivityTrigger] BuildingProfessionApplicationPayment buildingProfessionApplicationPayment)
     {
         await dynamicsService.CreatePayment(buildingProfessionApplicationPayment);
+    }
+
+    [Function(nameof(CreateOrUpdateEmployer))]
+    public async Task CreateOrUpdateEmployer([ActivityTrigger] BuildingProfessionApplicationModel buildingProfessionApplicationModel)
+    {
+        await dynamicsService.CreateOrUpdateEmployer(buildingProfessionApplicationModel);
     }
 
     [Function(nameof(GetPaymentStatus))]
