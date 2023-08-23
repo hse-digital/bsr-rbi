@@ -218,25 +218,24 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
 
     return '';
   }
-
   private initializeModel(applicationService: ApplicationService): void {
     const memberships = applicationService.model.ProfessionalMemberships;
 
     const { RICS, CABE, CIOB, OTHER } = memberships;
 
-    if (memberships.RICS.MembershipBodyCode == 'RICS') {
+    if (this.membershipCode == 'RICS') {
       this.model.MembershipNumber = RICS.MembershipNumber ?? '';
       this.model.MembershipLevel = RICS.MembershipLevel ?? '';
       this.model.MembershipYear = RICS.MembershipYear ?? undefined;
-    } else if (memberships.CABE.MembershipBodyCode == 'CABE') {
+    } else if (this.membershipCode == 'CABE') {
       this.model.MembershipNumber = CABE.MembershipNumber ?? '';
       this.model.MembershipLevel = CABE.MembershipLevel ?? '';
       this.model.MembershipYear = CABE.MembershipYear ?? undefined;
-    } else if (memberships.CIOB.MembershipBodyCode == 'CIOB') {
+    } else if (this.membershipCode == 'CIOB') {
       this.model.MembershipNumber = CIOB.MembershipNumber ?? '';
       this.model.MembershipLevel = CIOB.MembershipLevel ?? '';
       this.model.MembershipYear = CIOB.MembershipYear ?? undefined;
-    } else if (memberships.OTHER.MembershipBodyCode == 'OTHER') {
+    } else if (this.membershipCode == 'OTHER') {
       this.model.MembershipNumber = OTHER.MembershipNumber ?? '';
       this.model.MembershipLevel = OTHER.MembershipLevel ?? '';
       this.model.MembershipYear = OTHER.MembershipYear ?? undefined;
