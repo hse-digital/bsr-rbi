@@ -78,6 +78,13 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     if (this.selectedOption === 'yes') {
       return this.navigateTo('professional-body-selection'); // To professional body selection page.
     }
+    else if(ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!))
+    {
+      return this.navigationService.navigateRelative(
+        ProfessionalActivityEmploymentTypeComponent.route,
+        this.activatedRoute
+      );
+    }
     return this.navigateTo(`application/${this.applicationService.model.id}`); // Back to the task list.
   }
 
@@ -125,7 +132,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     if (
       memberships.RICS.CompletionState === ComponentCompletionState.Complete &&
       memberships.CABE.CompletionState === ComponentCompletionState.Complete &&
-      memberships.CIOB.CompletionState === ComponentCompletionState.Complete && 
+      memberships.CIOB.CompletionState === ComponentCompletionState.Complete &&
       memberships.OTHER.CompletionState === ComponentCompletionState.Complete
     ) {
       return false;
