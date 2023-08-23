@@ -592,7 +592,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     },
     {
       prompt: 'Application summary',
-      relativeRoute: 'application-submission/payment',
+      relativeRoute: 'application-submission',
       show: true,
       children: [
         {
@@ -697,22 +697,22 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           : PaymentStatus.Failed;
         this.paymentRoute = successsfulpayment
           ? {
-              route: PaymentConfirmationComponent.route,
+              route: 'payment/' + PaymentConfirmationComponent.route,
               queryParams: { reference: successsfulpayment?.bsr_transactionid },
             }
-          : { route: PaymentDeclarationComponent.route };
+          : { route: 'payment/' + PaymentDeclarationComponent.route };
       } else {
         this.paymentStatus = PaymentStatus.Failed;
-        this.paymentRoute = { route: PaymentDeclarationComponent.route };
+        this.paymentRoute = { route: 'payment/' + PaymentDeclarationComponent.route };
       }
     } else if (
       this.model?.StageStatus['Declaration'] == StageCompletionState.Complete
     ) {
       this.paymentStatus = PaymentStatus.Started;
-      this.paymentRoute = { route: PaymentDeclarationComponent.route };
+      this.paymentRoute = { route: 'payment/' + PaymentDeclarationComponent.route };
     } else {
       this.paymentStatus = PaymentStatus.Pending;
-      this.paymentRoute = { route: PaymentDeclarationComponent.route };
+      this.paymentRoute = { route: 'payment/' + PaymentDeclarationComponent.route };
     }
   }
 }

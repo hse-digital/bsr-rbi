@@ -1,0 +1,75 @@
+<govuk-summary-list>
+  <govuk-summary-list-row (onClick)="navigateTo('NAME')"
+                          (onKeyupEnter)="navigateTo('NAME')"
+                          key="Name"
+                          [showAction]="true">
+    {{
+          PersonalDetails?.ApplicantName?.FirstName
+    }}
+    {{
+          PersonalDetails?.ApplicantName?.LastName
+    }}
+  </govuk-summary-list-row>
+  <govuk-summary-list-row key="Email address" [showAction]="false">
+    {{
+        (PersonalDetails?.ApplicantEmail)!.Email
+    }}
+  </govuk-summary-list-row>
+  <govuk-summary-list-row key="Telephone number" [showAction]="false">
+    {{
+        (PersonalDetails?.ApplicantPhone)!.PhoneNumber
+    }}
+  </govuk-summary-list-row>
+  <govuk-summary-list-row (onClick)="navigateTo('DATE_OF_BIRTH')"
+                          (onKeyupEnter)="navigateTo('DATE_OF_BIRTH')"
+                          key="Date of birth"
+                          [showAction]="true">{{ GetFormattedDateofBirth() }}</govuk-summary-list-row>
+  <govuk-summary-list-row (onClick)="navigateTo('ADDRESS')"
+                          (onKeyupEnter)="navigateTo('ADDRESS')"
+                          key="Home address"
+                          [showAction]="true">
+    <div>
+      <div *ngIf="PersonalDetails?.ApplicantAddress?.Address">
+        {{
+              PersonalDetails?.ApplicantAddress?.Address
+        }}
+      </div>
+      <div *ngIf="PersonalDetails?.ApplicantAddress?.AddressLineTwo">
+        {{
+              PersonalDetails?.ApplicantAddress
+                ?.AddressLineTwo
+        }}
+      </div>
+      <div *ngIf="PersonalDetails?.ApplicantAddress?.Town">
+        {{
+              PersonalDetails?.ApplicantAddress?.Town
+        }}
+      </div>
+      <div *ngIf="PersonalDetails?.ApplicantAddress?.Postcode">
+        {{
+              PersonalDetails?.ApplicantAddress?.Postcode
+        }}
+      </div>
+    </div>
+  </govuk-summary-list-row>
+  <govuk-summary-list-row (onClick)="navigateTo('ALT_PHONE')"
+                          (onKeyupEnter)="navigateTo('ALT_PHONE')"
+                          key="Alternative telephone number"
+                          [showAction]="true">
+    {{ getAlternativePhone() }}
+  </govuk-summary-list-row>
+  <govuk-summary-list-row (onClick)="navigateTo('ALT_EMAIL')"
+                          (onKeyupEnter)="navigateTo('ALT_EMAIL')"
+                          key="Alternative email address"
+                          [showAction]="true">
+    {{ getAlternativeEmail() }}
+  </govuk-summary-list-row>
+  <govuk-summary-list-row (onClick)="navigateTo('NATIONAL_INS_NUMBER')"
+                          (onKeyupEnter)="navigateTo('NATIONAL_INS_NUMBER')"
+                          key="National Insurance Number"
+                          [showAction]="true">
+    {{
+          PersonalDetails?.ApplicantNationalInsuranceNumber?.NationalInsuranceNumber
+    }}
+  </govuk-summary-list-row>
+</govuk-summary-list>

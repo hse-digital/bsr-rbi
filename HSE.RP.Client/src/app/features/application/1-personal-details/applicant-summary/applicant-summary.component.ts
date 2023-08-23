@@ -103,6 +103,10 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
     //return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
   }
 
+  public navigateToNamedRoute(namedRoute: string) {
+    return this.navigateTo(PersonalDetailRoutes.MapNameToRoute(namedRoute));
+  }
+
   public navigateTo(route: string) {
     return this.navigationService.navigateRelative(`${route}`, this.activatedRoute);
   }

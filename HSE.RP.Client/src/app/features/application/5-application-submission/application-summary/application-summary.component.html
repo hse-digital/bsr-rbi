@@ -4,9 +4,12 @@
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
 
 
-  <h1 class="govuk-heading-l">Application summary</h1>
+  <h1 class="govuk-heading-l">Summary of your application</h1>
   <govuk-body>
-  Please enter your application summary below
- </govuk-body>
+    <h1 class="govuk-heading-xl">1. Personal details</h1>
+    <hse-applicant-summary-detail (PersonalDetails)="applicationService.model.PersonalDetails" (onNavigateTo)="navigateToNamedRoute($event)" />
+
+    <h1 class="govuk-heading-xl">1. Personal details</h1>
+  </govuk-body>
 </govuk-formpage>
 

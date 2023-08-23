@@ -15,6 +15,7 @@ import { NotFoundAddressComponent } from "./address/not-found-address.component"
 import { SelectAddressComponent } from "./address/select-address.component";
 import { TooManyAddressComponent } from "./address/too-many-address.component";
 import { AddressDescriptionComponent } from './address-description.component';
+import { ApplicantSummaryDetailComponent } from './applicant-summary-detail/applicant-summary-detail.component';
 
 
 
@@ -30,6 +31,7 @@ import { AddressDescriptionComponent } from './address-description.component';
     TooManyAddressComponent,
     SelectAddressComponent,
     AddressDescriptionComponent,
+    ApplicantSummaryDetailComponent,
   ],
   imports: [
     HseAngularModule,
@@ -40,7 +42,8 @@ import { AddressDescriptionComponent } from './address-description.component';
     GovukRequiredDirective,
     TaskListItemComponent,
     AddressComponent,
-    AddressDescriptionComponent
+    AddressDescriptionComponent,
+    ApplicantSummaryDetailComponent
   ],
   providers: [HttpClient, AddressService]
 })
