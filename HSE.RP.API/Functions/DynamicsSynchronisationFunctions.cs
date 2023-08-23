@@ -483,7 +483,7 @@ public class DynamicsSynchronisationFunctions
                         ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["OTHER"],
                         MembershipNumber = buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipNumber,
                         CurrentMembershipLevelOrType = buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipLevel,
-                        YearId = dynamicsBSRYear.bsr_yearid,
+                        YearId = null,
                         StatusCode = 1,
                         StateCode = 0
                     };
