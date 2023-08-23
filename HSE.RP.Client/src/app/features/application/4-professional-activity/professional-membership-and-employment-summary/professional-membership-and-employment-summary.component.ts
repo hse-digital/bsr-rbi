@@ -10,6 +10,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 import { ProfessionalActivity } from 'src/app/models/professional-activity.model';
 import { ProfessionalActivityHelper } from 'src/app/helpers/professional-activity-helper.component';
 import { EmploymentType } from 'src/app/models/employment-type.enum';
+import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 
 @Component({
   selector: 'hse-professional-membership-and-employment-summary',
@@ -114,7 +115,13 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
   }
 
   public getEmployerName(): string {
-    return this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName?.FullName ?? "None";
+    if(FieldValidations.IsNotNullOrWhitespace(this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName?.FullName))
+    {
+      return this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName!.FullName!
+    }
+    else{
+      return "None"
+    }
   }
 
   public getEmploymentTypeTitle(): string | null {

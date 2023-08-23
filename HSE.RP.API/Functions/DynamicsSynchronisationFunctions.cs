@@ -147,29 +147,53 @@ public class DynamicsSynchronisationFunctions
 
         var dynamicsEmploymentDetails = await orchestrationContext.CallActivityAsync<DynamicsBuildingInspectorEmploymentDetail>(nameof(GetEmploymentDetailsUsingId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
-        string employerIdContact = null;
-        string employerIdAccount = null;
-        //Lookup employer
-        if((buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PublicSector
-            || buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PrivateSector
-            || buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other 
-            && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection=="yes"))
+        if (buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Unemployed)
         {
-            //Lookup employer relationship in accounts table
-            var employerDetails = await orchestrationContext.CallActivityAsync<DynamicsAccount>(nameof(CreateOrUpdateEmployer), buildingProfessionApplicationModel);
+            //IF unemployed delete employment details
 
-            employerIdAccount = $"/accounts({employerDetails.accountid})";
+                var employmentDetails = new BuildingInspectorEmploymentDetail
+                {
+                    Id = dynamicsEmploymentDetails?.bsr_biemploymentdetailid ?? null,
+                    BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                    BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                    EmployerIdAccount = null,
+                    EmployerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})",
+                    EmploymentTypeId = BuildingInspectorEmploymentTypeSelection.Ids[(int)buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType],
+                    IsCurrent = true,
+                    StatusCode = 1,
+                    StateCode = 0
+                };
 
+                //Create or update employment
+                await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorEmploymentDetails), employmentDetails);
+            
         }
-        else if(buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other
-            && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection == "no")
+        else
         {
-            employerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})";
+            string employerIdContact = null;
+            string employerIdAccount = null;
+            //Lookup employer
+            if ((buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PublicSector
+                || buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PrivateSector
+                || buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other
+                && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection == "yes"))
+            {
+                //Lookup employer relationship in accounts table
+                var employerDetails = await orchestrationContext.CallActivityAsync<DynamicsAccount>(nameof(CreateOrUpdateEmployer), buildingProfessionApplicationModel);
 
-        }
+                employerIdAccount = $"/accounts({employerDetails.accountid})";
 
-        var employmentDetails = new BuildingInspectorEmploymentDetail
-        {
+            }
+            else if (buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other
+                && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection == "no")
+            {
+                employerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})";
+
+            }
+
+
+            var employmentDetails = new BuildingInspectorEmploymentDetail
+            {
                 Id = dynamicsEmploymentDetails?.bsr_biemploymentdetailid ?? null,
                 BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                 BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
@@ -179,11 +203,11 @@ public class DynamicsSynchronisationFunctions
                 IsCurrent = true,
                 StatusCode = 1,
                 StateCode = 0
-        };
+            };
 
-        //Create or update employment
-       await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorEmploymentDetails), employmentDetails);
-
+            //Create or update employment
+            await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorEmploymentDetails), employmentDetails);
+        }
     }
 
     [Function(nameof(SynchronisePersonalDetails))]

@@ -47,6 +47,6 @@ public static class BuildingInspectorEmploymentTypeSelection
         [1] = "e5a761f1-0932-ee11-bdf3-0022481b56d1", //Public
         [2] = "f6d565f7-0932-ee11-bdf3-0022481b56d1", //Private
         [3] = "05d665f7-0932-ee11-bdf3-0022481b56d1", //Other
-        [4] = "6a3f65fd-0932-ee11-bdf3-0022481b56d1" //Other
+        [4] = "6a3f65fd-0932-ee11-bdf3-0022481b56d1" //Unemployed
     };
 }
