@@ -65,6 +65,7 @@ import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.
 import { Competency } from 'src/app/models/competency.model';
 import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
 import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-details';
+import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../4-professional-activity/professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 
 interface ITaskListParent {
   prompt: string;
@@ -577,7 +578,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           prompt: 'Summary',
           relativeRoute: (): TaskListRoute => {
             return {
-              route: ProfessionalBodyMembershipSummaryComponent.route,
+              route: ProfessionalMembershipAndEmploymentSummaryComponent.route,
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>

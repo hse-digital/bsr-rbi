@@ -16,6 +16,7 @@ import { EmploymentPublicSectorBodyNameComponent } from '../employment-public-se
 import { TaskListItemComponent } from 'src/app/components/task-list-item/task-list-item.component';
 import { GovukTaskListComponent } from 'hse-angular';
 import { EmploymentPrivateSectorBodyNameComponent } from '../employment-private-sector-body-name/employment-private-sector-body-name.component';
+import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 
 
 @Component({
@@ -89,6 +90,10 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
     if(this.model?.EmploymentType == EmploymentType.PrivateSector)
     {
       return this.navigationService.navigateRelative(EmploymentPrivateSectorBodyNameComponent.route, this.activatedRoute);
+    }
+    if(this.model?.EmploymentType == EmploymentType.Unemployed)
+    {
+      return this.navigationService.navigateRelative(ProfessionalMembershipAndEmploymentSummaryComponent.route, this.activatedRoute);
     }
     else{
       return this.navigationService.navigate(`application/${this.applicationService.model.id}`);

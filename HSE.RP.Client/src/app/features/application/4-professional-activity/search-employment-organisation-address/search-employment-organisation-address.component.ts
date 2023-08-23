@@ -61,9 +61,8 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
 
     await this.applicationService.updateApplication();
 
-    return this.navigationService.navigate(
-      `application/${this.applicationService.model.id}`
-    );
+    return this.navigationService.navigateRelative(
+      `professional-membership-and-employment-summary`, this.activatedRoute);
   }
 
   changeStep(event: any) {
