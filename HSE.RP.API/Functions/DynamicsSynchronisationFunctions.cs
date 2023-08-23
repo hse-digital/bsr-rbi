@@ -44,6 +44,18 @@ public class DynamicsSynchronisationFunctions
         return request.CreateResponse();
     }
 
+    [Function(nameof(SyncFullApplication))]
+    public async Task<HttpResponseData> SyncFullApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    {
+        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchronisePersonalDetails), buildingProfessionApplicationModel);
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseBuildingInspectorClass), buildingProfessionApplicationModel);
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseCompetency), buildingProfessionApplicationModel);
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseProfessionalBodyMemberships), buildingProfessionApplicationModel);
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseEmploymentDetails), buildingProfessionApplicationModel);
+        return request.CreateResponse();
+    }
+
     [Function(nameof(SyncDeclaration))]
     public async Task<HttpResponseData> SyncDeclaration([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
     {
