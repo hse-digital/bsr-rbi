@@ -47,12 +47,8 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-
     applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CertificateNumber! = this.certificateNumber;
 
-    if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
-      applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.Complete;
-    }
   }
 
   override canAccess(
@@ -90,6 +86,8 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     }
 
     this.hasErrors = false;
+    this.applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.Complete;
+
     return true;
   }
 
