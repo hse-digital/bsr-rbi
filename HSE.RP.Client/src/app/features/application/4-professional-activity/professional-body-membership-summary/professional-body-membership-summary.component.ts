@@ -30,7 +30,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  selectedOption: string = 'no';
+  selectedOption: string = '';
   override model?: ApplicantProfessionBodyMemberships;
 
   constructor(
