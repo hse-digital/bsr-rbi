@@ -47,12 +47,8 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-
     applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CertificateNumber! = this.certificateNumber;
 
-    if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
-      applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.Complete;
-    }
   }
 
   override canAccess(
@@ -63,6 +59,8 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
   }
 
   override isValid(): boolean {
+    this.certificateNumber = this.certificateNumber.trim().toUpperCase();
+
     if (!FieldValidations.IsNotNullOrWhitespace(this.certificateNumber))
     {
       this.errorMessage = "Enter your assessment certificate number";
@@ -70,9 +68,17 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
       return false;
     }
 
-    // 3-4 character prefix (CABE or BSCF) with a 20 character max string so CABE1262IJSBFAHS840.
+    const validCertificateNumRegex = new RegExp(/^(CABE|BSCF)[a-zA-Z0-9]*$/).test(this.certificateNumber);
+
+    if (!validCertificateNumRegex) {
+      this.errorMessage = "You must enter an assessment certificate number in the correct format";
+      this.hasErrors = true;
+      return false;
+    }
+
+    // 4 character prefix (CABE or BSCF) with a 20 character max string so CABE1262IJSBFAHS840.
     let prefix = this.certificateNumber.slice(0, 4);
-    if (prefix !== this.organisationPrefix) {
+    if (prefix.toLowerCase() !== this.organisationPrefix.toLowerCase()) {
       this.errorMessage = "You must enter an assessment certificate number in the correct format";
       this.hasErrors = true;
 
@@ -80,6 +86,8 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     }
 
     this.hasErrors = false;
+    this.applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.Complete;
+
     return true;
   }
 
