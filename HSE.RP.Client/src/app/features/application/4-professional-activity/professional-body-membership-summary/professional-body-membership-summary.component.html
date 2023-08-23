@@ -1,8 +1,6 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="SyncAndContinue()" [hideBackButton]=true>
-
 
   <govuk-body>
     <h1 class="govuk-heading-xl">Summary of your professional memberships</h1>
@@ -53,10 +51,12 @@
       </govuk-summary-list-row>
     </govuk-summary-list>
     <br/>
-    <div *ngIf="!ApplicantProfessionBodyMembershipsHelper.AllCompleted( model!)">
-      <h1 class="govuk-heading-xl">Do you want to add another membership?</h1>
-
-      <govuk-radio-group hintText="" id="radios-bi-class-selection">
+    <div *ngIf="!ApplicantProfessionBodyMembershipsHelper.AllCompleted(model!)">
+      <govuk-radio-group
+        title="Do you want to add another membership?"
+        id="radios-bi-class-selection"
+        class="govuk-radios--inline"
+      >
               <govuk-radio class=""
                            (onRadioClicked)="optionClicked('yes')"
                            label="Yes"

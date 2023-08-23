@@ -13,6 +13,8 @@ import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-
 import { EmployerName } from 'src/app/models/employment-employer-name';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { CompaniesService } from 'src/app/services/companies.service';
+import { SearchEmploymentOrganisationAddressComponent } from '../search-employment-organisation-address/search-employment-organisation-address.component';
+import { EmploymentType } from 'src/app/models/employment-type.enum';
 
 @Component({
   selector: 'hse-employment-private-sector-body-name',
@@ -27,7 +29,7 @@ export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<Empl
   static title: string = "Employment - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
-  privateSectorBodyNameHasErrors = false;
+  privateSectorBodyNameHasErrors = true;
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService, private companiesService: CompaniesService) {
     super(activatedRoute);
@@ -35,28 +37,23 @@ export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<Empl
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
-
-
-    if(!this.applicationService.model.ProfessionalActivity.EmploymentDetails)
+    if(!this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerName)
     {
-      this.applicationService.model.ProfessionalActivity.EmploymentDetails = new ApplicantEmploymentDetails()
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName = new EmployerName()
     }
 
-      this.model = this.applicationService.model.ProfessionalActivity.EmploymentDetails.EmployerName;
-
-
+    this.model = this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
 
-    this.model!.CompletionState = ComponentCompletionState.Complete;
     this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName=this.model;
 
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return true;
-    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
+    return this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmploymentTypeSelection?.CompletionState == ComponentCompletionState.Complete
+    && this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmploymentTypeSelection?.EmploymentType == EmploymentType.PrivateSector;
 
   }
 
@@ -69,7 +66,7 @@ export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<Empl
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(ProfessionalBodyMembershipSummaryComponent.route, this.activatedRoute); //update to address
+    return this.navigationService.navigateRelative(SearchEmploymentOrganisationAddressComponent.route, this.activatedRoute); //update to address
   }
 
   companies: string[] = [];

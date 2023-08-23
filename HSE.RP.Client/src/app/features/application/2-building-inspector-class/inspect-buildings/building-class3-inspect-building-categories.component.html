@@ -40,7 +40,7 @@
                       text="Category A"
                       value="CategoryA"
                       (onClicked)="optionClicked()"
-                      hint="" />
+                      hint="Residential dwelling houses (single household) less than 7.5m in height" />
       <govuk-checkbox #checkbox
                       (onKeyupEnter)="onKeyupEnter.emit()"
                       [model]="selections"
@@ -48,7 +48,7 @@
                       value="CategoryB"
                       (onClicked)="optionClicked()"
                       [id]="id"
-                      hint="" />
+                      hint="Residential flats and dwelling houses, less than 11m in height" />
       <govuk-checkbox #checkbox
                       (onKeyupEnter)="onKeyupEnter.emit()"
                       [model]="selections"
@@ -56,7 +56,7 @@
                       value="CategoryC"
                       (onClicked)="optionClicked()"
                       [id]="id"
-                      hint="" />
+                      hint="Residential flats and dwelling houses, 11m or more but less than 18m in height" />
       <govuk-checkbox #checkbox
                       (onKeyupEnter)="onKeyupEnter.emit()"
                       [model]="selections"
@@ -64,7 +64,7 @@
                       value="CategoryD"
                       (onClicked)="optionClicked()"
                       [id]="id"
-                      hint="" />
+                      hint="All building types and uses less than 7.5m in height" />
       <govuk-checkbox #checkbox
                       (onKeyupEnter)="onKeyupEnter.emit()"
                       [model]="selections"
@@ -72,7 +72,7 @@
                       value="CategoryE"
                       (onClicked)="optionClicked()"
                       [id]="id"
-                      hint="" />
+                      hint="All building types 7.5m or more but less than 11m in height" />
       <govuk-checkbox #checkbox
                       (onKeyupEnter)="onKeyupEnter.emit()"
                       [model]="selections"
@@ -80,7 +80,7 @@
                       value="CategoryF"
                       (onClicked)="optionClicked()"
                       [id]="id"
-                      hint="" />
+                      hint="All building types 11m or more but less than 18m in height" />
       <govuk-checkbox #checkbox
                       (onKeyupEnter)="onKeyupEnter.emit()"
                       [model]="selections"
@@ -88,7 +88,7 @@
                       value="CategoryG"
                       (onClicked)="optionClicked()"
                       [id]="id"
-                      hint="" />
+                      hint="All building types, including standard and non-standard but excluding high-risk, with no height limit" />
       <govuk-checkbox #checkbox
                       (onKeyupEnter)="onKeyupEnter.emit()"
                       [model]="selections"
@@ -96,7 +96,7 @@
                       value="CategoryH"
                       (onClicked)="optionClicked()"
                       [id]="id"
-                      hint="" />
+                      hint="All building types, including high-risk" />
     </govuk-checkbox-group>
   </govuk-body>
 </govuk-formpage>

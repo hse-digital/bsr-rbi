@@ -2,9 +2,6 @@ import { ComponentCompletionState } from "./component-completion-state.enum";
 import { IComponentModel } from "./component. interface";
 
 export class AddressModel implements IComponentModel {
-    IsManual: boolean = false;
-    UPRN?: string;
-    USRN?: string;
     Address?: string;
     AddressLineTwo?: string;
     BuildingName?: string;
@@ -14,5 +11,11 @@ export class AddressModel implements IComponentModel {
     Country?: string;
     AdministrativeArea?: string;
     Postcode?: string;
-    CompletionState?: ComponentCompletionState;
+    ClassificationCode?: string;
+    CustodianCode?: string;
+    CustodianDescription?: string;
+    IsManual: boolean = false;
+    UPRN?: string;
+    USRN?: string;
+    CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
   }

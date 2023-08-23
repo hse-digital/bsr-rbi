@@ -1,0 +1,31 @@
+<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+
+<govuk-formpage saveAndContinueText="Save and Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=true>
+
+  <govuk-error-summary *ngIf="otherNameHasErrors" title="There is a problem" #summaryError>
+    <govuk-error-link *ngIf="!otherNameHasErrors" anchorId="employer-other-name" message={{otherNameErrorMessage}} />
+    <govuk-error-link *ngIf="!invalidNameError" anchorId="employer-other-name" message={{otherNameErrorMessage}} />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">Do you have a business name?</h1>
+
+  <govuk-radio-group hintText="Select one option." id="employer-other-name-selection" [(model)]="model!.OtherBusinessSelection">
+    <govuk-radio label="Yes" value="yes" id="yes" [model]="model!.OtherBusinessSelection">
+      <govuk-input
+      *ngIf="model!.OtherBusinessSelection === 'yes'"
+        id="employer-other-name"
+        label="Business name"
+        [(model)]="model!.FullName" [maxlength]=160
+        labelClass="govuk-label--s"
+        [errorText]="getErrorDescription(otherNameHasErrors, otherNameErrorMessage)"
+        hintClass="no-margin-top"
+        class="govuk-!-margin-bottom-1"
+        (onKeyupEnter)="saveAndContinue()"
+        />
+
+    </govuk-radio>
+    <govuk-radio label="No" value="no" id="no"  [model]="model!.OtherBusinessSelection" (onKeyupEnter)="clearName()" (onRadioClicked)="clearName()"></govuk-radio>
+
+  </govuk-radio-group>
+
+</govuk-formpage>

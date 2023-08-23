@@ -36,6 +36,25 @@ public class DynamicsSynchronisationFunctions
         this.integrationOptions = integrationOptions.Value;
     }
 
+    [Function(nameof(SyncEmploymentDetails))]
+    public async Task<HttpResponseData> SyncEmploymentDetails([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    {
+        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseEmploymentDetails), buildingProfessionApplicationModel);
+        return request.CreateResponse();
+    }
+
+    [Function(nameof(SyncFullApplication))]
+    public async Task<HttpResponseData> SyncFullApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    {
+        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchronisePersonalDetails), buildingProfessionApplicationModel);
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseBuildingInspectorClass), buildingProfessionApplicationModel);
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseCompetency), buildingProfessionApplicationModel);
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseProfessionalBodyMemberships), buildingProfessionApplicationModel);
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseEmploymentDetails), buildingProfessionApplicationModel);
+        return request.CreateResponse();
+    }
 
     [Function(nameof(SyncDeclaration))]
     public async Task<HttpResponseData> SyncDeclaration([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
@@ -128,6 +147,78 @@ public class DynamicsSynchronisationFunctions
             }).ToArray();
 
             await Task.WhenAll(paymentSyncTasks);
+        }
+    }
+
+    [Function(nameof(SynchroniseEmploymentDetails))]
+    public async Task SynchroniseEmploymentDetails([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
+    {
+        var buildingProfessionApplicationModel = orchestrationContext.GetInput<BuildingProfessionApplicationModel>();
+
+        var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
+
+        var dynamicsEmploymentDetails = await orchestrationContext.CallActivityAsync<DynamicsBuildingInspectorEmploymentDetail>(nameof(GetEmploymentDetailsUsingId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+
+        if (buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Unemployed)
+        {
+            //IF unemployed delete employment details
+
+                var employmentDetails = new BuildingInspectorEmploymentDetail
+                {
+                    Id = dynamicsEmploymentDetails?.bsr_biemploymentdetailid ?? null,
+                    BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                    BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                    EmployerIdAccount = null,
+                    EmployerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})",
+                    EmploymentTypeId = BuildingInspectorEmploymentTypeSelection.Ids[(int)buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType],
+                    IsCurrent = true,
+                    StatusCode = 1,
+                    StateCode = 0
+                };
+
+                //Create or update employment
+                await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorEmploymentDetails), employmentDetails);
+            
+        }
+        else
+        {
+            string employerIdContact = null;
+            string employerIdAccount = null;
+            //Lookup employer
+            if ((buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PublicSector
+                || buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.PrivateSector
+                || buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other
+                && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection == "yes"))
+            {
+                //Lookup employer relationship in accounts table
+                var employerDetails = await orchestrationContext.CallActivityAsync<DynamicsAccount>(nameof(CreateOrUpdateEmployer), buildingProfessionApplicationModel);
+
+                employerIdAccount = $"/accounts({employerDetails.accountid})";
+
+            }
+            else if (buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other
+                && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection == "no")
+            {
+                employerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})";
+
+            }
+
+
+            var employmentDetails = new BuildingInspectorEmploymentDetail
+            {
+                Id = dynamicsEmploymentDetails?.bsr_biemploymentdetailid ?? null,
+                BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                EmployerIdAccount = employerIdAccount,
+                EmployerIdContact = employerIdContact,
+                EmploymentTypeId = BuildingInspectorEmploymentTypeSelection.Ids[(int)buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType],
+                IsCurrent = true,
+                StatusCode = 1,
+                StateCode = 0
+            };
+
+            //Create or update employment
+            await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorEmploymentDetails), employmentDetails);
         }
     }
 
@@ -233,6 +324,7 @@ public class DynamicsSynchronisationFunctions
         var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
         var dynamicsProfessionalMemberships = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorProfessionalBodyMembership>>(nameof(GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
+
         if (dynamicsBuildingProfessionApplication != null)
         {
 
@@ -243,6 +335,7 @@ public class DynamicsSynchronisationFunctions
                     //Check for existing memberships and set to inactive
                     foreach (var membership in dynamicsProfessionalMemberships)
                     {
+
                         var professionalBody = new BuildingInspectorProfessionalBodyMembership
                         {
                             Id = membership.bsr_biprofessionalmembershipid,
@@ -266,6 +359,9 @@ public class DynamicsSynchronisationFunctions
 
                 if (buildingProfessionApplicationModel.ProfessionalMemberships.CABE.CompletionState == ComponentCompletionState.Complete)
                 {
+
+                    var dynamicsBSRYear = await orchestrationContext.CallActivityAsync<DynamicsYear>(nameof(GetDynamicsYear), buildingProfessionApplicationModel.ProfessionalMemberships.CABE.MembershipYear.ToString());
+
                     var professionalBody = new BuildingInspectorProfessionalBodyMembership
                     {
                         BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
@@ -273,7 +369,7 @@ public class DynamicsSynchronisationFunctions
                         ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["CABE"],
                         MembershipNumber = buildingProfessionApplicationModel.ProfessionalMemberships.CABE.MembershipNumber,
                         CurrentMembershipLevelOrType = buildingProfessionApplicationModel.ProfessionalMemberships.CABE.MembershipLevel,
-                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.CABE.MembershipYear],
+                        YearId = dynamicsBSRYear.bsr_yearid,
                         StatusCode = 1,
                         StateCode = 0
                     };
@@ -302,6 +398,8 @@ public class DynamicsSynchronisationFunctions
 
                 if (buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.CompletionState == ComponentCompletionState.Complete)
                 {
+                    var dynamicsBSRYear = await orchestrationContext.CallActivityAsync<DynamicsYear>(nameof(GetDynamicsYear), buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.MembershipYear.ToString());
+
                     var professionalBody = new BuildingInspectorProfessionalBodyMembership
                     {
                         BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
@@ -309,7 +407,7 @@ public class DynamicsSynchronisationFunctions
                         ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["CIOB"],
                         MembershipNumber = buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.MembershipNumber,
                         CurrentMembershipLevelOrType = buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.MembershipLevel,
-                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.CIOB.MembershipYear],
+                        YearId = dynamicsBSRYear.bsr_yearid,
                         StatusCode = 1,
                         StateCode = 0
                     };
@@ -338,6 +436,8 @@ public class DynamicsSynchronisationFunctions
 
                 if (buildingProfessionApplicationModel.ProfessionalMemberships.RICS.CompletionState == ComponentCompletionState.Complete)
                 {
+                    var dynamicsBSRYear = await orchestrationContext.CallActivityAsync<DynamicsYear>(nameof(GetDynamicsYear), buildingProfessionApplicationModel.ProfessionalMemberships.RICS.MembershipYear.ToString());
+
                     var professionalBody = new BuildingInspectorProfessionalBodyMembership
                     {
                         BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
@@ -345,7 +445,7 @@ public class DynamicsSynchronisationFunctions
                         ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["RICS"],
                         MembershipNumber = buildingProfessionApplicationModel.ProfessionalMemberships.RICS.MembershipNumber,
                         CurrentMembershipLevelOrType = buildingProfessionApplicationModel.ProfessionalMemberships.RICS.MembershipLevel,
-                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.RICS.MembershipYear],
+                        YearId = dynamicsBSRYear.bsr_yearid,
                         StatusCode = 1,
                         StateCode = 0
                     };
@@ -374,6 +474,8 @@ public class DynamicsSynchronisationFunctions
 
                 if (buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.CompletionState == ComponentCompletionState.Complete)
                 {
+                    var dynamicsBSRYear = await orchestrationContext.CallActivityAsync<DynamicsYear>(nameof(GetDynamicsYear), buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipYear.ToString());
+
                     var professionalBody = new BuildingInspectorProfessionalBodyMembership
                     {
                         BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
@@ -381,7 +483,7 @@ public class DynamicsSynchronisationFunctions
                         ProfessionalBodyId = BuildingInspectorProfessionalBodyIds.Ids["OTHER"],
                         MembershipNumber = buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipNumber,
                         CurrentMembershipLevelOrType = buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipLevel,
-                        YearId = DynamicsYearIds.Ids[buildingProfessionApplicationModel.ProfessionalMemberships.OTHER.MembershipYear],
+                        YearId = null,
                         StatusCode = 1,
                         StateCode = 0
                     };
@@ -1111,16 +1213,36 @@ public class DynamicsSynchronisationFunctions
         await dynamicsService.CreateOrUpdateBuildingInspectorProfessionalBodyMembership(buildingInspectorProfessionalBodyMembership);
     }
 
+    [Function(nameof(CreateOrUpdateBuildingInspectorEmploymentDetails))]
+    public async Task CreateOrUpdateBuildingInspectorEmploymentDetails([ActivityTrigger] BuildingInspectorEmploymentDetail buildingInspectorEmploymentDetail)
+    {
+        await dynamicsService.CreateOrUpdateBuildingInspectorEmploymentDetails(buildingInspectorEmploymentDetail);
+    }
+
     [Function(nameof(GetBuildingProfessionApplicationUsingId))]
     public Task<DynamicsBuildingProfessionApplication> GetBuildingProfessionApplicationUsingId([ActivityTrigger] string applicationId)
     {
         return dynamicsService.GetBuildingProfessionApplicationUsingId(applicationId);
     }
 
+    [Function(nameof(GetEmploymentDetailsUsingId))]
+    public Task<DynamicsBuildingInspectorEmploymentDetail> GetEmploymentDetailsUsingId([ActivityTrigger] string applicationId)
+    {
+        return dynamicsService.GetEmploymentDetailsUsingId(applicationId);
+    }
+
+
+
     [Function(nameof(GetContactUsingId))]
     public Task<DynamicsContact> GetContactUsingId([ActivityTrigger] string contactId)
     {
         return dynamicsService.GetContactUsingId(contactId);
+    }
+
+    [Function(nameof(CreateOrUpdateEmployer))]
+    public Task<DynamicsAccount> CreateOrUpdateEmployer([ActivityTrigger] BuildingProfessionApplicationModel buildingProfessionApplicationModel)
+    {
+        return dynamicsService.CreateOrUpdateEmployer(buildingProfessionApplicationModel);
     }
 
     [Function(nameof(GetRegistrationClassesUsingApplicationId))]
@@ -1133,6 +1255,12 @@ public class DynamicsSynchronisationFunctions
     public Task<List<DynamicsBuildingInspectorProfessionalBodyMembership>> GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId([ActivityTrigger] string applicationId)
     {
         return dynamicsService.GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId(applicationId);
+    }
+
+    [Function(nameof(GetDynamicsYear))]
+    public Task<DynamicsYear> GetDynamicsYear([ActivityTrigger] string Year)
+    {
+        return dynamicsService.GetDynamicsYear(Year);
     }
 
     [Function(nameof(GetRegistrationCountriesUsingApplicationId))]
@@ -1204,7 +1332,7 @@ public class DynamicsSynchronisationFunctions
     {
         return dynamicsService.UpdateBuildingProfessionApplication(buildingProfessionApplication, new DynamicsBuildingProfessionApplication
         {
-
+            statuscode = (int) BuildingProfessionApplicationStatus.Submitted
         });
     }
 
@@ -1221,6 +1349,7 @@ public class DynamicsSynchronisationFunctions
     {
         await dynamicsService.CreatePayment(buildingProfessionApplicationPayment);
     }
+
 
     [Function(nameof(GetPaymentStatus))]
     public async Task<PaymentResponseModel> GetPaymentStatus([ActivityTrigger] string paymentId)

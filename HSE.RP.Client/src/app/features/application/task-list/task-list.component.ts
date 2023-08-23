@@ -33,7 +33,6 @@ import { BuildingInspectorClassSelectionComponent } from '../2-building-inspecto
 import { BuildingInspectorSummaryComponent } from '../2-building-inspector-class/building-inspector-summary/building-inspector-summary.component';
 import { BuildingInspectorCountryComponent } from '../2-building-inspector-class/country/building-inspector-country.component';
 import { CompetencyIndependentStatusComponent } from '../3-competency/independent-competency-status/independent-competency-status.component';
-import { CompetencyCertificateCodeComponent } from '../3-competency/certificate-code/competency-certificate-code.component';
 import { CompetencyAssessmentOrganisationComponent } from '../3-competency/assesesment-organisation/competency-assesesment-organisation.component';
 import { CompetencyAssessmentDateComponent } from '../3-competency/assesesment-date/competency-assesesment-date.component';
 import { CompetencySummaryComponent } from '../3-competency/competency-summary/competency-summary.component';
@@ -66,6 +65,7 @@ import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.
 import { Competency } from 'src/app/models/competency.model';
 import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
 import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-details';
+import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../4-professional-activity/professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 
 interface ITaskListParent {
   prompt: string;
@@ -571,7 +571,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getModelStatus(
               aModel.ProfessionalActivity?.EmploymentDetails
-                ?.EmploymentTypeSelection
             ),
         },
         {
@@ -579,7 +578,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           prompt: 'Summary',
           relativeRoute: (): TaskListRoute => {
             return {
-              route: ProfessionalBodyMembershipSummaryComponent.route,
+              route: ProfessionalMembershipAndEmploymentSummaryComponent.route,
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>

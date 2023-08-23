@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ProfessionalActivityRoutes } from '../ProfessionalActivityRoutes';
 import { PageComponent } from 'src/app/helpers/page.component';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { ApplicationService } from 'src/app/services/application.service';
@@ -7,7 +6,6 @@ import { environment } from 'src/environments/environment';
 import { AddressModel } from 'src/app/models/address.model';
 import { AddressSearchMode } from 'src/app/components/address/address.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
-import { ApplicantAlternativeEmailComponent } from '../../1-personal-details/applicant-alternative-email/applicant-alternative-email.component';
 
 @Component({
   selector: 'hse-search-employment-organisation-address',
@@ -15,8 +13,7 @@ import { ApplicantAlternativeEmailComponent } from '../../1-personal-details/app
   styles: [],
 })
 export class SearchEmploymentOrganisationAddressComponent extends PageComponent<AddressModel> {
-  public static route: string =
-    ProfessionalActivityRoutes.SEARCH_EMPLOYEMENT_ORG_ADDRESS;
+  public static route: string = 'search-empoloyment-org-address';
   static title: string =
     'Professional activity - Register as a building inspector - GOV.UK';
 
@@ -24,11 +21,8 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   production: boolean = environment.production;
   modelValid: boolean = false;
   searchMode = AddressSearchMode.HomeAddress;
-  title = 'Organisation Address';
-  // step = 'find';
-  // private history: string[] = [];
-
-  // @Output() onChangeStep = new EventEmitter();
+  orgTitle? = '';
+  orgFullName?: string;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -38,7 +32,10 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
     this.updateOnSave = true;
   }
 
-  override onInit(applicationService: ApplicationService): void {}
+  override onInit(applicationService: ApplicationService): void {
+    this.orgFullName =
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerName?.FullName;
+  }
   override async onSave(
     applicationService: ApplicationService
   ): Promise<void> {}
@@ -56,16 +53,16 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   }
 
   async addressConfirmed(address: AddressModel) {
-    this.applicationService.model.PersonalDetails!.ApplicantAddress = address;
-    this.applicationService.model.PersonalDetails!.ApplicantAddress.CompletionState =
+    this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerAddress =
+      address;
+
+    this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerAddress.CompletionState =
       ComponentCompletionState.Complete;
 
     await this.applicationService.updateApplication();
 
-    this.navigationService.navigateRelative(
-      ApplicantAlternativeEmailComponent.route,
-      this.activatedRoute
-    );
+    return this.navigationService.navigateRelative(
+      `professional-membership-and-employment-summary`, this.activatedRoute);
   }
 
   changeStep(event: any) {
@@ -73,26 +70,16 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   }
 
   getAddressName() {
-    return 'Find the address of [organisation name]';
+    const employerFullName =
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails
+        ?.EmployerName?.FullName;
+
+    if (employerFullName) {
+      this.orgTitle = `Select the address of ${employerFullName}`;
+      return `Find the address of ${employerFullName}`;
+    } else {
+      this.orgTitle = 'Select your business address';
+      return 'Find the address of your business';
+    }
   }
-
-  // enterManualAddress() {
-  //   this.changeStepTo('manual');
-  // }
-
-  // private changeStepTo(step: string) {
-  //   this.history.push(this.step);
-  //   this.step = step;
-  //   this.resetFocus();
-  //   this.onChangeStep.emit(this.step);
-  // }
-
-  // resetFocus() {
-  //   const mainHeader = document.querySelector('#gouvk-header-service-name');
-  //   if (mainHeader) {
-  //     (mainHeader as HTMLElement).focus();
-  //     (mainHeader as HTMLElement).blur();
-  //   }
-  // }
-
 }

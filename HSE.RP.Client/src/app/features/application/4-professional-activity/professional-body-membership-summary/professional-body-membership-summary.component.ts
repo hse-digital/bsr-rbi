@@ -30,7 +30,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  selectedOption: string = 'no';
+  selectedOption: string = '';
   override model?: ApplicantProfessionBodyMemberships;
 
   constructor(
@@ -45,12 +45,9 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     this.model = applicationService.model.ProfessionalMemberships;
   }
 
-  override async onSave(
-    applicationService: ApplicationService
-  ): Promise<void> {
+  override async onSave(applicationService: ApplicationService): Promise<void> {
     this.model!.CompletionState = ComponentCompletionState.Complete;
     this.applicationService.model.ProfessionalMemberships = this.model!;
-
   }
 
   optionClicked(value: string) {
@@ -75,14 +72,21 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
       this.model!.CompletionState = ComponentCompletionState.Complete;
       return this.navigationService.navigateRelative(
         ProfessionalActivityEmploymentTypeComponent.route,
-        this.activatedRoute);
+        this.activatedRoute
+      );
     }
     if (this.selectedOption === 'yes') {
       return this.navigateTo('professional-body-selection'); // To professional body selection page.
     }
+    else if(ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!))
+    {
+      return this.navigationService.navigateRelative(
+        ProfessionalActivityEmploymentTypeComponent.route,
+        this.activatedRoute
+      );
+    }
     return this.navigateTo(`application/${this.applicationService.model.id}`); // Back to the task list.
   }
-
 
   public navigateTo(route: string) {
     return this.navigationService.navigateRelative(
@@ -90,7 +94,6 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
       this.activatedRoute
     );
   }
-
 
   public navigateToChange(membershipCode: string) {
     const queryParams = membershipCode;
@@ -121,5 +124,20 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   async SyncAndContinue() {
     await this.applicationService.syncProfessionalBodyMemberships();
     this.saveAndContinue();
+  }
+
+  canAddNewMembership(): boolean {
+    const memberships = this.applicationService.model.ProfessionalMemberships;
+
+    if (
+      memberships.RICS.CompletionState === ComponentCompletionState.Complete &&
+      memberships.CABE.CompletionState === ComponentCompletionState.Complete &&
+      memberships.CIOB.CompletionState === ComponentCompletionState.Complete &&
+      memberships.OTHER.CompletionState === ComponentCompletionState.Complete
+    ) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
