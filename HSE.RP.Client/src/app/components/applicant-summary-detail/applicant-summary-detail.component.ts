@@ -30,7 +30,7 @@ export class ApplicantSummaryDetailComponent implements OnInit{
     return this.PersonalDetails?.ApplicantAlternativeEmail?.Email || 'none';
   }
 
-  public navigateTo(route: string) {
-    return this.onNavigateTo.emit(route);
+  public navigateTo(name: string) {
+    return this.onNavigateTo.emit(name);
   }
 }
