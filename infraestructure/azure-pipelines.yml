@@ -1,77 +1,13 @@
 trigger:
-  - main
+- production
 
 pool:
   vmImage: ubuntu-latest
 
-stages:
-- stage: UnitTest
-  jobs:
-  - job: 
-    steps:
-      - task: DotNetCoreCLI@2
-        displayName: 'Run Unit Tests'
-        inputs:
-          command: 'test'
-          projects: '**/HSE.RP.API.UnitTests.csproj'
-      - task: DotNetCoreCLI@2
-        displayName: 'Build API'
-        inputs:
-          command: 'build'
-          projects: 'HSE.RP.API/HSE.RP.API.csproj'
-          arguments: '--output publish_output --configuration Release'
-      - task: ArchiveFiles@2
-        displayName: 'Archive API files'
-        inputs:
-          rootFolderOrFile: 'publish_output/'
-          includeRootFolder: false 
-          archiveFile: '$(Build.ArtifactStagingDirectory)/HSE.RP.API.zip'
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish API artifact'
-        inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/HSE.RP.API.zip'
-          ArtifactName: HSE.RP.API
+steps:
 
-- stage: DEV
-  dependsOn: UnitTest
-  variables: 
-  - group: HSE-RP-DEV
-  jobs:
-    - template: deploy.yml
-      parameters:
-        subscription: 's118-dev-bsr-acs-services'
-        appBuildCommand: 'npm run buildnonprod'
-    - job: IntegrationTesting
-      dependsOn: Deploy
-      steps:
-      - task: FileTransform@1
-        displayName: 'Set variables for integration testing'
-        inputs:
-          folderPath: '**/HSE.RP.API.IntegrationTests'
-          fileType: 'json'
-          targetFiles: 'appsettings.json'
-      - task: DotNetCoreCLI@2
-        displayName: 'Run Integration Tests'
-        inputs:
-          command: 'test'
-          projects: '**/HSE.RP.API.IntegrationTests.csproj'
-        
-- stage: QA
-  dependsOn: DEV
-  variables: 
-  - group: HSE-RP-QA
-  jobs:
-    - template: deploy.yml
-      parameters:
-        subscription: 's118-test-bsr-acs-services'
-        appBuildCommand: 'npm run buildnonprod'
-        
-- stage: UAT
-  dependsOn: QA
-  variables: 
-  - group: HSE-RP-UAT
-  jobs:
-    - template: deploy.yml
-      parameters:
-        subscription: 's118-test-bsr-acs-services'
-        appBuildCommand: 'npm run buildnonprod'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)/s'
+    artifact: 'source'
+    publishLocation: 'pipeline'
