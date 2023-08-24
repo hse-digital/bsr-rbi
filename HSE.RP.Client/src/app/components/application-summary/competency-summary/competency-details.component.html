@@ -1,0 +1,57 @@
+<govuk-summary-list *ngIf="!isCompetencyAssessmentStatusYes()">
+  <govuk-summary-list-row
+    (onClick)="
+      navigateTo('confirmation-ia-update')
+    "
+    (onKeyupEnter)="
+      navigateTo('confirmation-ia-update')
+    "
+    key="Independent assessment status"
+    [showAction]="true"
+    >{{ getIndependentAssessmentStatus() }}
+  </govuk-summary-list-row>
+</govuk-summary-list>
+
+<govuk-summary-list *ngIf="isCompetencyAssessmentStatusYes()">
+  <govuk-summary-list-row
+    (onClick)="
+      navigateTo('confirmation-ia-update')
+    "
+    (onKeyupEnter)="
+      navigateTo('confirmation-ia-update')
+    "
+    key="Independent assessment status"
+    [showAction]="true"
+    >{{ getIndependentAssessmentStatus() }}
+  </govuk-summary-list-row>
+
+  <govuk-summary-list-row
+    (onClick)="
+      navigateTo('competency-assesesment-organisation')
+    "
+    (onKeyupEnter)="
+      navigateTo('competency-assesesment-organisation')
+    "
+    key="Assessment organisation"
+    [showAction]="true"
+    >{{ getCompetencyAssessmentOrg() }}
+  </govuk-summary-list-row>
+  <govuk-summary-list-row
+    (onClick)="
+      navigateTo('competency-assessment-certificate-number')
+    "
+    (onKeyupEnter)="
+      navigateTo('competency-assessment-certificate-number')
+    "
+    key="Assessment certificate number"
+    [showAction]="true"
+    >{{ getCompetencyAssessmentCertificateNo() }}
+  </govuk-summary-list-row>
+  <govuk-summary-list-row
+    (onClick)="navigateTo('competency-assesesment-date')"
+    (onKeyupEnter)="navigateTo('competency-assesesment-date')"
+    key="Date of assessment"
+    [showAction]="true"
+    >{{ GetFormattedDateOfAssessment() }}
+  </govuk-summary-list-row>
+</govuk-summary-list>

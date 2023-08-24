@@ -16,7 +16,8 @@ import { SelectAddressComponent } from "./address/select-address.component";
 import { TooManyAddressComponent } from "./address/too-many-address.component";
 import { AddressDescriptionComponent } from './address-description.component';
 import { ApplicationSummaryPersonalDetailsComponent } from './application-summary/personal-details-summary/personal-details.component';
-import { ApplicationSummaryBuildingInspectorClassDetailsComponent } from "./application-summary/building-inspector-class/building-inspector-class-details.component";
+import { ApplicationSummaryBuildingInspectorClassDetailsComponent } from "./application-summary/building-inspector-class-summary/building-inspector-class-details.component";
+import { ApplicationSummaryCompetencyDetailsComponent } from "./application-summary/competency-summary/competency.component";
 
 
 
@@ -33,7 +34,8 @@ import { ApplicationSummaryBuildingInspectorClassDetailsComponent } from "./appl
     SelectAddressComponent,
     AddressDescriptionComponent,
     ApplicationSummaryPersonalDetailsComponent,
-    ApplicationSummaryBuildingInspectorClassDetailsComponent
+    ApplicationSummaryBuildingInspectorClassDetailsComponent,
+    ApplicationSummaryCompetencyDetailsComponent
   ],
   imports: [
     HseAngularModule,
@@ -46,7 +48,10 @@ import { ApplicationSummaryBuildingInspectorClassDetailsComponent } from "./appl
     AddressComponent,
     AddressDescriptionComponent,
     ApplicationSummaryPersonalDetailsComponent,
-    ApplicationSummaryBuildingInspectorClassDetailsComponent
+    ApplicationSummaryBuildingInspectorClassDetailsComponent,
+    ApplicationSummaryCompetencyDetailsComponent
+
+
 
   ],
   providers: [HttpClient, AddressService]

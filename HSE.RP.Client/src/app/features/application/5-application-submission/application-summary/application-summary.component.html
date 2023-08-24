@@ -10,5 +10,8 @@
     <hse-application-personal-details [PersonalDetails]="applicationService.model.PersonalDetails" (onNavigateTo)="navigateToPersonalDetailsRoute($event)" />
     <h1 class="govuk-heading-xl">2. Building inspector class</h1>
     <hse-building-inspector-class-details [BuildingInspectorClassDetails]="applicationService.model.InspectorClass" (onNavigateTo)="navigateToBuildingInspectorClassDetailsRoute($event)" />
+    <h1 class="govuk-heading-xl">3. Competency</h1>
+    <hse-competency-details [BuildingInspectorCompetencyDetails]="applicationService.model.Competency" (onNavigateTo)="navigateToBuildingInspectorCompetencyDetailsRoute($event)" />
+
   </govuk-body>
 </govuk-formpage>
