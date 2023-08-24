@@ -20,7 +20,7 @@
   <h1 class="govuk-heading-l">Find the public sector building control body that employs you</h1>
 
  <govuk-input-autocomplete label="Search by name" labelClass="govuk-label--s" id="organisation-name"
- hint="Search for public sector building control body by name."
+ hint="Type part of the organisation name to begin. If the name does not show in the drop down list, enter the organisation's full name manually."
  [(model)]="this.model!.FullName" #field [govukRequired]="field"
  [values]="companies" (onDebounce)="searchCompanies($event)" (onSelectedValue)="selectCompanyName($event)"
  [errorText]="getErrorDescription(publicSectorBodyNameHasErrors, 'Enter the name of the organisation you are employed by')"/>
