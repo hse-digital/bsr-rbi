@@ -25,9 +25,7 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   override model?: string;
 
-  constructor(
-    activatedRoute: ActivatedRoute,
-  ) {
+  constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
@@ -67,11 +65,20 @@ export class CompetencySummaryComponent extends PageComponent<string> {
     );
   }
 
-  public navigateTo(route: string) {
-    return this.navigationService.navigateRelative(
-      `${route}`,
-      this.activatedRoute
-    );
+  public navigateTo(route: string, queryParam?: string) {
+   
+    if (queryParam === undefined) {
+      return this.navigationService.navigateRelative(
+        `${route}`,
+        this.activatedRoute
+      );
+    } else {
+      return this.navigationService.navigateRelative(
+        `${route}`,
+        this.activatedRoute,
+        { queryParam }
+      );
+    }
   }
 
   public GetFormattedDateofBirth(): string {
@@ -92,7 +99,10 @@ export class CompetencySummaryComponent extends PageComponent<string> {
   }
 
   public isCompetencyAssessmentStatusYes(): boolean {
-    return this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes';
+    return (
+      this.applicationService.model.Competency
+        ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes'
+    );
   }
 
   public getCompetencyAssessmentOrg(): string {

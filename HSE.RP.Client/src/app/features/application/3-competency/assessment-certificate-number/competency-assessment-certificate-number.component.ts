@@ -8,6 +8,7 @@ import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { CompetencyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
 import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
+import { CompetencySummaryComponent } from '../competency-summary/competency-summary.component';
 
 @Component({
   selector: 'hse-competency-assesesment-certificate-number',
@@ -26,29 +27,39 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
   organisationPrefix: string = '';
   certificateNumber: string = '';
   override hasErrors: boolean = false;
+  queryParam?: string = '';
 
-  constructor(
-    activatedRoute: ActivatedRoute,
-  ) {
+  constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
+
     this.updateOnSave = true;
 
-    if(!applicationService.model.Competency!.CompetencyAssessmentCertificateNumber) {
-      applicationService.model.Competency!.CompetencyAssessmentCertificateNumber = new CompetencyAssessmentCertificateNumber();
+    if (
+      !applicationService.model.Competency!
+        .CompetencyAssessmentCertificateNumber
+    ) {
+      applicationService.model.Competency!.CompetencyAssessmentCertificateNumber =
+        new CompetencyAssessmentCertificateNumber();
     } else {
-      this.certificateNumber = applicationService.model.Competency!.CompetencyAssessmentCertificateNumber.CertificateNumber!;
+      this.certificateNumber =
+        applicationService.model.Competency!.CompetencyAssessmentCertificateNumber.CertificateNumber!;
     }
 
-    this.organisationPrefix = applicationService.model.Competency!.CompetencyAssessmentOrganisation!.ComAssessmentOrganisation;
-    applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.InProgress;
+    this.organisationPrefix =
+      applicationService.model.Competency!.CompetencyAssessmentOrganisation!.ComAssessmentOrganisation;
+    applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState =
+      ComponentCompletionState.InProgress;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CertificateNumber! = this.certificateNumber;
-
+    applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CertificateNumber! =
+      this.certificateNumber;
   }
 
   override canAccess(
@@ -61,17 +72,19 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
   override isValid(): boolean {
     this.certificateNumber = this.certificateNumber.trim().toUpperCase();
 
-    if (!FieldValidations.IsNotNullOrWhitespace(this.certificateNumber))
-    {
-      this.errorMessage = "Enter your assessment certificate number";
+    if (!FieldValidations.IsNotNullOrWhitespace(this.certificateNumber)) {
+      this.errorMessage = 'Enter your assessment certificate number';
       this.hasErrors = true;
       return false;
     }
 
-    const validCertificateNumRegex = new RegExp(/^(CABE|BSCF)[a-zA-Z0-9]*$/).test(this.certificateNumber);
+    const validCertificateNumRegex = new RegExp(
+      /^(CABE|BSCF)[a-zA-Z0-9]*$/
+    ).test(this.certificateNumber);
 
     if (!validCertificateNumRegex) {
-      this.errorMessage = "You must enter an assessment certificate number in the correct format";
+      this.errorMessage =
+        'You must enter an assessment certificate number in the correct format';
       this.hasErrors = true;
       return false;
     }
@@ -79,28 +92,43 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     // 4 character prefix (CABE or BSCF) with a 20 character max string so CABE1262IJSBFAHS840.
     let prefix = this.certificateNumber.slice(0, 4);
     if (prefix.toLowerCase() !== this.organisationPrefix.toLowerCase()) {
-      this.errorMessage = "You must enter an assessment certificate number in the correct format";
+      this.errorMessage =
+        'You must enter an assessment certificate number in the correct format';
       this.hasErrors = true;
 
       return false;
     }
 
     this.hasErrors = false;
-    this.applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = ComponentCompletionState.Complete;
+    this.applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState =
+      ComponentCompletionState.Complete;
 
     return true;
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(
-      CompetencyAssessmentDateComponent.route,
-      this.activatedRoute
-    );
+    if (this.queryParam === 'competency-change') {
+      return this.navigationService.navigateRelative(
+        CompetencySummaryComponent.route,
+        this.activatedRoute
+      );
+    } else {
+      return this.navigationService.navigateRelative(
+        CompetencyAssessmentDateComponent.route,
+        this.activatedRoute
+      );
+    }
+
+    // return this.navigationService.navigateRelative(
+    //   CompetencyAssessmentDateComponent.route,
+    //   this.activatedRoute
+    // );
   }
 
   DerivedIsComplete(value: boolean): void {
-    this.applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState = value
-      ? ComponentCompletionState.Complete
-      : ComponentCompletionState.InProgress;
+    this.applicationService.model.Competency!.CompetencyAssessmentCertificateNumber!.CompletionState =
+      value
+        ? ComponentCompletionState.Complete
+        : ComponentCompletionState.InProgress;
   }
 }
