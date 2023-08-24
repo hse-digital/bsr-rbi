@@ -9,7 +9,7 @@
 
   <h1 class="govuk-heading-l">Your employment</h1>
 
-  <govuk-radio-group hintText="Select your primary form of employment" id="radios-bi-employment-selection" [(model)]="model!.EmploymentType" [errorText]="errorMessage">
+  <govuk-radio-group hintText="Your employment details will be published on the public register" id="radios-bi-employment-selection" [(model)]="model!.EmploymentType" [errorText]="errorMessage">
     <govuk-radio 
       label="Employee of a public sector building control body"
       [value]="EmploymentType.PublicSector"
