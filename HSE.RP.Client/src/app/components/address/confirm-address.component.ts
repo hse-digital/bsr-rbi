@@ -38,7 +38,7 @@ export class ConfirmAddressComponent {
     if (this.addressManualyDisplayStep === 'manual') {
 
       if (this.orgFullName !== '') {
-        localTitle = `Confirm your ${this.orgFullName}`;
+        localTitle = `Confirm address of ${this.orgFullName}`;
       } else {
         localTitle = `Confirm your business address`;
       }
