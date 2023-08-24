@@ -28,7 +28,7 @@ export class ApplicationSummaryCompetencyDetailsComponent implements OnInit{
     return this.BuildingInspectorCompetencyDetails
       ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes'
       ? 'Yes'
-      : 'No';
+      : 'None';
   }
 
   public isCompetencyAssessmentStatusYes(): boolean {
@@ -45,7 +45,7 @@ export class ApplicationSummaryCompetencyDetailsComponent implements OnInit{
   public getCompetencyAssessmentCertificateNo(): string {
     return (
       this.BuildingInspectorCompetencyDetails
-        ?.CompetencyAssessmentCertificateNumber?.CertificateNumber || 'No'
+        ?.CompetencyAssessmentCertificateNumber?.CertificateNumber || 'None'
     );
   }
 

@@ -43,7 +43,6 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
   // inspectionLink: string = "";
 
 
-
   constructor(
     activatedRoute: ActivatedRoute,
     applicationService: ApplicationService,
@@ -116,5 +115,18 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
     // await this.applicationService.syncPersonalDetails();
     // this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
     this.saveAndContinue();
+
   }
+
+  public getIndependentAssessmentStatus(): string {
+    return this.applicationService.model.Competency
+      ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes'
+      ? 'Yes'
+      : 'No';
+  }
+
+  public isCompetencyAssessmentStatusYes(): boolean {
+    return this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes';
+  }
+
 }

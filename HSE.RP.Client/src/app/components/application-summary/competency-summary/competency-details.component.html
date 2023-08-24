@@ -7,7 +7,7 @@
     (onKeyupEnter)="
       navigateTo('confirmation-ia-update')
     "
-    key="Independent assessment status"
+    key="Assessment"
     [showAction]="true"
     >{{ getIndependentAssessmentStatus() }}
   </govuk-summary-list-row>
@@ -22,7 +22,7 @@
       navigateTo('confirmation-ia-update')
     "
     [actionText]="'change'"
-    key="Independent assessment status"
+    key="Assessment"
     [showAction]="true"
     >{{ getIndependentAssessmentStatus() }}
   </govuk-summary-list-row>
@@ -34,7 +34,7 @@
     (onKeyupEnter)="
       navigateTo('competency-assesesment-organisation')
     "
-    key="Assessment organisation"
+    key="Provider"
     [showAction]="true"
     [actionText]="'change'"
     >{{ getCompetencyAssessmentOrg() }}
@@ -46,7 +46,7 @@
     (onKeyupEnter)="
       navigateTo('competency-assessment-certificate-number')
     "
-    key="Assessment certificate number"
+    key="Certificate number"
     [showAction]="true"
     [actionText]="'change'"
     >{{ getCompetencyAssessmentCertificateNo() }}
@@ -55,7 +55,7 @@
     (onClick)="navigateTo('competency-assesesment-date')"
     (onKeyupEnter)="navigateTo('competency-assesesment-date')"
     [actionText]="'change'"
-    key="Date of assessment"
+    key="Date of assessment certificate	"
     [showAction]="true"
     >{{ GetFormattedDateOfAssessment() }}
   </govuk-summary-list-row>

@@ -16,26 +16,50 @@
     <h2 class="govuk-heading-m">2. Building inspector class</h2>
     <hse-building-inspector-class-details
       [BuildingInspectorClassDetails]="applicationService.model.InspectorClass"
+      [BuildingInspectorCompetencyDetails]="applicationService.model.Competency"
+
       (onNavigateTo)="navigateToBuildingInspectorClassDetailsRoute($event)"
     />
-    <h2 class="govuk-heading-m">3. Competency</h2>
-    <hse-competency-details
-      [BuildingInspectorCompetencyDetails]="applicationService.model.Competency"
-      (onNavigateTo)="navigateToBuildingInspectorCompetencyDetailsRoute($event)"
-    />
-    <h2 class="govuk-heading-m">4. Professional memberships and employment</h2>
-    <hse-professional-membership-and-employment-details
-      [BuildingInspectorProfessionalActivityDetails]="
-        applicationService.model.ProfessionalActivity
-      "
-      [BuildingInspectorCompetencyDetails]="applicationService.model.Competency"
-      [BuildingInspectorProfessionalMembershipsDetails]="
-        applicationService.model.ProfessionalMemberships
-      "
-      (onNavigateTo)="
-        navigateToBuildingInspectorProfessionalActivityDetailsRoute($event)
-      "
-    />
+
+    <div *ngIf="this.applicationService!.model.InspectorClass!.ClassType?.Class == BuildingInspectorClassType.Class1 && !isCompetencyAssessmentStatusYes()">
+
+      <h2 class="govuk-heading-m">3. Professional memberships and employment</h2>
+      <hse-professional-membership-and-employment-details
+        [BuildingInspectorProfessionalActivityDetails]="
+          applicationService.model.ProfessionalActivity
+        "
+        [BuildingInspectorCompetencyDetails]="applicationService.model.Competency"
+        [BuildingInspectorProfessionalMembershipsDetails]="
+          applicationService.model.ProfessionalMemberships
+        "
+        (onNavigateTo)="
+          navigateToBuildingInspectorProfessionalActivityDetailsRoute($event)
+        "
+      />
+    </div>
+
+    <div *ngIf="this.applicationService!.model.InspectorClass!.ClassType?.Class != BuildingInspectorClassType.Class1">
+      <h2 class="govuk-heading-m">3. Competency</h2>
+      <hse-competency-details
+        [BuildingInspectorCompetencyDetails]="applicationService.model.Competency"
+        (onNavigateTo)="navigateToBuildingInspectorCompetencyDetailsRoute($event)"
+      />
+      <h2 class="govuk-heading-m">4. Professional memberships and employment</h2>
+      <hse-professional-membership-and-employment-details
+        [BuildingInspectorProfessionalActivityDetails]="
+          applicationService.model.ProfessionalActivity
+        "
+        [BuildingInspectorCompetencyDetails]="applicationService.model.Competency"
+        [BuildingInspectorProfessionalMembershipsDetails]="
+          applicationService.model.ProfessionalMemberships
+        "
+        (onNavigateTo)="
+          navigateToBuildingInspectorProfessionalActivityDetailsRoute($event)
+        "
+      />
+    </div>
+
+
 
     <govuk-inset-text>
       <h2 class="govuk-heading-m">Retain a copy of your application for your own records</h2>
