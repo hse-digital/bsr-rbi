@@ -32,6 +32,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   photoHasErrors = false;
   selectedOption: string = '';
   override model?: ApplicantProfessionBodyMemberships;
+  errorMessage: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -62,9 +63,13 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   override isValid(): boolean {
-    return true;
-    /*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
-    return !this.phoneNumberHasErrors; */
+    if (this.selectedOption === '') 
+    {
+      this.errorMessage = "Select whether you want to tell us about additonal memberships you hold or not"
+      return false
+    }
+
+    return true
   }
 
   override navigateNext(): Promise<boolean> {
