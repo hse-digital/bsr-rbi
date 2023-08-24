@@ -12,6 +12,7 @@ import { PersonalDetailRouter, PersonalDetailRoutes } from '../../1-personal-det
 import { ApplicationSubmissionModule } from '../application.application-submission.module';
 import { BuildingInspectorRoutes } from '../../application-routes';
 import { BuildingInspectorClassType } from '../../../../models/building-inspector-classtype.enum';
+import { PaymentDeclarationComponent } from '../payment/payment-declaration/payment-declaration.component';
 
 @Component({
   selector: 'hse-application-summary',
@@ -72,7 +73,7 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.TASK_LIST);
+    return this.navigationService.navigateRelative('payment/'+PaymentDeclarationComponent.route, this.activatedRoute);
   }
 
   public navigateToPersonalDetailsRoute(namedRoute: string) {
@@ -112,8 +113,8 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
   }
 
   async SyncAndContinue() {
-    await this.applicationService.syncPersonalDetails();
-    this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
+    // await this.applicationService.syncPersonalDetails();
+    // this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
     this.saveAndContinue();
   }
 }
