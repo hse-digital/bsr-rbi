@@ -13,7 +13,27 @@ export const PersonalDetailRoutes = {
   PROOF_OF_ID: 'applicant-photo',
   SUMMARY: 'applicant-summary',
   TASK_LIST: '',
+
+  MapNameToRoute(namedRoute: string): string {
+    if (namedRoute === 'ADDRESS')
+      return PersonalDetailRoutes.ADDRESS;
+    if (namedRoute === 'ALT_EMAIL')
+      return PersonalDetailRoutes.ALT_EMAIL;
+    if (namedRoute === 'ALT_PHONE')
+      return PersonalDetailRoutes.ALT_PHONE;
+    if (namedRoute === 'DATE_OF_BIRTH')
+      return PersonalDetailRoutes.DATE_OF_BIRTH;
+    if (namedRoute === 'NAME')
+      return PersonalDetailRoutes.NAME;
+    if (namedRoute === 'NATIONAL_INS_NUMBER')
+      return PersonalDetailRoutes.NATIONAL_INS_NUMBER;
+    if (namedRoute === 'PROOF_OF_ID')
+      return PersonalDetailRoutes.PROOF_OF_ID;
+
+    return PersonalDetailRoutes.SUMMARY;
+  }
 };
+
 /// <summary>
 /// This class is used to navigate to the different components of
 /// the personal details section or back to the task list.
