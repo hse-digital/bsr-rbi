@@ -84,12 +84,12 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
   }
 
   override isValid(): boolean {
-    this.selectedOptionError = false;
-
-    this.selectedOptionError = this.selections.length === 0;
-    this.errorText = 'Select a category';
-
-    return !this.selectedOptionError;
+    if (this.selections.length == 0)
+    {
+      this.selectedOptionError = true;
+      this.errorText = 'Select a category';
+    }
+    return this.selections.length > 0;
   }
 
   override navigateNext(): Promise<boolean> {
