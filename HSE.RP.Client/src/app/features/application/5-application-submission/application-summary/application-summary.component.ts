@@ -87,6 +87,9 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
     return this.navigateTo('competency/'+route);
   }
 
+  public navigateToBuildingInspectorProfessionalActivityDetailsRoute(route: string) {
+    return this.navigateTo('professional-activity/'+route);
+  }
 
   public navigateTo(route: string) {
     return this.navigationService.navigateRelative(`../${route}`, this.activatedRoute);

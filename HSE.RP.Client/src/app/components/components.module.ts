@@ -18,6 +18,7 @@ import { AddressDescriptionComponent } from './address-description.component';
 import { ApplicationSummaryPersonalDetailsComponent } from './application-summary/personal-details-summary/personal-details.component';
 import { ApplicationSummaryBuildingInspectorClassDetailsComponent } from "./application-summary/building-inspector-class-summary/building-inspector-class-details.component";
 import { ApplicationSummaryCompetencyDetailsComponent } from "./application-summary/competency-summary/competency.component";
+import { ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent } from "./application-summary/professional-membership-and-employment-summary/professional-membership-and-employment-details.component";
 
 
 
@@ -35,7 +36,8 @@ import { ApplicationSummaryCompetencyDetailsComponent } from "./application-summ
     AddressDescriptionComponent,
     ApplicationSummaryPersonalDetailsComponent,
     ApplicationSummaryBuildingInspectorClassDetailsComponent,
-    ApplicationSummaryCompetencyDetailsComponent
+    ApplicationSummaryCompetencyDetailsComponent,
+    ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent
   ],
   imports: [
     HseAngularModule,
@@ -49,8 +51,8 @@ import { ApplicationSummaryCompetencyDetailsComponent } from "./application-summ
     AddressDescriptionComponent,
     ApplicationSummaryPersonalDetailsComponent,
     ApplicationSummaryBuildingInspectorClassDetailsComponent,
-    ApplicationSummaryCompetencyDetailsComponent
-
+    ApplicationSummaryCompetencyDetailsComponent,
+    ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent
 
 
   ],

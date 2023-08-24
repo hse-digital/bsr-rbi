@@ -1,5 +1,6 @@
 <govuk-summary-list *ngIf="!isCompetencyAssessmentStatusYes()">
   <govuk-summary-list-row
+    [actionText]="'change'"
     (onClick)="
       navigateTo('confirmation-ia-update')
     "
@@ -20,6 +21,7 @@
     (onKeyupEnter)="
       navigateTo('confirmation-ia-update')
     "
+    [actionText]="'change'"
     key="Independent assessment status"
     [showAction]="true"
     >{{ getIndependentAssessmentStatus() }}
@@ -34,6 +36,7 @@
     "
     key="Assessment organisation"
     [showAction]="true"
+    [actionText]="'change'"
     >{{ getCompetencyAssessmentOrg() }}
   </govuk-summary-list-row>
   <govuk-summary-list-row
@@ -45,11 +48,13 @@
     "
     key="Assessment certificate number"
     [showAction]="true"
+    [actionText]="'change'"
     >{{ getCompetencyAssessmentCertificateNo() }}
   </govuk-summary-list-row>
   <govuk-summary-list-row
     (onClick)="navigateTo('competency-assesesment-date')"
     (onKeyupEnter)="navigateTo('competency-assesesment-date')"
+    [actionText]="'change'"
     key="Date of assessment"
     [showAction]="true"
     >{{ GetFormattedDateOfAssessment() }}

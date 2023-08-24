@@ -1,17 +1,45 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
-
-
+<govuk-formpage
+  saveAndContinueText="Continue"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="saveAndContinue()"
+  [hideBackButton]="true"
+>
   <h1 class="govuk-heading-l">Summary of your application</h1>
-  <govuk-body>
-    <h1 class="govuk-heading-xl">1. Personal details</h1>
-    <hse-application-personal-details [PersonalDetails]="applicationService.model.PersonalDetails" (onNavigateTo)="navigateToPersonalDetailsRoute($event)" />
-    <h1 class="govuk-heading-xl">2. Building inspector class</h1>
-    <hse-building-inspector-class-details [BuildingInspectorClassDetails]="applicationService.model.InspectorClass" (onNavigateTo)="navigateToBuildingInspectorClassDetailsRoute($event)" />
-    <h1 class="govuk-heading-xl">3. Competency</h1>
-    <hse-competency-details [BuildingInspectorCompetencyDetails]="applicationService.model.Competency" (onNavigateTo)="navigateToBuildingInspectorCompetencyDetailsRoute($event)" />
 
-  </govuk-body>
+    <h2 class="govuk-heading-m">1. Personal details</h2>
+    <hse-application-personal-details
+      [PersonalDetails]="applicationService.model.PersonalDetails"
+      (onNavigateTo)="navigateToPersonalDetailsRoute($event)"
+    />
+    <h2 class="govuk-heading-m">2. Building inspector class</h2>
+    <hse-building-inspector-class-details
+      [BuildingInspectorClassDetails]="applicationService.model.InspectorClass"
+      (onNavigateTo)="navigateToBuildingInspectorClassDetailsRoute($event)"
+    />
+    <h2 class="govuk-heading-m">3. Competency</h2>
+    <hse-competency-details
+      [BuildingInspectorCompetencyDetails]="applicationService.model.Competency"
+      (onNavigateTo)="navigateToBuildingInspectorCompetencyDetailsRoute($event)"
+    />
+    <h2 class="govuk-heading-m">4. Professional memberships and employment</h2>
+    <hse-professional-membership-and-employment-details
+      [BuildingInspectorProfessionalActivityDetails]="
+        applicationService.model.ProfessionalActivity
+      "
+      [BuildingInspectorCompetencyDetails]="applicationService.model.Competency"
+      [BuildingInspectorProfessionalMembershipsDetails]="
+        applicationService.model.ProfessionalMemberships
+      "
+      (onNavigateTo)="
+        navigateToBuildingInspectorProfessionalActivityDetailsRoute($event)
+      "
+    />
+
+    <govuk-inset-text>
+      <h2 class="govuk-heading-m">Retain a copy of your application for your own records</h2>
+      <govuk-body>Print this page</govuk-body>
+      <govuk-body>Save as PDF</govuk-body>
+    </govuk-inset-text>
 </govuk-formpage>
