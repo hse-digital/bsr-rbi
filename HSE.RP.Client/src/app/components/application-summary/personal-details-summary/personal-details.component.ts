@@ -1,14 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DateFormatHelper } from '../../helpers/date-format-helper';
-import { PersonalDetails } from '../../models/personal-details.model';
+import { DateFormatHelper } from '../../../helpers/date-format-helper';
+import { PersonalDetails } from '../../../models/personal-details.model';
 
 @Component({
-  selector: 'hse-applicant-summary-detail',
-  templateUrl: './applicant-summary-detail.component.html',
-  styleUrls: ['./applicant-summary-detail.component.scss']
+  selector: 'hse-application-personal-details',
+  templateUrl: './personal-details.component.html',
+  styleUrls: ['./personal-details.component.scss']
 })
-export class ApplicantSummaryDetailComponent implements OnInit{
+export class ApplicationSummaryPersonalDetailsComponent implements OnInit{
   @Input() PersonalDetails?: PersonalDetails;
+  @Input() Test?: string;
   @Output() onNavigateTo = new EventEmitter<string>();
 
   ngOnInit(): void {

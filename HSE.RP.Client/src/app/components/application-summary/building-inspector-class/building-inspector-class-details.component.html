@@ -1,0 +1,150 @@
+
+  <!-- class 1 summary list -->
+  <govuk-summary-list *ngIf="BuildingInspectorClassDetails!.ClassType.Class === BuildingInspectorClassType.Class1">
+    <govuk-summary-list-row
+      (onClick)="navigateTo('building-inspector-class-selection')"
+      (onKeyupEnter)="navigateTo('building-inspector-class-selection')"
+      key="Type"
+      [showAction]="true"
+      [actionText]="'change'"
+    >
+      Class 1 building inspector
+    </govuk-summary-list-row>
+
+    <govuk-summary-list-row
+      (onClick)="navigateTo('building-inspector-country')"
+      (onKeyupEnter)="navigateTo('building-inspector-country')"
+      key="Country"
+      [showAction]="true"
+      [actionText]="'change'"
+    >
+      <div *ngIf="this.BuildingInspectorClassDetails!.InspectorCountryOfWork?.England">
+        England
+      </div>
+      <div *ngIf="this.BuildingInspectorClassDetails!.InspectorCountryOfWork?.Wales">
+        Wales
+      </div>
+    </govuk-summary-list-row>
+  </govuk-summary-list>
+
+
+<!-- class 2 or 3 summary list -->
+
+
+  <!-- CLASSES -->
+  <dl class="govuk-summary-list" *ngIf="this.BuildingInspectorClassDetails!.ClassType?.Class !== BuildingInspectorClassType.Class1">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Type
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <div *ngIf="this.BuildingInspectorClassDetails!.ClassType?.Class === BuildingInspectorClassType.Class3">
+          Class 3 building inspector<br>
+        </div>
+
+        <div *ngIf="this.BuildingInspectorClassDetails!.ClassType?.Class === BuildingInspectorClassType.Class2">
+          Class 2 building inspector<br>
+        </div>
+
+        <div *ngIf="this.BuildingInspectorClassDetails!.ClassTechnicalManager === 'yes'">
+          Class 4 technical manager
+        </div>
+      </dd>
+      <dd class="govuk-summary-list__actions">
+        <a class="govuk-link" role="link"
+          (click)="navigateTo('building-inspector-class-selection')"
+          (keyup.enter)="navigateTo('building-inspector-class-selection')" tabindex="0"
+        >
+          change<span class="govuk-visually-hidden"> class</span>
+        </a><br>
+        <a *ngIf="this.BuildingInspectorClassDetails!.ClassTechnicalManager === 'yes'" class="govuk-link" role="link"
+          (click)="navigateTo('building-class-technical-manager')"
+          (keyup.enter)="navigateTo('building-class-technical-manager')" tabindex="0"
+        >
+          change<span class="govuk-visually-hidden"> class</span>
+        </a>
+      </dd>
+    </div>
+
+    <!-- ACTIVITIES -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Activity
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <div *ngIf="this.BuildingInspectorClassDetails!.Activities?.AssessingPlans">
+          Assess plans<br>
+        </div>
+        <div *ngIf="this.BuildingInspectorClassDetails!.Activities?.Inspection">
+          Inspection
+        </div>
+      </dd>
+      <dd class="govuk-summary-list__actions">
+        <a class="govuk-link" role="link"
+          (click)="navigateTo('building-inspector-regulated-activities')"
+          (keyup.enter)="navigateTo('building-inspector-regulated-activities')" tabindex="0"
+        >
+          change<span class="govuk-visually-hidden"> activities</span><br>
+        </a>
+      </dd>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Categories
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <div *ngIf="assessPlansCategories">
+          {{assessPlansCategories}}<span class="govuk-caption-m">[Assess plans]</span>
+        </div>
+
+        <div *ngIf="inspectionCategories">
+          {{inspectionCategories}}<span class="govuk-caption-m">[Inspection]</span>
+        </div>
+      </dd>
+      <dd class="govuk-summary-list__actions">
+        <div *ngIf="assessPlansCategories">
+          <a class="govuk-link" role="link"
+            (click)="navigateTo(assessPlansLink)"
+            (keyup.enter)="navigateTo(assessPlansLink)" tabindex="0"
+          >
+            change<span class="govuk-visually-hidden"> activities</span>
+          </a>
+          <br>
+        </div>
+
+        <br *ngIf="assessPlansCategories === 'false'">
+        <br *ngIf="assessPlansCategories">
+
+        <a class="govuk-link" role="link" *ngIf="inspectionCategories"
+          (click)="navigateTo(inspectionLink)"
+          (keyup.enter)="navigateTo(inspectionLink)" tabindex="0"
+        >
+          change<span class="govuk-visually-hidden"> activities</span>
+        </a>
+      </dd>
+    </div>
+
+    <!-- COUNTRIES -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Country
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <div *ngIf="this.BuildingInspectorClassDetails!.InspectorCountryOfWork?.England">
+          England<br>
+        </div>
+        <div *ngIf="this.BuildingInspectorClassDetails!.InspectorCountryOfWork?.Wales">
+          Wales
+        </div>
+      </dd>
+      <dd class="govuk-summary-list__actions">
+        <a class="govuk-link" role="link" (click)="navigateTo('building-inspector-country')"
+          (keyup.enter)="navigateTo('building-inspector-country')" tabindex="0"
+        >
+          change<span class="govuk-visually-hidden"> country</span>
+        </a>
+      </dd>
+    </div>
+  </dl>

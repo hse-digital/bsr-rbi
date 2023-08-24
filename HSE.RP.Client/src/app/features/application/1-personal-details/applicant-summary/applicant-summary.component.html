@@ -7,6 +7,6 @@
 >
   <govuk-body>
     <h1 class="govuk-heading-xl">Summary of your personal details</h1>
-    <hse-applicant-summary-detail (PersonalDetails)="applicationService.model.PersonalDetails" (onNavigateTo)="navigateToNamedRoute($event)" />
+    <hse-application-personal-details [PersonalDetails]="applicationService.model.PersonalDetails" (onNavigateTo)="navigateToNamedRoute($event)"/>
   </govuk-body>
 </govuk-formpage>

@@ -15,7 +15,8 @@ import { NotFoundAddressComponent } from "./address/not-found-address.component"
 import { SelectAddressComponent } from "./address/select-address.component";
 import { TooManyAddressComponent } from "./address/too-many-address.component";
 import { AddressDescriptionComponent } from './address-description.component';
-import { ApplicantSummaryDetailComponent } from './applicant-summary-detail/applicant-summary-detail.component';
+import { ApplicationSummaryPersonalDetailsComponent } from './application-summary/personal-details-summary/personal-details.component';
+import { ApplicationSummaryBuildingInspectorClassDetailsComponent } from "./application-summary/building-inspector-class/building-inspector-class-details.component";
 
 
 
@@ -31,7 +32,8 @@ import { ApplicantSummaryDetailComponent } from './applicant-summary-detail/appl
     TooManyAddressComponent,
     SelectAddressComponent,
     AddressDescriptionComponent,
-    ApplicantSummaryDetailComponent,
+    ApplicationSummaryPersonalDetailsComponent,
+    ApplicationSummaryBuildingInspectorClassDetailsComponent
   ],
   imports: [
     HseAngularModule,
@@ -43,7 +45,9 @@ import { ApplicantSummaryDetailComponent } from './applicant-summary-detail/appl
     TaskListItemComponent,
     AddressComponent,
     AddressDescriptionComponent,
-    ApplicantSummaryDetailComponent
+    ApplicationSummaryPersonalDetailsComponent,
+    ApplicationSummaryBuildingInspectorClassDetailsComponent
+
   ],
   providers: [HttpClient, AddressService]
 })

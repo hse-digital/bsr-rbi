@@ -7,9 +7,8 @@
   <h1 class="govuk-heading-l">Summary of your application</h1>
   <govuk-body>
     <h1 class="govuk-heading-xl">1. Personal details</h1>
-    <hse-applicant-summary-detail (PersonalDetails)="applicationService.model.PersonalDetails" (onNavigateTo)="navigateToNamedRoute($event)" />
-
-    <h1 class="govuk-heading-xl">1. Personal details</h1>
+    <hse-application-personal-details [PersonalDetails]="applicationService.model.PersonalDetails" (onNavigateTo)="navigateToPersonalDetailsRoute($event)" />
+    <h1 class="govuk-heading-xl">2. Building inspector class</h1>
+    <hse-building-inspector-class-details [BuildingInspectorClassDetails]="applicationService.model.InspectorClass" (onNavigateTo)="navigateToBuildingInspectorClassDetailsRoute($event)" />
   </govuk-body>
 </govuk-formpage>
-
