@@ -21,7 +21,6 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
     'Building inspector class - Register as a building inspector - GOV.UK';
   production = environment.production;
   modelValid = false;
-  photoHasErrors = false;
   public hint = 'Select all that apply';
   public errorText = '';
   selectedOptionError: boolean = false;
@@ -86,8 +85,10 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
 
   override isValid(): boolean {
     if (this.selections.length == 0)
-    this.selectedOptionError = true;
+    {
+      this.selectedOptionError = true;
       this.errorText = 'Select a category';
+    }
     return this.selections.length > 0;
   }
 

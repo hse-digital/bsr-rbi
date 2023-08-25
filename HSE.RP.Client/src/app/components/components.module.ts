@@ -15,6 +15,10 @@ import { NotFoundAddressComponent } from "./address/not-found-address.component"
 import { SelectAddressComponent } from "./address/select-address.component";
 import { TooManyAddressComponent } from "./address/too-many-address.component";
 import { AddressDescriptionComponent } from './address-description.component';
+import { ApplicationSummaryPersonalDetailsComponent } from './application-summary/personal-details-summary/personal-details.component';
+import { ApplicationSummaryBuildingInspectorClassDetailsComponent } from "./application-summary/building-inspector-class-summary/building-inspector-class-details.component";
+import { ApplicationSummaryCompetencyDetailsComponent } from "./application-summary/competency-summary/competency.component";
+import { ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent } from "./application-summary/professional-membership-and-employment-summary/professional-membership-and-employment-details.component";
 
 
 
@@ -30,6 +34,10 @@ import { AddressDescriptionComponent } from './address-description.component';
     TooManyAddressComponent,
     SelectAddressComponent,
     AddressDescriptionComponent,
+    ApplicationSummaryPersonalDetailsComponent,
+    ApplicationSummaryBuildingInspectorClassDetailsComponent,
+    ApplicationSummaryCompetencyDetailsComponent,
+    ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent
   ],
   imports: [
     HseAngularModule,
@@ -40,7 +48,13 @@ import { AddressDescriptionComponent } from './address-description.component';
     GovukRequiredDirective,
     TaskListItemComponent,
     AddressComponent,
-    AddressDescriptionComponent
+    AddressDescriptionComponent,
+    ApplicationSummaryPersonalDetailsComponent,
+    ApplicationSummaryBuildingInspectorClassDetailsComponent,
+    ApplicationSummaryCompetencyDetailsComponent,
+    ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent
+
+
   ],
   providers: [HttpClient, AddressService]
 })

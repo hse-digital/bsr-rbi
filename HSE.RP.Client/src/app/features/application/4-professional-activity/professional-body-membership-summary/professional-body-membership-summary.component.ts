@@ -30,8 +30,9 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
-  selectedOption: string = 'no';
+  selectedOption: string = '';
   override model?: ApplicantProfessionBodyMemberships;
+  errorMessage: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -62,9 +63,13 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   override isValid(): boolean {
-    return true;
-    /*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
-    return !this.phoneNumberHasErrors; */
+    if (this.selectedOption === '') 
+    {
+      this.errorMessage = "Select whether you want to tell us about additonal memberships you hold or not"
+      return false
+    }
+
+    return true
   }
 
   override navigateNext(): Promise<boolean> {
@@ -77,6 +82,13 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     }
     if (this.selectedOption === 'yes') {
       return this.navigateTo('professional-body-selection'); // To professional body selection page.
+    }
+    else if(ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!))
+    {
+      return this.navigationService.navigateRelative(
+        ProfessionalActivityEmploymentTypeComponent.route,
+        this.activatedRoute
+      );
     }
     return this.navigateTo(`application/${this.applicationService.model.id}`); // Back to the task list.
   }
@@ -125,7 +137,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     if (
       memberships.RICS.CompletionState === ComponentCompletionState.Complete &&
       memberships.CABE.CompletionState === ComponentCompletionState.Complete &&
-      memberships.CIOB.CompletionState === ComponentCompletionState.Complete && 
+      memberships.CIOB.CompletionState === ComponentCompletionState.Complete &&
       memberships.OTHER.CompletionState === ComponentCompletionState.Complete
     ) {
       return false;

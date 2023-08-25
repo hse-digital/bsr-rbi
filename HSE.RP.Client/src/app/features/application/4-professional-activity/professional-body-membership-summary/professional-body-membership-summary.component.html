@@ -1,11 +1,21 @@
 <govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="SyncAndContinue()" [hideBackButton]=true>
 
+  <govuk-error-summary
+    *ngIf="errorMessage"
+    title="There is a problem"
+    #summaryError
+  >
+  <govuk-error-link
+    *ngIf="errorMessage"
+    anchorId="radios-bi-class-selection"
+    [message]="errorMessage"
+  />
+</govuk-error-summary>
 
   <govuk-body>
-    <h1 class="govuk-heading-xl">Summary of your professional memberships</h1>
+    <h1 class="govuk-heading-l">Summary of your professional memberships</h1>
     <govuk-summary-list>
       <govuk-summary-list-row *ngIf="model!.RICS.CompletionState === ComponentCompletionState.Complete"
                               (onClick)="navigateToChange('RICS')"
@@ -53,10 +63,13 @@
       </govuk-summary-list-row>
     </govuk-summary-list>
     <br/>
-    <div *ngIf="!ApplicantProfessionBodyMembershipsHelper.AllCompleted( model!)">
-      <h1 class="govuk-heading-xl">Do you want to add another membership?</h1>
-
-      <govuk-radio-group hintText="" id="radios-bi-class-selection">
+    <div *ngIf="!ApplicantProfessionBodyMembershipsHelper.AllCompleted(model!)">
+      <govuk-radio-group
+        title="Do you want to add another membership?"
+        id="radios-bi-class-selection"
+        class="govuk-radios--inline"
+        [errorText]="errorMessage"
+      >
               <govuk-radio class=""
                            (onRadioClicked)="optionClicked('yes')"
                            label="Yes"
