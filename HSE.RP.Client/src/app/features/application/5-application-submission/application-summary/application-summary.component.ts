@@ -13,6 +13,8 @@ import { ApplicationSubmissionModule } from '../application.application-submissi
 import { BuildingInspectorRoutes } from '../../application-routes';
 import { BuildingInspectorClassType } from '../../../../models/building-inspector-classtype.enum';
 import { PaymentDeclarationComponent } from '../payment/payment-declaration/payment-declaration.component';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'hse-application-summary',
@@ -116,5 +118,18 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
     // await this.applicationService.syncPersonalDetails();
     // this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
     this.saveAndContinue();
+  }
+
+  public openPDF(): void {
+    let data = document.getElementById("application-summary");
+    // let data = document.getElementById("maindiv");
+    html2canvas(data!).then(canvas => {
+      const contentDataURL = canvas.toDataURL('image/jpeg', 1.0)
+      console.log(contentDataURL);
+      let pdf = new jsPDF(undefined, 'mm', [canvas.width, canvas.height]);
+      pdf.addImage(contentDataURL, 'PNG', 0, 0, canvas.width, canvas.height);
+      pdf.save(this.applicationService.model.id!+'-application-summary.pdf');
+    });
+
   }
 }
