@@ -15,6 +15,7 @@ import {
 import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
 import { ProfessionalBodyMembershipSummaryComponent } from '../professional-body-membership-summary/professional-body-membership-summary.component';
 import { ProfessionalBodyMembershipsComponent } from '../professional-body-memberships/professional-body-memberships.component';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-professional-confirmation-membership-removal',
@@ -92,12 +93,11 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
 
   override navigateNext(): Promise<boolean> {
     const memberships = this.applicationService.model.ProfessionalMemberships;
-
     if (
       memberships.RICS.MembershipNumber === '' &&
       memberships.CABE.MembershipNumber === '' &&
       memberships.CIOB.MembershipNumber === '' &&
-      memberships.OTHER.MembershipNumber === ''
+      memberships.OTHER.CompletionState !== ComponentCompletionState.Complete
     ) {
       return this.navigationService.navigateRelative(
         ProfessionalBodyMembershipsComponent.route,

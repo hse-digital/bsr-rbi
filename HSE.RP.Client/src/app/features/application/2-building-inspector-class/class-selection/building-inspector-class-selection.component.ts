@@ -13,6 +13,7 @@ import { BuildingAssessingPlansCategoriesClass3 } from 'src/app/models/buidling-
 import { BuildingAssessingPlansCategoriesClass2 } from 'src/app/models/building-assessing-plans-categories-class2.model';
 import { Class2InspectBuildingCategories } from 'src/app/models/class2-inspect-building-categories.model';
 import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-building-categories.model';
+import { Competency } from 'src/app/models/competency.model';
 
 @Component({
   selector: 'hse-building-inspector-class-selection',
@@ -111,6 +112,8 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
           'no';
         this.applicationService.model.InspectorClass!.ClassType.CompletionState =
           ComponentCompletionState.Complete;
+
+        this.applicationService.model.Competency = new Competency();
       } else {
         this.applicationService.model.InspectorClass!.ClassType.CompletionState =
           ComponentCompletionState.InProgress;
