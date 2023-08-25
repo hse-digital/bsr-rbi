@@ -168,19 +168,19 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                 }
                 {
                     name: 'Dynamics__TenantId'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--TenantId)'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=UAT--Dynamics--TenantId)'
                 }
                 {
                     name: 'Dynamics__ClientId'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--ClientId)'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=UAT--Dynamics--ClientId)'
                 }
                 {
                     name: 'Dynamics__ClientSecret'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--ClientSecret)'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=UAT--Dynamics--ClientSecret)'
                 }
                 {
                     name: 'Dynamics__LocalAuthorityTypeId'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Dynamics--LocalAuthorityTypeId)'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=UAT--Dynamics--LocalAuthorityTypeId)'
                 }
                 {
                     name: 'CosmosConnection'
