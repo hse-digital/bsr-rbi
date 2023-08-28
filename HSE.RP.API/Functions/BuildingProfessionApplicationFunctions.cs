@@ -29,6 +29,7 @@ public class BuildingProfessionApplicationFunctions
     [Function(nameof(CheckDuplicateBuildingProfessionalApplication))]
     public async Task<DuplicateApplicationCheckHttpResponseData> CheckDuplicateBuildingProfessionalApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
     {
+
         var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
 
         var dupelicateApplicationCheck = await dynamicsService.CheckDupelicateBuildingProfessionApplicationAsync(buildingProfessionApplicationModel);

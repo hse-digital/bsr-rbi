@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection.Metadata;
@@ -682,6 +683,10 @@ namespace HSE.RP.API.Services
 
         public async Task<bool> CheckDupelicateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel)
         {
+
+#if DEBUG
+            return false;
+#endif
             //Check for existing contact
             var contact = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
             {
@@ -696,20 +701,15 @@ namespace HSE.RP.API.Services
                         ("$filter", $"_bsr_applicantid_value eq '{contact.value.FirstOrDefault().contactid}' and statuscode ne 1  and statuscode ne 1"),
             });
 
-                if(application.value.Count>0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return application.value.Count>0;
             }
-            return false;
+            else
+            {
+                return false;   
+
+            }
 
         }
     }
-
-
 }
 
