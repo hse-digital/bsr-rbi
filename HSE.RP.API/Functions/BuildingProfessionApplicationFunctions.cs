@@ -25,6 +25,23 @@ public class BuildingProfessionApplicationFunctions
         this.featureOptions = featureOptions.Value;
     }
 
+
+    [Function(nameof(CheckDuplicateBuildingProfessionalApplication))]
+    public async Task<DuplicateApplicationCheckHttpResponseData> CheckDuplicateBuildingProfessionalApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+    {
+        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+
+        var dupelicateApplicationCheck = await dynamicsService.CheckDupelicateBuildingProfessionApplicationAsync(buildingProfessionApplicationModel);
+
+        var response = await request.CreateObjectResponseAsync(dupelicateApplicationCheck);
+
+        return new DuplicateApplicationCheckHttpResponseData
+        {
+            DuplicateApplication = dupelicateApplicationCheck,
+            HttpResponse = response
+        };
+    }
+
     [Function(nameof(NewBuildingProfessionalApplication))]
     public async Task<CustomHttpResponseData> NewBuildingProfessionalApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
     {
@@ -205,6 +222,13 @@ public class CustomHttpResponseData
 {
     [CosmosDBOutput("hseportal", "regulated_building_professions", Connection = "CosmosConnection")]
     public object Application { get; set; }
+
+    public HttpResponseData HttpResponse { get; set; }
+}
+
+public class DuplicateApplicationCheckHttpResponseData
+{
+    public bool DuplicateApplication { get; set; }
 
     public HttpResponseData HttpResponse { get; set; }
 }

@@ -17,6 +17,7 @@ using HSE.RP.API.Models.LocalAuthority;
 using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSE.RP.Domain.Entities;
+using Microsoft.DurableTask;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using static System.Net.Mime.MediaTypeNames;
@@ -572,11 +573,11 @@ namespace HSE.RP.API.Services
                 //If no entry exists then create a new one
                 if (existingRegistrationActivity == null)
                 {
-                    
+
                     var response = await dynamicsApi.Create("bsr_biemploymentdetails", dynamicsBuildingInspectorEmploymentDetail);
                     var buildingInspectorEmploymentDetailId = ExtractEntityIdFromHeader(response.Headers);
                     return buildingInspectorEmploymentDetail with { Id = buildingInspectorEmploymentDetailId };
-               
+
                 }
                 //If an entry exists then update it
                 else
@@ -679,8 +680,34 @@ namespace HSE.RP.API.Services
             return response.value.FirstOrDefault();
         }
 
+        public async Task<bool> CheckDupelicateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel)
+        {
+            //Check for existing contact
+            var contact = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
+            {
+                        ("$filter", $"firstname eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}'"),
+            });
 
+            //If contact exists check for existing application
+            if (contact.value.FirstOrDefault() != null)
+            {
+                var application = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
+            {
+                        ("$filter", $"_bsr_applicantid_value eq '{contact.value.FirstOrDefault().contactid}' and statuscode ne 1  and statuscode ne 1"),
+            });
 
+                if(application.value.Count>0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+
+        }
     }
 
 

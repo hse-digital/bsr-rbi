@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { LocalStorage } from 'src/app/helpers/local-storage';
 import { BuildingProfessionalModel } from '../models/building-professional.model';
 import { ApplicationStatus } from '../models/application-status.enum';
@@ -211,5 +211,10 @@ export class ApplicationService {
     );
   }
 
+  async CheckDuplicateBuildingProfessionalApplication(): Promise<boolean> {
+   return await lastValueFrom(
+      this.httpClient.post<boolean>(`api/CheckDuplicateBuildingProfessionalApplication`, this.model)
+    );
+  }
 
 }
