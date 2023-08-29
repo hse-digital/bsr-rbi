@@ -3,11 +3,12 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { PhoneNumberValidator } from '../../../../helpers/validators/phone-number-validator';
-import {
-  ApplicationService,
-} from '../../../../services/application.service';
+import { ApplicationService } from '../../../../services/application.service';
 import { ApplicantNationalInsuranceNumberComponent } from '../applicant-national-insurance-number/applicant-national-insurance-number.component';
-import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
+import {
+  PersonalDetailRoutes,
+  PersonalDetailRouter,
+} from '../PersonalDetailRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ApplicantPhone } from '../../../../models/applicant-phone-model';
@@ -19,57 +20,71 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 })
 export class ApplicantAlternativePhoneComponent extends PageComponent<ApplicantPhone> {
   public static route: string = PersonalDetailRoutes.ALT_PHONE;
-  static title: string = "Personal details - Register as a building inspector - GOV.UK";
+  static title: string =
+    'Personal details - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   phoneNumberHasErrors = false;
-  selectedOption: string = "";
+  selectedOption: string = '';
   selectedOptionError: boolean = false;
-  errorMessage: string = "";
+  errorMessage: string = '';
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
     applicationService: ApplicationService,
-    private personalDetailRouter: PersonalDetailRouter) {
+    private personalDetailRouter: PersonalDetailRouter
+  ) {
     super(activatedRoute);
     this.updateOnSave = true;
   }
 
   override onInit(applicationService: ApplicationService): void {
-    if (!applicationService.model.PersonalDetails?.ApplicantAlternativePhone) {
-      applicationService.model.PersonalDetails!.ApplicantAlternativePhone = new ApplicantPhone();
-    }
-    this.model = applicationService.model.PersonalDetails?.ApplicantAlternativePhone;
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
 
-    if ( this.model?.PhoneNumber === "") {
-      this.selectedOption = "no";
+    if (!applicationService.model.PersonalDetails?.ApplicantAlternativePhone) {
+      applicationService.model.PersonalDetails!.ApplicantAlternativePhone =
+        new ApplicantPhone();
     }
-    else if (this.model?.PhoneNumber) {
-      this.selectedOption = "yes";
+    this.model =
+      applicationService.model.PersonalDetails?.ApplicantAlternativePhone;
+
+    if (this.model?.PhoneNumber === '') {
+      this.selectedOption = 'no';
+    } else if (this.model?.PhoneNumber) {
+      this.selectedOption = 'yes';
     }
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.PersonalDetails!.ApplicantAlternativePhone = this.model;
+    this.applicationService.model.PersonalDetails!.ApplicantAlternativePhone =
+      this.model;
   }
 
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return this.applicationService.model.ApplicationStatus >= ApplicationStatus.PhoneVerified && this.applicationService.model.id != null;
+    return (
+      this.applicationService.model.ApplicationStatus >=
+        ApplicationStatus.PhoneVerified &&
+      this.applicationService.model.id != null
+    );
   }
 
   override isValid(): boolean {
     // if no option is selected, skip phone validation and save number as empty string
-    if (this.selectedOption === "") {
+    if (this.selectedOption === '') {
       this.selectedOptionError = true;
-      this.errorMessage = "Select yes if you want to provide an alternative telephone number";
+      this.errorMessage =
+        'Select yes if you want to provide an alternative telephone number';
       return false;
     }
-    if (this.selectedOption === "no") {
+    if (this.selectedOption === 'no') {
       if (this.model) {
-        this.model.PhoneNumber = "";
+        this.model.PhoneNumber = '';
       }
       this.modelValid = true;
       return this.modelValid;
@@ -80,11 +95,9 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<ApplicantP
     this.modelValid = !this.phoneNumberHasErrors;
     if (this.phoneNumberHasErrors) {
       if (this.isNullOrWhitespace(this.model?.PhoneNumber)) {
-        this.errorMessage = "Enter your alternative telephone number";
-      }
-      else
-      {
-        this.errorMessage = "Enter a UK telephone number";
+        this.errorMessage = 'Enter your alternative telephone number';
+      } else {
+        this.errorMessage = 'Enter a UK telephone number';
       }
     }
 
@@ -96,6 +109,16 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<ApplicantP
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.NATIONAL_INS_NUMBER);
+    if (this.queryParam === 'personal-details-change') {
+      return this.personalDetailRouter.navigateTo(
+        this.applicationService.model,
+        PersonalDetailRoutes.SUMMARY
+      );
+    } else {
+      return this.personalDetailRouter.navigateTo(
+        this.applicationService.model,
+        PersonalDetailRoutes.NATIONAL_INS_NUMBER
+      );
+    }
   }
 }
