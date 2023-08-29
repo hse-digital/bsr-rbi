@@ -35,6 +35,7 @@ export class ApplicantAddressComponent extends PageComponent<AddressModel> {
   searchMode = AddressSearchMode.HomeAddress;
 
   @Input() addressName?: string;
+  queryParam?: string = '';
 
   constructor(
     applicationService: ApplicationService,
@@ -48,6 +49,10 @@ export class ApplicantAddressComponent extends PageComponent<AddressModel> {
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
+
     this.model = applicationService.model.PersonalDetails?.ApplicantAddress;
   }
 
@@ -67,21 +72,28 @@ export class ApplicantAddressComponent extends PageComponent<AddressModel> {
     );
   }
 
-
   override isValid(): boolean {
     return true;
   }
   async addressConfirmed(address: AddressModel) {
+    console.log('hello confirm address');
     this.applicationService.model.PersonalDetails!.ApplicantAddress = address;
     this.applicationService.model.PersonalDetails!.ApplicantAddress.CompletionState =
       ComponentCompletionState.Complete;
 
     await this.applicationService.updateApplication();
 
-    this.navigationService.navigateRelative(
-      ApplicantAlternativeEmailComponent.route,
-      this.activatedRoute
-    );
+    if (this.queryParam === 'personal-details-change') {
+      return this.personalDetailRouter.navigateTo(
+        this.applicationService.model,
+        PersonalDetailRoutes.SUMMARY
+      );
+    } else {
+      return this.navigationService.navigateRelative(
+        ApplicantAlternativeEmailComponent.route,
+        this.activatedRoute
+      );
+    }
   }
 
   changeStep(event: any) {

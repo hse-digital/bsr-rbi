@@ -8,7 +8,10 @@ import { ApplicantAddressComponent } from '../applicant-address/applicant-addres
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
 import { NavigationService } from 'src/app/services/navigation.service';
-import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRoutes'
+import {
+  PersonalDetailRoutes,
+  PersonalDetailRouter,
+} from '../PersonalDetailRoutes';
 import { DateFormatHelper } from 'src/app/helpers/date-format-helper';
 import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
@@ -20,13 +23,12 @@ import { AddressModel } from 'src/app/models/address.model';
   templateUrl: './applicant-summary.component.html',
 })
 export class ApplicantSummaryComponent extends PageComponent<string> {
-  DerivedIsComplete(value: boolean): void {
-
-  }
+  DerivedIsComplete(value: boolean): void {}
   PersonalDetailRoutes = PersonalDetailRoutes;
 
   public static route: string = PersonalDetailRoutes.SUMMARY;
-  static title: string = "Personal details - Register as a building inspector - GOV.UK";
+  static title: string =
+    'Personal details - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
@@ -37,11 +39,12 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   constructor(
     activatedRoute: ActivatedRoute,
     applicationService: ApplicationService,
-    personalDetailRouter: PersonalDetailRouter) {
+    personalDetailRouter: PersonalDetailRouter
+  ) {
     super(activatedRoute);
     this.personalDetailRouter = personalDetailRouter;
     this.updateOnSave = true;
-  //  this.SetupTestModel();
+    //  this.SetupTestModel();
   }
   /// <summary>
   /// Sets up a test model for the applicant summary page. Just used during Development
@@ -79,27 +82,31 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
-    this.applicationService.model.ApplicationStatus = ApplicationStatus.PersonalDetailsComplete;
-
-   }
-
-  override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return true;
-    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
-
+    this.applicationService.model.StageStatus['PersonalDetails'] =
+      StageCompletionState.Complete;
+    this.applicationService.model.ApplicationStatus =
+      ApplicationStatus.PersonalDetailsComplete;
   }
 
+  override canAccess(
+    applicationService: ApplicationService,
+    routeSnapshot: ActivatedRouteSnapshot
+  ): boolean {
+    return true;
+    //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
+  }
 
   override isValid(): boolean {
     return true;
-/*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
+    /*     this.phoneNumberHasErrors = !PhoneNumberValidator.isValid(this.model?.toString() ?? '');
     return !this.phoneNumberHasErrors; */
-
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.TASK_LIST);
+    return this.personalDetailRouter.navigateTo(
+      this.applicationService.model,
+      PersonalDetailRoutes.TASK_LIST
+    );
     //return this.navigationService.navigateRelative(`../${ApplicationTaskListComponent.route}`, this.activatedRoute);
   }
 
@@ -108,30 +115,41 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   public navigateTo(route: string) {
-    return this.navigationService.navigateRelative(`${route}`, this.activatedRoute);
+    const queryParam = 'personal-details-change';
+    return this.navigationService.navigateRelative(
+      `${route}`,
+      this.activatedRoute,
+      { queryParam }
+    );
   }
 
   public GetFormattedDateofBirth(): string {
     return DateFormatHelper.LongMonthFormat(
       this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Year,
-      this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Month,
+      this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth
+        ?.Month,
       this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Day
     );
   }
 
   public getAlternativePhone(): string {
-    return this.applicationService.model.PersonalDetails?.ApplicantAlternativePhone?.PhoneNumber || 'none';
+    return (
+      this.applicationService.model.PersonalDetails?.ApplicantAlternativePhone
+        ?.PhoneNumber || 'none'
+    );
   }
 
   public getAlternativeEmail(): string {
-    return this.applicationService.model.PersonalDetails?.ApplicantAlternativeEmail?.Email || 'none';
+    return (
+      this.applicationService.model.PersonalDetails?.ApplicantAlternativeEmail
+        ?.Email || 'none'
+    );
   }
 
   async SyncAndContinue() {
     await this.applicationService.syncPersonalDetails();
-    this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
+    this.applicationService.model.StageStatus['PersonalDetails'] =
+      StageCompletionState.Complete;
     this.saveAndContinue();
-
   }
-
 }

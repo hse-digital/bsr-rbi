@@ -162,22 +162,6 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
       pdf.addImage(contentDataURL, 'PNG', 20, position, imgWidth, imgHeight);
       pdf.save('ApplicationSummery.pdf');
     });
-
-
-    // html2canvas(htmlCotent!).then((canvas) => {
-    //   const doc = new jsPDF({
-    //     orientation: 'landscape',
-    //     unit: 'mm',
-    //     format: [595, 842],
-    //   });
-
-    //   doc.html(htmlCotent, {
-    //     callback: (doc: jsPDF) => {
-    //       doc.deletePage(doc.getNumberOfPages());
-    //       doc.save('pdf-export');
-    //     },
-    //   });
-    // });
   }
 
   printApplicationSummary() {
