@@ -63,13 +63,20 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   override isValid(): boolean {
-    if (this.selectedOption === '') 
-    {
-      this.errorMessage = "Select whether you want to tell us about additonal memberships you hold or not"
-      return false
+    const memberships = this.applicationService.model.ProfessionalMemberships;
+    if (
+      this.selectedOption === '' &&
+      memberships.RICS.CompletionState !== ComponentCompletionState.Complete &&
+      memberships.CABE.CompletionState !== ComponentCompletionState.Complete &&
+      memberships.CIOB.CompletionState !== ComponentCompletionState.Complete &&
+      memberships.OTHER.CompletionState !== ComponentCompletionState.Complete
+    ) {
+      this.errorMessage =
+        'Select whether you want to tell us about additonal memberships you hold or not';
+      return false;
     }
 
-    return true
+    return true;
   }
 
   override navigateNext(): Promise<boolean> {
@@ -82,9 +89,9 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     }
     if (this.selectedOption === 'yes') {
       return this.navigateTo('professional-body-selection'); // To professional body selection page.
-    }
-    else if(ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!))
-    {
+    } else if (
+      ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!)
+    ) {
       return this.navigationService.navigateRelative(
         ProfessionalActivityEmploymentTypeComponent.route,
         this.activatedRoute
