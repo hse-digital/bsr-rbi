@@ -3,6 +3,7 @@ import { DateFormatHelper } from '../../../helpers/date-format-helper';
 import { PersonalDetails } from '../../../models/personal-details.model';
 import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
 import { BuildingInspectorClassType } from 'src/app/models/building-inspector-classtype.enum';
+import { Competency } from 'src/app/models/competency.model';
 
 @Component({
   selector: 'hse-building-inspector-class-details',
@@ -11,6 +12,7 @@ import { BuildingInspectorClassType } from 'src/app/models/building-inspector-cl
 })
 export class ApplicationSummaryBuildingInspectorClassDetailsComponent implements OnInit{
   @Input() BuildingInspectorClassDetails?: BuildingInspectorClass;
+  @Input() BuildingInspectorCompetencyDetails?: Competency;
   @Output() onNavigateTo = new EventEmitter<string>();
 
   BuildingInspectorClassType = BuildingInspectorClassType;
@@ -54,6 +56,17 @@ export class ApplicationSummaryBuildingInspectorClassDetailsComponent implements
     });
 
     return newString.slice(0, -2);
+  }
+
+  public getIndependentAssessmentStatus(): string {
+    return this.BuildingInspectorCompetencyDetails
+      ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes'
+      ? 'Yes'
+      : 'None';
+  }
+
+  public isCompetencyAssessmentStatusYes(): boolean {
+    return this.BuildingInspectorCompetencyDetails?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes';
   }
 
   public navigateTo(name: string) {
