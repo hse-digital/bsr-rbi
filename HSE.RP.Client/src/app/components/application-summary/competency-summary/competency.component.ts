@@ -45,7 +45,7 @@ export class ApplicationSummaryCompetencyDetailsComponent implements OnInit{
   public getCompetencyAssessmentCertificateNo(): string {
     return (
       this.BuildingInspectorCompetencyDetails
-        ?.CompetencyAssessmentCertificateNumber?.CertificateNumber || 'No'
+        ?.CompetencyAssessmentCertificateNumber?.CertificateNumber || 'None'
     );
   }
 

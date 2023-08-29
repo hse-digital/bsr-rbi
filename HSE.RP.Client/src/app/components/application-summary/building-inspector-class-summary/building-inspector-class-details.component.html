@@ -28,11 +28,47 @@
   </govuk-summary-list>
 
 
+
 <!-- class 2 or 3 summary list -->
 
 
   <!-- CLASSES -->
-  <dl class="govuk-summary-list" *ngIf="this.BuildingInspectorClassDetails!.ClassType?.Class !== BuildingInspectorClassType.Class1">
+  <dl class="govuk-summary-list" *ngIf="this.BuildingInspectorClassDetails!.ClassType?.Class !== BuildingInspectorClassType.Class1 && !isCompetencyAssessmentStatusYes()">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Type
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <div *ngIf="this.BuildingInspectorClassDetails!.ClassType?.Class === BuildingInspectorClassType.Class3">
+          Class 1 building inspector<br>
+        </div>
+      </dd>
+    </div>
+
+    <!-- COUNTRIES -->
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Country
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <div *ngIf="this.BuildingInspectorClassDetails!.InspectorCountryOfWork?.England">
+          England<br>
+        </div>
+        <div *ngIf="this.BuildingInspectorClassDetails!.InspectorCountryOfWork?.Wales">
+          Wales
+        </div>
+      </dd>
+      <dd class="govuk-summary-list__actions">
+        <a class="govuk-link" role="link" (click)="navigateTo('building-inspector-country')"
+          (keyup.enter)="navigateTo('building-inspector-country')" tabindex="0"
+        >
+          change<span class="govuk-visually-hidden"> country</span>
+        </a>
+      </dd>
+    </div>
+  </dl>
+
+  <dl class="govuk-summary-list" *ngIf="this.BuildingInspectorClassDetails!.ClassType?.Class !== BuildingInspectorClassType.Class1 && isCompetencyAssessmentStatusYes()">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">
         Type
