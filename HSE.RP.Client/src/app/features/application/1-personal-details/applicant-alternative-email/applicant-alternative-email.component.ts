@@ -71,12 +71,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<ApplicantE
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return (
-      this.applicationService.model.ApplicationStatus >=
-        ApplicationStatus.PhoneVerified &&
-      this.applicationService.model.id != null
-    );
-    // return true
+    return this.applicationService.model.id != null;
   }
 
   override isValid(): boolean {

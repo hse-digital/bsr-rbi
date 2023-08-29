@@ -101,7 +101,6 @@ export class ApplicantEmailVerifyComponent extends PageComponent<NumberComponent
           throw error;
         }
 
-      this.applicationService.model.ApplicationStatus = ApplicationStatus.EmailVerified;
         this.applicationService.model.StageStatus['EmailVerification'] = StageCompletionState.Complete;
         // try {
         //   await this.applicationService.registerNewBuildingProfessionApplication();

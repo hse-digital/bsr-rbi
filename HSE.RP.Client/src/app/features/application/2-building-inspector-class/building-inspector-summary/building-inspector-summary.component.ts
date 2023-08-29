@@ -21,8 +21,6 @@ import { StageCompletionState } from 'src/app/models/stage-completion-state.enum
 })
 export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.ApplicationStatus =
-      ApplicationStatus.BuildingInspectorClassComplete;
     this.applicationService.model.StageStatus['BuildingInspectorClass'] =
       StageCompletionState.Complete;
   }
@@ -94,6 +92,8 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
 
   async SyncAndContinue() {
     await this.applicationService.syncBuildingInspectorClass();
+    this.applicationService.model.StageStatus['BuildingInspectorClass'] =
+    StageCompletionState.Complete;
     this.saveAndContinue();
   }
 

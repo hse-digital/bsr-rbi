@@ -68,15 +68,13 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
 
     if (this.selections.length > 0) {
       this.model!.CompletionState = ComponentCompletionState.Complete;
-      applicationService.model.ApplicationStatus =
-        ApplicationStatus.BuildingInspectorClassComplete;
     } else {
       this.model!.CompletionState = ComponentCompletionState.InProgress;
     }
 
     applicationService.model.InspectorClass!.InspectorCountryOfWork =
       demandModel;
- 
+
   }
 
   override canAccess(

@@ -94,11 +94,7 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return (
-      this.applicationService.model.ApplicationStatus >=
-        ApplicationStatus.PhoneVerified &&
-      this.applicationService.model.id != null
-    );
+    return this.applicationService.model.id != null;
   }
 
   isDateNumber(dateNumber: string | undefined): boolean {

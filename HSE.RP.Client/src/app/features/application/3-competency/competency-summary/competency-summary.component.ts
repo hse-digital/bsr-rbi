@@ -7,6 +7,7 @@ import { ApplicationTaskListComponent } from '../../task-list/task-list.componen
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { DateFormatHelper } from 'src/app/helpers/date-format-helper';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 
 @Component({
   selector: 'hse-competency-summary',
@@ -35,9 +36,11 @@ export class CompetencySummaryComponent extends PageComponent<string> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.ApplicationStatus =
-      ApplicationStatus.CompetencyComplete;
+    this.applicationService.model.StageStatus['Competency'] = StageCompletionState.Complete;
+
   }
+
+
 
   override canAccess(
     applicationService: ApplicationService,
@@ -55,6 +58,8 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   async SyncAndContinue() {
     await this.applicationService.syncCompetency();
+    this.applicationService.model.StageStatus['Competency'] =
+    StageCompletionState.Complete;
     this.saveAndContinue();
   }
 
@@ -66,7 +71,7 @@ export class CompetencySummaryComponent extends PageComponent<string> {
   }
 
   public navigateTo(route: string, queryParam?: string) {
-   
+
     if (queryParam === undefined) {
       return this.navigationService.navigateRelative(
         `${route}`,
