@@ -1,10 +1,8 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { ApplicationService } from '../../../../services/application.service';
-import { DateFormatHelper } from 'src/app/helpers/date-format-helper';
-import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
 import { DateFormatHelper } from 'src/app/helpers/date-format-helper';
 import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
@@ -24,10 +22,7 @@ import { jsPDF } from 'jspdf';
   templateUrl: './application-summary.component.html',
 })
 export class ApplicationSummaryComponent extends PageComponent<string> {
-  @ViewChild('pdfTable', { static: false })
-  pdfTable!: ElementRef;
-  DerivedIsComplete(value: boolean): void {}
-  PersonalDetailRoutes = PersonalDetailRoutes;
+  DerivedIsComplete(value: boolean): void {
 
   }
   PersonalDetailRoutes = PersonalDetailRoutes;
@@ -69,16 +64,11 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
     // this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
     // this.applicationService.model.ApplicationStatus = ApplicationStatus.PersonalDetailsComplete;
   }
-    // this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
-    // this.applicationService.model.ApplicationStatus = ApplicationStatus.PersonalDetailsComplete;
-  }
 
-  override canAccess(
-    applicationService: ApplicationService,
-    routeSnapshot: ActivatedRouteSnapshot
-  ): boolean {
+  override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return true;
   }
+
 
   override isValid(): boolean {
     return true;
@@ -187,7 +177,4 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
     window.print();
   }
 
-  printApplicationSummary() {
-    window.print();
-  }
 }
