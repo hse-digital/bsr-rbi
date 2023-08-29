@@ -25,6 +25,7 @@ public record DynamicsBuildingProfessionApplication(
     string bsr_buildingprofessionapplicationid = null,
     [property: JsonPropertyName("bsr_assessmentorganisationid@odata.bind")]
     string bsr_assessmentorganisationid = null,
+    string _bsr_applicantid_value = null,
     int? statuscode = null,
     string bsr_assessmentcertnumber = null,
     DateOnly? bsr_assessmentdate = null,

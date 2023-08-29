@@ -20,6 +20,8 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
   static title: string = "Personal details - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   emailHasErrors: boolean = false;
+  duplicateApplication: boolean = false;
+  duplicateApplicationMessage: string = "There is already an application associated with your email address. Contact BSR [link to contact BSR service]"
   emailErrorMessage: string = "Enter a valid email address";
   modelValid: boolean = false;
 
@@ -45,20 +47,44 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
   }
 
   override isValid(): boolean {
+    console.log(this.duplicateApplication);
+
     this.emailHasErrors = false;
+
     if (this.model == null || this.model == '')
     {
-      this.emailErrorMessage = "Enter an email address";
       this.emailHasErrors = true;
+      this.emailErrorMessage = "Enter an email address";
     }
-    else{
+    else if (this.duplicateApplication == true){
+      this.emailHasErrors = true;
+      this.emailErrorMessage = this.duplicateApplicationMessage;
+    }
+    else {
       this.emailHasErrors = !EmailValidator.isValid(this.model!.Email ?? '');
       this.emailErrorMessage = "Enter a valid email address";
     }
-    return !this.emailHasErrors;
+
+
+    return !this.emailHasErrors && !this.duplicateApplication;
+  }
+
+  async DuplicateApplicationCheck(): Promise<void> {
+
+    this.duplicateApplication = false;
+
+    var duplicateApplicationResponse: boolean = await this.applicationService.CheckDuplicateBuildingProfessionalApplication();
+
+    this.duplicateApplication = duplicateApplicationResponse;
+
+    this.saveAndContinue();
+
   }
 
   navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(ApplicantEmailVerifyComponent.route, this.activatedRoute);
   }
+
+
+
 }
