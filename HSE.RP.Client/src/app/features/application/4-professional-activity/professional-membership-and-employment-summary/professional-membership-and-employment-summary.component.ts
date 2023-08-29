@@ -68,15 +68,21 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
     );
   }
 
-  public navigateTo(route: string) {
-    return this.navigationService.navigateRelative(
-      `${route}`,
-      this.activatedRoute
-    );
+  public navigateTo(route: string, queryParam?: string) {
+
+    if (queryParam === undefined) {
+      return this.navigationService.navigateRelative(
+        `${route}`,
+        this.activatedRoute
+      );
+    } else {
+      return this.navigationService.navigateRelative(
+        `${route}`,
+        this.activatedRoute,
+        { queryParam }
+      );
+    }
   }
-
-
-
 
   public isCompetencyAssessmentStatusYes(): boolean {
     return this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes';
