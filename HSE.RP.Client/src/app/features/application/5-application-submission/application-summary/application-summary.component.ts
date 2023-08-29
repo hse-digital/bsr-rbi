@@ -13,6 +13,9 @@ import { ApplicationSubmissionModule } from '../application.application-submissi
 import { BuildingInspectorRoutes } from '../../application-routes';
 import { BuildingInspectorClassType } from '../../../../models/building-inspector-classtype.enum';
 import { PaymentDeclarationComponent } from '../payment/payment-declaration/payment-declaration.component';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+
 
 @Component({
   selector: 'hse-application-summary',
@@ -127,6 +130,51 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
 
   public isCompetencyAssessmentStatusYes(): boolean {
     return this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes';
+  }
+
+  public saveAsPDF() {
+    const doc = new jsPDF();
+    let htmlCotent = document.getElementById('pdfTApplicationSummary');
+
+    this.generatePDF(htmlCotent!);
+  }
+
+  generatePDF(htmlCotent: HTMLElement) {
+    html2canvas(htmlCotent!).then((canvas) => {
+      let imgWidth = 290;
+      let imgHeight = (canvas.height * imgWidth / canvas.width);
+      const contentDataURL = canvas.toDataURL('image/png');
+      // let pdf = new jsPDF('l', 'mm', 'a4');
+      const pdf = new jsPDF({
+        // orientation: "landscape",
+        unit: "mm",
+        format: [595, 842],
+      });
+
+      var position = 10;
+      pdf.addImage(contentDataURL, 'PNG', 20, position, imgWidth, imgHeight);
+      pdf.save('ApplicationSummery.pdf');
+    });
+
+
+    // html2canvas(htmlCotent!).then((canvas) => {
+    //   const doc = new jsPDF({
+    //     orientation: 'landscape',
+    //     unit: 'mm',
+    //     format: [595, 842],
+    //   });
+
+    //   doc.html(htmlCotent, {
+    //     callback: (doc: jsPDF) => {
+    //       doc.deletePage(doc.getNumberOfPages());
+    //       doc.save('pdf-export');
+    //     },
+    //   });
+    // });
+  }
+
+  printApplicationSummary() {
+    window.print();
   }
 
 }

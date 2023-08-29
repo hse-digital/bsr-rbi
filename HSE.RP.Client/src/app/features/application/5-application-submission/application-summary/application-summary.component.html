@@ -6,7 +6,8 @@
   (saveAndContinue)="saveAndContinue()"
   [hideBackButton]="true"
 >
-  <h1 class="govuk-heading-l">Summary of your application</h1>
+<div id="pdfTApplicationSummary">
+  <h1 class="govuk-heading-l" >Summary of your application</h1>
 
     <h2 class="govuk-heading-m">1. Personal details</h2>
     <hse-application-personal-details
@@ -59,11 +60,15 @@
       />
     </div>
 
-
+  </div>
 
     <govuk-inset-text>
-      <h2 class="govuk-heading-m">Retain a copy of your application for your own records</h2>
-      <govuk-body>Print this page</govuk-body>
-      <govuk-body>Save as PDF</govuk-body>
+      <h2 class="govuk-heading-m">
+        Retain a copy of your application for your own records
+      </h2>
+      <!-- <govuk-body>Print this page</govuk-body>
+      <govuk-body (click)="saveAsPDF()">Save as PDF</govuk-body> -->
+      <govuk-body><a  class="govuk-link" (click)="printApplicationSummary()"  role="link"> Print this page </a> </govuk-body>
+      <govuk-body><a  class="govuk-link" (click)="saveAsPDF()"  role="link"> Save as a PDF </a> </govuk-body>
     </govuk-inset-text>
 </govuk-formpage>
