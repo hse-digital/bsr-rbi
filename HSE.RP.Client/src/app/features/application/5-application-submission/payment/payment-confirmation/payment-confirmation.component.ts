@@ -3,6 +3,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate } from '@angular/ro
 import { NotFoundComponent } from 'src/app/components/not-found/not-found.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { PaymentModel } from 'src/app/models/payment.model';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { ApplicationService } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PaymentService } from 'src/app/services/payment.service';
@@ -34,7 +35,7 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
 
       this.payment = await this.paymentService.GetPayment(this.paymentReference);
       if (this.payment?.Status == 'success') {
-        this.applicationService.model.ApplicationStatus = this.applicationService.model.ApplicationStatus | ApplicationStatus.PaymentComplete;
+        this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Complete;
         await this.applicationService.updateApplication();
         this.shouldRender = true;
       } else {
@@ -59,18 +60,9 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
   }
 
 
-  registerAnotherBuilding() {
-    this.navigationService.navigate('');
-  }
-
   canActivate(_: ActivatedRouteSnapshot) {
-    // var isInProgress = (this.applicationService.model.ApplicationStatus & BuildingApplicationStatus.PaymentInProgress) == BuildingApplicationStatus.PaymentInProgress;
-    // if (!isInProgress) {
-    //   this.navigationService.navigate(NotFoundComponent.route);
-    //   return false;
-    // }
+    return this.applicationService.model.StageStatus!["ApplicationConfirmed"] == StageCompletionState.Complete
 
-    return true;
   }
 
   // async continueToKbi() {

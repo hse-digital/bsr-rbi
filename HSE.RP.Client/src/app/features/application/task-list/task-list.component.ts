@@ -38,7 +38,6 @@ import { CompetencyAssessmentDateComponent } from '../3-competency/assesesment-d
 import { CompetencySummaryComponent } from '../3-competency/competency-summary/competency-summary.component';
 import { ProfessionalBodyMembershipsComponent } from '../4-professional-activity/professional-body-memberships/professional-body-memberships.component';
 import { ProfessionalActivityEmploymentTypeComponent } from '../4-professional-activity/employment-type/professional-activity-employment-type.component';
-import { ProfessionalActivityEmploymentDetailsComponent } from '../4-professional-activity/employment-details/professional-activity-employment-details.component';
 import { ProfessionalBodyMembershipSummaryComponent } from '../4-professional-activity/professional-body-membership-summary/professional-body-membership-summary.component';
 import { ApplicationSummaryComponent } from '../5-application-submission/application-summary/application-summary.component';
 import { PaymentConfirmationComponent } from '../5-application-submission/payment/payment-confirmation/payment-confirmation.component';
@@ -269,7 +268,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     }
   }
 
-  determinPersonalSummaryTask(model?: PersonalDetails): TaskStatus {
+  determinePersonalSummaryTask(model?: PersonalDetails): TaskStatus {
     if (
       model?.ApplicantName!.CompletionState! ===
         ComponentCompletionState.Complete &&
@@ -290,7 +289,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     } else return TaskStatus.CannotStart;
   }
 
-  determinCompetencySummaryTask(model?: Competency): TaskStatus {
+  determineCompetencySummaryTask(model?: Competency): TaskStatus {
     if (
       this.applicationService.model.Competency
         ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'no' &&
@@ -312,7 +311,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     } else return TaskStatus.CannotStart;
   }
 
-  determinClassSummaryTask(model?: BuildingInspectorClass): TaskStatus {
+  determineClassSummaryTask(model?: BuildingInspectorClass): TaskStatus {
     if (
       model?.ClassType!.CompletionState! ===
         ComponentCompletionState.Complete &&
@@ -323,15 +322,60 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     } else return TaskStatus.CannotStart;
   }
 
-  determinProfessionalMembershipSummaryTask(
+  determineProfessionalMembershipSummaryTask(
     model?: ApplicantProfessionBodyMemberships,
     employeeModel?: ApplicantEmploymentDetails
   ): TaskStatus {
-    if (model?.CompletionState === ComponentCompletionState.Complete && employeeModel?.CompletionState === ComponentCompletionState.Complete) {
+    if (
+      model?.CompletionState === ComponentCompletionState.Complete &&
+      employeeModel?.CompletionState === ComponentCompletionState.Complete
+    ) {
       return TaskStatus.None;
     } else {
       return TaskStatus.CannotStart;
     }
+  }
+
+  // StageStatus: Record<string, StageCompletionState> = {
+  //   EmailVerification: StageCompletionState.Incomplete,
+  //   PhoneVerification: StageCompletionState.Incomplete,
+  //   PersonalDetails: StageCompletionState.Incomplete,
+  //   BuildingInspectorClass: StageCompletionState.Incomplete,
+  //   Competency: StageCompletionState.Incomplete,
+  //   ProfessionalActivity: StageCompletionState.Incomplete,
+  //   Declaration: StageCompletionState.Incomplete,
+  //   Payment: StageCompletionState.Incomplete,
+  // };
+
+  determineApplicationSummaryTask(
+    model?: BuildingProfessionalModel
+  ): TaskStatus {
+    if (
+      model?.StageStatus!['EmailVerification'] ===
+        StageCompletionState.Complete &&
+      model?.StageStatus!['PhoneVerification'] ===
+        StageCompletionState.Complete &&
+      model?.StageStatus!['PersonalDetails'] ===
+        StageCompletionState.Complete &&
+      model?.StageStatus!['BuildingInspectorClass'] ===
+        StageCompletionState.Complete &&
+      model?.StageStatus!['Competency'] === StageCompletionState.Complete &&
+      model?.StageStatus!['ProfessionalActivity'] ===
+        StageCompletionState.Complete
+    ) {
+      return TaskStatus.None;
+    } else return TaskStatus.CannotStart;
+  }
+
+  determineDeclarationPaymentTask(
+    model?: BuildingProfessionalModel
+  ): TaskStatus {
+    if (
+      model?.StageStatus!['ApplicationConfirmed'] ===
+      StageCompletionState.Complete
+    ) {
+      return TaskStatus.None;
+    } else return TaskStatus.CannotStart;
   }
 
   hideCompetencySection() {
@@ -436,7 +480,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: PersonalDetailRoutes.SUMMARY };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determinPersonalSummaryTask(aModel.PersonalDetails),
+            this.determinePersonalSummaryTask(aModel.PersonalDetails),
         },
       ],
     },
@@ -476,7 +520,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: BuildingInspectorSummaryComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determinClassSummaryTask(aModel.InspectorClass),
+            this.determineClassSummaryTask(aModel.InspectorClass),
         },
       ],
     },
@@ -544,7 +588,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: CompetencySummaryComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determinCompetencySummaryTask(aModel.Competency),
+            this.determineCompetencySummaryTask(aModel.Competency),
         },
       ],
     },
@@ -569,9 +613,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: ProfessionalActivityEmploymentTypeComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(
-              aModel.ProfessionalActivity?.EmploymentDetails
-            ),
+            this.getModelStatus(aModel.ProfessionalActivity?.EmploymentDetails),
         },
         {
           show: true,
@@ -582,7 +624,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determinProfessionalMembershipSummaryTask(
+            this.determineProfessionalMembershipSummaryTask(
               aModel.ProfessionalMemberships,
               aModel.ProfessionalActivity.EmploymentDetails
             ),
@@ -601,19 +643,25 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: ApplicationSummaryComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            TaskStatus.None,
+            this.determineApplicationSummaryTask(aModel),
         },
         {
           show: true,
           prompt: 'Pay your fee and submit your application',
           relativeRoute: (): TaskListRoute => this.paymentRoute!,
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus => {
-            if (this.paymentStatus == this.paymentEnum.Success) {
-              return TaskStatus.Complete;
-            } else if (this.paymentStatus == this.paymentEnum.Started) {
-              return TaskStatus.InProgress;
+            if (
+              this.model?.StageStatus['ApplicationConfirmed'] == StageCompletionState.Complete
+            ) {
+              if (this.paymentStatus == this.paymentEnum.Success) {
+                return TaskStatus.Complete;
+              } else if (this.paymentStatus == this.paymentEnum.Started) {
+                return TaskStatus.InProgress;
+              } else {
+                return TaskStatus.NotStarted;
+              }
             } else {
-              return TaskStatus.NotStarted;
+              return TaskStatus.CannotStart;
             }
           },
         },
@@ -677,7 +725,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       //Filter for successful and newly created payments
       var successfulPayments = payments.filter(
         (x) =>
-          x.bsr_govukpaystatus == 'success' || x.bsr_govukpaystatus == 'created'
+          x.bsr_govukpaystatus == 'success'
       );
 
       if (successfulPayments?.length > 0) {
@@ -702,16 +750,22 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           : { route: 'payment/' + PaymentDeclarationComponent.route };
       } else {
         this.paymentStatus = PaymentStatus.Failed;
-        this.paymentRoute = { route: 'payment/' + PaymentDeclarationComponent.route };
+        this.paymentRoute = {
+          route: 'payment/' + PaymentDeclarationComponent.route,
+        };
       }
     } else if (
       this.model?.StageStatus['Declaration'] == StageCompletionState.Complete
     ) {
       this.paymentStatus = PaymentStatus.Started;
-      this.paymentRoute = { route: 'payment/' + PaymentDeclarationComponent.route };
+      this.paymentRoute = {
+        route: 'payment/' + PaymentDeclarationComponent.route,
+      };
     } else {
       this.paymentStatus = PaymentStatus.Pending;
-      this.paymentRoute = { route: 'payment/' + PaymentDeclarationComponent.route };
+      this.paymentRoute = {
+        route: 'payment/' + PaymentDeclarationComponent.route,
+      };
     }
   }
 }

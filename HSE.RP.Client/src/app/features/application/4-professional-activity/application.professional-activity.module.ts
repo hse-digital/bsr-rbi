@@ -10,7 +10,6 @@ import { HseAngularModule } from 'hse-angular';
 import { CookiesBannerService } from '../../../services/cookies-banner.service';
 import { ProfessionalBodyMembershipsComponent } from './professional-body-memberships/professional-body-memberships.component';
 import { ProfessionalActivityEmploymentTypeComponent } from './employment-type/professional-activity-employment-type.component';
-import { ProfessionalActivityEmploymentDetailsComponent } from './employment-details/professional-activity-employment-details.component';
 import { ProfessionalBodyMembershipSummaryComponent } from './professional-body-membership-summary/professional-body-membership-summary.component';
 import { ProfessionalBodySelectionComponent } from './professional-body-selection/professional-body-selection.component';
 import { ProfessionalMembershipInformationComponent } from './professional-membership-information/professional-membership-information.component';
@@ -32,11 +31,6 @@ const routes = new HseRoutes([
     ProfessionalActivityEmploymentTypeComponent.route,
     ProfessionalActivityEmploymentTypeComponent,
     ProfessionalActivityEmploymentTypeComponent.title
-  ),
-  HseRoute.protected(
-    ProfessionalActivityEmploymentDetailsComponent.route,
-    ProfessionalActivityEmploymentDetailsComponent,
-    ProfessionalActivityEmploymentDetailsComponent.title
   ),
   HseRoute.protected(
     ProfessionalBodyMembershipSummaryComponent.route,
@@ -99,7 +93,6 @@ const routes = new HseRoutes([
   declarations: [
     ProfessionalBodyMembershipsComponent,
     ProfessionalActivityEmploymentTypeComponent,
-    ProfessionalActivityEmploymentDetailsComponent,
     ProfessionalBodyMembershipSummaryComponent,
     ProfessionalBodySelectionComponent,
     ProfessionalMembershipInformationComponent,

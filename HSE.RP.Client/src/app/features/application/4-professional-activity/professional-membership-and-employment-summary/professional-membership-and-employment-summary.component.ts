@@ -11,6 +11,7 @@ import { ProfessionalActivity } from 'src/app/models/professional-activity.model
 import { ProfessionalActivityHelper } from 'src/app/helpers/professional-activity-helper.component';
 import { EmploymentType } from 'src/app/models/employment-type.enum';
 import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 
 @Component({
   selector: 'hse-professional-membership-and-employment-summary',
@@ -58,6 +59,8 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
 
   async SyncAndContinue() {
     await this.applicationService.syncEmploymentDetails();
+    this.applicationService.model.StageStatus['ProfessionalActivity'] =
+    StageCompletionState.Complete;
     this.saveAndContinue();
   }
 

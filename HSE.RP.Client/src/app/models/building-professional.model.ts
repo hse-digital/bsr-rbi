@@ -15,7 +15,7 @@ export class BuildingProfessionalModel implements IComponentModel {
   InspectorClass?: BuildingInspectorClass = new BuildingInspectorClass();
   Competency?: Competency = new Competency();
   ProfessionalActivity: ProfessionalActivity = new ProfessionalActivity();
-  ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
+  //ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
   ProfessionalMemberships: ApplicantProfessionBodyMemberships =
     new ApplicantProfessionBodyMemberships();
   private _completionState: ComponentCompletionState =
@@ -29,6 +29,7 @@ export class BuildingProfessionalModel implements IComponentModel {
     BuildingInspectorClass: StageCompletionState.Incomplete,
     Competency: StageCompletionState.Incomplete,
     ProfessionalActivity: StageCompletionState.Incomplete,
+    ApplicationConfirmed: StageCompletionState.Incomplete,
     Declaration: StageCompletionState.Incomplete,
     Payment: StageCompletionState.Incomplete,
   };
@@ -36,8 +37,8 @@ export class BuildingProfessionalModel implements IComponentModel {
   ReturningApplication: boolean = false;
 
   get CompletionState(): ComponentCompletionState {
-    return this!.ApplicationStatus! ==
-      ApplicationStatus.ApplicationSubmissionComplete
+    return this!.StageStatus!["Payment"] ==
+      StageCompletionState.Complete
       ? ComponentCompletionState.Complete
       : ComponentCompletionState.InProgress;
   }

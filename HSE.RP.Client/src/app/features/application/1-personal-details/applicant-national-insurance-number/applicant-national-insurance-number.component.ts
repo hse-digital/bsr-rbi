@@ -48,8 +48,7 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<App
    }
 
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return this.applicationService.model.ApplicationStatus >= ApplicationStatus.PhoneVerified && this.applicationService.model.id != null;
-    
+   return  this.applicationService.model.id != null;
   }
 
   getErrorMessage(): string {
@@ -66,7 +65,7 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<App
     this.nsiIsNullOrWhiteSpace = !FieldValidations.IsNotNullOrWhitespace(this.model?.NationalInsuranceNumber);
     this.nsiIsInvalidFormat = !NationalInsuranceNumberValidator.isValid(this.model?.NationalInsuranceNumber ?? '');
     this.nsiHasErrors = this.nsiIsNullOrWhiteSpace || this.nsiIsInvalidFormat;
-    return !this.nsiHasErrors; 
+    return !this.nsiHasErrors;
   }
 
   override navigateNext(): Promise<boolean> {

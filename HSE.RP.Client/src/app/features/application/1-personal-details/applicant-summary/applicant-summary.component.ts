@@ -84,8 +84,6 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   override async onSave(applicationService: ApplicationService): Promise<void> {
     this.applicationService.model.StageStatus['PersonalDetails'] =
       StageCompletionState.Complete;
-    this.applicationService.model.ApplicationStatus =
-      ApplicationStatus.PersonalDetailsComplete;
   }
 
   override canAccess(

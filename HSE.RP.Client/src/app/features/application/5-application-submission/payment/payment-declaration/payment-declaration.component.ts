@@ -42,15 +42,12 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
   override async onInit(applicationService: ApplicationService): Promise<void> {
 
 
-    this.applicationService.model.ApplicationStatus =
-      this.applicationService.model.ApplicationStatus | ApplicationStatus.PaymentInProgress;
     await this.applicationService.updateApplication();
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.StageStatus['Declaration'] = StageCompletionState.Incomplete;
   }
-  
+
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
@@ -87,34 +84,4 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
     }
   }
 
-  // async ngOnInit() {
-  //   this.applicationService.model.ApplicationStatus = this.applicationService.model.ApplicationStatus | BuildingApplicationStatus.PaymentInProgress;
-  //   await this.applicationService.updateApplication();
-  // }
-
-  // override async saveAndContinue() {
-  //   this.loading = true;
-  //   this.screenReaderNotification();
-
-  //   await this.applicationService.syncDeclaration();
-  //   var paymentResponse = await this.paymentService.InitialisePayment(this.applicationService.model);
-  //   this.applicationService.updateApplication();
-
-  //   if (typeof window !== 'undefined') {
-  //     window.location.href = paymentResponse.PaymentLink;
-  //   }
-  // }
-
-  // isPapRegisteringFor() {
-  //   return this.applicationService.model.AccountablePersons[0].Role == "registering_for";
-  // }
-
-  // canContinue(): boolean {
-  //   return true;
-  // }
-
-  // override canAccess(_: ActivatedRouteSnapshot) {
-  //   return ((this.applicationService.model.ApplicationStatus & ApplicationStatus.AccountablePersonsComplete) == ApplicationStatus.AccountablePersonsComplete)
-  //       && ((this.applicationService.model.ApplicationStatus & ApplicationStatus.BlocksInBuildingComplete) == ApplicationStatus.BlocksInBuildingComplete);
-  // }
 }

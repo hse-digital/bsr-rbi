@@ -10,6 +10,7 @@ import { ApplicantPhoneVerifyComponent } from './applicant-phone-verify.componen
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ApplicantPhone } from '../../../models/applicant-phone-model';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 
 @Component({
   selector: 'hse-applicant-phone',
@@ -52,11 +53,8 @@ export class ApplicantPhoneComponent extends PageComponent<ApplicantPhone> {
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
     return (
-      this.applicationService.model.PersonalDetails?.ApplicantEmail
-        ?.CompletionState === ComponentCompletionState.Complete &&
-      (this.applicationService.model.ApplicationStatus >=
-        ApplicationStatus.EmailVerified ??
-        false)
+      this.applicationService.model.PersonalDetails?.ApplicantEmail?.CompletionState === ComponentCompletionState.Complete &&
+      this.applicationService.model.StageStatus['EmailVerification'] == StageCompletionState.Complete
     );
   }
 

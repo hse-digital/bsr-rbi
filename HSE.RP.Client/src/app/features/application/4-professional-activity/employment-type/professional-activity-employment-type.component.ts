@@ -6,7 +6,6 @@ import { FieldValidations } from '../../../../helpers/validators/fieldvalidation
 import { ApplicationService } from '../../../../services/application.service';
 import { takeLast } from 'rxjs';
 import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
-import { ProfessionalActivityEmploymentDetailsComponent } from '../employment-details/professional-activity-employment-details.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { EmploymentTypeSelection } from 'src/app/models/employment-type-selection.model';
 import { EmploymentType } from 'src/app/models/employment-type.enum';

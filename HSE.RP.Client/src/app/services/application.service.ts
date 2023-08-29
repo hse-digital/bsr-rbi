@@ -4,6 +4,7 @@ import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { LocalStorage } from 'src/app/helpers/local-storage';
 import { BuildingProfessionalModel } from '../models/building-professional.model';
 import { ApplicationStatus } from '../models/application-status.enum';
+import { StageCompletionState } from '../models/stage-completion-state.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -54,7 +55,8 @@ export class ApplicationService {
   }
 
   async registerNewBuildingProfessionApplication(): Promise<void> {
-    this.model.ApplicationStatus = ApplicationStatus.PhoneVerified;
+    this.model.StageStatus['PhoneVerification'] = StageCompletionState.Complete;
+    this.model.StageStatus['EmailVerification'] = StageCompletionState.Complete;
     this.model = await firstValueFrom(
       this.httpClient.post<BuildingProfessionalModel>(
         'api/NewBuildingProfessionalApplication',
