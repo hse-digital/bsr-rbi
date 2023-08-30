@@ -17,6 +17,7 @@ import { BuildingProfessionalModel } from 'src/app/models/building-professional.
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { AddressModel } from 'src/app/models/address.model';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 
 @Component({
   selector: 'hse-applicant-summary',
@@ -90,7 +91,31 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return true;
+    try {
+      return this.applicationService.model.PersonalDetails!.ApplicantName!
+        .CompletionState === ComponentCompletionState.Complete &&
+        this.applicationService.model.PersonalDetails!.ApplicantAddress!
+          .CompletionState === ComponentCompletionState.Complete &&
+        this.applicationService.model.PersonalDetails!
+          .ApplicantAlternativeEmail!.CompletionState ===
+          ComponentCompletionState.Complete &&
+        this.applicationService.model.PersonalDetails!
+          .ApplicantAlternativePhone!.CompletionState ===
+          ComponentCompletionState.Complete &&
+        this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!
+          .CompletionState === ComponentCompletionState.Complete &&
+        this.applicationService.model.PersonalDetails!
+          .ApplicantNationalInsuranceNumber!.CompletionState ===
+          ComponentCompletionState.Complete &&
+        this.applicationService.model.PersonalDetails!.ApplicantPhone!
+          .CompletionState === ComponentCompletionState.Complete &&
+        this.applicationService.model.PersonalDetails!.ApplicantEmail!
+          .CompletionState === ComponentCompletionState.Complete;
+    } catch (e) {
+      return false;
+
+    }
+
     //return (FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.firstName) || FieldValidations.IsNotNullOrWhitespace(applicationService.model?.personalDetails?.applicatantName?.lastName));
   }
 
