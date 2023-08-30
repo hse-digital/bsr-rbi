@@ -8,26 +8,29 @@ import {
 import { PageComponent } from 'src/app/helpers/page.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
+import { PaymentStatus } from 'src/app/models/payment-status.enum';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
-import {
-  ApplicationService
-} from 'src/app/services/application.service';
+import { ApplicationService } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
-import { PaymentService } from 'src/app/services/payment.service';
+import {
+  PaymentReconciliationStatus,
+  PaymentService,
+} from 'src/app/services/payment.service';
 import { TitleService } from 'src/app/services/title.service';
+import { ApplicationSummaryComponent } from '../../application-summary/application-summary.component';
+import { PaymentConfirmationComponent } from '../payment-confirmation/payment-confirmation.component';
 
 @Component({
   selector: 'hse-payment-declaration',
   templateUrl: './payment-declaration.component.html',
 })
 export class PaymentDeclarationComponent extends PageComponent<BuildingProfessionalModel> {
-  DerivedIsComplete(value: boolean): void {
-
-  }
+  DerivedIsComplete(value: boolean): void {}
   static route: string = 'declaration';
-  static title: string =
-    'Register as a building inspector - GOV.UK';
-
+  static title: string = 'Register as a building inspector - GOV.UK';
+  paymentEnum = PaymentStatus;
+  paymentStatus?: PaymentStatus;
+  paymentReference?:'';
   loading = false;
 
   constructor(
@@ -40,13 +43,14 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
-
-
+    this.loading=true;
     await this.applicationService.updateApplication();
+    await this.getPaymentStatus();
   }
 
-  override async onSave(applicationService: ApplicationService): Promise<void> {
-  }
+  override async onSave(
+    applicationService: ApplicationService
+  ): Promise<void> {}
 
   override canAccess(
     applicationService: ApplicationService,
@@ -58,22 +62,33 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
     return true;
   }
   override navigateNext(): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    return this.navigationService.navigateRelative(
+      PaymentConfirmationComponent.route, this.activatedRoute,
+      { reference: this.paymentReference },
+
+    );
   }
 
   override async saveAndContinue() {
-    this.loading = true;
-    this.screenReaderNotification();
+    if (this.paymentStatus != PaymentStatus.Success) {
+      this.loading = true;
+      this.screenReaderNotification();
 
-    await this.applicationService.syncDeclaration();
-    this.applicationService.model.StageStatus["Declaration"] = StageCompletionState.Complete;
-    var paymentResponse = await this.paymentService.InitialisePayment(
-      this.applicationService.model
-    );
-    this.applicationService.updateApplication();
+      await this.applicationService.syncDeclaration();
+      this.applicationService.model.StageStatus['Declaration'] =
+        StageCompletionState.Complete;
+      var paymentResponse = await this.paymentService.InitialisePayment(
+        this.applicationService.model
+      );
+      this.applicationService.updateApplication();
 
-    if (typeof window !== 'undefined') {
-      window.location.href = paymentResponse.PaymentLink;
+      if (typeof window !== 'undefined') {
+        window.location.href = paymentResponse.PaymentLink;
+      }
+
+    }
+    else{
+      this.navigateNext();
     }
   }
 
@@ -84,4 +99,36 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
     }
   }
 
+  async getPaymentStatus(): Promise<void> {
+    var payments = await this.applicationService.getApplicationPayments();
+
+    //Check for all payments for application
+    if (payments?.length > 0) {
+      //Filter for successful and newly created payments
+      var successfulPayments = payments.filter(
+        (x) => x.bsr_govukpaystatus == 'success'
+      );
+
+      if (successfulPayments?.length > 0) {
+        //Check if these payments are not failed or refunded
+        var successsfulpayment = successfulPayments.find(
+          (x) =>
+            x.bsr_paymentreconciliationstatus !==
+              PaymentReconciliationStatus.FAILED_RECONCILIATION &&
+            x.bsr_paymentreconciliationstatus !==
+              PaymentReconciliationStatus.FAILED_PAYMENT &&
+            x.bsr_paymentreconciliationstatus !==
+              PaymentReconciliationStatus.REFUNDED
+        );
+        this.paymentStatus = successsfulpayment
+          ? PaymentStatus.Success
+          : PaymentStatus.Failed;
+          this.paymentReference = successsfulpayment?.bsr_paymentreference;
+      } else {
+        this.paymentStatus = PaymentStatus.Pending;
+      }
+    }
+    this.loading=false;
+
+  }
 }
