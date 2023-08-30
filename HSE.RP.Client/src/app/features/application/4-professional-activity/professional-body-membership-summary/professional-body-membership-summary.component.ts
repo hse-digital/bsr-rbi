@@ -29,7 +29,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     ApplicantProfessionBodyMembershipsHelper;
   production: boolean = environment.production;
   modelValid: boolean = false;
-  photoHasErrors = false;
+  summaryHasErrors = false;
   selectedOption: string = '';
   override model?: ApplicantProfessionBodyMemberships;
   errorMessage: string = '';
@@ -64,6 +64,15 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
 
   override isValid(): boolean {
     const memberships = this.applicationService.model.ProfessionalMemberships;
+
+    if (
+      this.selectedOption === '')
+    {
+      this.errorMessage =
+      'Select whether you want to tell us about additonal memberships you hold or not';
+      return false;
+    }
+
     if (
       this.selectedOption === '' &&
       memberships.RICS.CompletionState !== ComponentCompletionState.Complete &&
