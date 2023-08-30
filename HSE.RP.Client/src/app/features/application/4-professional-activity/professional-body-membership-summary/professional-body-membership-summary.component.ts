@@ -33,6 +33,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   selectedOption: string = '';
   override model?: ApplicantProfessionBodyMemberships;
   errorMessage: string = '';
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -43,6 +44,9 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     this.model = applicationService.model.ProfessionalMemberships;
   }
 
@@ -117,11 +121,11 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   public navigateToChange(membershipCode: string) {
-    const queryParams = membershipCode;
+    const queryParams = {membershipCode: membershipCode, queryParam: this.queryParam};
     return this.navigationService.navigateRelative(
       `professional-membership-information`,
       this.activatedRoute,
-      { queryParams }
+      {membershipCode: membershipCode, queryParam: this.queryParam }
     );
   }
   public navigateToRemove(membershipCode: string) {
@@ -129,7 +133,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     return this.navigationService.navigateRelative(
       `professional-confirmation-membership-removal`,
       this.activatedRoute,
-      { queryParams }
+      {membershipCode: membershipCode, queryParam: this.queryParam }
     );
   }
   public emptyActionText(): string {
