@@ -151,7 +151,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
     this.model = applicationService.model;
-    this.checkingStatus = false;
+    this.checkingStatus = true;
     if (this.isInspectorClassOne()) this.hideCompetencySection();
 
     this.showCompetencyAssement();
@@ -650,18 +650,23 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           prompt: 'Pay your fee and submit your application',
           relativeRoute: (): TaskListRoute => this.paymentRoute!,
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus => {
-            if (
-              this.model?.StageStatus['ApplicationConfirmed'] == StageCompletionState.Complete
-            ) {
-              if (this.paymentStatus == this.paymentEnum.Success) {
-                return TaskStatus.Complete;
-              } else if (this.paymentStatus == this.paymentEnum.Started) {
-                return TaskStatus.InProgress;
-              } else {
-                return TaskStatus.NotStarted;
-              }
+            if (this.checkingStatus == true) {
+              return TaskStatus.NotStarted;
             } else {
-              return TaskStatus.CannotStart;
+              if (
+                this.model?.StageStatus['ApplicationConfirmed'] ==
+                StageCompletionState.Complete
+              ) {
+                if (this.paymentStatus == this.paymentEnum.Success) {
+                  return TaskStatus.Complete;
+                } else if (this.paymentStatus == this.paymentEnum.Started) {
+                  return TaskStatus.InProgress;
+                } else {
+                  return TaskStatus.NotStarted;
+                }
+              } else {
+                return TaskStatus.CannotStart;
+              }
             }
           },
         },
@@ -724,8 +729,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     if (payments?.length > 0) {
       //Filter for successful and newly created payments
       var successfulPayments = payments.filter(
-        (x) =>
-          x.bsr_govukpaystatus == 'success'
+        (x) => x.bsr_govukpaystatus == 'success'
       );
 
       if (successfulPayments?.length > 0) {
@@ -767,5 +771,6 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
         route: 'payment/' + PaymentDeclarationComponent.route,
       };
     }
+    this.checkingStatus = false;
   }
 }
