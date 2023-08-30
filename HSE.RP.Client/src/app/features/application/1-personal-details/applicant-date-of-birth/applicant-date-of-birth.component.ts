@@ -15,6 +15,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { IComponentModel } from '../../../../models/component. interface';
 import { ApplicantDateOfBirth } from '../../../../models/applicant-date-of-birth.model';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 class DateInputControlDate implements IComponentModel {
   constructor(private containedModel: ApplicantDateOfBirth) {}
@@ -179,12 +180,16 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
         this.applicationService.model,
         PersonalDetailRoutes.SUMMARY
       );
-    } else {
-      return this.personalDetailRouter.navigateTo(
-        this.applicationService.model,
-        PersonalDetailRoutes.ADDRESS
+    } else if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(
+        `../application-submission/${ApplicationSummaryComponent.route}`,
+        this.activatedRoute
       );
     }
+    return this.personalDetailRouter.navigateTo(
+      this.applicationService.model,
+      PersonalDetailRoutes.ADDRESS
+    );
   }
 
   getDateOfBirth(): Date {

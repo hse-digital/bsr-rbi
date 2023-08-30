@@ -59,8 +59,7 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
 
   async SyncAndContinue() {
     await this.applicationService.syncEmploymentDetails();
-    this.applicationService.model.StageStatus['ProfessionalActivity'] =
-    StageCompletionState.Complete;
+    this.applicationService.model.StageStatus['ProfessionalActivity'] = StageCompletionState.Complete;
     this.saveAndContinue();
   }
 

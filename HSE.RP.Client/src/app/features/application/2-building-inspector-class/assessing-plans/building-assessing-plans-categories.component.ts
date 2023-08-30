@@ -29,6 +29,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   public hint = 'Select all that apply';
   public errorText = '';
   selectedOptionError: boolean = false;
+  queryParam?: string = '';
 
   override model?: BuildingAssessingPlansCategoriesClass2;
   public selections: string[] = [];
@@ -44,6 +45,9 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     this.updateOnSave = true;
     if (!applicationService.model?.InspectorClass) {
       applicationService.model.InspectorClass = new BuildingInspectorClass();
@@ -90,7 +94,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
     });
 
     this.applicationService.model.InspectorClass!.ClassType.CompletionState =
-          ComponentCompletionState.InProgress;
+      ComponentCompletionState.InProgress;
   }
 
   override canAccess(
@@ -115,12 +119,40 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
       this.applicationService.model.InspectorClass?.Activities
         .AssessingPlans === true
     ) {
+      if (
+        this.queryParam != null &&
+        this.queryParam != undefined &&
+        this.queryParam != ''
+      ) {
+        const queryParam = this.queryParam;
+
+        return this.navigationService.navigateRelative(
+          BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER,
+          this.activatedRoute,
+          { queryParam }
+        );
+      }
+
       return this.buildingInspectorRouter.navigateTo(
         this.applicationService.model,
         BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER
       );
     }
     // redirect to the Class 2 Inspection Categories once that page has been made
+
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+
+      return this.navigationService.navigateRelative(
+        BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES,
+        this.activatedRoute,
+        { queryParam }
+      );
+    }
     return this.buildingInspectorRouter.navigateTo(
       this.applicationService.model,
       BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES

@@ -7,6 +7,8 @@ import { environment } from 'src/environments/environment';
 import { NoCompetencyAssessment } from 'src/app/models/no-competency-assessment.model';
 import { CompetencySummaryComponent } from '../competency-summary/competency-summary.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
+import { BuildingInspectorClassType } from 'src/app/models/building-inspector-classtype.enum';
 
 @Component({
   selector: 'hse-no-competency-assessment',
@@ -24,6 +26,8 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
   public hint = '';
   errorMessage: string = '';
   override model?: NoCompetencyAssessment;
+  queryParam?: string = '';
+
 
   @Output() onClicked = new EventEmitter();
   @Output() onKeyupEnter = new EventEmitter();
@@ -34,7 +38,9 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     if (!applicationService.model.Competency?.NoCompetencyAssessment) {
       applicationService.model.Competency!.NoCompetencyAssessment =
         new NoCompetencyAssessment();
@@ -50,6 +56,10 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
   override async onSave(applicationService: ApplicationService): Promise<void> {
     const demandModel = this.DemandModel();
     demandModel.Declaration = true;
+
+
+
+    this.applicationService.model.InspectorClass!.ClassType.Class = BuildingInspectorClassType.Class1;
 
     if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
       applicationService.model.Competency!.NoCompetencyAssessment!.CompletionState =
@@ -70,11 +80,37 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
   }
 
   override async navigateNext(): Promise<boolean> {
+
+    if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(
+        `../application-submission/${ApplicationSummaryComponent.route}`,
+        this.activatedRoute
+      );
+    }
     return this.navigationService.navigateRelative(
       CompetencySummaryComponent.route,
       this.activatedRoute
     );
+
   }
+
+  // override navigateNext(): Promise<boolean> {
+  //   if (this.queryParam === 'personal-details-change') {
+  //     return this.personalDetailRouter.navigateTo(
+  //       this.applicationService.model,
+  //       PersonalDetailRoutes.SUMMARY
+  //     );
+  //   } else if (this.queryParam === 'application-summary') {
+  //     return this.navigationService.navigateRelative(
+  //       `../application-submission/${ApplicationSummaryComponent.route}`,
+  //       this.activatedRoute
+  //     );
+  //   }
+  //   return this.personalDetailRouter.navigateTo(
+  //     this.applicationService.model,
+  //     PersonalDetailRoutes.ADDRESS
+  //   );
+  // }
 
   DerivedIsComplete(value: boolean): void {
     this.applicationService.model.Competency!.NoCompetencyAssessment!.CompletionState =

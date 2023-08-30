@@ -40,6 +40,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   public hint: string = 'Select all that apply';
   public errorText: string = '';
   selectedOptionError: boolean = false;
+  queryParam?: string = '';
 
   override model?: BuildingInspectorRegulatedActivies;
   public selections: string[] = [];
@@ -68,6 +69,9 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     if (!applicationService.model?.InspectorClass) {
       applicationService.model.InspectorClass = new BuildingInspectorClass();
     }
@@ -112,7 +116,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
     });
 
     this.applicationService.model.InspectorClass!.ClassType.CompletionState =
-    ComponentCompletionState.InProgress;
+      ComponentCompletionState.InProgress;
   }
 
   override canAccess(
@@ -128,7 +132,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
 
   override isValid(): boolean {
     this.errorText = '';
-    if (this.selections.length == 0)  {
+    if (this.selections.length == 0) {
       this.selectedOptionError = true;
       this.errorText = 'Select a restricted activity';
     }
@@ -140,6 +144,33 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
       this.applicationService.model.InspectorClass?.Activities
         .AssessingPlans === true
     ) {
+      if (
+        this.queryParam != null &&
+        this.queryParam != undefined &&
+        this.queryParam != ''
+      ) {
+        const queryParam = this.queryParam;
+        if (
+          this.applicationService.model.InspectorClass.ClassType.Class ===
+          BuildingInspectorClassType.Class2
+        ) {
+          return this.navigationService.navigateRelative(
+            BuildingInspectorRoutes.CLASS2_ACCESSING_PLANS_CATEGORIES,
+            this.activatedRoute,
+            { queryParam }
+          );
+        }
+        if (
+          this.applicationService.model.InspectorClass.ClassType.Class ===
+          BuildingInspectorClassType.Class3
+        ) {
+          return this.navigationService.navigateRelative(
+            BuildingInspectorRoutes.CLASS3_ACCESSING_PLANS_CATEGORIES,
+            this.activatedRoute,
+            { queryParam }
+          );
+        }
+      }
       if (
         this.applicationService.model.InspectorClass.ClassType.Class ===
         BuildingInspectorClassType.Class2
@@ -160,6 +191,33 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
       }
     }
 
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+      if (
+        this.applicationService.model.InspectorClass?.ClassType.Class ===
+        BuildingInspectorClassType.Class2
+      ) {
+        // redirect to the Class 2 Inspection Categories once that page has been made
+
+        return this.navigationService.navigateRelative(
+          BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES,
+          this.activatedRoute,
+          { queryParam }
+        );
+      }
+      // redirect to the Class 3 Inspection Categories once that page has been made
+
+      return this.navigationService.navigateRelative(
+        BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES,
+        this.activatedRoute,
+        { queryParam }
+      );
+
+    }
     if (
       this.applicationService.model.InspectorClass?.ClassType.Class ===
       BuildingInspectorClassType.Class2

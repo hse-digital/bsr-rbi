@@ -89,7 +89,9 @@ namespace HSE.RP.API.Services
             {
                 var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsContact);
                 var contactId = ExtractEntityIdFromHeader(response.Headers);
+                
                 await AssignContactType(contactId, DynamicsContactTypes.BIApplicant);
+
                 return contact with { Id = contactId };
             }
 
@@ -193,11 +195,8 @@ namespace HSE.RP.API.Services
 
         private async Task AssignContactType(string contactId, string contactTypeId)
         {
-
-            await dynamicsApi.Create($"contacts({contactId})/bsr_contacttype_contact/$ref", new DynamicsContactType
-            {
-                contactTypeReferenceId = $"{dynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_contacttypes({contactTypeId})"
-            });
+            await dynamicsApi.Create($"contacts({contactId})/bsr_contacttype_contact/$ref",
+                new DynamicsContactType { contactTypeReferenceId = $"{dynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_contacttypes({contactTypeId})" });
         }
 
         public async Task<DynamicsPayment> GetPaymentByReference(string reference)

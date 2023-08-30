@@ -21,6 +21,7 @@ import {
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { AddressModel } from 'src/app/models/address.model';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-applicant-address',
@@ -72,7 +73,6 @@ export class ApplicantAddressComponent extends PageComponent<AddressModel> {
     return true;
   }
   async addressConfirmed(address: AddressModel) {
-    console.log('hello confirm address');
     this.applicationService.model.PersonalDetails!.ApplicantAddress = address;
     this.applicationService.model.PersonalDetails!.ApplicantAddress.CompletionState =
       ComponentCompletionState.Complete;
@@ -84,7 +84,9 @@ export class ApplicantAddressComponent extends PageComponent<AddressModel> {
         this.applicationService.model,
         PersonalDetailRoutes.SUMMARY
       );
-    } else {
+    } else if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(`../application-submission/${ApplicationSummaryComponent.route}`, this.activatedRoute);
+    }else {
       return this.navigationService.navigateRelative(
         ApplicantAlternativeEmailComponent.route,
         this.activatedRoute

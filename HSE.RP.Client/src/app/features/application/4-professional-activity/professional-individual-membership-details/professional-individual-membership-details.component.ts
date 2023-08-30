@@ -28,6 +28,7 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
   override model?: string;
   membershipCode: string = '';
   PROFESSIONAL_BODY_ORG_NAME: string = '';
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -40,7 +41,8 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
 
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.membershipCode = params['queryParams'];
+      this.membershipCode = params['membershipCode'];
+      this.queryParam = params['queryParam'];
       this.getProfessionalBodyOrgName(this.membershipCode);
     });
   }
@@ -86,17 +88,14 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
     return true;
   }
   override async navigateNext(): Promise<boolean> {
-    return this.professionalActivityRouter.navigateTo(
-      this.applicationService.model,
-      'professional-body-membership-summary'
-    );
-  }
+    const queryParam= this.queryParam;
 
-  public navigateTo(route: string) {
     return this.navigationService.navigateRelative(
-      `${route}`,
-      this.activatedRoute
+      `/professional-body-membership-summary`,
+      this.activatedRoute,
+      { queryParam }
     );
+
   }
 
 
@@ -182,7 +181,7 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
       this.activatedRoute,
       { queryParams }
     ); // Back to the task list.
-    
+
   }
 
 }

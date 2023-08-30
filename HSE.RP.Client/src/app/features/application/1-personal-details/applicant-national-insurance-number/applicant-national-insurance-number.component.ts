@@ -13,6 +13,7 @@ import { PersonalDetailRoutes, PersonalDetailRouter } from '../PersonalDetailRou
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ApplicantNationalInsuranceNumber } from '../../../../models/applicant-national-insurance-number.model';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-applicant-national-insurance-number',
@@ -26,6 +27,7 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<App
   nsiHasErrors: boolean = false;
   nsiIsNullOrWhiteSpace: boolean = false;
   nsiIsInvalidFormat: boolean = false;
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -36,7 +38,9 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<App
   }
 
   override onInit(applicationService: ApplicationService): void {
-
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     if (!applicationService.model.PersonalDetails?.ApplicantNationalInsuranceNumber) {
       applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber = new ApplicantNationalInsuranceNumber();
     }
@@ -69,6 +73,20 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<App
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.personalDetailRouter.navigateTo(this.applicationService.model, PersonalDetailRoutes.SUMMARY)
+    if (this.queryParam === 'personal-details-change') {
+      return this.personalDetailRouter.navigateTo(
+        this.applicationService.model,
+        PersonalDetailRoutes.SUMMARY
+      );
+    } else if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(
+        `../application-submission/${ApplicationSummaryComponent.route}`,
+        this.activatedRoute
+      );
+    }
+    return this.personalDetailRouter.navigateTo(
+      this.applicationService.model,
+      PersonalDetailRoutes.SUMMARY
+    );
   }
 }

@@ -50,6 +50,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
     new ApplicantProfessionalBodyMembership();
   membershipCode: string = '';
   PROFESSIONAL_BODY_ORG_NAME: string = '';
+  queryParam?: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -59,8 +60,8 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
     this.updateOnSave = true;
 
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.membershipCode = params['queryParams'];
-
+      this.membershipCode = params['membershipCode'];
+      this.queryParam = params['queryParam'];
       this.getProfessionalBodyOrgName(this.membershipCode);
     });
 
@@ -164,11 +165,10 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
   }
 
   override async navigateNext(): Promise<boolean> {
-    const queryParams = this.membershipCode;
     return this.navigationService.navigateRelative(
       ProfessionalIndividualMembershipDetailsComponent.route,
       this.activatedRoute,
-      { queryParams }
+      {membershipCode: this.membershipCode, queryParam: this.queryParam }
     ); // Back to the task list.
   }
 

@@ -58,8 +58,7 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   async SyncAndContinue() {
     await this.applicationService.syncCompetency();
-    this.applicationService.model.StageStatus['Competency'] =
-    StageCompletionState.Complete;
+    this.applicationService.model.StageStatus['Competency'] = StageCompletionState.Complete;
     this.saveAndContinue();
   }
 

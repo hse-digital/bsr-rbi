@@ -13,6 +13,7 @@ import { ApplicantAlternativePhoneComponent } from '../applicant-alternative-pho
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ApplicantEmail } from '../../../../models/applicant-email.model';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-applicant-alternative-email',
@@ -98,11 +99,15 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<ApplicantE
         this.applicationService.model,
         PersonalDetailRoutes.SUMMARY
       );
-    } else {
-      return this.personalDetailRouter.navigateTo(
-        this.applicationService.model,
-        PersonalDetailRoutes.ALT_PHONE
+    } else if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(
+        `../application-submission/${ApplicationSummaryComponent.route}`,
+        this.activatedRoute
       );
     }
+    return this.personalDetailRouter.navigateTo(
+      this.applicationService.model,
+      PersonalDetailRoutes.ALT_PHONE
+    );
   }
 }

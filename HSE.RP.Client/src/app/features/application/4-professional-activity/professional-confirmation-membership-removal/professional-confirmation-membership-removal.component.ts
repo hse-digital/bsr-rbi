@@ -34,6 +34,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
   errorMessage: string = '';
   membershipCode: string = '';
   PROFESSIONAL_BODY_ORG_NAME: string = '';
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -46,7 +47,8 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
 
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.membershipCode = params['queryParams'];
+      this.membershipCode = params['membershipCode'];
+      this.queryParam = params['queryParam'];
     });
 
     this.getProfessionalBodyOrgName(this.membershipCode);
@@ -92,6 +94,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
   }
 
   override navigateNext(): Promise<boolean> {
+    const queryParam = this.queryParam;
     const memberships = this.applicationService.model.ProfessionalMemberships;
     if (
       memberships.RICS.MembershipNumber === '' &&
@@ -101,12 +104,15 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
     ) {
       return this.navigationService.navigateRelative(
         ProfessionalBodyMembershipsComponent.route,
-        this.activatedRoute
+        this.activatedRoute,
+
+        { queryParam }
       );
     } else {
       return this.navigationService.navigateRelative(
         ProfessionalBodyMembershipSummaryComponent.route,
-        this.activatedRoute
+        this.activatedRoute,
+        { queryParam}
       );
     }
   }

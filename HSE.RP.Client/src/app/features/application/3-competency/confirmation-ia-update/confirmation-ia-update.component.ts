@@ -6,6 +6,7 @@ import { PageComponent } from 'src/app/helpers/page.component';
 import { ApplicationService } from 'src/app/services/application.service';
 import { BuildingInspectorClassSelectionComponent } from '../../2-building-inspector-class/class-selection/building-inspector-class-selection.component';
 import { BuildingInspectorRoutes } from '../../2-building-inspector-class/BuildingInspectorRoutes';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-confirmation-ia-update',
@@ -23,11 +24,17 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
   photoHasErrors = false;
   errorMessage: string = '';
   selectedOption?: string = '';
+  queryParam?: string = '';
+
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
   }
 
-  override onInit(applicationService: ApplicationService): void {}
+  override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
+  }
   override async onSave(
     applicationService: ApplicationService
   ): Promise<void> {}
@@ -49,20 +56,42 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
     return !this.hasErrors;
   }
   override async navigateNext(): Promise<boolean> {
-    const isValide = this.isValid();
+    const isValid = this.isValid();
 
-    if (isValide && this.selectedOption === 'yes') {
-      return this.navigationService.navigateRelative(
-        `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
-        this.activatedRoute
-      );
-    } else if (isValide && this.selectedOption === 'no') {
-      return this.navigationService.navigateRelative(
-        `${CompetencyRoutes.SUMMARY}`,
-        this.activatedRoute
-      );
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+
+      if (isValid && this.selectedOption === 'yes') {
+        return this.navigationService.navigateRelative(
+          `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
+          this.activatedRoute
+        );
+      } else if (isValid && this.selectedOption === 'no') {
+        return this.navigationService.navigateRelative(
+          `../application-submission/${ApplicationSummaryComponent.route}`,
+          this.activatedRoute
+        );
+      }
+
+      return true;
+    } else {
+      if (isValid && this.selectedOption === 'yes') {
+        return this.navigationService.navigateRelative(
+          `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
+          this.activatedRoute
+        );
+      } else if (isValid && this.selectedOption === 'no') {
+        return this.navigationService.navigateRelative(
+          `${CompetencyRoutes.SUMMARY}`,
+          this.activatedRoute
+        );
+      }
+
+      return true;
     }
-
-    return true;
   }
 }

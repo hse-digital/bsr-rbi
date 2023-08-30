@@ -26,6 +26,7 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
   photoHasErrors = false;
   errorMessage: string = '';
   selectedOption: string = '';
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -35,6 +36,9 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     this.updateOnSave = true;
 
     if (!applicationService.model.Competency) {
@@ -113,7 +117,6 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
       this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
         ComponentCompletionState.Complete;
     }
-    
   }
 
   override canAccess(
@@ -137,20 +140,39 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
   }
 
   override navigateNext(): Promise<boolean> {
-    if (this.selectedOption === 'yes') {
-      return this.navigationService.navigateRelative(
-        CompetencyAssessmentOrganisationComponent.route,
-        this.activatedRoute
-      );
+    if (
+      this.queryParam != null &&
+      this.queryParam != '' &&
+      this.queryParam != undefined
+    ) {
+      const queryParam = this.queryParam;
+      if (this.selectedOption === 'yes') {
+        return this.navigationService.navigateRelative(
+          CompetencyAssessmentOrganisationComponent.route,
+          this.activatedRoute,
+          {queryParam}
+        );
+      } else {
+        return this.navigationService.navigateRelative(
+          NoCompetencyAssessmentComponent.route,
+          this.activatedRoute,
+          {queryParam}
+        );
+      }
     } else {
-      // TODO - needs changing to US-9033 when complete
-      return this.navigationService.navigateRelative(
-        NoCompetencyAssessmentComponent.route,
-        this.activatedRoute
-      );
+      if (this.selectedOption === 'yes') {
+        return this.navigationService.navigateRelative(
+          CompetencyAssessmentOrganisationComponent.route,
+          this.activatedRoute
+        );
+      } else {
+        return this.navigationService.navigateRelative(
+          NoCompetencyAssessmentComponent.route,
+          this.activatedRoute
+        );
+      }
     }
   }
-
   DerivedIsComplete(value: boolean): void {
     this.applicationService.model.Competency!.CompetencyIndependentAssessmentStatus!.CompletionState =
       value
