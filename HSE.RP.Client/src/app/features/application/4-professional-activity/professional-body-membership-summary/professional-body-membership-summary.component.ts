@@ -14,6 +14,8 @@ import {
 import { ComponentCompletionState } from '../../../../models/component-completion-state.enum';
 import { ProfessionalActivityRoutes } from '../../application-routes';
 import { ProfessionalActivityEmploymentTypeComponent } from '../employment-type/professional-activity-employment-type.component';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
+import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
 
 @Component({
   selector: 'hse-professional-body-membership-summary',
@@ -69,11 +71,9 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   override isValid(): boolean {
     const memberships = this.applicationService.model.ProfessionalMemberships;
 
-    if (
-      this.selectedOption === '')
-    {
+    if (this.selectedOption === '') {
       this.errorMessage =
-      'Select whether you want to tell us about additonal memberships you hold or not';
+        'Select whether you want to tell us about additonal memberships you hold or not';
       return false;
     }
 
@@ -93,6 +93,37 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   override navigateNext(): Promise<boolean> {
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+      if (this.queryParam == 'application-summary') {
+        if (this.selectedOption === 'no') {
+          return this.navigationService.navigateRelative(
+            `../application-submission/${ApplicationSummaryComponent.route}`,
+            this.activatedRoute
+          );
+        }
+        if (this.selectedOption === 'yes') {
+          return this.navigationService.navigateRelative(
+            ProfessionalBodySelectionComponent.route,
+            this.activatedRoute,
+            { queryParam: this.queryParam }
+          );
+          return this.navigateTo('professional-body-selection'); // To professional body selection page.
+        } else if (
+          ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!)
+        ) {
+          return this.navigationService.navigateRelative(
+            ProfessionalActivityEmploymentTypeComponent.route,
+            this.activatedRoute
+          );
+        }
+      }
+    }
+
     if (this.selectedOption === 'no') {
       this.model!.CompletionState = ComponentCompletionState.Complete;
       return this.navigationService.navigateRelative(
@@ -121,19 +152,17 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   public navigateToChange(membershipCode: string) {
-    const queryParams = {membershipCode: membershipCode, queryParam: this.queryParam};
     return this.navigationService.navigateRelative(
       `professional-membership-information`,
       this.activatedRoute,
-      {membershipCode: membershipCode, queryParam: this.queryParam }
+      { membershipCode: membershipCode, queryParam: this.queryParam }
     );
   }
   public navigateToRemove(membershipCode: string) {
-    const queryParams = membershipCode;
     return this.navigationService.navigateRelative(
       `professional-confirmation-membership-removal`,
       this.activatedRoute,
-      {membershipCode: membershipCode, queryParam: this.queryParam }
+      { membershipCode: membershipCode, queryParam: this.queryParam }
     );
   }
   public emptyActionText(): string {
