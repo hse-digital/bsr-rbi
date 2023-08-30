@@ -26,13 +26,16 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
   existingSelection: string = '';
   existingStatus?: ComponentCompletionState =
     ComponentCompletionState.NotStarted;
+  queryParam?: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
   }
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     if (applicationService.model.ProfessionalMemberships == null) {
       applicationService.model.ProfessionalMemberships =
         new ApplicantProfessionBodyMemberships();
@@ -130,12 +133,12 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
   }
 
   override async navigateNext(): Promise<boolean> {
-    const queryParams = this.selectedOption;
+    const membershipCode = this.selectedOption;
     if (['RICS', 'CABE', 'CIOB'].includes(this.selectedOption)) {
       return this.navigationService.navigateRelative(
         ProfessionalMembershipInformationComponent.route,
         this.activatedRoute,
-        { queryParams }
+        {membershipCode: membershipCode, queryParam: this.queryParam }
       );
     }
     return this.navigationService.navigateRelative(
