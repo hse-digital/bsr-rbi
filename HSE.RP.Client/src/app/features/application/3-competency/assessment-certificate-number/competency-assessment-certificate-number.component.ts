@@ -9,6 +9,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 import { CompetencyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
 import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 import { CompetencySummaryComponent } from '../competency-summary/competency-summary.component';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-competency-assesesment-certificate-number',
@@ -112,7 +113,10 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
         CompetencySummaryComponent.route,
         this.activatedRoute
       );
-    } else {
+    } else if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(`../application-submission/${ApplicationSummaryComponent.route}`, this.activatedRoute);
+    }
+    else{
       return this.navigationService.navigateRelative(
         CompetencyAssessmentDateComponent.route,
         this.activatedRoute

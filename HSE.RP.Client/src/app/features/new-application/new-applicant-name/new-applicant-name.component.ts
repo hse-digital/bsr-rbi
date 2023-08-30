@@ -52,6 +52,7 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
         "BuildingInspectorClass": StageCompletionState.Incomplete,
         "Competency": StageCompletionState.Incomplete,
         "ProfessionalActivity": StageCompletionState.Incomplete,
+        "ApplicationConfirmed": StageCompletionState.Incomplete,
         "Declaration": StageCompletionState.Incomplete,
         "Payment": StageCompletionState.Incomplete,
       };

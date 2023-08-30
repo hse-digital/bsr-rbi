@@ -213,6 +213,12 @@ export class ApplicationService {
     );
   }
 
+  async syncFullApplication(): Promise<void> {
+    await firstValueFrom(
+      this.httpClient.post(`api/SyncFullApplication`, this.model)
+    );
+  }
+
   async CheckDuplicateBuildingProfessionalApplication(): Promise<boolean> {
    return await lastValueFrom(
       this.httpClient.post<boolean>(`api/CheckDuplicateBuildingProfessionalApplication`, this.model)

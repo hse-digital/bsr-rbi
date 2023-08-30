@@ -114,39 +114,19 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
     return this.navigateTo('professional-activity/' + route);
   }
 
+
+
   public navigateTo(route: string) {
+    const queryParam = 'application-summary';
     return this.navigationService.navigateRelative(
       `../${route}`,
-      this.activatedRoute
-    );
-  }
-
-  public GetFormattedDateofBirth(): string {
-    return DateFormatHelper.LongMonthFormat(
-      this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Year,
-      this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth
-        ?.Month,
-      this.applicationService.model.PersonalDetails?.ApplicantDateOfBirth?.Day
-    );
-  }
-
-  public getAlternativePhone(): string {
-    return (
-      this.applicationService.model.PersonalDetails?.ApplicantAlternativePhone
-        ?.PhoneNumber || 'none'
-    );
-  }
-
-  public getAlternativeEmail(): string {
-    return (
-      this.applicationService.model.PersonalDetails?.ApplicantAlternativeEmail
-        ?.Email || 'none'
+      this.activatedRoute,
+      { queryParam }
     );
   }
 
   async SyncAndContinue() {
-    // await this.applicationService.syncPersonalDetails();
-    // this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
+     await this.applicationService.syncFullApplication();
     this.applicationService.model.StageStatus['ApplicationConfirmed'] =
       StageCompletionState.Complete;
     this.saveAndContinue();
@@ -178,11 +158,10 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
       let imgWidth = 290;
       let imgHeight = (canvas.height * imgWidth) / canvas.width;
       const contentDataURL = canvas.toDataURL('image/png');
-      // let pdf = new jsPDF('l', 'mm', 'a4');
       const pdf = new jsPDF({
-        // orientation: "landscape",
+        orientation: 'p',
         unit: 'mm',
-        format: [595, 842],
+        format: [600, 1000],
       });
 
       var position = 10;
@@ -190,20 +169,6 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
       pdf.save('ApplicationSummery.pdf');
     });
 
-    // html2canvas(htmlCotent!).then((canvas) => {
-    //   const doc = new jsPDF({
-    //     orientation: 'landscape',
-    //     unit: 'mm',
-    //     format: [595, 842],
-    //   });
-
-    //   doc.html(htmlCotent, {
-    //     callback: (doc: jsPDF) => {
-    //       doc.deletePage(doc.getNumberOfPages());
-    //       doc.save('pdf-export');
-    //     },
-    //   });
-    // });
   }
 
   printApplicationSummary() {

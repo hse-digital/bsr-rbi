@@ -13,6 +13,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ApplicantPhone } from '../../../../models/applicant-phone-model';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-applicant-alternative-phone',
@@ -110,7 +111,10 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<ApplicantP
         this.applicationService.model,
         PersonalDetailRoutes.SUMMARY
       );
-    } else {
+    } else if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(`../application-submission/${ApplicationSummaryComponent.route}`, this.activatedRoute);
+    }
+    else {
       return this.personalDetailRouter.navigateTo(
         this.applicationService.model,
         PersonalDetailRoutes.NATIONAL_INS_NUMBER

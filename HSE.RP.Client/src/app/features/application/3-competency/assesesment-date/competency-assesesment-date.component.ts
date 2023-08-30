@@ -12,6 +12,7 @@ import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { IComponentModel } from 'src/app/models/component. interface';
 import { CompetencyDateOfAssessment } from 'src/app/models/competency-date-of-assessment.model';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 class DateInputControlDate implements IComponentModel {
   constructor(private containedModel: CompetencyDateOfAssessment) {}
@@ -52,7 +53,8 @@ const ERROR_MESSAGES = {
   DAY_VALIDATION:
     'Your day value it should be less than or equal 31 and not less than 1',
   MONTH_REQUIRED: 'Your date of assessment must include a month',
-  MONTH_VALIDATION: 'Your month value it should be less than or equal 12 and not less than 1',
+  MONTH_VALIDATION:
+    'Your month value it should be less than or equal 12 and not less than 1',
   YEAR_REQUIRED: 'Your date of assessment must include a year',
   YEAR_FORMAT:
     'Your date of assessment must include all four numbers of the year, for example 1981, not just 81.',
@@ -73,6 +75,7 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
   photoHasErrors = false;
   errorMessage: string = '';
   validationErrors: DoaValidationItem[] = [];
+  queryParam?: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -80,6 +83,9 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     if (!applicationService.model.Competency?.CompetencyDateOfAssessment) {
       applicationService.model.Competency!.CompetencyDateOfAssessment =
         new CompetencyDateOfAssessment();
@@ -133,15 +139,20 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
       return false;
     }
 
-    if (!this.isDateNumber(this.model?.day) || !this.isDayValid(Number(this.model?.day))) {
+    if (
+      !this.isDateNumber(this.model?.day) ||
+      !this.isDayValid(Number(this.model?.day))
+    ) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.DAY_REQUIRED,
         Anchor: 'doa-input-day',
       });
     }
 
-
-    if (!this.isDateNumber(this.model?.month) || !this.isMonthValid(Number(this.model?.month))) {
+    if (
+      !this.isDateNumber(this.model?.month) ||
+      !this.isMonthValid(Number(this.model?.month))
+    ) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.MONTH_REQUIRED,
         Anchor: 'doa-input-month',
@@ -173,10 +184,17 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(
-      CompetencySummaryComponent.route,
-      this.activatedRoute
-    );
+   if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(
+        `../application-submission/${ApplicationSummaryComponent.route}`,
+        this.activatedRoute
+      );
+    } else {
+      return this.navigationService.navigateRelative(
+        CompetencySummaryComponent.route,
+        this.activatedRoute
+      );
+    }
   }
 
   getDateOfAssessment(): Date {

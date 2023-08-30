@@ -11,6 +11,7 @@ import {
 } from '../PersonalDetailRoutes';
 import { ApplicantName } from 'src/app/models/applicant-name.model';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -88,7 +89,9 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
         this.applicationService.model,
         PersonalDetailRoutes.SUMMARY
       );
-    } else {
+    } else if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(`../application-submission/${ApplicationSummaryComponent.route}`, this.activatedRoute);
+    } {
       return this.personalDetailRouter.navigateTo(
         this.applicationService.model,
         PersonalDetailRoutes.TASK_LIST

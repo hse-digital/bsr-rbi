@@ -23,11 +23,17 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
   photoHasErrors = false;
   errorMessage: string = '';
   selectedOption?: string = '';
+  queryParam?: string = '';
+
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
   }
 
-  override onInit(applicationService: ApplicationService): void {}
+  override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
+  }
   override async onSave(
     applicationService: ApplicationService
   ): Promise<void> {}
@@ -49,20 +55,47 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
     return !this.hasErrors;
   }
   override async navigateNext(): Promise<boolean> {
-    const isValide = this.isValid();
+    const isValid = this.isValid();
 
-    if (isValide && this.selectedOption === 'yes') {
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+
+      if (isValid && this.selectedOption === 'yes') {
+        return this.navigationService.navigateRelative(
+          `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
+          this.activatedRoute,
+          { queryParam }
+        );
+      } else if (isValid && this.selectedOption === 'no') {
+        return this.navigationService.navigateRelative(
+          `${CompetencyRoutes.SUMMARY}`,
+          this.activatedRoute,
+          { queryParam }
+        );
+      }
+
       return this.navigationService.navigateRelative(
-        `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
+        `${this.queryParam}`,
         this.activatedRoute
       );
-    } else if (isValide && this.selectedOption === 'no') {
-      return this.navigationService.navigateRelative(
-        `${CompetencyRoutes.SUMMARY}`,
-        this.activatedRoute
-      );
+    } else {
+      if (isValid && this.selectedOption === 'yes') {
+        return this.navigationService.navigateRelative(
+          `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
+          this.activatedRoute
+        );
+      } else if (isValid && this.selectedOption === 'no') {
+        return this.navigationService.navigateRelative(
+          `${CompetencyRoutes.SUMMARY}`,
+          this.activatedRoute
+        );
+      }
+
+      return true;
     }
-
-    return true;
   }
 }
