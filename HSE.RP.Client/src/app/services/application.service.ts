@@ -47,7 +47,7 @@ export class ApplicationService {
   async validateOTPToken(OTPToken: string, Data: string): Promise<void> {
     var response = await firstValueFrom(
       this.httpClient.post('api/ValidateOTPToken', {
-        OTPToken: OTPToken,
+        OTPToken: OTPToken.trim(),
         Data: Data.toLowerCase().trim().replace("+44", "0"),
       })
     );
