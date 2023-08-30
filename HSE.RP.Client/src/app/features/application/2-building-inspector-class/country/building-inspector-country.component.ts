@@ -9,6 +9,7 @@ import { BuildingInspectorRoutes } from '../BuildingInspectorRoutes';
 import { BuildingInspectorCountryOfWork } from 'src/app/models/building-inspector-country-of-work.model';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-building-inspector-country',
@@ -27,6 +28,7 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   selectedOptionError: boolean = false;
   override model?: BuildingInspectorCountryOfWork;
   public selections: string[] = [];
+  queryParam?: string = '';
 
   @Output() onClicked = new EventEmitter();
   @Output() onKeyupEnter = new EventEmitter();
@@ -37,7 +39,9 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     if (!applicationService.model.InspectorClass?.InspectorCountryOfWork) {
       applicationService.model.InspectorClass!.InspectorCountryOfWork =
         new BuildingInspectorCountryOfWork();
@@ -93,6 +97,20 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   }
 
   override navigateNext(): Promise<boolean> {
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+      if(this.queryParam == "application-summary")
+      {
+        return this.navigationService.navigateRelative(
+          `../application-submission/${ApplicationSummaryComponent.route}`,
+          this.activatedRoute
+        );
+      }
+    }
     return this.navigationService.navigateRelative(
       BuildingInspectorSummaryComponent.route,
       this.activatedRoute

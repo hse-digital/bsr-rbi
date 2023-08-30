@@ -22,6 +22,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
   photoHasErrors = false;
   errorMessage: string = '';
   selectedOption?: string = '';
+  queryParam?: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -29,7 +30,9 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     if (
       !applicationService.model.Competency?.CompetencyAssessmentOrganisation
     ) {
@@ -42,12 +45,11 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
     applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
       ComponentCompletionState.InProgress;
 
-    this.selectedOption =
-      applicationService.model.Competency!.CompetencyAssessmentOrganisation
-        .ComAssessmentOrganisation
-        ? applicationService.model.Competency!.CompetencyAssessmentOrganisation
-            .ComAssessmentOrganisation
-        : '';
+    this.selectedOption = applicationService.model.Competency!
+      .CompetencyAssessmentOrganisation.ComAssessmentOrganisation
+      ? applicationService.model.Competency!.CompetencyAssessmentOrganisation
+          .ComAssessmentOrganisation
+      : '';
 
     this.applicationService = applicationService;
   }
@@ -84,6 +86,19 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
   }
 
   override navigateNext(): Promise<boolean> {
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+      return this.navigationService.navigateRelative(
+        CompetencyAssessmentCertificateNumberComponent.route,
+        this.activatedRoute,
+        { queryParam }
+      );
+    }
+
     return this.navigationService.navigateRelative(
       CompetencyAssessmentCertificateNumberComponent.route,
       this.activatedRoute

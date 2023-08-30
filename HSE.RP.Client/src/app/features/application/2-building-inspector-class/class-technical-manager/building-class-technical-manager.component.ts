@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { BuildingInspectorSummaryComponent } from '../building-inspector-summary/building-inspector-summary.component';
 import { IComponentModel } from '../../../../models/component. interface';
 import { ComponentCompletionState } from '../../../../models/component-completion-state.enum';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 class YesNoModel implements IComponentModel {
   YesNo: string = '';
@@ -30,6 +31,7 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
   production = environment.production;
   errorMessage: string = '';
   modelValid: boolean = false;
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -39,12 +41,16 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
+
     this.updateOnSave = true;
     this.model = new YesNoModel();
 
     if(applicationService.model.InspectorClass?.ClassTechnicalManager) {
       this.model!.YesNo = applicationService.model.InspectorClass?.ClassTechnicalManager;
-    } 
+    }
 
     this.applicationService = applicationService;
   }
@@ -60,7 +66,7 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
     }
 
 
-    applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.Complete;    
+    applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.Complete;
 
   }
 
@@ -84,9 +90,25 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
   }
 
   override async navigateNext(): Promise<boolean> {
+    if (this.queryParam === 'inspector-class-change') {
+      return this.navigationService.navigateRelative(
+        BuildingInspectorSummaryComponent.route,
+        this.activatedRoute
+      );
+    }
+    else if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(
+        `../application-submission/${ApplicationSummaryComponent.route}`,
+        this.activatedRoute
+      );
+    }
+    else{
     return this.buildingInspectorRouter.navigateTo(
       this.applicationService.model,
       BuildingInspectorRoutes.INSPECTOR_COUNTRY
     );
+    }
   }
+
+
 }

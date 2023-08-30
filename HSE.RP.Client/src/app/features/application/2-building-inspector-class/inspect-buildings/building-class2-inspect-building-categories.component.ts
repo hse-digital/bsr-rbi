@@ -24,6 +24,7 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
   public hint = 'Select all that apply';
   public errorText = '';
   selectedOptionError: boolean = false;
+  queryParam?: string = '';
 
   override model?: Class2InspectBuildingCategories;
   public selections: string[] = [];
@@ -36,6 +37,9 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     this.updateOnSave = true;
 
     this.model =
@@ -73,7 +77,7 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
     });
 
     this.applicationService.model.InspectorClass!.ClassType.CompletionState =
-    ComponentCompletionState.InProgress;
+      ComponentCompletionState.InProgress;
   }
 
   override canAccess(
@@ -84,8 +88,7 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
   }
 
   override isValid(): boolean {
-    if (this.selections.length == 0)
-    {
+    if (this.selections.length == 0) {
       this.selectedOptionError = true;
       this.errorText = 'Select a category';
     }
@@ -93,6 +96,21 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
   }
 
   override navigateNext(): Promise<boolean> {
+
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+
+      return this.navigationService.navigateRelative(
+        BuildingClassTechnicalManagerComponent.route,
+        this.activatedRoute,
+        { queryParam }
+      );
+    }
+
     return this.navigationService.navigateRelative(
       BuildingClassTechnicalManagerComponent.route,
       this.activatedRoute

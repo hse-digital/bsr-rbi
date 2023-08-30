@@ -26,6 +26,7 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   public hint = 'Select all that apply';
   errors: boolean = false;
   public errorText = '';
+  queryParam?: string = '';
 
   override model?: Class3InspectBuildingCategories;
   public selections: string[] = [];
@@ -38,6 +39,9 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     this.updateOnSave = true;
 
     this.model = applicationService.model.InspectorClass?.Class3InspectBuildingCategories;
@@ -96,6 +100,21 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   }
 
   override navigateNext(): Promise<boolean> {
+
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+
+      return this.navigationService.navigateRelative(
+        BuildingClassTechnicalManagerComponent.route,
+        this.activatedRoute,
+        { queryParam }
+      );
+    }
+
     return this.navigationService.navigateRelative(
       BuildingClassTechnicalManagerComponent.route,
       this.activatedRoute

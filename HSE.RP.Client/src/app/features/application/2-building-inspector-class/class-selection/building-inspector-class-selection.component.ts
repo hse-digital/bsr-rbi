@@ -31,6 +31,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   errorMessage: string = '';
   originalOption?: BuildingInspectorClassType =
     this.applicationService.model.InspectorClass?.ClassType.Class;
+    queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -41,6 +42,9 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     this.model = applicationService.model.InspectorClass?.ClassType;
     // if the user visits this page for the first time, set status to in progress until user saves and continues
     if (
@@ -145,6 +149,29 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   }
 
   override navigateNext(): Promise<boolean> {
+
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    )
+    {
+      const queryParam = this.queryParam;
+      if (this.model?.Class === BuildingInspectorClassType.Class1) {
+        return this.navigationService.navigateRelative(
+          BuildingInspectorCountryComponent.route,
+          this.activatedRoute,
+          { queryParam }
+        );
+      } else {
+        return this.navigationService.navigateRelative(
+          BuildingInspectorRegulatedActivitiesComponent.route,
+          this.activatedRoute,
+          { queryParam }
+        );
+      }
+    }
+
     if (this.model?.Class === BuildingInspectorClassType.Class1) {
       return this.navigationService.navigateRelative(
         BuildingInspectorCountryComponent.route,

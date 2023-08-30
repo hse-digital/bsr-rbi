@@ -6,6 +6,7 @@ import { PageComponent } from 'src/app/helpers/page.component';
 import { ApplicationService } from 'src/app/services/application.service';
 import { BuildingInspectorClassSelectionComponent } from '../../2-building-inspector-class/class-selection/building-inspector-class-selection.component';
 import { BuildingInspectorRoutes } from '../../2-building-inspector-class/BuildingInspectorRoutes';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-confirmation-ia-update',
@@ -67,21 +68,16 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
       if (isValid && this.selectedOption === 'yes') {
         return this.navigationService.navigateRelative(
           `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
-          this.activatedRoute,
-          { queryParam }
+          this.activatedRoute
         );
       } else if (isValid && this.selectedOption === 'no') {
         return this.navigationService.navigateRelative(
-          `${CompetencyRoutes.SUMMARY}`,
-          this.activatedRoute,
-          { queryParam }
+          `../application-submission/${ApplicationSummaryComponent.route}`,
+          this.activatedRoute
         );
       }
 
-      return this.navigationService.navigateRelative(
-        `${this.queryParam}`,
-        this.activatedRoute
-      );
+      return true;
     } else {
       if (isValid && this.selectedOption === 'yes') {
         return this.navigationService.navigateRelative(
