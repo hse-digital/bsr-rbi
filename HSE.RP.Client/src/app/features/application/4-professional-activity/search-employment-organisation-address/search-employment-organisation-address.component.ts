@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { AddressModel } from 'src/app/models/address.model';
 import { AddressSearchMode } from 'src/app/components/address/address.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { EmploymentType } from 'src/app/models/employment-type.enum';
 
 @Component({
   selector: 'hse-search-employment-organisation-address',
@@ -62,7 +63,9 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
     await this.applicationService.updateApplication();
 
     return this.navigationService.navigateRelative(
-      `professional-membership-and-employment-summary`, this.activatedRoute);
+      `professional-membership-and-employment-summary`,
+      this.activatedRoute
+    );
   }
 
   changeStep(event: any) {
@@ -74,6 +77,14 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
       this.applicationService.model.ProfessionalActivity.EmploymentDetails
         ?.EmployerName?.FullName;
 
+    if (
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails
+        ?.EmploymentTypeSelection?.EmploymentType == EmploymentType.Other &&
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails
+        ?.EmployerName?.OtherBusinessSelection == 'no'
+    ) {
+      return `Your business address`;
+    }
     if (employerFullName) {
       this.orgTitle = `Select the address of ${employerFullName}`;
       return `Find the address of ${employerFullName}`;

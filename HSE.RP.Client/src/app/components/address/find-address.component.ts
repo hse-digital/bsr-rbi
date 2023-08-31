@@ -54,14 +54,16 @@ export class FindAddressComponent {
   }
 
   isPostcodeValid(): boolean {
-    let postcode = this.searchModel.postcode?.replace(' ', '');
+    let postcode = this.searchModel.postcode?.trim()?.replace(' ', '');
     this.postcodeHasErrors = true;
     if (!postcode) {
       this.postcodeErrorText = 'Enter a postcode';
-    } else if (postcode.length < 5 || postcode.length > 7) {
+    } else if (!FieldValidations.PostcodeValidator(postcode)) {
       this.postcodeErrorText = "Enter a real postcode, like 'EC3A 8BF'.";
-    } else {
+    }
+    else{
       this.postcodeHasErrors = false;
+
     }
 
     return !this.postcodeHasErrors;
