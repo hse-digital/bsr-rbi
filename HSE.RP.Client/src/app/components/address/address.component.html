@@ -71,7 +71,7 @@
         (onEnterManualAddress)="enterManualAddress()"
       />
 
-      <govuk-body *ngIf="addressManualyDisplayStep == 'manual' && step != 'too-many'"
+      <govuk-body *ngIf="addressManualyDisplayStep == 'manual' && step != 'too-many' && step!='manual'"
         ><a
           class="govuk-link"
           role="link"
