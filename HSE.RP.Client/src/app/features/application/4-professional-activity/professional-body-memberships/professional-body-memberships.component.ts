@@ -58,13 +58,16 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     this.processing = true;
 
     const STATUS =
-    this.applicationService.model.ProfessionalMemberships.CompletionState;
+      this.applicationService.model.ProfessionalMemberships.CompletionState;
 
     const IS_PROFESSIONALBODY_RELEVENT_YES_NO =
       this.applicationService.model.ProfessionalMemberships
         .IsProfessionBodyRelevantYesNo;
 
-    if (this.selectedOption === IS_PROFESSIONALBODY_RELEVENT_YES_NO && STATUS === 2) {
+    if (
+      this.selectedOption === IS_PROFESSIONALBODY_RELEVENT_YES_NO &&
+      STATUS === 2
+    ) {
       this.applicationService.model.ProfessionalMemberships.CompletionState =
         ComponentCompletionState.Complete;
     } else {
@@ -124,18 +127,29 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
         this.activatedRoute
       );
     }
-    if (this.selectedOption === 'yes') {
+
+    if (
+      this.selectedOption === 'yes' &&
+      this.model?.RICS.CompletionState === ComponentCompletionState.Complete &&
+      this.model.CABE.CompletionState === ComponentCompletionState.Complete &&
+      this.model.CIOB.CompletionState === ComponentCompletionState.Complete &&
+      this.model.OTHER.CompletionState === ComponentCompletionState.Complete
+    ) {
       return this.navigationService.navigateRelative(
-        `professional-body-selection`,
+        `professional-activity-employment-type`,
         this.activatedRoute
       );
+    } else if (this.selectedOption === 'yes') {
+      return this.navigationService.navigateRelative(
+            `professional-body-selection`,
+            this.activatedRoute
+          );
     }
 
     return this.navigationService.navigateRelative(
       ProfessionalActivityEmploymentTypeComponent.route,
       this.activatedRoute
     );
-
   }
   DerivedIsComplete(value: boolean): void {
     // this.applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
@@ -143,6 +157,4 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     //     ? ComponentCompletionState.Complete
     //     : ComponentCompletionState.InProgress;
   }
-
-
 }

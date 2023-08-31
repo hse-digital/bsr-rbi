@@ -69,27 +69,28 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   override isValid(): boolean {
+    this.summaryHasErrors = false;
+    this.errorMessage = '';
     const memberships = this.applicationService.model.ProfessionalMemberships;
 
-    if (this.selectedOption === '') {
-      this.errorMessage =
-        'Select whether you want to tell us about additonal memberships you hold or not';
-      return false;
-    }
+    if(memberships.RICS.CompletionState == ComponentCompletionState.Complete &&
+      memberships.CABE.CompletionState == ComponentCompletionState.Complete &&
+      memberships.CIOB.CompletionState == ComponentCompletionState.Complete &&
+      memberships.OTHER.CompletionState == ComponentCompletionState.Complete)
+      {
+        this.summaryHasErrors = false;
+      }
+      else{
+        if(this.selectedOption === '')
+        {
+          this.summaryHasErrors = true;
+          this.errorMessage =
+          'Select whether you want to tell us about additional memberships you hold or not';
+        }
+      }
 
-    if (
-      this.selectedOption === '' &&
-      memberships.RICS.CompletionState !== ComponentCompletionState.Complete &&
-      memberships.CABE.CompletionState !== ComponentCompletionState.Complete &&
-      memberships.CIOB.CompletionState !== ComponentCompletionState.Complete &&
-      memberships.OTHER.CompletionState !== ComponentCompletionState.Complete
-    ) {
-      this.errorMessage =
-        'Select whether you want to tell us about additonal memberships you hold or not';
-      return false;
-    }
+    return !this.summaryHasErrors;
 
-    return true;
   }
 
   override navigateNext(): Promise<boolean> {
@@ -132,6 +133,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
       );
     }
     if (this.selectedOption === 'yes') {
+      console.log("selected yes")
       return this.navigateTo('professional-body-selection'); // To professional body selection page.
     } else if (
       ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!)
