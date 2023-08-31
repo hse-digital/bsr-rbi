@@ -28,6 +28,7 @@ export class EmploymentOtherNameComponent extends PageComponent<EmployerName> {
   invalidNameErrorMessage: string = 'Enter the name of your business';
   invalidSelectionErrorMessage: string = 'Select yes, if you want to provide a business name';
   errorMessage: string = 'Select yes, if you want to provide a business name';
+  selectedOption?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -38,8 +39,6 @@ export class EmploymentOtherNameComponent extends PageComponent<EmployerName> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-
-
 
     if (
       !this.applicationService.model.ProfessionalActivity.EmploymentDetails
@@ -76,27 +75,23 @@ export class EmploymentOtherNameComponent extends PageComponent<EmployerName> {
   override isValid(): boolean {
     this.noOptionSelectedError = false;
     this.invalidNameError = false;
+    this.otherNameHasErrors=false;
 
-    if(!FieldValidations.IsNotNullOrWhitespace(
-      this.model?.OtherBusinessSelection
-    ))
-    {
+    if (this.model?.OtherBusinessSelection == 'yes' && !FieldValidations.IsNotNullOrWhitespace(this.model?.FullName)) {
+        this.otherNameHasErrors=true;
+        this.invalidNameError = true;
+        this.errorMessage=this.invalidNameErrorMessage
+    }
+    else if (this.model?.OtherBusinessSelection == '') {
+      this.noOptionSelectedError=true;
       this.otherNameHasErrors=true;
-      this.noOptionSelectedError = true;
-      this.errorMessage = this.invalidSelectionErrorMessage;
-      console.log(this.noOptionSelectedError);
-      return false;
+      this.errorMessage=this.invalidSelectionErrorMessage
+    }
+    else{
+      this.otherNameHasErrors=false;
     }
 
-    if (this.model?.OtherBusinessSelection == 'yes') {
-      this.otherNameHasErrors=true;
-      this.invalidNameError = true;
-      this.errorMessage = this.invalidNameErrorMessage;
-      console.log(this.invalidNameError);
-      return false;
-    }
-
-    return true;
+    return !this.otherNameHasErrors;
 
   }
 
