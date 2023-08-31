@@ -12,7 +12,7 @@
     #summaryError
   >
     <govuk-error-link
-      *ngIf="errorMessage"
+      *ngIf="summaryHasErrors"
       anchorId="radios-bi-class-selection"
       [message]="errorMessage"
     />
@@ -111,5 +111,3 @@
     </div>
   </govuk-body>
 </govuk-formpage>
-
-<div>{{ this.applicationService.model.ProfessionalMemberships | json }}</div>
