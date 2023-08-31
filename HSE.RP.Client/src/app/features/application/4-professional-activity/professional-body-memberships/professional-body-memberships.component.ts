@@ -136,7 +136,7 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
       this.model.OTHER.CompletionState === ComponentCompletionState.Complete
     ) {
       return this.navigationService.navigateRelative(
-        `professional-activity-employment-type`,
+        `professional-body-membership-summary`,
         this.activatedRoute
       );
     } else if (this.selectedOption === 'yes') {
