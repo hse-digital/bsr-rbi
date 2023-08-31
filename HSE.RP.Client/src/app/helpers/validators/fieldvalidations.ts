@@ -1,4 +1,7 @@
 export class FieldValidations {
+
+
+  static PostcodeValidator: (value: string | undefined) => boolean = (value) => (RegExp( /^([Gg][Ii][Rr]\s*0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\s*[0-9][A-Za-z]{2})$/).test(value ?? ''));
   static IsNotNullOrWhitespace: (value: string | undefined) => boolean = (value) => (value?.trim().length ?? 0) > 0;
   static IsGreaterThanZero: (value: number | undefined) => boolean = (value) => value !== undefined && value > 0;
   static IsLessThanOrEqualTo100: (value: number | undefined) => boolean = (value) => value !== undefined && value <= 100;
