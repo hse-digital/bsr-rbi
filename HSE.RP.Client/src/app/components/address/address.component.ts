@@ -49,7 +49,7 @@ export class AddressComponent implements OnInit {
       } else {
         this.changeStepTo(addressResponse.TotalResults < 100 ? "select" : "too-many");
       }
-    } else if (addressResponse.Results.length > 0 && addressResponse.TotalResults > 100){
+    } else if(addressResponse.TotalResults >= 100){
       this.changeStepTo("too-many");
     }
     else {
