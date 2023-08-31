@@ -71,25 +71,50 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   override isValid(): boolean {
     const memberships = this.applicationService.model.ProfessionalMemberships;
 
-    if (this.selectedOption === '') {
-      this.errorMessage =
-        'Select whether you want to tell us about additonal memberships you hold or not';
-      return false;
-    }
+    // if (this.selectedOption === '') {
+    //   this.errorMessage =
+    //     'Select whether you want to tell us about additonal memberships you hold or not';
+    //   return false;
+    // }
 
     if (
-      this.selectedOption === '' &&
       memberships.RICS.CompletionState !== ComponentCompletionState.Complete &&
       memberships.CABE.CompletionState !== ComponentCompletionState.Complete &&
       memberships.CIOB.CompletionState !== ComponentCompletionState.Complete &&
       memberships.OTHER.CompletionState !== ComponentCompletionState.Complete
     ) {
+      console.log('hello inside  if');
       this.errorMessage =
         'Select whether you want to tell us about additonal memberships you hold or not';
       return false;
+    } else if (this.selectedOption === '') {
+      this.errorMessage =
+        'Select whether you want to tell us about additonal memberships you hold or not';
+      return false;
+    } else if (
+      memberships.RICS.CompletionState === ComponentCompletionState.Complete &&
+      memberships.CABE.CompletionState === ComponentCompletionState.Complete &&
+      memberships.CIOB.CompletionState === ComponentCompletionState.Complete &&
+      memberships.OTHER.CompletionState === ComponentCompletionState.Complete
+    ) {
+      return true;
     }
 
-    return true;
+    return false;
+
+    // if (
+    //   this.selectedOption === '' &&
+    //   memberships.RICS.CompletionState !== ComponentCompletionState.Complete &&
+    //   memberships.CABE.CompletionState !== ComponentCompletionState.Complete &&
+    //   memberships.CIOB.CompletionState !== ComponentCompletionState.Complete &&
+    //   memberships.OTHER.CompletionState !== ComponentCompletionState.Complete
+    // ) {
+    //   this.errorMessage =
+    //     'Select whether you want to tell us about additonal memberships you hold or not';
+    //   return false;
+    // } else {
+    //   return true;
+    // }
   }
 
   override navigateNext(): Promise<boolean> {
