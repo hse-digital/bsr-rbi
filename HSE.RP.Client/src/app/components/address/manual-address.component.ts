@@ -86,7 +86,7 @@ export class ManualAddressComponent {
     let error = true;
     if (!postcode) {
       this.postcodeErrorMessage = 'Enter a postcode';
-    } else if (postcode.length < 5 || postcode.length > 7) {
+    } else if (!FieldValidations.PostcodeValidator(postcode)) {
       this.postcodeErrorMessage = "Enter a real postcode, like 'EC3A 8BF'.";
     } else {
       error = false;
