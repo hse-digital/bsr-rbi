@@ -54,7 +54,6 @@ namespace HSE.RP.API.Services
         {
             var contact = await CreateContactAsync(buildingProfessionApplicationModel);
 
-            await AssignContactType(contact.Id, DynamicsContactTypes.BIApplicant);
 
 
             var buildingProfessionApplication = await CreateBuildingProfessionApplicationAsync(buildingProfessionApplicationModel: buildingProfessionApplicationModel, contact);
@@ -93,6 +92,7 @@ namespace HSE.RP.API.Services
             {
                 var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsContact);
                 var contactId = ExtractEntityIdFromHeader(response.Headers);
+                await AssignContactType(contactId, DynamicsContactTypes.BIApplicant);
                 return contact with { Id = contactId };
             }
 
