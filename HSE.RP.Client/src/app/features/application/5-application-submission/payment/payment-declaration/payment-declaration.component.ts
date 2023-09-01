@@ -43,9 +43,13 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
+    try{
     this.loading = true;
     await this.applicationService.updateApplication();
     await this.getPaymentStatus();
+    }catch(error){
+      this.loading = false;
+    }
   }
 
   override async onSave(
@@ -99,6 +103,7 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
 
   async getPaymentStatus(): Promise<void> {
     try {
+
       var payments = await this.applicationService.getApplicationPayments();
 
       //Check for all payments for application
