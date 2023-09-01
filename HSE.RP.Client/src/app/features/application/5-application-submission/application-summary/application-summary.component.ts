@@ -141,8 +141,7 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
 
   public isCompetencyAssessmentStatusYes(): boolean {
     return (
-      this.applicationService.model.Competency
-        ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes'
+      this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes'
     );
   }
 
