@@ -44,7 +44,9 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   }
   override async onSave(
     applicationService: ApplicationService
-  ): Promise<void> {}
+  ): Promise<void> {
+
+  }
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
@@ -61,7 +63,7 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   async addressConfirmed(address: AddressModel) {
     this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerAddress =
       address;
-
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.Complete;
     this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerAddress.CompletionState =
       ComponentCompletionState.Complete;
 

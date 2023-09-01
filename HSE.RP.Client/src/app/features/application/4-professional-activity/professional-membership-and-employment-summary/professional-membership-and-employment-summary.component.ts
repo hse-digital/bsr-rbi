@@ -38,7 +38,6 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     applicationService.model.ProfessionalActivity.CompletionState = ComponentCompletionState.Complete;
-    applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.Complete;
   }
 
   override canAccess(
