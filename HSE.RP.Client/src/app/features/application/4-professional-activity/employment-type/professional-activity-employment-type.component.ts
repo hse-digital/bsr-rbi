@@ -37,6 +37,7 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
   existingEmploymentType?: EmploymentType =
     this.applicationService.model.ProfessionalActivity.EmploymentDetails
       ?.EmploymentTypeSelection?.EmploymentType;
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -47,6 +48,10 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
+
     this.model =
       applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection;
     // if the user visits this page for the first time, set status to in progress until user saves and continues
@@ -143,6 +148,49 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
   }
 
   override navigateNext(): Promise<boolean> {
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+
+      if (this.queryParam == 'application-summary') {
+        if (this.model?.EmploymentType == EmploymentType.Other) {
+          return this.navigationService.navigateRelative(
+            EmploymentOtherNameComponent.route,
+            this.activatedRoute,
+            { queryParam: this.queryParam }
+          );
+        }
+        if (this.model?.EmploymentType == EmploymentType.PublicSector) {
+          return this.navigationService.navigateRelative(
+            EmploymentPublicSectorBodyNameComponent.route,
+            this.activatedRoute,
+            { queryParam: this.queryParam }
+          );
+        }
+        if (this.model?.EmploymentType == EmploymentType.PrivateSector) {
+          return this.navigationService.navigateRelative(
+            EmploymentPrivateSectorBodyNameComponent.route,
+            this.activatedRoute,
+            { queryParam: this.queryParam }
+          );
+        }
+        if (this.model?.EmploymentType == EmploymentType.Unemployed) {
+          return this.navigationService.navigateRelative(
+            ProfessionalMembershipAndEmploymentSummaryComponent.route,
+            this.activatedRoute,
+            { queryParam: this.queryParam }
+          );
+        } else {
+          return this.navigationService.navigate(
+            `application/${this.applicationService.model.id}`
+          );
+        }
+      }
+    }
+
     if (this.model?.EmploymentType == EmploymentType.Other) {
       return this.navigationService.navigateRelative(
         EmploymentOtherNameComponent.route,

@@ -14,6 +14,8 @@ import { BuildingAssessingPlansCategoriesClass2 } from 'src/app/models/building-
 import { Class2InspectBuildingCategories } from 'src/app/models/class2-inspect-building-categories.model';
 import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-building-categories.model';
 import { Competency } from 'src/app/models/competency.model';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-building-inspector-class-selection',
@@ -31,7 +33,8 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   errorMessage: string = '';
   originalOption?: BuildingInspectorClassType =
     this.applicationService.model.InspectorClass?.ClassType.Class;
-    queryParam?: string = '';
+  queryParam?: string = '';
+  resetIA?: boolean = false;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -44,8 +47,16 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
+      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
     });
-    this.model = applicationService.model.InspectorClass?.ClassType;
+
+    this.model =
+      this.resetIA ?? true
+        ? {
+            Class: BuildingInspectorClassType.Class1,
+            CompletionState: ComponentCompletionState.InProgress,
+          }
+        : applicationService.model.InspectorClass?.ClassType;
     // if the user visits this page for the first time, set status to in progress until user saves and continues
     if (
       applicationService.model.InspectorClass?.ClassType.Class ===
@@ -118,6 +129,8 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
           ComponentCompletionState.Complete;
 
         this.applicationService.model.Competency = new Competency();
+        this.applicationService.model.StageStatus!['Competency'] =
+          StageCompletionState.Complete;
       } else {
         this.applicationService.model.InspectorClass!.ClassType.CompletionState =
           ComponentCompletionState.InProgress;
@@ -149,29 +162,46 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   }
 
   override navigateNext(): Promise<boolean> {
-
     if (
       this.queryParam != null &&
       this.queryParam != undefined &&
       this.queryParam != ''
-    )
-    {
+    ) {
       const queryParam = this.queryParam;
-      if (this.model?.Class === BuildingInspectorClassType.Class1) {
-        return this.navigationService.navigateRelative(
-          BuildingInspectorCountryComponent.route,
-          this.activatedRoute,
-          { queryParam }
-        );
-      } else {
-        return this.navigationService.navigateRelative(
-          BuildingInspectorRegulatedActivitiesComponent.route,
-          this.activatedRoute,
-          { queryParam }
-        );
+      if (this.queryParam == 'application-summary') {
+        if (
+          this.model?.Class === this.originalOption
+        ) {
+          return this.navigationService.navigateRelative(
+            `../application-submission/${ApplicationSummaryComponent.route}`,
+            this.activatedRoute
+          );
+        }
+
+        // if (this.model?.Class === this.originalOption) {
+        //   console.log('original option')
+        //   return this.navigationService.navigateRelative(
+        //     `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
+        //     this.activatedRoute
+        //   );
+        // }
+
+        if (this.model?.Class === BuildingInspectorClassType.Class1) {
+          return this.navigationService.navigateRelative(
+            BuildingInspectorCountryComponent.route,
+            this.activatedRoute,
+            {queryParam: queryParam }
+          );
+
+        } else {
+          return this.navigationService.navigateRelative(
+            BuildingInspectorRegulatedActivitiesComponent.route,
+            this.activatedRoute,
+            { resetIA: this.resetIA, queryParam: queryParam }
+          );
+        }
       }
     }
-
     if (this.model?.Class === BuildingInspectorClassType.Class1) {
       return this.navigationService.navigateRelative(
         BuildingInspectorCountryComponent.route,

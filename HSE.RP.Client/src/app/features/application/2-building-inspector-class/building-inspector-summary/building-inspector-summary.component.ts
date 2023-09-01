@@ -14,6 +14,7 @@ import {
 } from '../BuildingInspectorRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { Competency } from 'src/app/models/competency.model';
 
 @Component({
   selector: 'hse-building-inspector-summary',
@@ -37,7 +38,8 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   modelValid: boolean = false;
   photoHasErrors = false;
   override model?: string;
-
+  queryParam?: string = '';
+  resetIA? : boolean = false;
   assessPlansCategories: string = '';
   assessPlansLink: string = '';
 
@@ -55,7 +57,10 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
 
   override onInit(applicationService: ApplicationService): void {
     //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
-
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+    });
     if (
       applicationService.model.InspectorClass?.ClassType.Class ===
       BuildingInspectorClassType.Class2
@@ -111,6 +116,18 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
+    if(this.queryParam != null && this.queryParam != undefined && this.queryParam != '') {
+      if(this.queryParam == "application-summary" && this.resetIA == true)
+      {
+        //reset competency
+        this.applicationService.model.StageStatus['Competency'] = StageCompletionState.Incomplete;
+        this.applicationService.model.Competency = new Competency();
+        return this.navigationService.navigate(
+          `application/${this.applicationService.model.id}`
+        );
+      }
+    }
+
     return this.buildingInspectorRouter.navigateTo(
       this.applicationService.model,
       BuildingInspectorRoutes.TASK_LIST

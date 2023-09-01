@@ -7,6 +7,9 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { BuildingInspectorClassSelectionComponent } from '../../2-building-inspector-class/class-selection/building-inspector-class-selection.component';
 import { BuildingInspectorRoutes } from '../../2-building-inspector-class/BuildingInspectorRoutes';
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { Competency } from 'src/app/models/competency.model';
 
 @Component({
   selector: 'hse-confirmation-ia-update',
@@ -50,7 +53,7 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
 
     if (this.selectedOption === '') {
       this.hasErrors = true;
-      this.errorMessage = 'Select one';
+      this.errorMessage = 'Tell us if you want to change your assessment status';
     }
 
     return !this.hasErrors;
@@ -68,7 +71,8 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
       if (isValid && this.selectedOption === 'yes') {
         return this.navigationService.navigateRelative(
           `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
-          this.activatedRoute
+          this.activatedRoute,
+          { resetIA: true, queryParam: queryParam}
         );
       } else if (isValid && this.selectedOption === 'no') {
         return this.navigationService.navigateRelative(
@@ -80,9 +84,12 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
       return true;
     } else {
       if (isValid && this.selectedOption === 'yes') {
+        this.applicationService.model.StageStatus["Competency"] = StageCompletionState.Incomplete;
+        this.applicationService.model.Competency! = new Competency();
         return this.navigationService.navigateRelative(
           `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
-          this.activatedRoute
+          this.activatedRoute,
+          { resetIA: true}
         );
       } else if (isValid && this.selectedOption === 'no') {
         return this.navigationService.navigateRelative(

@@ -30,6 +30,7 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
   production: boolean = environment.production;
   modelValid: boolean = false;
   publicSectorBodyNameHasErrors = true;
+  queryParam?: string = '';
 
   constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService, private companiesService: CompaniesService) {
     super(activatedRoute);
@@ -37,7 +38,9 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
-
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
 
     if(!this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName)
     {
@@ -74,6 +77,21 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
 
 
   override navigateNext(): Promise<boolean> {
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+      if (this.queryParam == 'application-summary') {
+        return this.navigationService.navigateRelative(SearchEmploymentOrganisationAddressComponent.route,
+          this.activatedRoute,
+          { queryParam: this.queryParam }
+          ); //update to address
+
+      }
+    }
+
     return this.navigationService.navigateRelative(SearchEmploymentOrganisationAddressComponent.route, this.activatedRoute); //update to address
   }
 

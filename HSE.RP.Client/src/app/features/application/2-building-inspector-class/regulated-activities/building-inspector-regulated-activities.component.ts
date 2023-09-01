@@ -41,6 +41,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   public errorText: string = '';
   selectedOptionError: boolean = false;
   queryParam?: string = '';
+  resetIA?: boolean = false;
 
   override model?: BuildingInspectorRegulatedActivies;
   public selections: string[] = [];
@@ -71,6 +72,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
+      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
     });
     if (!applicationService.model?.InspectorClass) {
       applicationService.model.InspectorClass = new BuildingInspectorClass();
@@ -157,7 +159,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
           return this.navigationService.navigateRelative(
             BuildingInspectorRoutes.CLASS2_ACCESSING_PLANS_CATEGORIES,
             this.activatedRoute,
-            { queryParam }
+            { resetIA: this.resetIA, queryParam: queryParam }
           );
         }
         if (
@@ -167,7 +169,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
           return this.navigationService.navigateRelative(
             BuildingInspectorRoutes.CLASS3_ACCESSING_PLANS_CATEGORIES,
             this.activatedRoute,
-            { queryParam }
+            { resetIA: this.resetIA, queryParam: queryParam }
           );
         }
       }
@@ -206,16 +208,16 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
         return this.navigationService.navigateRelative(
           BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES,
           this.activatedRoute,
-          { queryParam }
-        );
+          { resetIA: this.resetIA, queryParam: queryParam }
+          );
       }
       // redirect to the Class 3 Inspection Categories once that page has been made
 
       return this.navigationService.navigateRelative(
         BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES,
         this.activatedRoute,
-        { queryParam }
-      );
+        { resetIA: this.resetIA, queryParam: queryParam }
+        );
 
     }
     if (

@@ -21,65 +21,100 @@ import { EmploymentType } from 'src/app/models/employment-type.enum';
   templateUrl: './employment-private-sector-body-name.component.html',
 })
 export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<EmployerName> {
-  DerivedIsComplete(value: boolean): void {
+  DerivedIsComplete(value: boolean): void {}
 
-  }
-
-  public static route: string = "employment-private-sector-body-name";
-  static title: string = "Employment - Register as a building inspector - GOV.UK";
+  public static route: string = 'employment-private-sector-body-name';
+  static title: string =
+    'Employment - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   privateSectorBodyNameHasErrors = true;
+  queryParam?: string = '';
 
-  constructor(activatedRoute: ActivatedRoute, applicationService: ApplicationService, private companiesService: CompaniesService) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    applicationService: ApplicationService,
+    private companiesService: CompaniesService
+  ) {
     super(activatedRoute);
     this.updateOnSave = false;
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
-    if(!this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerName)
-    {
-      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName = new EmployerName()
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
+
+    if (
+      !this.applicationService.model.ProfessionalActivity.EmploymentDetails
+        ?.EmployerName
+    ) {
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName =
+        new EmployerName();
     }
 
-    this.model = this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName;
+    this.model =
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-
-    this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName=this.model;
-
-   }
-
-  override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
-    return this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmploymentTypeSelection?.CompletionState == ComponentCompletionState.Complete
-    && this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmploymentTypeSelection?.EmploymentType == EmploymentType.PrivateSector;
-
+    this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName =
+      this.model;
   }
 
+  override canAccess(
+    applicationService: ApplicationService,
+    routeSnapshot: ActivatedRouteSnapshot
+  ): boolean {
+    return (
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!
+        .EmploymentTypeSelection?.CompletionState ==
+        ComponentCompletionState.Complete &&
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!
+        .EmploymentTypeSelection?.EmploymentType == EmploymentType.PrivateSector
+    );
+  }
 
   override isValid(): boolean {
-
-    this.privateSectorBodyNameHasErrors = !FieldValidations.IsNotNullOrWhitespace(this.model?.FullName)
+    this.privateSectorBodyNameHasErrors =
+      !FieldValidations.IsNotNullOrWhitespace(this.model?.FullName);
 
     return !this.privateSectorBodyNameHasErrors;
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(SearchEmploymentOrganisationAddressComponent.route, this.activatedRoute); //update to address
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+      if (this.queryParam == 'application-summary') {
+        return this.navigationService.navigateRelative(
+          SearchEmploymentOrganisationAddressComponent.route,
+          this.activatedRoute,
+          { queryParam: this.queryParam }
+        ); //update to address
+      }
+    }
+    return this.navigationService.navigateRelative(
+      SearchEmploymentOrganisationAddressComponent.route,
+      this.activatedRoute
+    ); //update to address
   }
 
   companies: string[] = [];
   async searchCompanies(company: string) {
     if (company?.length > 2) {
-      var response = await this.companiesService.SearchCompany(company, "other");
-      this.companies = response.Companies.map(x => x.Name);
+      var response = await this.companiesService.SearchCompany(
+        company,
+        'other'
+      );
+      this.companies = response.Companies.map((x) => x.Name);
     }
   }
 
   selectCompanyName(company: string) {
     this.model!.FullName = company;
   }
-
-
 }

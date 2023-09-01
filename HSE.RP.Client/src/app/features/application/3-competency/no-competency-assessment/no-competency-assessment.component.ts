@@ -59,7 +59,7 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
 
 
 
-    this.applicationService.model.InspectorClass!.ClassType.Class = BuildingInspectorClassType.Class1;
+    //this.applicationService.model.InspectorClass!.ClassType.Class = BuildingInspectorClassType.Class1;
 
     if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
       applicationService.model.Competency!.NoCompetencyAssessment!.CompletionState =

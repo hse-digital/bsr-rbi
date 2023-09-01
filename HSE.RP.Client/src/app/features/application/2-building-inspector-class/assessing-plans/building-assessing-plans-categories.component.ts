@@ -30,6 +30,8 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   public errorText = '';
   selectedOptionError: boolean = false;
   queryParam?: string = '';
+  resetIA? : boolean = false;
+
 
   override model?: BuildingAssessingPlansCategoriesClass2;
   public selections: string[] = [];
@@ -47,6 +49,8 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
+      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+
     });
     this.updateOnSave = true;
     if (!applicationService.model?.InspectorClass) {
@@ -129,7 +133,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
         return this.navigationService.navigateRelative(
           BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER,
           this.activatedRoute,
-          { queryParam }
+          { resetIA: this.resetIA, queryParam: queryParam }
         );
       }
 
@@ -150,8 +154,8 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
       return this.navigationService.navigateRelative(
         BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES,
         this.activatedRoute,
-        { queryParam }
-      );
+        { resetIA: this.resetIA, queryParam: queryParam }
+        );
     }
     return this.buildingInspectorRouter.navigateTo(
       this.applicationService.model,

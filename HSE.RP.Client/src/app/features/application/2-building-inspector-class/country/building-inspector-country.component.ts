@@ -29,6 +29,7 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   override model?: BuildingInspectorCountryOfWork;
   public selections: string[] = [];
   queryParam?: string = '';
+  resetIA? : boolean = false;
 
   @Output() onClicked = new EventEmitter();
   @Output() onKeyupEnter = new EventEmitter();
@@ -41,6 +42,8 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
     this.updateOnSave = true;
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
+      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+
     });
     if (!applicationService.model.InspectorClass?.InspectorCountryOfWork) {
       applicationService.model.InspectorClass!.InspectorCountryOfWork =
@@ -103,6 +106,16 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       this.queryParam != ''
     ) {
       const queryParam = this.queryParam;
+
+      if(this.queryParam == "application-summary" && this.resetIA == true)
+      {
+        return this.navigationService.navigateRelative(
+          BuildingInspectorSummaryComponent.route,
+          this.activatedRoute,
+          { resetIA: this.resetIA, queryParam: queryParam }
+        );
+      }
+
       if(this.queryParam == "application-summary")
       {
         return this.navigationService.navigateRelative(
@@ -110,10 +123,12 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
           this.activatedRoute
         );
       }
+
     }
     return this.navigationService.navigateRelative(
       BuildingInspectorSummaryComponent.route,
-      this.activatedRoute
+      this.activatedRoute,
+      { resetIA: this.resetIA}
     );
   }
 

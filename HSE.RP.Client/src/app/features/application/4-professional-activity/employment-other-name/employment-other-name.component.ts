@@ -26,9 +26,11 @@ export class EmploymentOtherNameComponent extends PageComponent<EmployerName> {
   invalidNameError = false;
   noOptionSelectedError = false;
   invalidNameErrorMessage: string = 'Enter the name of your business';
-  invalidSelectionErrorMessage: string = 'Select yes, if you want to provide a business name';
+  invalidSelectionErrorMessage: string =
+    'Select yes, if you want to provide a business name';
   errorMessage: string = 'Select yes, if you want to provide a business name';
   selectedOption?: string = '';
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -39,7 +41,9 @@ export class EmploymentOtherNameComponent extends PageComponent<EmployerName> {
   }
 
   override onInit(applicationService: ApplicationService): void {
-
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     if (
       !this.applicationService.model.ProfessionalActivity.EmploymentDetails
         ?.EmployerName
@@ -50,8 +54,6 @@ export class EmploymentOtherNameComponent extends PageComponent<EmployerName> {
 
     this.model =
       this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName;
-
-
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -75,27 +77,42 @@ export class EmploymentOtherNameComponent extends PageComponent<EmployerName> {
   override isValid(): boolean {
     this.noOptionSelectedError = false;
     this.invalidNameError = false;
-    this.otherNameHasErrors=false;
+    this.otherNameHasErrors = false;
 
-    if (this.model?.OtherBusinessSelection == 'yes' && !FieldValidations.IsNotNullOrWhitespace(this.model?.FullName)) {
-        this.otherNameHasErrors=true;
-        this.invalidNameError = true;
-        this.errorMessage=this.invalidNameErrorMessage
-    }
-    else if (this.model?.OtherBusinessSelection == '') {
-      this.noOptionSelectedError=true;
-      this.otherNameHasErrors=true;
-      this.errorMessage=this.invalidSelectionErrorMessage
-    }
-    else{
-      this.otherNameHasErrors=false;
+    if (
+      this.model?.OtherBusinessSelection == 'yes' &&
+      !FieldValidations.IsNotNullOrWhitespace(this.model?.FullName)
+    ) {
+      this.otherNameHasErrors = true;
+      this.invalidNameError = true;
+      this.errorMessage = this.invalidNameErrorMessage;
+    } else if (this.model?.OtherBusinessSelection == '') {
+      this.noOptionSelectedError = true;
+      this.otherNameHasErrors = true;
+      this.errorMessage = this.invalidSelectionErrorMessage;
+    } else {
+      this.otherNameHasErrors = false;
     }
 
     return !this.otherNameHasErrors;
-
   }
 
   navigateNext(): Promise<boolean> {
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+      if (this.queryParam == 'application-summary') {
+        return this.navigationService.navigateRelative(
+          SearchEmploymentOrganisationAddressComponent.route,
+          this.activatedRoute,
+          { queryParam: this.queryParam }
+        );
+      }
+    }
+
     return this.navigationService.navigateRelative(
       SearchEmploymentOrganisationAddressComponent.route,
       this.activatedRoute
