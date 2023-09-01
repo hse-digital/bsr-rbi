@@ -32,6 +32,8 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
   errorMessage: string = '';
   modelValid: boolean = false;
   queryParam?: string = '';
+  resetIA?: boolean = false;
+
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -43,6 +45,8 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
+      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+
     });
 
     this.updateOnSave = true;
@@ -90,18 +94,33 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
   }
 
   override async navigateNext(): Promise<boolean> {
+
+
     if (this.queryParam === 'inspector-class-change') {
       return this.navigationService.navigateRelative(
         BuildingInspectorSummaryComponent.route,
         this.activatedRoute
       );
     }
-    else if (this.queryParam === 'application-summary') {
+
+
+
+    else if(this.queryParam == "application-summary" && this.resetIA == true)
+    {
+      return this.navigationService.navigateRelative(
+        'building-inspector-country',
+        this.activatedRoute,
+        { resetIA: this.resetIA, queryParam: this.queryParam }
+      );
+    }
+
+    else if (this.queryParam == 'application-summary') {
       return this.navigationService.navigateRelative(
         `../application-submission/${ApplicationSummaryComponent.route}`,
         this.activatedRoute
       );
     }
+
     else{
     return this.buildingInspectorRouter.navigateTo(
       this.applicationService.model,

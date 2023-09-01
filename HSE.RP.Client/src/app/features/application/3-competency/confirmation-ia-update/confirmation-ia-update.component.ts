@@ -69,12 +69,10 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
       const queryParam = this.queryParam;
 
       if (isValid && this.selectedOption === 'yes') {
-        this.applicationService.model.StageStatus["Competency"] = StageCompletionState.Incomplete;
-        this.applicationService.model.Competency! = new Competency();
         return this.navigationService.navigateRelative(
           `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
           this.activatedRoute,
-          { resetClass: true}
+          { resetIA: true, queryParam: queryParam}
         );
       } else if (isValid && this.selectedOption === 'no') {
         return this.navigationService.navigateRelative(
@@ -91,7 +89,7 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
         return this.navigationService.navigateRelative(
           `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
           this.activatedRoute,
-          { resetClass: true}
+          { resetIA: true}
         );
       } else if (isValid && this.selectedOption === 'no') {
         return this.navigationService.navigateRelative(

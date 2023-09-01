@@ -27,6 +27,7 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   errors: boolean = false;
   public errorText = '';
   queryParam?: string = '';
+  resetIA? : boolean = false;
 
   override model?: Class3InspectBuildingCategories;
   public selections: string[] = [];
@@ -41,6 +42,8 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
+      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+
     });
     this.updateOnSave = true;
 
@@ -111,7 +114,7 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
       return this.navigationService.navigateRelative(
         BuildingClassTechnicalManagerComponent.route,
         this.activatedRoute,
-        { queryParam }
+        { resetIA: this.resetIA, queryParam: queryParam }
       );
     }
 

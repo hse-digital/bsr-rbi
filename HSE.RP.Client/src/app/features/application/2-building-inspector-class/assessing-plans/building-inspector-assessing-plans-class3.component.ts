@@ -80,6 +80,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
   override model?: BuildingAssessingPlansCategoriesClass3;
   public selections: string[] = [];
   queryParam?: string = '';
+  resetIA? : boolean = false;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -91,6 +92,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
+      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
     });
     this.updateOnSave = true;
     this.model = applicationService.model.InspectorClass?.AssessingPlansClass3;
@@ -174,7 +176,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
         return this.navigationService.navigateRelative(
           BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES,
           this.activatedRoute,
-          { queryParam }
+          { resetIA: this.resetIA, queryParam: queryParam }
         );
       }
 
@@ -196,8 +198,8 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
       return this.navigationService.navigateRelative(
         BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER,
         this.activatedRoute,
-        { queryParam }
-      );
+        { resetIA: this.resetIA, queryParam: queryParam }
+        );
 
     }
     return this.buildingInspectorRouter.navigateTo(
