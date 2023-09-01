@@ -659,7 +659,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
               ) {
                 if (this.paymentStatus == this.paymentEnum.Success) {
                   return TaskStatus.Complete;
-                } else if (this.paymentStatus == this.paymentEnum.Started) {
+                } else if (this.paymentStatus == this.paymentEnum.Started || this.paymentStatus == this.paymentEnum.Failed) {
                   return TaskStatus.InProgress;
                 } else {
                   return TaskStatus.NotStarted;
