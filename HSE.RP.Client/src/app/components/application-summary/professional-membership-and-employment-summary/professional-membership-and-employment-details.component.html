@@ -1,18 +1,28 @@
 <govuk-summary-list>
   <govuk-summary-list-row
+    *ngIf="getProfessionalBodyMemberships()[0] != 'None'"
     class="govuk-summary-list__key"
-    [actionText]="'change'"
     (onClick)="navigateTo('professional-body-membership-summary')"
     (onKeyupEnter)="navigateTo('professional-body-membership-summary')"
     key="Membership of professional bodies"
     [showAction]="true"
   >
-    <div
-      *ngFor="let membership of getProfessionalBodyMemberships()"
-
-    >
+    <div *ngFor="let membership of getProfessionalBodyMemberships()">
       <govuk-body>{{ membership }}</govuk-body>
-  </div>
+    </div>
+  </govuk-summary-list-row>
+
+  <govuk-summary-list-row
+    *ngIf="getProfessionalBodyMemberships()[0] == 'None'"
+    class="govuk-summary-list__key"
+    (onClick)="navigateTo('professional-body-memberships')"
+    (onKeyupEnter)="navigateTo('professional-body-memberships')"
+    key="Membership of professional bodies"
+    [showAction]="true"
+  >
+    <div *ngFor="let membership of getProfessionalBodyMemberships()">
+      <govuk-body>{{ membership }}</govuk-body>
+    </div>
   </govuk-summary-list-row>
 
   <govuk-summary-list-row
@@ -25,7 +35,8 @@
     <dd class="govuk-summary-list__value">{{ getEmploymentTypeName() }}</dd>
   </govuk-summary-list-row>
 
-  <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 1"
+  <govuk-summary-list-row
+    *ngIf="!isUnemployed() && getEmploymentType() == 1"
     (onClick)="navigateTo('employment-public-sector-body-name')"
     [actionText]="'change'"
     (onKeyupEnter)="navigateTo('employment-public-sector-body-name')"
@@ -35,8 +46,8 @@
     <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
   </govuk-summary-list-row>
 
-
-  <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 2"
+  <govuk-summary-list-row
+    *ngIf="!isUnemployed() && getEmploymentType() == 2"
     (onClick)="navigateTo('employment-private-sector-body-name')"
     [actionText]="'change'"
     (onKeyupEnter)="navigateTo('employment-private-sector-body-name')"
@@ -46,8 +57,8 @@
     <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
   </govuk-summary-list-row>
 
-
-  <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 3"
+  <govuk-summary-list-row
+    *ngIf="!isUnemployed() && getEmploymentType() == 3"
     (onClick)="navigateTo('employment-other-name')"
     [actionText]="'change'"
     (onKeyupEnter)="navigateTo('employment-other-name')"
@@ -57,8 +68,8 @@
     <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
   </govuk-summary-list-row>
 
-
-  <govuk-summary-list-row *ngIf="!isUnemployed()"
+  <govuk-summary-list-row
+    *ngIf="!isUnemployed()"
     (onClick)="navigateTo('search-empoloyment-org-address')"
     [actionText]="'change'"
     (onKeyupEnter)="navigateTo('search-empoloyment-org-address')"
@@ -73,13 +84,13 @@
         "
       >
         {{
-           BuildingInspectorProfessionalActivityDetails?.EmploymentDetails
+          BuildingInspectorProfessionalActivityDetails?.EmploymentDetails
             ?.EmployerAddress?.Address
         }}
       </div>
       <div
         *ngIf="
-        BuildingInspectorProfessionalActivityDetails?.EmploymentDetails
+          BuildingInspectorProfessionalActivityDetails?.EmploymentDetails
             ?.EmployerAddress?.AddressLineTwo
         "
       >
@@ -90,7 +101,7 @@
       </div>
       <div
         *ngIf="
-        BuildingInspectorProfessionalActivityDetails?.EmploymentDetails
+          BuildingInspectorProfessionalActivityDetails?.EmploymentDetails
             ?.EmployerAddress?.Town
         "
       >
@@ -101,7 +112,7 @@
       </div>
       <div
         *ngIf="
-        BuildingInspectorProfessionalActivityDetails?.EmploymentDetails
+          BuildingInspectorProfessionalActivityDetails?.EmploymentDetails
             ?.EmployerAddress?.Postcode
         "
       >

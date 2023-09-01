@@ -70,20 +70,15 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
     );
   }
 
-  public navigateTo(route: string, queryParam?: string) {
+  public navigateTo(route: string) {
+    const queryParam = 'professional-membership-and-employment-summary';
 
-    if (queryParam === undefined) {
-      return this.navigationService.navigateRelative(
-        `${route}`,
-        this.activatedRoute
-      );
-    } else {
       return this.navigationService.navigateRelative(
         `${route}`,
         this.activatedRoute,
         { queryParam }
-      );
-    }
+        );
+
   }
 
   public isCompetencyAssessmentStatusYes(): boolean {

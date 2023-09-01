@@ -12,7 +12,7 @@
     </h1>
 
     <govuk-summary-list>
-      <govuk-summary-list-row
+      <govuk-summary-list-row *ngIf="getProfessionalBodyMemberships()[0] != 'None'"
         class="govuk-summary-list__key"
         (onClick)="navigateTo('professional-body-membership-summary')"
         (onKeyupEnter)="navigateTo('professional-body-membership-summary')"
@@ -26,6 +26,22 @@
           <govuk-body>{{ membership }}</govuk-body>
       </div>
       </govuk-summary-list-row>
+
+      <govuk-summary-list-row *ngIf="getProfessionalBodyMemberships()[0] == 'None'"
+      class="govuk-summary-list__key"
+      (onClick)="navigateTo('professional-body-memberships')"
+      (onKeyupEnter)="navigateTo('professional-body-memberships')"
+      key="Membership of professional bodies"
+      [showAction]="true"
+    >
+      <div
+        *ngFor="let membership of getProfessionalBodyMemberships()"
+      >
+        <govuk-body>{{ membership }}</govuk-body>
+    </div>
+    </govuk-summary-list-row>
+
+
 
       <govuk-summary-list-row
         (onClick)="navigateTo('professional-activity-employment-type')"
