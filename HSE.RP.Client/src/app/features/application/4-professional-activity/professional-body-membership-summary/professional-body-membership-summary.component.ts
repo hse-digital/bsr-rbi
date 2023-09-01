@@ -113,12 +113,11 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
             this.activatedRoute,
             { queryParam: this.queryParam }
           );
-          return this.navigateTo('professional-body-selection'); // To professional body selection page.
         } else if (
           ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!)
         ) {
           return this.navigationService.navigateRelative(
-            ProfessionalActivityEmploymentTypeComponent.route,
+            `../application-submission/${ApplicationSummaryComponent.route}`,
             this.activatedRoute
           );
         }
@@ -133,7 +132,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
       );
     }
     if (this.selectedOption === 'yes') {
-      console.log("selected yes")
+
       return this.navigateTo('professional-body-selection'); // To professional body selection page.
     } else if (
       ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!)

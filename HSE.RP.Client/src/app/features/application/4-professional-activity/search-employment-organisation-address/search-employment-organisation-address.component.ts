@@ -7,6 +7,7 @@ import { AddressModel } from 'src/app/models/address.model';
 import { AddressSearchMode } from 'src/app/components/address/address.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { EmploymentType } from 'src/app/models/employment-type.enum';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-search-employment-organisation-address',
@@ -24,6 +25,7 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   searchMode = AddressSearchMode.HomeAddress;
   orgTitle? = '';
   orgFullName?: string;
+  queryParam?: string = '';
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -34,6 +36,9 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
     this.orgFullName =
       this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerName?.FullName;
   }
@@ -61,6 +66,22 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
       ComponentCompletionState.Complete;
 
     await this.applicationService.updateApplication();
+
+    if (
+      this.queryParam != null &&
+      this.queryParam != undefined &&
+      this.queryParam != ''
+    ) {
+      const queryParam = this.queryParam;
+      if (this.queryParam == 'application-summary') {
+        return this.navigationService.navigateRelative(
+          `../application-submission/${ApplicationSummaryComponent.route}`,
+
+          this.activatedRoute,
+          { queryParam: this.queryParam }
+        ); //update to address
+      }
+    }
 
     return this.navigationService.navigateRelative(
       `professional-membership-and-employment-summary`,
