@@ -14,6 +14,7 @@ import { BuildingAssessingPlansCategoriesClass2 } from 'src/app/models/building-
 import { Class2InspectBuildingCategories } from 'src/app/models/class2-inspect-building-categories.model';
 import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-building-categories.model';
 import { Competency } from 'src/app/models/competency.model';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 
 @Component({
   selector: 'hse-building-inspector-class-selection',
@@ -118,6 +119,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
           ComponentCompletionState.Complete;
 
         this.applicationService.model.Competency = new Competency();
+        this.applicationService.model.StageStatus!['Competency'] = StageCompletionState.Complete
       } else {
         this.applicationService.model.InspectorClass!.ClassType.CompletionState =
           ComponentCompletionState.InProgress;
