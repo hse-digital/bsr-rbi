@@ -109,7 +109,14 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
       professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames["OTHER"]);
     }
 
+    if(professionalBodyMemberships.length == 0)
+    {
+      return ["None"]
+    }
+    else{
+
     return professionalBodyMemberships;
+    }
 
 
   }

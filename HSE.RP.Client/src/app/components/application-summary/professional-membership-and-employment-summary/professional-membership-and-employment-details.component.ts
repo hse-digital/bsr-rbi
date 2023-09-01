@@ -54,7 +54,14 @@ export class ApplicationSummaryProfessionalMembershipAndEmploymentDetailsCompone
       professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames["OTHER"]);
     }
 
-    return professionalBodyMemberships;
+    if(professionalBodyMemberships.length == 0)
+    {
+      return ["None"]
+    }
+    else{
+      return professionalBodyMemberships;
+    }
+
 
 
   }
