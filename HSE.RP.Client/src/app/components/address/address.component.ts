@@ -20,13 +20,14 @@ export class AddressComponent implements OnInit {
   @Input() orgFullName?: string;
   @Input() selfAddress = false;
   @Input() showOptionalAddressLineOne = false;
+  @Input() step: string = 'find';
   @Output() onAddressConfirmed = new EventEmitter();
   @Output() onChangeStep = new EventEmitter();
 
   searchModel: { postcode?: string } = {};
   addressResponse?: AddressResponseModel;
 
-  step = 'find';
+  //step = 'find';
   private history: string[] = [];
 
   ngOnInit(): void {

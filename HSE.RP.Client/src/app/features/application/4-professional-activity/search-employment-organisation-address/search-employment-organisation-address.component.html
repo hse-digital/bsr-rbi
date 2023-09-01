@@ -1,4 +1,4 @@
-<hse-address
+<hse-address *ngIf="!queryParam"
   [addressName]="getAddressName()"
   [showOptionalAddressLineOne]="true"
   [selfAddress]="true"
@@ -10,5 +10,22 @@
   [searchMode]="searchMode"
   (onAddressConfirmed)="addressConfirmed($event)"
   (onChangeStep)="changeStep($event)"
+>
+</hse-address>
+
+<hse-address *ngIf="queryParam"
+  [addressName]="getAddressName()"
+  [showOptionalAddressLineOne]="true"
+  [selfAddress]="true"
+  [address]="model"
+  [addressBodyText]="addressBodyText"
+  [title]="orgTitle"
+  [addressManualyDisplayStep]="'manual'"
+  [orgFullName]="orgFullName"
+  [searchMode]="searchMode"
+  (onAddressConfirmed)="addressConfirmed($event)"
+  (onChangeStep)="changeStep($event)"
+  step={{step}}
+  [address]="address"
 >
 </hse-address>

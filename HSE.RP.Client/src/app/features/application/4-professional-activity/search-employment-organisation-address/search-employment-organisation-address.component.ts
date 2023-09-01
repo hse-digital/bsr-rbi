@@ -26,6 +26,8 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   orgTitle? = '';
   orgFullName?: string;
   queryParam?: string = '';
+  step?: string = '';
+  address?: AddressModel;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -41,6 +43,13 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
     });
     this.orgFullName =
       this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerName?.FullName;
+
+      if(this.queryParam == 'application-summary' || this.queryParam == 'professional-membership-and-employment-summary')
+      {
+        this.step = 'confirm';
+        this.address = this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerAddress;
+      }
+
   }
   override async onSave(
     applicationService: ApplicationService
