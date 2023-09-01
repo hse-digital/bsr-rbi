@@ -74,10 +74,10 @@ public class PaymentFunctions
                 Name = $"{applicationModel.PersonalDetails.ApplicantName.FirstName} {applicationModel.PersonalDetails.ApplicantName.LastName}",
                 Address = new CardHolderAddress
                 {
-                    Line1 = address?.Address ?? "Buckingham Palace",
-                    Line2 = address?.AddressLineTwo ?? "London",
-                    Postcode = address?.Postcode ?? "SW1A 1AA",
-                    City = address?.Town ?? "London"
+                    Line1 = address?.Address ?? "",
+                    Line2 = address?.AddressLineTwo ?? "",
+                    Postcode = address?.Postcode ?? "",
+                    City = address?.Town ?? ""
                 }
             }
         };

@@ -143,9 +143,9 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
     }
     return this.navigationService.navigateRelative(
       ProfessionalBodyMembershipSummaryComponent.route,
-      this.activatedRoute
-    ); // Back to the task list.
-  }
+      this.activatedRoute,
+      {membershipCode: membershipCode, queryParam: this.queryParam })
+    }
 
   public navigateTo(route: string) {
     return this.navigationService.navigateRelative(
