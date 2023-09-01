@@ -74,6 +74,7 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
   }
 
   override async saveAndContinue() {
+    try{
     if (this.paymentStatus != PaymentStatus.Success) {
       this.loading = true;
       this.screenReaderNotification();
@@ -91,6 +92,10 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
       }
     } else {
       this.navigateNext();
+    }
+
+    }catch(error){
+      this.loading = false;
     }
   }
 
