@@ -51,6 +51,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
   membershipCode: string = '';
   PROFESSIONAL_BODY_ORG_NAME: string = '';
   queryParam?: string = '';
+  membershipYearString?: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
@@ -66,6 +67,13 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
     });
 
     this.initializeModel(applicationService);
+    console.log(this.model.MembershipYear?.toString())
+    console.log(this.model.MembershipYear?.toString() ?? '0')
+    if(this.model.MembershipYear?.toString() == '0' || this.model.MembershipYear?.toString() == undefined ){
+      this.membershipYearString = '';
+    }else{
+      this.membershipYearString = this.model.MembershipYear?.toString() ?? '0';
+    }
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -75,28 +83,28 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
       applicationService.model.ProfessionalMemberships.CABE.MembershipLevel =
         this.model.MembershipLevel;
       applicationService.model.ProfessionalMemberships.CABE.MembershipYear =
-        Number(this.model.MembershipYear);
+        Number(this.membershipYearString);
     } else if (this.membershipCode === 'RICS') {
       applicationService.model.ProfessionalMemberships.RICS.MembershipNumber =
         this.model.MembershipNumber;
       applicationService.model.ProfessionalMemberships.RICS.MembershipLevel =
         this.model.MembershipLevel;
       applicationService.model.ProfessionalMemberships.RICS.MembershipYear =
-        Number(this.model.MembershipYear);
+      Number(this.membershipYearString);
     } else if (this.membershipCode === 'CIOB') {
       applicationService.model.ProfessionalMemberships.CIOB.MembershipNumber =
         this.model.MembershipNumber;
       applicationService.model.ProfessionalMemberships.CIOB.MembershipLevel =
         this.model.MembershipLevel;
       applicationService.model.ProfessionalMemberships.CIOB.MembershipYear =
-        Number(this.model.MembershipYear);
+      Number(this.membershipYearString);
     } else if (this.membershipCode === 'OTHER') {
       applicationService.model.ProfessionalMemberships.OTHER.MembershipNumber =
         this.model.MembershipNumber;
       applicationService.model.ProfessionalMemberships.OTHER.MembershipLevel =
         this.model.MembershipLevel;
       applicationService.model.ProfessionalMemberships.OTHER.MembershipYear =
-        Number(this.model.MembershipYear);
+      Number(this.membershipYearString);
     }
   }
 
@@ -126,13 +134,13 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
       });
     }
 
-    if (!this.model.MembershipYear) {
+    if (!Number(this.membershipYearString)) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.YEAR_ACHIVED_REQUIRED,
         Anchor: 'mem-input-year',
       });
     } else {
-      const membershipYear = Number(this.model.MembershipYear);
+      const membershipYear = Number(this.membershipYearString);
       if (isNaN(membershipYear) || membershipYear < 1000) {
         this.validationErrors.push({
           Text: ERROR_MESSAGES.YEAR_VALIDATION_ERROR,
