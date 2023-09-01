@@ -53,7 +53,7 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
 
     if (this.selectedOption === '') {
       this.hasErrors = true;
-      this.errorMessage = 'Select one';
+      this.errorMessage = 'Tell us if you want to change your assessment status';
     }
 
     return !this.hasErrors;
