@@ -30,7 +30,7 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
   static title: string = 'Register as a building inspector - GOV.UK';
   paymentEnum = PaymentStatus;
   paymentStatus?: PaymentStatus;
-  paymentReference?:'';
+  paymentReference?: '';
   loading = false;
 
   constructor(
@@ -43,7 +43,7 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
-    this.loading=true;
+    this.loading = true;
     await this.applicationService.updateApplication();
     await this.getPaymentStatus();
   }
@@ -63,9 +63,9 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
   }
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
-      PaymentConfirmationComponent.route, this.activatedRoute,
-      { reference: this.paymentReference },
-
+      PaymentConfirmationComponent.route,
+      this.activatedRoute,
+      { reference: this.paymentReference }
     );
   }
 
@@ -85,9 +85,7 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
       if (typeof window !== 'undefined') {
         window.location.href = paymentResponse.PaymentLink;
       }
-
-    }
-    else{
+    } else {
       this.navigateNext();
     }
   }
@@ -100,35 +98,40 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
   }
 
   async getPaymentStatus(): Promise<void> {
-    var payments = await this.applicationService.getApplicationPayments();
+    try {
+      var payments = await this.applicationService.getApplicationPayments();
 
-    //Check for all payments for application
-    if (payments?.length > 0) {
-      //Filter for successful and newly created payments
-      var successfulPayments = payments.filter(
-        (x) => x.bsr_govukpaystatus == 'success'
-      );
-
-      if (successfulPayments?.length > 0) {
-        //Check if these payments are not failed or refunded
-        var successsfulpayment = successfulPayments.find(
-          (x) =>
-            x.bsr_paymentreconciliationstatus !==
-              PaymentReconciliationStatus.FAILED_RECONCILIATION &&
-            x.bsr_paymentreconciliationstatus !==
-              PaymentReconciliationStatus.FAILED_PAYMENT &&
-            x.bsr_paymentreconciliationstatus !==
-              PaymentReconciliationStatus.REFUNDED
+      //Check for all payments for application
+      if (payments?.length > 0) {
+        //Filter for successful and newly created payments
+        var successfulPayments = payments.filter(
+          (x) => x.bsr_govukpaystatus == 'success'
         );
-        this.paymentStatus = successsfulpayment
-          ? PaymentStatus.Success
-          : PaymentStatus.Failed;
-          this.paymentReference = successsfulpayment?.bsr_paymentreference;
-      } else {
-        this.paymentStatus = PaymentStatus.Pending;
-      }
-    }
-    this.loading=false;
 
+        if (successfulPayments?.length > 0) {
+          //Check if these payments are not failed or refunded
+          var successsfulpayment = successfulPayments.find(
+            (x) =>
+              x.bsr_paymentreconciliationstatus !==
+                PaymentReconciliationStatus.FAILED_RECONCILIATION &&
+              x.bsr_paymentreconciliationstatus !==
+                PaymentReconciliationStatus.FAILED_PAYMENT &&
+              x.bsr_paymentreconciliationstatus !==
+                PaymentReconciliationStatus.REFUNDED
+          );
+          this.paymentStatus = successsfulpayment
+            ? PaymentStatus.Success
+            : PaymentStatus.Failed;
+          this.paymentReference = successsfulpayment?.bsr_paymentreference;
+          this.loading = false;
+        } else {
+          this.paymentStatus = PaymentStatus.Pending;
+          this.loading = false;
+        }
+      }
+      this.loading = false;
+    } catch (error) {
+      this.loading = false;
+    }
   }
 }
