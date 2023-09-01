@@ -16,6 +16,7 @@ import { ProfessionalActivityRoutes } from '../../application-routes';
 import { ProfessionalActivityEmploymentTypeComponent } from '../employment-type/professional-activity-employment-type.component';
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
+import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 
 @Component({
   selector: 'hse-professional-body-membership-summary',
@@ -104,6 +105,28 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
         if (this.selectedOption === 'no') {
           return this.navigationService.navigateRelative(
             `../application-submission/${ApplicationSummaryComponent.route}`,
+            this.activatedRoute
+          );
+        }
+        if (this.selectedOption === 'yes') {
+          return this.navigationService.navigateRelative(
+            ProfessionalBodySelectionComponent.route,
+            this.activatedRoute,
+            { queryParam: this.queryParam }
+          );
+        } else if (
+          ApplicantProfessionBodyMembershipsHelper.AllCompleted(this.model!)
+        ) {
+          return this.navigationService.navigateRelative(
+            `../application-submission/${ApplicationSummaryComponent.route}`,
+            this.activatedRoute
+          );
+        }
+      }
+      else if (this.queryParam == 'professional-membership-and-employment-summary') {
+        if (this.selectedOption === 'no') {
+          return this.navigationService.navigateRelative(
+            ProfessionalMembershipAndEmploymentSummaryComponent.route,
             this.activatedRoute
           );
         }

@@ -26,6 +26,8 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   orgTitle? = '';
   orgFullName?: string;
   queryParam?: string = '';
+  step?: string = '';
+  address?: AddressModel;
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -41,10 +43,19 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
     });
     this.orgFullName =
       this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerName?.FullName;
+
+      if(this.queryParam == 'application-summary' || this.queryParam == 'professional-membership-and-employment-summary')
+      {
+        this.step = 'confirm';
+        this.address = this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerAddress;
+      }
+
   }
   override async onSave(
     applicationService: ApplicationService
-  ): Promise<void> {}
+  ): Promise<void> {
+
+  }
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
@@ -61,7 +72,7 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
   async addressConfirmed(address: AddressModel) {
     this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerAddress =
       address;
-
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.Complete;
     this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerAddress.CompletionState =
       ComponentCompletionState.Complete;
 

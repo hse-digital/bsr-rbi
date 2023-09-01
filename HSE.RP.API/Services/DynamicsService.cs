@@ -698,7 +698,7 @@ namespace HSE.RP.API.Services
             {
                 var application = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
             {
-                        ("$filter", $"_bsr_applicantid_value eq '{contact.value.FirstOrDefault().contactid}' and statuscode ne 1  and statuscode ne 1"),
+                        ("$filter", $"_bsr_applicantid_value eq '{contact.value.FirstOrDefault().contactid}' and statecode ne 1"),
             });
 
                 return application.value.Count>0;
