@@ -7,6 +7,9 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { BuildingInspectorClassSelectionComponent } from '../../2-building-inspector-class/class-selection/building-inspector-class-selection.component';
 import { BuildingInspectorRoutes } from '../../2-building-inspector-class/BuildingInspectorRoutes';
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { Competency } from 'src/app/models/competency.model';
 
 @Component({
   selector: 'hse-confirmation-ia-update',
@@ -66,6 +69,8 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
       const queryParam = this.queryParam;
 
       if (isValid && this.selectedOption === 'yes') {
+        this.applicationService.model.StageStatus["Competency"] = StageCompletionState.Incomplete;
+        this.applicationService.model.Competency! = new Competency();
         return this.navigationService.navigateRelative(
           `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
           this.activatedRoute

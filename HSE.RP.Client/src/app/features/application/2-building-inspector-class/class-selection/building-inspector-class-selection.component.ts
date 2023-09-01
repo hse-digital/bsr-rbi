@@ -33,6 +33,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   originalOption?: BuildingInspectorClassType =
     this.applicationService.model.InspectorClass?.ClassType.Class;
     queryParam?: string = '';
+    
 
   constructor(
     activatedRoute: ActivatedRoute,
