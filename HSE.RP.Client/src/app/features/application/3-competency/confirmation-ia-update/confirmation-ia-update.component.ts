@@ -73,7 +73,8 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
         this.applicationService.model.Competency! = new Competency();
         return this.navigationService.navigateRelative(
           `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
-          this.activatedRoute
+          this.activatedRoute,
+          { resetClass: true}
         );
       } else if (isValid && this.selectedOption === 'no') {
         return this.navigationService.navigateRelative(
@@ -85,9 +86,12 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
       return true;
     } else {
       if (isValid && this.selectedOption === 'yes') {
+        this.applicationService.model.StageStatus["Competency"] = StageCompletionState.Incomplete;
+        this.applicationService.model.Competency! = new Competency();
         return this.navigationService.navigateRelative(
           `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
-          this.activatedRoute
+          this.activatedRoute,
+          { resetClass: true}
         );
       } else if (isValid && this.selectedOption === 'no') {
         return this.navigationService.navigateRelative(

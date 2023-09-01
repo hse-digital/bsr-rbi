@@ -33,7 +33,8 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   originalOption?: BuildingInspectorClassType =
     this.applicationService.model.InspectorClass?.ClassType.Class;
     queryParam?: string = '';
-    
+    resetClass?: boolean = false;
+
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -46,8 +47,13 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
+      this.resetClass = params['resetClass'];
     });
-    this.model = applicationService.model.InspectorClass?.ClassType;
+
+    this.model = this.resetClass ?? true ? {
+      Class: BuildingInspectorClassType.Class1,
+      CompletionState: ComponentCompletionState.InProgress,
+    } : applicationService.model.InspectorClass?.ClassType;
     // if the user visits this page for the first time, set status to in progress until user saves and continues
     if (
       applicationService.model.InspectorClass?.ClassType.Class ===
