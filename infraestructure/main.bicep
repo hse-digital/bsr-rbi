@@ -2,6 +2,8 @@ param environment string
 param location string = resourceGroup().location
 param swaLocation string = 'westeurope'
 param d365lKeyPrefix string = ''
+param d365EnvironmentKey string = 'SQUAD3--Dynamics--EnvironmentUrl'
+param paymentAmountKey string = 'Integrations--PaymentAmount'
 
 @allowed([ 'Free', 'Standard' ])
 param sku string = 'Standard'
@@ -165,7 +167,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                 }
                 {
                     name: 'Dynamics__EnvironmentUrl'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=SQUAD3--Dynamics--EnvironmentUrl)'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${d365EnvironmentKey})'
                 }
                 {
                     name: 'Dynamics__TenantId'
@@ -213,7 +215,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                 }
                 {
                     name: 'Integrations__PaymentAmount'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--PaymentAmount)'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${paymentAmountKey})'
                 }
                 {
                     name: 'Integrations__NotificationServiceApiKey'
