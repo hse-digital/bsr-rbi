@@ -1,6 +1,4 @@
-<govuk-back-link *ngIf="!production" >Back</govuk-back-link>
-
-<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" [hideBackButton]=true (saveAndComeBack)="saveAndComeBack()">
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" [hideBackButton]=false (saveAndComeBack)="saveAndComeBack()">
 
   <govuk-error-summary *ngIf="phoneNumberHasErrors" title="There is a problem" #summaryError>
     <govuk-error-link anchorId="radios-alternative-phone" message={{errorMessage}} />
