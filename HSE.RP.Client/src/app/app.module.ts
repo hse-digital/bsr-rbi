@@ -34,6 +34,7 @@ const routes = new HseRoutes([
   HseRoute.forLoadChildren(NewApplicationModule.baseRoute, () => import('./features/new-application/new-application.module').then(m => m.NewApplicationModule)),
   HseRoute.unsafe(NotFoundComponent.route, NotFoundComponent, undefined, NotFoundComponent.title),
   HseRoute.protected(ReturningApplicationComponent.route, ReturningApplicationComponent, ReturningApplicationComponent.title),
+  HseRoute.protected(TimeoutComponent.route, TimeoutComponent, TimeoutComponent.title),
   //HseRoute.unsafe('**', undefined, NotFoundComponent.route)
 ]);
 
@@ -49,6 +50,7 @@ const routes = new HseRoutes([
     ReturningApplicationEnterDataComponent,
     ReturningApplicationResendCodeComponent,
     ReturningApplicationVerifyComponent,
+    TimeoutComponent,
     SampleComponent
     ],
   imports: [
