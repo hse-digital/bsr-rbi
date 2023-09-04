@@ -88,6 +88,8 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
       this.applicationService.updateApplication();
 
       if (typeof window !== 'undefined') {
+        this.loading = false;
+
         window.location.href = paymentResponse.PaymentLink;
       }
     } else {
