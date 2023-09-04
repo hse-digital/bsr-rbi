@@ -1,7 +1,7 @@
 param environment string
 param location string = resourceGroup().location
 param swaLocation string = 'westeurope'
-param d365lKeyPrefix string = ""
+param d365lKeyPrefix string = ''
 
 @allowed([ 'Free', 'Standard' ])
 param sku string = 'Standard'
