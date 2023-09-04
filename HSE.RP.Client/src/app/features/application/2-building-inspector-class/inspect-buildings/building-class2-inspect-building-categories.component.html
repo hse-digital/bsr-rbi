@@ -1,10 +1,8 @@
-<govuk-back-link *ngIf="!production">Back</govuk-back-link>
-
 <govuk-formpage
   saveAndContinueText="Save and continue"
   [hideSaveAndComeBack]="true"
   (saveAndContinue)="saveAndContinue()"
-  [hideBackButton]="true"
+  [hideBackButton]="false"
 >
   <govuk-error-summary
     *ngIf="selectedOptionError"

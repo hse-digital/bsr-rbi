@@ -1,7 +1,5 @@
-<govuk-back-link *ngIf="!production">Back</govuk-back-link>
+<govuk-formpage saveAndContinueText="Save and Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=false>
 
-<govuk-formpage saveAndContinueText="Save and Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=true>
-  
   <govuk-error-summary *ngIf="emailHasErrors" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="!modelValid" anchorId="applicant-email" message={{emailErrorMessage}} />
   </govuk-error-summary>
@@ -12,9 +10,9 @@
 
   <govuk-radio-group hintText="Select one option." id="applicant-email" [(model)]="selectedOption">
     <govuk-radio label="Yes" value="yes" id="yes" [model]="selectedOption">
-      <govuk-input 
+      <govuk-input
       *ngIf="selectedOption === 'yes'"
-        id="applicant-alternative-email" 
+        id="applicant-alternative-email"
         label="Alternative email address"
         [(model)]="model!.Email" [maxlength]=100
         labelClass="govuk-label--s"
@@ -24,7 +22,7 @@
         class="govuk-!-margin-bottom-1"
         (onKeyupEnter)="saveAndContinue()"
         />
-    
+
     </govuk-radio>
     <govuk-radio label="No" value="no" id="no"  [model]="selectedOption"></govuk-radio>
 

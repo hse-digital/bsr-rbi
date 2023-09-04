@@ -1,7 +1,4 @@
-<govuk-back-link *ngIf="!production">Back</govuk-back-link>
-
-
-<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()"  [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()"  [hideBackButton]=false>
 
 
   <h1 class="govuk-heading-l">National Insurance number</h1>
@@ -11,7 +8,7 @@
 
   <govuk-warning message="Your National Insurance Number will not be published." background="#0"></govuk-warning>
 
-  <govuk-input 
+  <govuk-input
                id="nsi-input"
                label=""
                [(model)]="model!.NationalInsuranceNumber"

@@ -1,7 +1,5 @@
-<govuk-back-link *ngIf="!production">Back</govuk-back-link>
-
 <govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]="true"
-  (saveAndContinue)="saveAndContinue()" [hideBackButton]="true">
+  (saveAndContinue)="saveAndContinue()" [hideBackButton]="false">
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="!modelValid" anchorId="class-technical-manager" message="{{ errorMessage }}" />
   </govuk-error-summary>
