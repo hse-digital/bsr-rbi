@@ -159,6 +159,6 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   }
 
   public isCompetencyAssessmentStatusYes(): boolean {
-    return this.applicationService.model!.Competency!.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes';
+    return this.applicationService.model!.Competency!.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes' || this.applicationService.model!.Competency!.CompetencyIndependentAssessmentStatus?.IAStatus === '';
   }
 }
