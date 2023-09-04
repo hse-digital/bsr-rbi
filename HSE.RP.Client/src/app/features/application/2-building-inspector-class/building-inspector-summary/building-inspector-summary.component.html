@@ -1,7 +1,5 @@
-<govuk-back-link *ngIf="!production">Back</govuk-back-link>
-
 <govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=true (saveAndContinue)="SyncAndContinue()"
-  [hideBackButton]=true>
+  [hideBackButton]=false>
 
   <div *ngIf="applicationService.model.InspectorClass?.ClassType?.Class === BuildingInspectorClassType.Class1">
     <h1 class="govuk-heading-l">
