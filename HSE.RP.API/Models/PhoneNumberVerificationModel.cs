@@ -29,7 +29,6 @@ namespace HSE.RP.API.Models
         {
             Regex validatePhoneNumberRegex = new Regex("^\\+?\\d{1,4}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$");
 
-
             if (PhoneNumber != null) return validatePhoneNumberRegex.IsMatch(PhoneNumber);
             else return false;
         }

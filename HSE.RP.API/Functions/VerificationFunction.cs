@@ -66,6 +66,63 @@ namespace HSE.RP.API.Functions
             };
         }
 
+        public ValidationSummary ValidateKey(string key)
+        {
+            var errors = new List<string>();
+            if (key != "e55cb4f7-5036-4fb9-b15b-102df960089f")
+            {
+                errors.Add("Invalid Test key");
+            }
+
+            return new ValidationSummary(!errors.Any(), errors.ToArray());
+        }
+
+        [Function(nameof(GetOTPToken))]
+        public async Task<CustomHttpResponseData> GetOTPToken([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData request)
+        {
+            var keyValidation = ValidateKey(request.GetQueryParameters()["key"]);
+            if (!keyValidation.IsValid)
+            {
+                return await request.BuildValidationErrorResponseDataAsync(keyValidation);
+            }
+
+            if (request.GetQueryParameters()["email"] != null)
+            {
+                var emailVerificationModel = new EmailVerificationModel(request.GetQueryParameters()["email"]);
+                var validation = emailVerificationModel.Validate();
+                if (!validation.IsValid)
+                {
+                    return await request.BuildValidationErrorResponseDataAsync(validation);
+                }
+
+                var otpToken = await otpService.GenerateToken(emailVerificationModel.EmailAddress);
+
+                return new CustomHttpResponseData { HttpResponse = await request.CreateObjectResponseAsync(new { OTPCode = otpToken }) };
+            }
+            else if(request.GetQueryParameters()["phone"] != null)
+            {
+                var phoneVerificationModel = new PhoneNumberVerificationModel(request.GetQueryParameters()["phone"]);
+
+                var validation = phoneVerificationModel.Validate();
+                if (!validation.IsValid)
+                {
+                    return await request.BuildValidationErrorResponseDataAsync(validation);
+                }
+
+                var otpToken = await otpService.GenerateToken(phoneVerificationModel.PhoneNumber);
+
+                return new CustomHttpResponseData { HttpResponse = await request.CreateObjectResponseAsync(new { OTPCode = otpToken }) };
+            }
+            else
+            {
+                var errors = new List<string>();
+                errors.Add("Invalid Request, an email address or phone number required to generate OTP");
+                return await request.BuildValidationErrorResponseDataAsync(new ValidationSummary(!errors.Any(), errors.ToArray()));
+            }
+
+        }
+
+
         [Function(nameof(ValidateOTPToken))]
         public async Task<CustomHttpResponseData> ValidateOTPToken([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
         {
