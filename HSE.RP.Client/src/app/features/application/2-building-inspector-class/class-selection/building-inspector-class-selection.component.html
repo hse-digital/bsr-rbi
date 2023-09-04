@@ -1,7 +1,5 @@
-<govuk-back-link *ngIf="!production">Back</govuk-back-link>
-
-<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndComeBack)="saveAndComeBack()" 
-  (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndComeBack)="saveAndComeBack()"
+  (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
 
   <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-bi-class-selection" [message]="errorMessage" />
@@ -12,15 +10,15 @@
   <govuk-warning message="Your building inspector class will be published on the public register" background="#0"/>
 
   <govuk-radio-group hintText="Select one" id="radios-bi-class-selection" [(model)]="model!.Class" [errorText]="errorMessage">
-    <govuk-radio 
+    <govuk-radio
       label="Class 1"
       [value]="BuildingInspectorClassType.Class1"
       id="1"
-      [model]="model!.Class" 
+      [model]="model!.Class"
       [hint]="'A class 1 building inspector has no BSR-approved competence assessment and must work under supervision of a class 2, 3 or 4 registered building inspector.'">
     </govuk-radio>
 
-    <govuk-radio 
+    <govuk-radio
       label="Class 2"
       [value]="BuildingInspectorClassType.Class2"
       id="2"
@@ -28,7 +26,7 @@
       [hint]="'A class 2 building inspector is competent to work without supervision on standard buildings.'">
     </govuk-radio>
 
-    <govuk-radio 
+    <govuk-radio
       label="Class 3"
       [value]="BuildingInspectorClassType.Class3"
       id="3"

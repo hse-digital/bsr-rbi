@@ -92,7 +92,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
-      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+      this.resetIA = params['resetIA'] == 'true' ? true : false;
     });
     this.updateOnSave = true;
     this.model = applicationService.model.InspectorClass?.AssessingPlansClass3;

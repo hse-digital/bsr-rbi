@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, QueryList } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
@@ -10,6 +10,8 @@ import { BuildingInspectorCountryOfWork } from 'src/app/models/building-inspecto
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
+import { GovukRequiredDirective } from 'src/app/components/required.directive';
+import { IComponentModel } from 'src/app/models/component. interface';
 
 @Component({
   selector: 'hse-building-inspector-country',
@@ -26,7 +28,7 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   public hint = 'Select all that apply';
   public errorText = '';
   selectedOptionError: boolean = false;
-  override model?: BuildingInspectorCountryOfWork;
+  //override model?: BuildingInspectorCountryOfWork;
   public selections: string[] = [];
   queryParam?: string = '';
   resetIA? : boolean = false;
@@ -42,17 +44,19 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
     this.updateOnSave = true;
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
-      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+      this.resetIA = params['resetIA'] == 'true' ? true : false;
 
     });
+
     if (!applicationService.model.InspectorClass?.InspectorCountryOfWork) {
       applicationService.model.InspectorClass!.InspectorCountryOfWork =
         new BuildingInspectorCountryOfWork();
     } else {
       this.model =
         applicationService.model.InspectorClass?.InspectorCountryOfWork;
-      this.model!.CompletionState = ComponentCompletionState.InProgress;
     }
+
+
 
     const demandModel = this.DemandModel();
     const countryKeys = ['England', 'Wales'];
@@ -61,10 +65,12 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       ...countryKeys.filter((key) => demandModel[key] === true)
     );
 
-    this.applicationService = applicationService;
+    this.originalModelStringified = JSON.stringify(this.model);
+
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+
     const demandModel = this.DemandModel();
     demandModel.England = false;
     demandModel.Wales = false;
@@ -73,15 +79,55 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       demandModel[value] = true;
     });
 
-    if (this.selections.length > 0) {
-      this.model!.CompletionState = ComponentCompletionState.Complete;
-    } else {
-      this.model!.CompletionState = ComponentCompletionState.InProgress;
+    this.model!.England = demandModel.England;
+    this.model!.Wales = demandModel.Wales;
+
+    // if (this.selections.length > 0) {
+    //   this.model!.CompletionState = ComponentCompletionState.Complete;
+    // } else {
+    //   this.model!.CompletionState = ComponentCompletionState.InProgress;
+    // }
+
+
+    applicationService.model.InspectorClass!.InspectorCountryOfWork = this.model;
+
+  }
+
+  override async saveAndComeBack(): Promise<void> {
+
+    this.processing = true;
+    let canSave = this.selections.length == 0 || this.isValid();
+    this.hasErrors = !canSave;
+    this.model!.Wales = this.selections.includes('Wales');
+    this.model!.England = this.selections.includes('England');
+    //------------------------------------------------------------------------------
+    // If the model implements IComponentModel, see if the model had been previously
+    // completed. If the model has been modified, set the completion state to in progress,
+    // otherwise leave it as completed.
+    //------------------------------------------------------------------------------
+    if (this.modelImplementsIComponent(this.model)) {
+      var componentModel = this.model as IComponentModel;
+      if (componentModel.CompletionState === ComponentCompletionState.Complete) {
+        if(this.originalModelStringified !== JSON.stringify(this.model)) {
+          console.log('model changed');
+          componentModel.CompletionState = ComponentCompletionState.InProgress;
+        }
+      }
     }
 
-    applicationService.model.InspectorClass!.InspectorCountryOfWork =
-      demandModel;
-
+    if (!this.hasErrors) {
+      this.triggerScreenReaderNotification();
+      this.applicationService.updateLocalStorage();
+      if (this.updateOnSave) {
+        await this.onSave(this.applicationService);
+        await this.applicationService.updateApplication();
+          }
+          this.navigationService.navigate(
+            `application/${this.applicationService.model.id}`
+          );    } else {
+      this.focusAndUpdateErrors();
+    }
+    this.processing = false;
   }
 
   override canAccess(
@@ -142,4 +188,5 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   }
 
   optionClicked() {}
+
 }
