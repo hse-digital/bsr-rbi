@@ -19,9 +19,8 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
     'Competency - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
-  photoHasErrors = false;
   errorMessage: string = '';
-  selectedOption?: string = '';
+  //selectedOption?: string = '';
   queryParam?: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
@@ -42,42 +41,48 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
         '';
     }
 
-    applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
-      ComponentCompletionState.InProgress;
+    // applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
+    //   ComponentCompletionState.InProgress;
 
-    this.selectedOption = applicationService.model.Competency!
-      .CompetencyAssessmentOrganisation.ComAssessmentOrganisation
-      ? applicationService.model.Competency!.CompetencyAssessmentOrganisation
-          .ComAssessmentOrganisation
-      : '';
+    // this.selectedOption = applicationService.model.Competency!
+    //   .CompetencyAssessmentOrganisation.ComAssessmentOrganisation
+    //   ? applicationService.model.Competency!.CompetencyAssessmentOrganisation
+    //       .ComAssessmentOrganisation
+    //   : '';
+
+      this.model = applicationService.model.Competency!.CompetencyAssessmentOrganisation;
+
 
     this.applicationService = applicationService;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    if (['CABE', 'BSCF'].includes(this.selectedOption!)) {
-      applicationService.model.Competency!.CompetencyAssessmentOrganisation!.ComAssessmentOrganisation =
-        this.selectedOption!;
+    // if (['CABE', 'BSCF'].includes(this.selectedOption!)) {
+    //   applicationService.model.Competency!.CompetencyAssessmentOrganisation!.ComAssessmentOrganisation =
+    //     this.selectedOption!;
+
+    this.applicationService.model.Competency!.CompetencyAssessmentOrganisation! = this.model!;
     }
 
-    if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
-      applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
-        ComponentCompletionState.Complete;
-    }
-  }
+    // if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
+    //   applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
+    //     ComponentCompletionState.Complete;
+    // }
+
+
 
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return true;
+    return this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus==='yes' && this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus.CompletionState===ComponentCompletionState.Complete;
   }
 
   override isValid(): boolean {
     this.hasErrors = false;
     this.errorMessage = '';
 
-    if (this.selectedOption === '') {
+    if (this.model?.ComAssessmentOrganisation === '') {
       this.hasErrors = true;
       this.errorMessage = 'Select an assessment organisation';
     }
