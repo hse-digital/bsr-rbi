@@ -14,16 +14,16 @@
   <govuk-body>
     <govuk-checkbox-group [title]="" [hint]=hint [errorText]=errorText
                           [(model)]="selections"
-                          [id]="id" #field [govukRequired]="field">
+                          id="activity-selection" #field [govukRequired]="field">
       <!-- IMPORTANT: Make sure the names in the values property on the checkbox ,
                       match the property names on the BuildingInspectorRegulatedActivies -->
-      <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()" [id]="id"
+      <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()" id="assessing-plans"
                       [model]="selections"
                       text="Assessing plans" value="AssessingPlans" (onClicked)="optionClicked()"
                       hint="" />
       <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()"
                       [model]="selections"
-                      text="Inspection" value="Inspection" (onClicked)="optionClicked()" [id]="id"
+                      text="Inspection" value="Inspection" (onClicked)="optionClicked()" id="inspection"
                       hint="" />
 
     </govuk-checkbox-group>

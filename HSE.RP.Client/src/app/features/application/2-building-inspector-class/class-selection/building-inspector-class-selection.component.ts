@@ -50,15 +50,12 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
       this.resetIA = params['resetIA'] == 'true' ? true : false;
     });
 
-    if(this.resetIA === true)
-    {
-      this.model ={
+    if (this.resetIA === true) {
+      this.model = {
         Class: BuildingInspectorClassType.Class1,
         CompletionState: ComponentCompletionState.InProgress,
-      }
-    }
-    else
-    {
+      };
+    } else {
       if (
         applicationService.model.InspectorClass?.ClassType.Class ===
         BuildingInspectorClassType.ClassNone
@@ -104,39 +101,48 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.applicationService.model.InspectorClass!.ClassType!.Class =
-      this.model?.Class;
-    // reset state if the user changes their input
-    if (this.model!.Class !== this.originalOption) {
-      // reset all other info to false
-      this.applicationService.model.InspectorClass!.Activities = {
-        AssessingPlans: false,
-        Inspection: false,
-        CompletionState: ComponentCompletionState.NotStarted,
-      };
+    if (this.resetIA === true) {
+      if(this.model?.Class === BuildingInspectorClassType.Class1){
+        this.applicationService.model.InspectorClass!.ClassType!.Class = this.originalOption;
+      }
+      else{
+        this.applicationService.model.InspectorClass!.ClassType!.Class = this.model?.Class;
+      }
+    } else {
+      this.applicationService.model.InspectorClass!.ClassType!.Class =
+        this.model?.Class;
+      // reset state if the user changes their input
+      if (this.model!.Class !== this.originalOption) {
+        // reset all other info to false
+        this.applicationService.model.InspectorClass!.Activities = {
+          AssessingPlans: false,
+          Inspection: false,
+          CompletionState: ComponentCompletionState.NotStarted,
+        };
 
-      this.applicationService.model.InspectorClass!.AssessingPlansClass2 =
-        new BuildingAssessingPlansCategoriesClass2();
-      this.applicationService.model.InspectorClass!.AssessingPlansClass3 =
-        new BuildingAssessingPlansCategoriesClass3();
-      this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories =
-        new Class2InspectBuildingCategories();
-      this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories =
-        new Class3InspectBuildingCategories();
+        this.applicationService.model.InspectorClass!.AssessingPlansClass2 =
+          new BuildingAssessingPlansCategoriesClass2();
+        this.applicationService.model.InspectorClass!.AssessingPlansClass3 =
+          new BuildingAssessingPlansCategoriesClass3();
+        this.applicationService.model.InspectorClass!.Class2InspectBuildingCategories =
+          new Class2InspectBuildingCategories();
+        this.applicationService.model.InspectorClass!.Class3InspectBuildingCategories =
+          new Class3InspectBuildingCategories();
 
-      //cannot be class 4 if you select class 1
-      if (this.model?.Class === BuildingInspectorClassType.Class1) {
-        this.applicationService.model.InspectorClass!.ClassTechnicalManager =
-          'no';
-        this.applicationService.model.InspectorClass!.ClassType.CompletionState =
-          ComponentCompletionState.Complete;
+        //cannot be class 4 if you select class 1
+        if (this.model?.Class === BuildingInspectorClassType.Class1) {
+          this.applicationService.model.InspectorClass!.ClassTechnicalManager =
+            'no';
+          this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+            ComponentCompletionState.Complete;
 
-        this.applicationService.model.Competency = new Competency();
-        this.applicationService.model.StageStatus!['Competency'] =
-          StageCompletionState.Complete;
-      } else {
-        this.applicationService.model.InspectorClass!.ClassType.CompletionState =
-          ComponentCompletionState.InProgress;
+          this.applicationService.model.Competency = new Competency();
+          this.applicationService.model.StageStatus!['Competency'] =
+            StageCompletionState.Complete;
+        } else {
+          this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+            ComponentCompletionState.InProgress;
+        }
       }
     }
   }
@@ -172,14 +178,20 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
     ) {
       const queryParam = this.queryParam;
       if (this.queryParam == 'application-summary') {
-        if (
-          this.model?.Class === this.originalOption
-        ) {
+
+        if (this.resetIA === true && this.model?.Class === BuildingInspectorClassType.Class1) {
           return this.navigationService.navigateRelative(
             `../application-submission/${ApplicationSummaryComponent.route}`,
             this.activatedRoute
           );
         }
+
+        // if (this.model?.Class === this.originalOption) {
+        //   return this.navigationService.navigateRelative(
+        //     `../application-submission/${ApplicationSummaryComponent.route}`,
+        //     this.activatedRoute
+        //   );
+        // }
 
         // if (this.model?.Class === this.originalOption) {
         //   console.log('original option')
@@ -193,9 +205,8 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
           return this.navigationService.navigateRelative(
             BuildingInspectorCountryComponent.route,
             this.activatedRoute,
-            {queryParam: queryParam }
+            { queryParam: queryParam }
           );
-
         } else {
           return this.navigationService.navigateRelative(
             BuildingInspectorRegulatedActivitiesComponent.route,

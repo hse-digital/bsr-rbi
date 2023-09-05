@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, QueryList } from '@angular/core';
+import { Component, EventEmitter, Output, QueryList, ViewChild } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
@@ -12,6 +12,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 import { GovukRequiredDirective } from 'src/app/components/required.directive';
 import { IComponentModel } from 'src/app/models/component. interface';
+import { GovukCheckboxComponent, GovukCheckboxGroupComponent } from 'hse-angular';
 
 @Component({
   selector: 'hse-building-inspector-country',
@@ -32,6 +33,11 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   public selections: string[] = [];
   queryParam?: string = '';
   resetIA? : boolean = false;
+  errorAnchorId?: string;
+
+
+  @ViewChild(GovukCheckboxComponent) checkboxGroup?: GovukCheckboxComponent;
+
 
   @Output() onClicked = new EventEmitter();
   @Output() onKeyupEnter = new EventEmitter();
@@ -141,6 +147,8 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
     if (this.selections.length == 0) {
       this.selectedOptionError = true;
       this.errorText = 'Select a country you will be working in';
+      this.errorAnchorId = `england-${this.checkboxGroup?.innerId}`;
+
     }
     return this.selections.length > 0;
   }
@@ -190,3 +198,5 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   optionClicked() {}
 
 }
+
+

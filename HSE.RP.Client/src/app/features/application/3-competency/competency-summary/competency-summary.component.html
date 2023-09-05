@@ -9,12 +9,9 @@
 
     <govuk-summary-list *ngIf="!isCompetencyAssessmentStatusYes()">
       <govuk-summary-list-row
-        (onClick)="
-          navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)
-        "
-        (onKeyupEnter)="
-          navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)
-        "
+        [actionText]="'change'"
+        (onClick)="navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)"
+        (onKeyupEnter)="navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)"
         key="Independent assessment status"
         [showAction]="true"
         >{{ getIndependentAssessmentStatus() }}
@@ -23,9 +20,8 @@
 
     <govuk-summary-list *ngIf="isCompetencyAssessmentStatusYes()">
       <govuk-summary-list-row
-        (onClick)="
-          navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)
-        "
+        [actionText]="'change'"
+        (onClick)="navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)"
         (onKeyupEnter)="
           navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)
         "
@@ -35,30 +31,55 @@
       </govuk-summary-list-row>
 
       <govuk-summary-list-row
+        [actionText]="'change'"
         (onClick)="
-          navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION, 'competency-change')
+          navigateTo(
+            CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION,
+            'competency-change'
+          )
         "
         (onKeyupEnter)="
-          navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION, 'competency-change')
+          navigateTo(
+            CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION,
+            'competency-change'
+          )
         "
         key="Assessment organisation"
         [showAction]="true"
         >{{ getCompetencyAssessmentOrg() }}
       </govuk-summary-list-row>
       <govuk-summary-list-row
+        [actionText]="'change'"
         (onClick)="
-          navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER, 'competency-change')
+          navigateTo(
+            CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER,
+            'competency-change'
+          )
         "
         (onKeyupEnter)="
-          navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER, 'competency-change')
+          navigateTo(
+            CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER,
+            'competency-change'
+          )
         "
         key="Assessment certificate number"
         [showAction]="true"
         >{{ getCompetencyAssessmentCertificateNo() }}
       </govuk-summary-list-row>
       <govuk-summary-list-row
-        (onClick)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE, 'competency-change')"
-        (onKeyupEnter)="navigateTo(CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE, 'competency-change')"
+        [actionText]="'change'"
+        (onClick)="
+          navigateTo(
+            CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE,
+            'competency-change'
+          )
+        "
+        (onKeyupEnter)="
+          navigateTo(
+            CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE,
+            'competency-change'
+          )
+        "
         key="Date of assessment"
         [showAction]="true"
         >{{ GetFormattedDateofBirth() }}

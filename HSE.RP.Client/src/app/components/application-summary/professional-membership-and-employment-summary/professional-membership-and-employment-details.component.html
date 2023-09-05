@@ -1,5 +1,6 @@
 <govuk-summary-list>
   <govuk-summary-list-row
+   [actionText]="'change'"
     *ngIf="getProfessionalBodyMemberships()[0] != 'None'"
     class="govuk-summary-list__key"
     (onClick)="navigateTo('professional-body-membership-summary')"
@@ -13,6 +14,7 @@
   </govuk-summary-list-row>
 
   <govuk-summary-list-row
+   [actionText]="'change'"
     *ngIf="getProfessionalBodyMemberships()[0] == 'None'"
     class="govuk-summary-list__key"
     (onClick)="navigateTo('professional-body-memberships')"
@@ -32,7 +34,7 @@
     key="Employment type"
     [showAction]="true"
   >
-    <dd class="govuk-summary-list__value">{{ getEmploymentTypeName() }}</dd>
+   {{ getEmploymentTypeName() }}
   </govuk-summary-list-row>
 
   <govuk-summary-list-row
@@ -43,7 +45,7 @@
     key="{{ getEmploymentTypeTitle() }}"
     [showAction]="true"
   >
-    <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
+    {{ getEmployerName() }}
   </govuk-summary-list-row>
 
   <govuk-summary-list-row
@@ -54,7 +56,7 @@
     key="{{ getEmploymentTypeTitle() }}"
     [showAction]="true"
   >
-    <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
+    {{ getEmployerName() }}
   </govuk-summary-list-row>
 
   <govuk-summary-list-row
@@ -65,7 +67,7 @@
     key="{{ getEmploymentTypeTitle() }}"
     [showAction]="true"
   >
-    <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
+    {{ getEmployerName() }}
   </govuk-summary-list-row>
 
   <govuk-summary-list-row

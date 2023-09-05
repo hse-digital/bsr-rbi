@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
@@ -21,6 +21,9 @@ import { ApplicationSummaryComponent } from '../../5-application-submission/appl
 @Component({
   selector: 'hse-applicant-national-insurance-number',
   templateUrl: './applicant-national-insurance-number.component.html',
+  styleUrls: ['./applicant-national-insurance-number.component.scss'],
+  encapsulation: ViewEncapsulation.None
+
 })
 export class ApplicantNationalInsuranceNumberComponent extends PageComponent<ApplicantNationalInsuranceNumber> {
   public static route: string = PersonalDetailRoutes.NATIONAL_INS_NUMBER;
