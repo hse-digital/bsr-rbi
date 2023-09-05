@@ -11,6 +11,7 @@
 
     <govuk-summary-list>
       <govuk-summary-list-row *ngIf="getProfessionalBodyMemberships()[0] != 'None'"
+        [actionText]="'change'"
         class="govuk-summary-list__key"
         (onClick)="navigateTo('professional-body-membership-summary')"
         (onKeyupEnter)="navigateTo('professional-body-membership-summary')"
@@ -26,6 +27,7 @@
       </govuk-summary-list-row>
 
       <govuk-summary-list-row *ngIf="getProfessionalBodyMemberships()[0] == 'None'"
+      [actionText]="'change'"
       class="govuk-summary-list__key"
       (onClick)="navigateTo('professional-body-memberships')"
       (onKeyupEnter)="navigateTo('professional-body-memberships')"
@@ -42,6 +44,7 @@
 
 
       <govuk-summary-list-row
+      [actionText]="'change'"
         (onClick)="navigateTo('professional-activity-employment-type')"
         (onKeyupEnter)="navigateTo('professional-activity-employment-type')"
         key="Employment type"
@@ -51,6 +54,8 @@
       </govuk-summary-list-row>
 
       <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 1"
+      [actionText]="'change'"
+
         (onClick)="navigateTo('employment-public-sector-body-name')"
         (onKeyupEnter)="navigateTo('employment-public-sector-body-name')"
         key="{{ getEmploymentTypeTitle() }}"
@@ -61,6 +66,8 @@
 
 
       <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 2"
+      [actionText]="'change'"
+
         (onClick)="navigateTo('employment-private-sector-body-name')"
         (onKeyupEnter)="navigateTo('employment-private-sector-body-name')"
         key="{{ getEmploymentTypeTitle() }}"
@@ -71,6 +78,8 @@
 
 
       <govuk-summary-list-row *ngIf="!isUnemployed() && getEmploymentType() == 3"
+      [actionText]="'change'"
+
         (onClick)="navigateTo('employment-other-name')"
         (onKeyupEnter)="navigateTo('employment-other-name')"
         key="{{ getEmploymentTypeTitle() }}"
@@ -81,6 +90,8 @@
 
 
       <govuk-summary-list-row *ngIf="!isUnemployed()"
+      [actionText]="'change'"
+
         (onClick)="navigateTo('search-empoloyment-org-address')"
         (onKeyupEnter)="navigateTo('search-empoloyment-org-address')"
         key="{{ getEmploymentAddressTitle() }}"

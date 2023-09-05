@@ -37,14 +37,14 @@
       [hint]="hint"
       [errorText]="errorText"
       [(model)]="selections"
-      [id]="id"
+      id="category-selection"
       #field
       [govukRequired]="field"
     >
       <govuk-checkbox
         #checkbox
         (onKeyupEnter)="onKeyupEnter.emit()"
-        [id]="id"
+        id="cata"
         [model]="selections"
         text="Category A"
         value="CategoryA"
@@ -58,7 +58,7 @@
         text="Category B"
         value="CategoryB"
         (onClicked)="optionClicked()"
-        [id]="id"
+        id="catb"
         hint="Residential flats and dwelling houses, less than 11m in height"
       />
       <govuk-checkbox
@@ -68,7 +68,7 @@
         text="Category C"
         value="CategoryC"
         (onClicked)="optionClicked()"
-        [id]="id"
+        id="catc"
         hint="Residential flats and dwelling houses, 11m or more but less than 18m in height"
       />
       <govuk-checkbox
@@ -78,7 +78,7 @@
         text="Category D"
         value="CategoryD"
         (onClicked)="optionClicked()"
-        [id]="id"
+        id="catd"
         hint="All building types and uses less than 7.5m in height"
       />
       <govuk-checkbox
@@ -88,7 +88,7 @@
         text="Category E"
         value="CategoryE"
         (onClicked)="optionClicked()"
-        [id]="id"
+        id="cate"
         hint="All building types 7.5m or more but less than 11m in height"
       />
       <govuk-checkbox
@@ -98,7 +98,7 @@
         text="Category F"
         value="CategoryF"
         (onClicked)="optionClicked()"
-        [id]="id"
+        id="catf"
         hint="All building types 11m or more but less than 18m in height"
       />
     </govuk-checkbox-group>
