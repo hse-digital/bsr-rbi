@@ -22,21 +22,21 @@
       hintText="Select one"
       [errorText]=errorMessage
       id="competency-assesesment-organisation"
-      [(model)]="selectedOption"
+      [(model)]="model!.ComAssessmentOrganisation"
     >
       <govuk-radio
         class=""
         label="Building Safety Competence Foundation (BSCF)"
         value="BSCF"
         id="BSCF"
-        [model]="selectedOption"
+        [model]="model!.ComAssessmentOrganisation"
       >
       </govuk-radio>
       <govuk-radio
         label="Chartered Association of Building Engineers (CABE)"
         value="CABE"
         id="CABE"
-        [model]="selectedOption"
+        [model]="model!.ComAssessmentOrganisation"
       ></govuk-radio>
     </govuk-radio-group>
   </govuk-body>
