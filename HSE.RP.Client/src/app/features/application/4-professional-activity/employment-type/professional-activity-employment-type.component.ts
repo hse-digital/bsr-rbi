@@ -178,6 +178,7 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
           );
         }
         if (this.model?.EmploymentType == EmploymentType.Unemployed) {
+          this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.Complete
           return this.navigationService.navigateRelative(
             ProfessionalMembershipAndEmploymentSummaryComponent.route,
             this.activatedRoute,
@@ -210,6 +211,7 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
       );
     }
     if (this.model?.EmploymentType == EmploymentType.Unemployed) {
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.Complete
       return this.navigationService.navigateRelative(
         ProfessionalMembershipAndEmploymentSummaryComponent.route,
         this.activatedRoute
