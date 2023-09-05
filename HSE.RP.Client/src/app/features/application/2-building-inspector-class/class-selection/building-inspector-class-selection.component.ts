@@ -68,9 +68,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
           CompletionState: ComponentCompletionState.InProgress,
         };
       }
-      else{
-        this.model = applicationService.model.InspectorClass?.ClassType;
-      }
+      this.model = applicationService.model.InspectorClass?.ClassType;
     }
   }
 
