@@ -508,9 +508,9 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: BuildingInspectorCountryComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(
+            this.determineTaskStatus(
+              aModel.InspectorClass?.ClassType,
               aModel.InspectorClass?.InspectorCountryOfWork
-
             ),
         },
         {
