@@ -42,7 +42,7 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
-      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+      this.resetIA = params['resetIA'] == 'true' ? true : false;
 
     });
     this.updateOnSave = true;

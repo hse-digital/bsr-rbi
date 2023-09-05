@@ -59,7 +59,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
     //this.model = applicationService.model.personalDetails?.applicantPhoto?.toString() ?? '';
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
-      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+      this.resetIA = params['resetIA'] == 'true' ? true : false;
     });
     if (
       applicationService.model.InspectorClass?.ClassType.Class ===

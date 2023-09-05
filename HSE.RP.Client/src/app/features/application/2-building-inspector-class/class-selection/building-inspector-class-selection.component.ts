@@ -47,25 +47,30 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   override onInit(applicationService: ApplicationService): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
-      this.resetIA = params['resetIA'] ?? 'true' ? true : false;
+      this.resetIA = params['resetIA'] == 'true' ? true : false;
     });
 
-    this.model =
-      this.resetIA ?? true
-        ? {
-            Class: BuildingInspectorClassType.Class1,
-            CompletionState: ComponentCompletionState.InProgress,
-          }
-        : applicationService.model.InspectorClass?.ClassType;
-    // if the user visits this page for the first time, set status to in progress until user saves and continues
-    if (
-      applicationService.model.InspectorClass?.ClassType.Class ===
-      BuildingInspectorClassType.ClassNone
-    ) {
-      applicationService.model.InspectorClass!.ClassType = {
-        Class: BuildingInspectorClassType.ClassNone,
+    if(this.resetIA === true)
+    {
+      this.model ={
+        Class: BuildingInspectorClassType.Class1,
         CompletionState: ComponentCompletionState.InProgress,
-      };
+      }
+    }
+    else
+    {
+      if (
+        applicationService.model.InspectorClass?.ClassType.Class ===
+        BuildingInspectorClassType.ClassNone
+      ) {
+        applicationService.model.InspectorClass!.ClassType = {
+          Class: BuildingInspectorClassType.ClassNone,
+          CompletionState: ComponentCompletionState.InProgress,
+        };
+      }
+      else{
+        this.model = applicationService.model.InspectorClass?.ClassType;
+      }
     }
   }
 
