@@ -307,7 +307,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       model?.CompetencyIndependentAssessmentStatus!.CompletionState! ===
         ComponentCompletionState.Complete
     ) {
-      return TaskStatus.None;
+      return TaskStatus.SummaryCanStart;
     } else if (
       model?.CompetencyIndependentAssessmentStatus!.CompletionState! ===
         ComponentCompletionState.Complete &&
