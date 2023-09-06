@@ -91,6 +91,9 @@ export enum TaskStatus {
   CannotStart = 3,
   None = 4,
   Immutable = 5,
+  SummaryCanStart = 6,
+
+  SummaryCannotStart = 7,
 }
 
 @Component({
@@ -115,6 +118,14 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   valueCannotStart(): TaskStatus {
     return TaskStatus.CannotStart;
   }
+  valueSummaryCannotStartTask(): TaskStatus {
+    return TaskStatus.SummaryCannotStart;
+  }
+  valueSummaryCanStartTask(): TaskStatus {
+    return TaskStatus.SummaryCanStart;
+  }
+
+
 
   DerivedIsComplete(value: boolean): void {
     throw new Error('Method not implemented.');
@@ -285,8 +296,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       model?.ApplicantNationalInsuranceNumber?.CompletionState ===
         ComponentCompletionState.Complete
     ) {
-      return TaskStatus.None;
-    } else return TaskStatus.CannotStart;
+      return TaskStatus.SummaryCanStart;
+    } else return TaskStatus.SummaryCannotStart;
   }
 
   determineCompetencySummaryTask(model?: Competency): TaskStatus {
@@ -307,8 +318,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       model?.CompetencyAssessmentCertificateNumber!.CompletionState! ===
         ComponentCompletionState.Complete
     ) {
-      return TaskStatus.None;
-    } else return TaskStatus.CannotStart;
+      return TaskStatus.SummaryCanStart;
+    } else return TaskStatus.SummaryCannotStart;
   }
 
   determineClassSummaryTask(model?: BuildingInspectorClass): TaskStatus {
@@ -318,8 +329,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       model?.InspectorCountryOfWork!.CompletionState! ===
         ComponentCompletionState.Complete
     ) {
-      return TaskStatus.None;
-    } else return TaskStatus.CannotStart;
+      return TaskStatus.SummaryCanStart;
+    } else return TaskStatus.SummaryCannotStart;
   }
 
   determineProfessionalMembershipSummaryTask(
@@ -330,41 +341,23 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       model?.CompletionState === ComponentCompletionState.Complete &&
       employeeModel?.CompletionState === ComponentCompletionState.Complete
     ) {
-      return TaskStatus.None;
+      return TaskStatus.SummaryCanStart;
     } else {
-      return TaskStatus.CannotStart;
+      return TaskStatus.SummaryCannotStart;
     }
   }
-
-  // StageStatus: Record<string, StageCompletionState> = {
-  //   EmailVerification: StageCompletionState.Incomplete,
-  //   PhoneVerification: StageCompletionState.Incomplete,
-  //   PersonalDetails: StageCompletionState.Incomplete,
-  //   BuildingInspectorClass: StageCompletionState.Incomplete,
-  //   Competency: StageCompletionState.Incomplete,
-  //   ProfessionalActivity: StageCompletionState.Incomplete,
-  //   Declaration: StageCompletionState.Incomplete,
-  //   Payment: StageCompletionState.Incomplete,
-  // };
 
   determineApplicationSummaryTask(
     model?: BuildingProfessionalModel
   ): TaskStatus {
     if (
-      model?.StageStatus!['EmailVerification'] ===
-        StageCompletionState.Complete &&
-      model?.StageStatus!['PhoneVerification'] ===
-        StageCompletionState.Complete &&
-      model?.StageStatus!['PersonalDetails'] ===
-        StageCompletionState.Complete &&
-      model?.StageStatus!['BuildingInspectorClass'] ===
-        StageCompletionState.Complete &&
-      model?.StageStatus!['Competency'] === StageCompletionState.Complete &&
-      model?.StageStatus!['ProfessionalActivity'] ===
-        StageCompletionState.Complete
+      this.determinePersonalSummaryTask(model!.PersonalDetails) === TaskStatus.SummaryCanStart &&
+      this.determineClassSummaryTask(model!.InspectorClass) === TaskStatus.SummaryCanStart &&
+      this.determineCompetencySummaryTask(model!.Competency) === TaskStatus.SummaryCanStart &&
+      this.determineProfessionalMembershipSummaryTask(model!.ProfessionalMemberships, model!.ProfessionalActivity.EmploymentDetails) === TaskStatus.SummaryCanStart
     ) {
-      return TaskStatus.None;
-    } else return TaskStatus.CannotStart;
+      return TaskStatus.SummaryCanStart;
+    } else return TaskStatus.SummaryCannotStart;
   }
 
   determineDeclarationPaymentTask(
@@ -773,4 +766,5 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     }
     this.checkingStatus = false;
   }
+
 }

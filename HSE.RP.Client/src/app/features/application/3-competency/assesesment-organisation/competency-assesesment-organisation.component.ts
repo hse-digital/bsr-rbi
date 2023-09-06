@@ -7,6 +7,8 @@ import { CompetencyRoutes } from '../CompetencyRoutes';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { CompetencyAssessmentCertificateNumberComponent } from '../assessment-certificate-number/competency-assessment-certificate-number.component';
 import { CompetencyAssessmentOrganisation } from 'src/app/models/competency-assessment-organisation.model';
+import { CompetencyAssessmentCertificateNumber } from 'src/app/models/competency-assessment-certificate-number.model';
+import { CompetencyDateOfAssessment } from 'src/app/models/competency-date-of-assessment.model';
 
 @Component({
   selector: 'hse-competency-assesesment-organisation',
@@ -56,18 +58,53 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
     this.applicationService = applicationService;
   }
 
+  override async saveAndComeBack(): Promise<void> {
+    this.processing = true;
+
+    const STATUS = this.applicationService.model.InspectorClass?.ClassType.CompletionState;
+
+    if (this.modelImplementsIComponent(this.model)) {
+      var componentModel = this.model;
+      if (componentModel.CompletionState === ComponentCompletionState.Complete) {
+        if(this.originalModelStringified !== JSON.stringify(this.model)) {
+          componentModel.CompletionState = ComponentCompletionState.InProgress;
+          this.applicationService.model.Competency!.CompetencyAssessmentCertificateNumber = new CompetencyAssessmentCertificateNumber();
+          this.applicationService.model.Competency!.CompetencyDateOfAssessment = new CompetencyDateOfAssessment();
+        }
+      }
+    }
+
+    if (!this.hasErrors) {
+      this.triggerScreenReaderNotification();
+      this.applicationService.updateLocalStorage();
+      await this.applicationService.updateApplication();
+      this.navigationService.navigate(
+        `application/${this.applicationService.model.id}`
+      );
+    } else {
+      this.focusAndUpdateErrors();
+    }
+
+    this.processing = false;
+
+  }
+
   override async onSave(applicationService: ApplicationService): Promise<void> {
     // if (['CABE', 'BSCF'].includes(this.selectedOption!)) {
     //   applicationService.model.Competency!.CompetencyAssessmentOrganisation!.ComAssessmentOrganisation =
     //     this.selectedOption!;
 
     this.applicationService.model.Competency!.CompetencyAssessmentOrganisation! = this.model!;
+
+    if(this.originalModelStringified !== JSON.stringify(this.model)) {
+      this.applicationService.model.Competency!.CompetencyAssessmentCertificateNumber = new CompetencyAssessmentCertificateNumber();
+      this.applicationService.model.Competency!.CompetencyDateOfAssessment = new CompetencyDateOfAssessment();
     }
 
     // if (this.model?.CompletionState !== ComponentCompletionState.InProgress) {
     //   applicationService.model.Competency!.CompetencyAssessmentOrganisation!.CompletionState =
     //     ComponentCompletionState.Complete;
-    // }
+     }
 
 
 

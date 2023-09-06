@@ -36,7 +36,8 @@
                   <a
                     *ngIf="
                       child.getStatus(model!) != valueCannotStart() &&
-                      child.getStatus(model!) != valueImmutable()
+                      child.getStatus(model!) != valueImmutable() &&
+                      child.getStatus(model!) != valueSummaryCannotStartTask()
                     "
                     class="govuk-link"
                     (keyup.enter)="navigateTo(parent, child)"
@@ -46,13 +47,12 @@
                     >{{ child.prompt }}</a
                   >
                   <span
-                    *ngIf="
-                      child.getStatus(model!) == valueCannotStart() ||
-                      child.getStatus(model!) == valueImmutable()
+                    *ngIf=" child.getStatus(model!) == valueCannotStart() || child.getStatus(model!) == valueImmutable() || child.getStatus(model!) == valueSummaryCannotStartTask()
                     "
                     >{{ child.prompt }}</span
                   >
                 </span>
+
                 <govuk-tag
                   tag
                   *ngIf="
