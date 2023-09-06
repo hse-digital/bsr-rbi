@@ -651,7 +651,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           relativeRoute: (): TaskListRoute => this.paymentRoute!,
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus => {
             if (this.checkingStatus == true) {
-              return TaskStatus.NotStarted;
+              return TaskStatus.CannotStart;
             } else {
               if (
                 this.model?.StageStatus['ApplicationConfirmed'] ==
