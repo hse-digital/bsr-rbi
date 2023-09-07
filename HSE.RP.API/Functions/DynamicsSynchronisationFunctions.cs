@@ -2097,7 +2097,7 @@ public class DynamicsSynchronisationFunctions
 
 
                 //If no competency assessment is selected, then create new registration for class 1
-                var dynamicsRegistrationClasses = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationClass>>(nameof(GetRegistrationClassesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+                dynamicsRegistrationClasses = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationClass>>(nameof(GetRegistrationClassesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
                 //Create new if doesnt exist
                 if (!dynamicsRegistrationClasses.Any(x => x._bsr_biclassid_value == BuildingInspectorClassNames.Ids[1] && x.statecode != 1))

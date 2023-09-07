@@ -170,15 +170,13 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   private isInspectorClassOne() {
     return (
-      this.model?.InspectorClass?.ClassType.Class ==
-      BuildingInspectorClassType.Class1
+      this.model?.InspectorClass?.ClassType.Class == BuildingInspectorClassType.Class1 && this.model?.InspectorClass?.ClassType.CompletionState==ComponentCompletionState.Complete
     );
   }
 
   private showCompetencyAssement(): void {
     if (
-      this.applicationService.model.Competency
-        ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'no'
+      (this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'no')
     ) {
       this.taskItems[2].children
         .filter(
@@ -237,6 +235,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     model?: IComponentModel,
     countryModel?: IComponentModel
   ): TaskStatus {
+
+    if(this.applicationService.model.InspectorClass?.ClassType.CompletionState!==ComponentCompletionState.Complete){
+      return TaskStatus.CannotStart;
+    }
+
     if (!model?.CompletionState) {
       return TaskStatus.CannotStart;
     } else if (
