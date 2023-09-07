@@ -1,5 +1,5 @@
 trigger:
-- main
+- cln-of-uat
 
 pool:
   vmImage: ubuntu-latest
