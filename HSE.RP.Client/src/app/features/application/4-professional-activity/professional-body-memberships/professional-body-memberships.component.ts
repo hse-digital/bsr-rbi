@@ -4,7 +4,7 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { ApplicationService } from '../../../../services/application.service';
 import { ProfessionalActivityEmploymentTypeComponent } from '../employment-type/professional-activity-employment-type.component';
-import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
+import { ApplicantProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper, ProfessionalBodies } from 'src/app/models/applicant-professional-body-membership';
 import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
@@ -95,6 +95,13 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     if (['no', 'yes'].includes(this.selectedOption)) {
+      if(this.selectedOption === 'no')
+      {
+        this.applicationService.model.ProfessionalMemberships.RICS = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.RICS.BodyCode)
+        this.applicationService.model.ProfessionalMemberships.CABE = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CABE.BodyCode)
+        this.applicationService.model.ProfessionalMemberships.CIOB = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CIOB.BodyCode)
+        this.applicationService.model.ProfessionalMemberships.OTHER = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.OTHER.BodyCode)
+      }
       applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo =
         this.selectedOption;
     }
