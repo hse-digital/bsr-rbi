@@ -4,6 +4,10 @@ param swaLocation string = 'westeurope'
 param d365lKeyPrefix string = ''
 param d365EnvironmentKey string = 'SQUAD3--Dynamics--EnvironmentUrl'
 param paymentAmountKey string = 'Integrations--PaymentAmount'
+param optionalAppName string = ''
+
+
+var appName = (optionalAppName == '') ? environment : optionalAppName
 
 @allowed([ 'Free', 'Standard' ])
 param sku string = 'Standard'
@@ -129,7 +133,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
 }
 
 resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
-    name: 's118-${environment}-bsr-acs-rp-fa'
+    name: 's118-${appName}-bsr-acs-rp-fa'
     location: location
     kind: 'functionapp'
     identity: {
@@ -256,7 +260,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
 }
 
 resource swa 'Microsoft.Web/staticSites@2022-03-01' = {
-    name: 's118-${environment}-bsr-acs-rp-swa'
+    name: 's118-${appName}-bsr-acs-rp-swa'
     location: swaLocation
     tags: null
     properties: {
@@ -283,7 +287,7 @@ resource swaAppSettings 'Microsoft.Web/staticSites/config@2022-03-01' = {
 }
 
 resource swaFunctionAppLink 'Microsoft.Web/staticSites/userProvidedFunctionApps@2022-03-01' = {
-    name: 's118-${environment}-bsr-acs-rp-swa-fa'
+    name: 's118-${appName}-bsr-acs-rp-swa-fa'
     parent: swa
     properties: {
         functionAppRegion: functionApp.location
