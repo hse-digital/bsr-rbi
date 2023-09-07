@@ -282,6 +282,57 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     }
   }
 
+  determineCompetencyTaskStatus(
+    model?: IComponentModel,
+    countryModel?: IComponentModel
+  ): TaskStatus {
+
+    if(this.applicationService.model.InspectorClass?.ClassType.CompletionState!==ComponentCompletionState.Complete || this.applicationService.model.InspectorClass?.InspectorCountryOfWork?.CompletionState!==ComponentCompletionState.Complete){
+      return TaskStatus.CannotStart;
+    }
+
+    if (!model?.CompletionState) {
+      return TaskStatus.CannotStart;
+    } else if (
+      model?.CompletionState == ComponentCompletionState.Complete &&
+      countryModel?.CompletionState == ComponentCompletionState.NotStarted
+    ) {
+      return TaskStatus.NotStarted;
+    } else if (
+      model?.CompletionState == ComponentCompletionState.InProgress &&
+      countryModel?.CompletionState == ComponentCompletionState.NotStarted
+    ) {
+      return TaskStatus.CannotStart;
+    } else if (
+      model?.CompletionState == ComponentCompletionState.Complete &&
+      countryModel?.CompletionState == ComponentCompletionState.NotStarted
+    ) {
+      return TaskStatus.NotStarted;
+    } else if (
+      model?.CompletionState == ComponentCompletionState.InProgress &&
+      countryModel?.CompletionState == ComponentCompletionState.InProgress
+    ) {
+      return TaskStatus.CannotStart;
+    } else if (
+      model?.CompletionState == ComponentCompletionState.InProgress &&
+      countryModel?.CompletionState == ComponentCompletionState.Complete
+    ) {
+      return TaskStatus.CannotStart;
+    } else if (
+      model?.CompletionState == ComponentCompletionState.Complete &&
+      countryModel?.CompletionState == ComponentCompletionState.InProgress
+    ) {
+      return TaskStatus.InProgress;
+    } else if (
+      model?.CompletionState == ComponentCompletionState.Complete &&
+      countryModel?.CompletionState == ComponentCompletionState.Complete
+    ) {
+      return TaskStatus.Complete;
+    } else {
+      return TaskStatus.None;
+    }
+  }
+
   determinePersonalSummaryTask(model?: PersonalDetails): TaskStatus {
     if (
       model?.ApplicantName!.CompletionState! ===
@@ -530,7 +581,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: CompetencyIndependentStatusComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determineTaskStatus(
+            this.determineCompetencyTaskStatus(
               aModel.InspectorClass?.InspectorCountryOfWork,
               aModel.Competency?.CompetencyIndependentAssessmentStatus
             ),
@@ -544,7 +595,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: CompetencyAssessmentOrganisationComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determineTaskStatus(
+            this.determineCompetencyTaskStatus(
               aModel.Competency?.CompetencyIndependentAssessmentStatus,
               aModel.Competency?.CompetencyAssessmentOrganisation
             ),
@@ -558,7 +609,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determineTaskStatus(
+            this.determineCompetencyTaskStatus(
               aModel.Competency?.CompetencyAssessmentOrganisation,
               aModel.Competency?.CompetencyAssessmentCertificateNumber
             ),
@@ -570,7 +621,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             return { route: CompetencyAssessmentDateComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.determineTaskStatus(
+            this.determineCompetencyTaskStatus(
               aModel.Competency?.CompetencyAssessmentCertificateNumber,
               aModel.Competency?.CompetencyDateOfAssessment
             ),
