@@ -116,17 +116,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    if(this.queryParam != null && this.queryParam != undefined && this.queryParam != '') {
-      if(this.queryParam == "application-summary" && this.resetIA == true)
-      {
-        //reset competency
-        this.applicationService.model.StageStatus['Competency'] = StageCompletionState.Incomplete;
-        this.applicationService.model.Competency = new Competency();
-        return this.navigationService.navigate(
-          `application/${this.applicationService.model.id}`
-        );
-      }
-    }
+
 
     return this.buildingInspectorRouter.navigateTo(
       this.applicationService.model,

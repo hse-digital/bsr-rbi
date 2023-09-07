@@ -102,11 +102,12 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     if (this.resetIA === true) {
-      if(this.model?.Class === BuildingInspectorClassType.Class1){
-        this.applicationService.model.InspectorClass!.ClassType!.Class = this.originalOption;
-      }
-      else{
-        this.applicationService.model.InspectorClass!.ClassType!.Class = this.model?.Class;
+      if (this.model?.Class === BuildingInspectorClassType.Class1) {
+        this.applicationService.model.InspectorClass!.ClassType!.Class =
+          this.originalOption;
+      } else {
+        this.applicationService.model.InspectorClass!.ClassType!.Class =
+          this.model?.Class;
       }
     } else {
       this.applicationService.model.InspectorClass!.ClassType!.Class =
@@ -178,13 +179,15 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
     ) {
       const queryParam = this.queryParam;
       if (this.queryParam == 'application-summary') {
-
-        if (this.resetIA === true && this.model?.Class === BuildingInspectorClassType.Class1) {
-          return this.navigationService.navigateRelative(
-            `../application-submission/${ApplicationSummaryComponent.route}`,
-            this.activatedRoute
-          );
-        }
+        // if (
+        //   this.resetIA === true &&
+        //   this.model?.Class === BuildingInspectorClassType.Class1
+        // ) {
+        //   return this.navigationService.navigateRelative(
+        //     `../application-submission/${ApplicationSummaryComponent.route}`,
+        //     this.activatedRoute
+        //   );
+        // }
 
         // if (this.model?.Class === this.originalOption) {
         //   return this.navigationService.navigateRelative(
@@ -203,16 +206,30 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
 
         if (this.model?.Class === BuildingInspectorClassType.Class1) {
           return this.navigationService.navigateRelative(
-            BuildingInspectorCountryComponent.route,
-            this.activatedRoute,
-            { queryParam: queryParam }
+            `../application-submission/${ApplicationSummaryComponent.route}`,
+            this.activatedRoute
           );
-        } else {
+        } else if(this.originalOption === this.model?.Class) {
+          return this.navigationService.navigateRelative(
+            `../application-submission/${ApplicationSummaryComponent.route}`,
+            this.activatedRoute
+          );
+        }
+        else {
+          if(this.originalOption == BuildingInspectorClassType.Class1 && (this.model?.Class == BuildingInspectorClassType.Class2 || this.model?.Class == BuildingInspectorClassType.Class3)) {
+            return this.navigationService.navigateRelative(
+              BuildingInspectorRegulatedActivitiesComponent.route,
+              this.activatedRoute,
+              { resetIA: true, queryParam: queryParam }
+            );
+          }
+          else{
           return this.navigationService.navigateRelative(
             BuildingInspectorRegulatedActivitiesComponent.route,
             this.activatedRoute,
             { resetIA: this.resetIA, queryParam: queryParam }
           );
+          }
         }
       }
     }
