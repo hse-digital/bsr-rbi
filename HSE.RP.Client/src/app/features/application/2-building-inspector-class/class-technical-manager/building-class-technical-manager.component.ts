@@ -11,6 +11,8 @@ import { BuildingInspectorSummaryComponent } from '../building-inspector-summary
 import { IComponentModel } from '../../../../models/component. interface';
 import { ComponentCompletionState } from '../../../../models/component-completion-state.enum';
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
+import { Competency } from 'src/app/models/competency.model';
+import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 
 class YesNoModel implements IComponentModel {
   YesNo: string = '';
@@ -104,13 +106,12 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
     }
 
 
-
     else if(this.queryParam == "application-summary" && this.resetIA == true)
     {
-      return this.navigationService.navigateRelative(
-        'building-inspector-country',
-        this.activatedRoute,
-        { resetIA: this.resetIA, queryParam: this.queryParam }
+      this.applicationService.model.StageStatus['Competency'] = StageCompletionState.Incomplete;
+      this.applicationService.model.Competency = new Competency();
+      return this.navigationService.navigate(
+        `application/${this.applicationService.model.id}`
       );
     }
 
