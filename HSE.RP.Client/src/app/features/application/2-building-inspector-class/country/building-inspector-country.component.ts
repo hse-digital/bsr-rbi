@@ -115,7 +115,6 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       var componentModel = this.model as IComponentModel;
       if (componentModel.CompletionState === ComponentCompletionState.Complete) {
         if(this.originalModelStringified !== JSON.stringify(this.model)) {
-          console.log('model changed');
           componentModel.CompletionState = ComponentCompletionState.InProgress;
         }
       }

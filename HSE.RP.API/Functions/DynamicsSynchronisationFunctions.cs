@@ -267,12 +267,15 @@ public class DynamicsSynchronisationFunctions
         if (dynamicsBuildingProfessionApplication != null)
         {
 
-            if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == true)
+            if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == true || buildingProfessionApplicationModel.Competency.CompetencyIndependentAssessmentStatus.IAStatus == "no")
             {
 
-                await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
+                await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplicationCompetency), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
                 {
-                    bsr_hasindependentassessment = false
+                    bsr_hasindependentassessment = false,
+                    bsr_assessmentorganisationid = null,
+                    bsr_assessmentdate = null,
+                    bsr_assessmentcertnumber = null
                 }));
 
 
@@ -294,7 +297,8 @@ public class DynamicsSynchronisationFunctions
                 }
 
             }
-            if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == false)
+
+            if (buildingProfessionApplicationModel.Competency.CompetencyIndependentAssessmentStatus.IAStatus == "yes")
             {
                 await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplicationCompetency), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
                 {
@@ -1286,11 +1290,10 @@ public class DynamicsSynchronisationFunctions
         //var stage = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_applicationstage == BuildingApplicationStage.ApplicationSubmitted ? BuildingApplicationStage.ApplicationSubmitted : buildingProfessionApplicationWrapper.Stage;
         return dynamicsService.UpdateBuildingProfessionApplicationCompetency(buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication, new DynamicsBuildingProfessionApplication
         {
-            bsr_hasindependentassessment = true,
+            bsr_hasindependentassessment = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_hasindependentassessment,
             bsr_assessmentorganisationid = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_assessmentorganisationid,
             bsr_assessmentdate = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_assessmentdate,
             bsr_assessmentcertnumber = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_assessmentcertnumber
-
         });
     }
 
@@ -2081,12 +2084,15 @@ public class DynamicsSynchronisationFunctions
             }
 
 
-            if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == true)
+            if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == true || buildingProfessionApplicationModel.Competency.CompetencyIndependentAssessmentStatus.IAStatus == "no")
             {
 
-                await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplication), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
+                await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplicationCompetency), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
                 {
-                    bsr_hasindependentassessment = false
+                    bsr_hasindependentassessment = false,
+                    bsr_assessmentorganisationid = null,
+                    bsr_assessmentdate = null,
+                    bsr_assessmentcertnumber = null
                 }));
 
 
@@ -2108,7 +2114,8 @@ public class DynamicsSynchronisationFunctions
                 }
 
             }
-            if (buildingProfessionApplicationModel.Competency.NoCompetencyAssessment.Declaration == false)
+
+            if (buildingProfessionApplicationModel.Competency.CompetencyIndependentAssessmentStatus.IAStatus == "yes")
             {
                 await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplicationCompetency), new BuildingProfessionApplicationWrapper(buildingProfessionApplicationModel, dynamicsBuildingProfessionApplication with
                 {
