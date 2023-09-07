@@ -65,6 +65,7 @@ import { Competency } from 'src/app/models/competency.model';
 import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
 import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-details';
 import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../4-professional-activity/professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
+import { ClassSelection } from 'src/app/models/class-selection.model';
 
 interface ITaskListParent {
   prompt: string;
@@ -92,8 +93,7 @@ export enum TaskStatus {
   None = 4,
   Immutable = 5,
   SummaryCanStart = 6,
-
-  SummaryCannotStart = 7,
+  SummaryCannotStart = 7
 }
 
 @Component({
@@ -302,10 +302,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   determineCompetencySummaryTask(model?: Competency): TaskStatus {
     if (
-      this.applicationService.model.Competency
-        ?.CompetencyIndependentAssessmentStatus?.IAStatus === 'no' &&
-      model?.CompetencyIndependentAssessmentStatus!.CompletionState! ===
-        ComponentCompletionState.Complete
+      this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'no' &&
+      model?.CompetencyIndependentAssessmentStatus!.CompletionState! === ComponentCompletionState.Complete
     ) {
       return TaskStatus.SummaryCanStart;
     } else if (
@@ -353,7 +351,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     if (
       this.determinePersonalSummaryTask(model!.PersonalDetails) === TaskStatus.SummaryCanStart &&
       this.determineClassSummaryTask(model!.InspectorClass) === TaskStatus.SummaryCanStart &&
-      this.determineCompetencySummaryTask(model!.Competency) === TaskStatus.SummaryCanStart &&
+      (this.determineCompetencySummaryTask(model!.Competency) === TaskStatus.SummaryCanStart || model!.InspectorClass?.ClassType.Class == BuildingInspectorClassType.Class1) &&
       this.determineProfessionalMembershipSummaryTask(model!.ProfessionalMemberships, model!.ProfessionalActivity.EmploymentDetails) === TaskStatus.SummaryCanStart
     ) {
       return TaskStatus.SummaryCanStart;
