@@ -51,7 +51,8 @@ const routes = new HseRoutes([
     ReturningApplicationResendCodeComponent,
     ReturningApplicationVerifyComponent,
     TimeoutComponent,
-    SampleComponent
+    SampleComponent,
+
     ],
   imports: [
     RouterModule.forRoot(routes.getRoutes(), { initialNavigation: 'enabledBlocking', scrollPositionRestoration: 'enabled' }),

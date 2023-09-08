@@ -209,11 +209,22 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
             `../application-submission/${ApplicationSummaryComponent.route}`,
             this.activatedRoute
           );
-        } else if(this.originalOption === this.model?.Class) {
+        }
+        else if(this.originalOption === this.model?.Class) {
+          if(this.resetIA===false)
+          {
           return this.navigationService.navigateRelative(
             `../application-submission/${ApplicationSummaryComponent.route}`,
             this.activatedRoute
           );
+          }
+          else{
+            return this.navigationService.navigateRelative(
+              BuildingInspectorRegulatedActivitiesComponent.route,
+              this.activatedRoute,
+              { resetIA: true, queryParam: queryParam }
+            );
+          }
         }
         else {
           if(this.originalOption == BuildingInspectorClassType.Class1 && (this.model?.Class == BuildingInspectorClassType.Class2 || this.model?.Class == BuildingInspectorClassType.Class3)) {
@@ -232,6 +243,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
           }
         }
       }
+
     }
     if (this.model?.Class === BuildingInspectorClassType.Class1) {
       return this.navigationService.navigateRelative(
