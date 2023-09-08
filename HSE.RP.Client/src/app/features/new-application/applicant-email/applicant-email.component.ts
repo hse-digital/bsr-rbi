@@ -21,7 +21,11 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
   production: boolean = environment.production;
   emailHasErrors: boolean = false;
   duplicateApplication: boolean = false;
-  duplicateApplicationMessage: string = "There is already an application associated with your email address. Contact BSR [link to contact BSR service]"
+  duplicateApplicationMessage: string = "There is already an application associated with your email address. "
+  // duplicateApplicationLinkText?: string = "here"
+  // duplicateApplicationLinkUri?: string = "https://contact-the-building-safety-regulator.hse.gov.uk"
+  duplicateApplicationLinkText?: string
+  duplicateApplicationLinkUri?: string
   emailErrorMessage: string = "Enter a valid email address";
   modelValid: boolean = false;
 
@@ -35,6 +39,7 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
       applicationService.model.PersonalDetails!.ApplicantEmail = new ApplicantEmail();
     }
     this.model = applicationService.model.PersonalDetails?.ApplicantEmail;
+    console.log(this.model);
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -45,9 +50,10 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
   override canAccess(applicationService: ApplicationService, routeSnapshot: ActivatedRouteSnapshot): boolean {
     return applicationService.model.PersonalDetails?.ApplicantName?.CompletionState == ComponentCompletionState.Complete;
   }
-
   override isValid(): boolean {
-    console.log(this.duplicateApplication);
+
+    this.duplicateApplicationLinkText = undefined;
+    this.duplicateApplicationLinkUri = undefined;
 
     this.emailHasErrors = false;
 
@@ -59,10 +65,13 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
     else if (this.duplicateApplication == true){
       this.emailHasErrors = true;
       this.emailErrorMessage = this.duplicateApplicationMessage;
+      this.duplicateApplicationLinkText = "Contact BSR"
+      this.duplicateApplicationLinkUri = "https://contact-the-building-safety-regulator.hse.gov.uk"
+
     }
     else {
       this.emailHasErrors = !EmailValidator.isValid(this.model!.Email ?? '');
-      this.emailErrorMessage = "Enter a valid email address";
+      this.emailErrorMessage = `Enter a valid email address`;
     }
 
 

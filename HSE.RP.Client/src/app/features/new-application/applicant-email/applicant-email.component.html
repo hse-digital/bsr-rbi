@@ -2,7 +2,7 @@
 <govuk-formpage saveAndContinueText="Send verification email" [hideSaveAndComeBack]=true (saveAndContinue)="DuplicateApplicationCheck()" [hideBackButton]=false>
 
   <govuk-error-summary *ngIf="emailHasErrors" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="!modelValid" anchorId="applicant-email" message={{emailErrorMessage}} />
+    <govuk-summary-error-linkable *ngIf="emailHasErrors" anchorId="applicant-email" message={{emailErrorMessage}} linkText={{duplicateApplicationLinkText}} linkUri={{duplicateApplicationLinkUri}}/>
   </govuk-error-summary>
 
 
@@ -33,12 +33,14 @@
 
   <govuk-body>If you do not have an email address, <a href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm" class="govuk-link" target="_blank">contact us</a> apply to register as a building inspector.</govuk-body>
 
-  <govuk-input id="applicant-email" label="Enter your email address"
+  <govuk-input-linkable id="applicant-email" label="Enter your email address"
                [(model)]="model!.Email" [maxlength]=100
                labelClass="govuk-label--s"
                [errorText]="getErrorDescription(!modelValid, emailErrorMessage)"
                hintClass="no-margin-top"
                class="govuk-!-margin-bottom-1"
-               (onKeyupEnter)="saveAndContinue()" />
+               (onKeyupEnter)="saveAndContinue()"
+               [linkText]="duplicateApplicationLinkText!"
+               [linkUri]="duplicateApplicationLinkUri!" />
 
 </govuk-formpage>
