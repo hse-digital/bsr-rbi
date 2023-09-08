@@ -13,4 +13,4 @@
 
 <govuk-button (onClick)="continue()">Save and continue</govuk-button>
 <govuk-body><a class="govuk-link" (keyup.enter)="onSearchAgain.emit()" (click)="onSearchAgain.emit()" role="link" tabindex="0">Search again</a></govuk-body>
-<govuk-body *ngIf="!title"><a class="govuk-link" (keyup.enter)="onEnterManualAddress.emit()" (click)="onEnterManualAddress.emit()" role="link" tabindex="0">Enter address manually</a></govuk-body>
+<govuk-body><a class="govuk-link" (keyup.enter)="onEnterManualAddress.emit()" (click)="onEnterManualAddress.emit()" role="link" tabindex="0">Enter address manually</a></govuk-body>
