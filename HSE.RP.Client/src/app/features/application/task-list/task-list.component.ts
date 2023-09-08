@@ -358,6 +358,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     if (
       this.applicationService.model.Competency?.CompetencyIndependentAssessmentStatus?.IAStatus === 'no' &&
       model?.CompetencyIndependentAssessmentStatus!.CompletionState! === ComponentCompletionState.Complete
+      && this.determineClassSummaryTask(this.applicationService.model.InspectorClass) === TaskStatus.SummaryCanStart
     ) {
       return TaskStatus.SummaryCanStart;
     } else if (
@@ -369,6 +370,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
         ComponentCompletionState.Complete &&
       model?.CompetencyAssessmentCertificateNumber!.CompletionState! ===
         ComponentCompletionState.Complete
+        &&
+        this.determineClassSummaryTask(this.applicationService.model.InspectorClass) === TaskStatus.SummaryCanStart
     ) {
       return TaskStatus.SummaryCanStart;
     } else return TaskStatus.SummaryCannotStart;
