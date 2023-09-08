@@ -10,6 +10,8 @@ export class NotFoundAddressComponent {
   @Input() searchModel: { postcode?: string, addressLine1?: string } = {};
   @Input() addressName!: string;
   @Input() selfAddress = false;
+  @Input() isBusinessAddressSearch: string = "false";
+
   @Output() onSearchAgain = new EventEmitter();
   @Output() onEnterManualAddress = new EventEmitter();
 

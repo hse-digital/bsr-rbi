@@ -9,6 +9,8 @@ export class TooManyAddressComponent {
 
   @Input() searchModel!: { postcode?: string, addressLine1?: string };
   @Input() addressName!: string;
+  @Input() isBusinessAddressSearch: string = "false";
+
   @Output() onSearchAgain = new EventEmitter();
   @Output() onEnterManualAddress = new EventEmitter();
   @Input() selfAddress = false;

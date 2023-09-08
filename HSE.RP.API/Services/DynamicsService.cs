@@ -304,22 +304,43 @@ namespace HSE.RP.API.Services
                     bsr_amountpaid = Math.Round((float)payment.Amount / 100, 2),
                     bsr_govukpaystatus = payment.Status,
                     bsr_govukpaymentid = payment.PaymentId
+                    
                 });
             }
             else
             {
                 var dynamicsPayment = existingPayment.value[0];
-                await dynamicsApi.Update($"bsr_payments({dynamicsPayment.bsr_paymentid})", new DynamicsPayment
+
+                if (payment.Status == "failed")
                 {
-                    bsr_timeanddateoftransaction = payment.CreatedDate,
-                    bsr_govukpaystatus = payment.Status,
-                    bsr_cardexpirydate = payment.CardExpiryDate,
-                    bsr_billingaddress = string.Join(", ", new[] { payment.AddressLineOne, payment.AddressLineTwo, payment.Postcode, payment.City, payment.Country }.Where(x => !string.IsNullOrWhiteSpace(x))),
-                    bsr_cardbrandegvisa = payment.CardBrand,
-                    bsr_cardtypecreditdebit = payment.CardType == "debit" ? DynamicsPaymentCardType.Debit : DynamicsPaymentCardType.Credit,
-                    bsr_lastfourdigitsofcardnumber = payment.LastFourDigitsCardNumber,
-                    bsr_amountpaid = Math.Round((float)payment.Amount / 100, 2)
-                });
+                    await dynamicsApi.Update($"bsr_payments({dynamicsPayment.bsr_paymentid})", new DynamicsPayment
+                    {
+                        bsr_timeanddateoftransaction = payment.CreatedDate,
+                        bsr_govukpaystatus = payment.Status,
+                        bsr_cardexpirydate = payment.CardExpiryDate,
+                        bsr_billingaddress = string.Join(", ", new[] { payment.AddressLineOne, payment.AddressLineTwo, payment.Postcode, payment.City, payment.Country }.Where(x => !string.IsNullOrWhiteSpace(x))),
+                        bsr_cardbrandegvisa = payment.CardBrand,
+                        bsr_cardtypecreditdebit = payment.CardType == "debit" ? DynamicsPaymentCardType.Debit : DynamicsPaymentCardType.Credit,
+                        bsr_lastfourdigitsofcardnumber = payment.LastFourDigitsCardNumber,
+                        bsr_amountpaid = Math.Round((float)payment.Amount / 100, 2),
+                        bsr_paymentreconciliationstatus = DynamicsPaymentReconciliationStatus.FailedPayment
+                    });
+                }
+                else
+                {
+                    await dynamicsApi.Update($"bsr_payments({dynamicsPayment.bsr_paymentid})", new DynamicsPayment
+                    {
+                        bsr_timeanddateoftransaction = payment.CreatedDate,
+                        bsr_govukpaystatus = payment.Status,
+                        bsr_cardexpirydate = payment.CardExpiryDate,
+                        bsr_billingaddress = string.Join(", ", new[] { payment.AddressLineOne, payment.AddressLineTwo, payment.Postcode, payment.City, payment.Country }.Where(x => !string.IsNullOrWhiteSpace(x))),
+                        bsr_cardbrandegvisa = payment.CardBrand,
+                        bsr_cardtypecreditdebit = payment.CardType == "debit" ? DynamicsPaymentCardType.Debit : DynamicsPaymentCardType.Credit,
+                        bsr_lastfourdigitsofcardnumber = payment.LastFourDigitsCardNumber,
+                        bsr_amountpaid = Math.Round((float)payment.Amount / 100, 2)
+
+                    });
+                }
             }
         }
 

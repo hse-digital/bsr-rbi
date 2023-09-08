@@ -9,6 +9,8 @@
   [searchMode]="searchMode"
   (onAddressConfirmed)="addressConfirmed($event)"
   (onChangeStep)="changeStep($event)"
+  isBusinessAddressSearch="true"
+
 >
 </hse-address>
 
@@ -25,5 +27,6 @@
   (onChangeStep)="changeStep($event)"
   step={{step}}
   [address]="address"
+  isBusinessAddressSearch="true"
 >
 </hse-address>

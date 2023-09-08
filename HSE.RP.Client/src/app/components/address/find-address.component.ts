@@ -19,6 +19,8 @@ export class FindAddressComponent {
   @Input() addressBodyText?: string;
   @Input() selfAddress = false;
   @Input() showOptionalAddressLineOne = false;
+  @Input() isBusinessAddressSearch: string = "false";
+
   @Output() public onSearchPerformed = new EventEmitter<AddressResponseModel>();
 
   postcodeHasErrors: boolean = false;

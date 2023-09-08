@@ -17,6 +17,7 @@ export class AddressComponent implements OnInit {
   @Input() addressBodyText?: string;
   @Input() title?: string;
   @Input() addressManualyDisplayStep?: string;
+  @Input() isBusinessAddressSearch: string = "false";
   @Input() orgFullName?: string;
   @Input() selfAddress = false;
   @Input() showOptionalAddressLineOne = false;

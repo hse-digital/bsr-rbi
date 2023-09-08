@@ -25,6 +25,7 @@ export class SelectAddressComponent {
   @Input() searchModel: { postcode?: string; addressLine1?: string } = {};
   @Input() selfAddress = false;
   @Input() title?: string;
+  @Input() isBusinessAddressSearch: string = "false";
 
   @Output() onAddressSelected = new EventEmitter<AddressModel>();
   @Output() onSearchAgain = new EventEmitter();

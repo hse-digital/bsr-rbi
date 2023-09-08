@@ -19,6 +19,7 @@
         [searchMode]="searchMode"
         [showOptionalAddressLineOne]="showOptionalAddressLineOne"
         [searchModel]="searchModel"
+        [isBusinessAddressSearch]="isBusinessAddressSearch"
         (onSearchPerformed)="searchPerformed($event)"
       />
       <select-address
@@ -30,6 +31,7 @@
         [title]="title"
         (onAddressSelected)="addressSelected($event)"
         (onSearchAgain)="searchAgain()"
+        [isBusinessAddressSearch]="isBusinessAddressSearch"
         (onEnterManualAddress)="enterManualAddress()"
       />
       <not-found-address
@@ -38,6 +40,7 @@
         [selfAddress]="selfAddress"
         [searchModel]="searchModel"
         (onSearchAgain)="searchAgain()"
+        [isBusinessAddressSearch]="isBusinessAddressSearch"
         (onEnterManualAddress)="enterManualAddress()"
       />
       <too-many-address
@@ -46,6 +49,7 @@
         [selfAddress]="selfAddress"
         [searchModel]="searchModel"
         (onSearchAgain)="searchAgain()"
+        [isBusinessAddressSearch]="isBusinessAddressSearch"
         (onEnterManualAddress)="enterManualAddress()"
       />
       <manual-address
@@ -57,8 +61,10 @@
         [addressManualyDisplayStep]="addressManualyDisplayStep"
         [orgFullName]="orgFullName"
         (onSearchAgain)="searchAgain()"
+        [isBusinessAddressSearch]="isBusinessAddressSearch"
         (onAddressEntered)="manualAddressEntered($event)"
       />
+
       <confirm-address
         *ngIf="step == 'confirm'"
         [addressName]="addressName"
@@ -67,6 +73,7 @@
         [orgFullName]="orgFullName"
         (onAddressConfirmed)="addressConfirmed()"
         [address]="address!"
+        [isBusinessAddressSearch]="isBusinessAddressSearch"
         (onSearchAgain)="searchAgain()"
         (onEnterManualAddress)="enterManualAddress()"
       />

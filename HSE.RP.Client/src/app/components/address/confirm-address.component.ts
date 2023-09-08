@@ -17,6 +17,7 @@ export class ConfirmAddressComponent {
   @Input() addressName?: string;
   @Input() selfAddress = false;
   @Input() addressManualyDisplayStep?: string;
+  @Input() isBusinessAddressSearch: string = "false";
   @Input() orgFullName?: string;
   @Output() onAddressConfirmed = new EventEmitter<boolean | undefined>();
   @Output() onSearchAgain = new EventEmitter();
@@ -32,10 +33,10 @@ export class ConfirmAddressComponent {
   }
 
   getTitle(): string {
-    
+
     let localTitle = 'Confirm your home address';
 
-    if (this.addressManualyDisplayStep === 'manual') {
+    if (this.isBusinessAddressSearch === "true") {
 
       if (this.orgFullName !== '') {
         localTitle = `Confirm address of ${this.orgFullName}`;

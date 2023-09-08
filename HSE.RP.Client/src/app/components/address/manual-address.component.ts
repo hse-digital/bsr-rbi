@@ -27,6 +27,8 @@ export class ManualAddressComponent {
   @Input() title?: string;
   @Input() addressManualyDisplayStep?: string;
   @Input() orgFullName?: string;
+  @Input() isBusinessAddressSearch: string = "false";
+
 
   postcodeHasErrors = false;
   postcodeErrorMessage?: string;
