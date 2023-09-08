@@ -706,7 +706,7 @@ namespace HSE.RP.API.Services
         {
 
 #if DEBUG
-            return false;
+            //return false;
 #endif
             //Check for existing contact
             var contact = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]

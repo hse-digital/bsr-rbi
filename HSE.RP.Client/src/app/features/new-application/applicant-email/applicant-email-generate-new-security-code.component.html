@@ -1,7 +1,5 @@
-<govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-
-<govuk-formpage saveAndContinueText="Send new security Code" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Send new security Code" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
 
 
   <h1 class="govuk-heading-l">Generate a new security code</h1>

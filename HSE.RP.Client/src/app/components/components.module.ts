@@ -19,6 +19,10 @@ import { ApplicationSummaryPersonalDetailsComponent } from './application-summar
 import { ApplicationSummaryBuildingInspectorClassDetailsComponent } from "./application-summary/building-inspector-class-summary/building-inspector-class-details.component";
 import { ApplicationSummaryCompetencyDetailsComponent } from "./application-summary/competency-summary/competency.component";
 import { ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent } from "./application-summary/professional-membership-and-employment-summary/professional-membership-and-employment-details.component";
+import { GovukErrorLinkableComponent, GovukSummaryErrorLinkableComponent } from "./govuk-error-linkable/govuk-error-linkable.component";
+import { GovukInputLinkableComponent } from "./govuk-input-linkable/govuk-input-linkable.component";
+import { FormsModule } from "@angular/forms";
+import { GovukFieldLinkableComponent } from "./govuk-field-linkable/govuk-field-linkable.component";
 
 
 
@@ -37,12 +41,17 @@ import { ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent }
     ApplicationSummaryPersonalDetailsComponent,
     ApplicationSummaryBuildingInspectorClassDetailsComponent,
     ApplicationSummaryCompetencyDetailsComponent,
-    ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent
+    ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent,
+    GovukSummaryErrorLinkableComponent,
+    GovukErrorLinkableComponent,
+    GovukInputLinkableComponent,
+    GovukFieldLinkableComponent
   ],
   imports: [
     HseAngularModule,
     CommonModule,
     HttpClientModule,
+    FormsModule
   ],
   exports: [
     GovukRequiredDirective,
@@ -52,7 +61,13 @@ import { ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent }
     ApplicationSummaryPersonalDetailsComponent,
     ApplicationSummaryBuildingInspectorClassDetailsComponent,
     ApplicationSummaryCompetencyDetailsComponent,
-    ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent
+    ApplicationSummaryProfessionalMembershipAndEmploymentDetailsComponent,
+    GovukSummaryErrorLinkableComponent,
+    GovukErrorLinkableComponent,
+    GovukInputLinkableComponent,
+    GovukFieldLinkableComponent
+
+
 
 
   ],
