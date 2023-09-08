@@ -1,6 +1,5 @@
-<govuk-back-link *ngIf="!production">Back</govuk-back-link>
 
-<govuk-formpage saveAndContinueText="Send verification email" [hideSaveAndComeBack]=true (saveAndContinue)="DuplicateApplicationCheck()" [hideBackButton]=true>
+<govuk-formpage saveAndContinueText="Send verification email" [hideSaveAndComeBack]=true (saveAndContinue)="DuplicateApplicationCheck()" [hideBackButton]=false>
 
   <govuk-error-summary *ngIf="emailHasErrors" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="!modelValid" anchorId="applicant-email" message={{emailErrorMessage}} />
