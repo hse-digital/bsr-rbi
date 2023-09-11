@@ -68,7 +68,7 @@ export class ReturningApplicationEnterDataComponent {
     this.errors.applicationNumber.hasError = false;
     this.errors.verificationOption.hasError = false;
     this.errors.serviceError.hasError = false;
-    this.sendingRequest = false;
+    this.sendingRequest = true;
 
 
 
@@ -137,6 +137,7 @@ export class ReturningApplicationEnterDataComponent {
           verificationEmail: this.verificationEmail,
           verificationPhone: this.verificationPhone,
         };
+        this.sendingRequest = false;
         this.onContinue.emit(this.VerificationData);
       }
       else
