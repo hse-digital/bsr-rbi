@@ -21,22 +21,25 @@
     Your certificate number
   </h1>
 
-  <govuk-body *ngIf="organisationPrefix == 'CABE'">
-    <govuk-input hint="For example, CABE1262IJSBFAHS840"
-     aria-labelledby="certificate-header"
+  <div *ngIf="organisationPrefix == 'CABE'">
+    <govuk-input
+      id="certificate-number"
+      hint="For example, CABE1262IJSBFAHS840"
+      aria-labelledby="certificate-header"
       [maxlength]=20
       [(model)]="model!.CertificateNumber"
       >
     </govuk-input>
-  </govuk-body>
+  </div>
 
-  <govuk-body *ngIf="organisationPrefix == 'BSCF'">
+  <div *ngIf="organisationPrefix == 'BSCF'">
     <govuk-input hint="For example, BSCF1262IJSBFAHS840"
-    aria-labelledby="certificate-header"
+      id="certificate-number"
+      aria-labelledby="certificate-header"
       [maxlength]=20
       [(model)]="model!.CertificateNumber"
       >
     </govuk-input>
-  </govuk-body>
+  </div>
 
 </govuk-formpage>
