@@ -28,7 +28,7 @@ import { ApplicationSummaryComponent } from '../../5-application-submission/appl
 export class ApplicantNationalInsuranceNumberComponent extends PageComponent<ApplicantNationalInsuranceNumber> {
   public static route: string = PersonalDetailRoutes.NATIONAL_INS_NUMBER;
   static title: string =
-    'Personal details - Register as a building inspector - GOV.UK';
+    'Personal details - National insurance number - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   nsiHasErrors: boolean = false;
   nsiIsNullOrWhiteSpace: boolean = false;

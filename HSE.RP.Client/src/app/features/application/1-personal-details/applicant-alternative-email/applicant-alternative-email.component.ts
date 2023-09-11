@@ -22,7 +22,7 @@ import { ApplicationSummaryComponent } from '../../5-application-submission/appl
 export class ApplicantAlternativeEmailComponent extends PageComponent<ApplicantEmail> {
   public static route: string = PersonalDetailRoutes.ALT_EMAIL;
   static title: string =
-    'Personal details - Register as a building inspector - GOV.UK';
+    'Personal details - Alternative email - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   emailHasErrors: boolean = false;
   emailErrorMessage: string = '';

@@ -30,7 +30,7 @@ import { ApplicationSummaryComponent } from '../../5-application-submission/appl
 export class ApplicantAddressComponent extends PageComponent<AddressModel> {
   public static route: string = PersonalDetailRoutes.ADDRESS;
   static title: string =
-    'Personal details - Register as a building inspector - GOV.UK';
+    'Personal details - Address - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   searchMode = AddressSearchMode.HomeAddress;
