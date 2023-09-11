@@ -30,7 +30,7 @@
     "govuk-frontend": "^4.4.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
-    "hse-angular": "file:../packages/hse-angular-0.0.99.tgz",
+    "hse-angular": "file:../packages/hse-angular-0.0.101.tgz",
     "rxjs": "~7.5.0",
     "to": "^0.2.9",
     "tslib": "^2.3.0",
