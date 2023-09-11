@@ -57,7 +57,7 @@ type DobValidationItem = {
 export class ApplicantDateOfBirthComponent extends PageComponent<DateInputControlDate> {
   public static route: string = PersonalDetailRoutes.DATE_OF_BIRTH;
   static title: string =
-    'Personal details - Register as a building inspector - GOV.UK';
+    'Personal details - Date of birth - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   queryParam?: string = '';

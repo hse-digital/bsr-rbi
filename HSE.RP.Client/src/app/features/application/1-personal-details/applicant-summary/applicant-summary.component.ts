@@ -29,7 +29,7 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
 
   public static route: string = PersonalDetailRoutes.SUMMARY;
   static title: string =
-    'Personal details - Register as a building inspector - GOV.UK';
+    'Personal details - Summary - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

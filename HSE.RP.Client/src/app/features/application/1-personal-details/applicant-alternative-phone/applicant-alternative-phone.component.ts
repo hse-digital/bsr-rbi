@@ -22,7 +22,7 @@ import { ApplicationSummaryComponent } from '../../5-application-submission/appl
 export class ApplicantAlternativePhoneComponent extends PageComponent<ApplicantPhone> {
   public static route: string = PersonalDetailRoutes.ALT_PHONE;
   static title: string =
-    'Personal details - Register as a building inspector - GOV.UK';
+    'Personal details - Alternative phone number - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   phoneNumberHasErrors = false;
