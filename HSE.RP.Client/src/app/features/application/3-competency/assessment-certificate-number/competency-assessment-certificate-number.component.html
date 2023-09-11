@@ -17,12 +17,13 @@
     />
   </govuk-error-summary>
 
-  <h1 class="govuk-heading-l">
+  <h1 class="govuk-heading-l" id="certificate-header">
     Your certificate number
   </h1>
 
   <govuk-body *ngIf="organisationPrefix == 'CABE'">
     <govuk-input hint="For example, CABE1262IJSBFAHS840"
+     aria-labelledby="certificate-header"
       [maxlength]=20
       [(model)]="model!.CertificateNumber"
       >
@@ -31,6 +32,7 @@
 
   <govuk-body *ngIf="organisationPrefix == 'BSCF'">
     <govuk-input hint="For example, BSCF1262IJSBFAHS840"
+    aria-labelledby="certificate-header"
       [maxlength]=20
       [(model)]="model!.CertificateNumber"
       >

@@ -13,6 +13,7 @@ export class TimeoutModalComponent implements OnInit {
     @Output() onSaveAndComebackClicked = new EventEmitter();
     @Output() onTimeout = new EventEmitter();
 
+
     interval?: any;
     ngOnInit(): void {
         this._remainingSeconds = this.delayToTimeout;

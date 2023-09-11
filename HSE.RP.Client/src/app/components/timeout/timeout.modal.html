@@ -5,8 +5,8 @@
     <govuk-body>We will close your application if you do not do anything in the next <b>{{getTimeRemaining()}}</b>. Your unsaved answers will be deleted. This is to protect your information.</govuk-body>
 
     <div class="modal-actions">
-      <govuk-button (onClick)="onContinueClicked.emit()">Continue</govuk-button>
-      <a class="govuk-link" href="#" (click)="onSaveAndComebackClicked.emit()" role="link">Save and come back later</a>
+      <govuk-button (onClick)="onContinueClicked.emit()" tabindex="-1">Continue</govuk-button>
+      <a class="govuk-link" href="#" (click)="onSaveAndComebackClicked.emit()" role="button" tabindex="0">Save and come back later</a>
     </div>
   </div>
 
