@@ -19,7 +19,7 @@ export class Class3InspectBuildingCategoriesComponent extends PageComponent<Clas
   public static route: string = BuildingInspectorRoutes.CLASS3_INSPECT_BUILDING_CATEGORIES;
   public id: string = BuildingInspectorSummaryComponent.route;
   static title =
-    'Building inspector class - Register as a building inspector - GOV.UK';
+    'Building inspector class - Class 3 inspect buildings categories - Register as a building inspector - GOV.UK';
   production = environment.production;
   modelValid = false;
   photoHasErrors = false;

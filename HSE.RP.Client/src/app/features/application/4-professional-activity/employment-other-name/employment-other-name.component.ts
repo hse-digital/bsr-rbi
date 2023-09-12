@@ -19,7 +19,7 @@ import { EmploymentType } from 'src/app/models/employment-type.enum';
 export class EmploymentOtherNameComponent extends PageComponent<EmployerName> {
   public static route: string = 'employment-other-name';
   static title: string =
-    'Employment - Register as a building inspector - GOV.UK';
+    'Employment - Other business name - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   otherNameHasErrors = false;

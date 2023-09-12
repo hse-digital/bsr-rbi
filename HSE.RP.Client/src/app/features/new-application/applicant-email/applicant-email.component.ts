@@ -17,7 +17,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
 
   public static route: string = "applicant-email";
-  static title: string = "Personal details - Register as a building inspector - GOV.UK";
+  static title: string = "Personal details - Email address - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   emailHasErrors: boolean = false;
   duplicateApplication: boolean = false;

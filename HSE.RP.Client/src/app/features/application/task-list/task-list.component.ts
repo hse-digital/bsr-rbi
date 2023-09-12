@@ -133,7 +133,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   static route: string = '';
   static title: string =
-    'Register as a building inspector - Register a high-rise building - GOV.UK';
+    'Register as a building inspector - Application task list - Register a high-rise building - GOV.UK';
   ApplicationStatus = ApplicationStatus;
   completedSections: number = 0;
   checkingStatus = true;

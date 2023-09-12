@@ -21,7 +21,7 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
 
   public static route: string = CompetencyRoutes.CONFIRMATION_IA_UPDATE;
   static title: string =
-    'Competency - Register as a building inspector - GOV.UK';
+    'Competency - Update IA status - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

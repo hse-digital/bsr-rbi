@@ -22,7 +22,7 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
   static route: string = BuildingInspectorRoutes.INSPECTOR_COUNTRY;
   public id: string = BuildingClassTechnicalManagerComponent.route;
   static title: string =
-    'Building inspector class - Register as a building inspector - GOV.UK';
+    'Building inspector class - Country - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

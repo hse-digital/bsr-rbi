@@ -17,7 +17,7 @@ import { ProfessionalBodyMembershipSummaryComponent } from '../professional-body
 export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
   public static route: string = 'professional-body-selection';
   static title: string =
-    'Professional activity - Register as a building inspector - GOV.UK';
+    'Professional activity - Professional body selection - Register as a building inspector - GOV.UK';
   readonly ComponentCompletionState = ComponentCompletionState;
   production: boolean = environment.production;
   modelValid: boolean = false;

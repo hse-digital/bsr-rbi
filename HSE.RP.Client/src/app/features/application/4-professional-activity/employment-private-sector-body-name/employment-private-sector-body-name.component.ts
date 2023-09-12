@@ -25,7 +25,7 @@ export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<Empl
 
   public static route: string = 'employment-private-sector-body-name';
   static title: string =
-    'Employment - Register as a building inspector - GOV.UK';
+    'Employment - Private sector body name - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   privateSectorBodyNameHasErrors = true;

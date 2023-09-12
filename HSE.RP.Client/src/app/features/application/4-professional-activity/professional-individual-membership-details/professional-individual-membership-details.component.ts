@@ -21,7 +21,7 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
   public static route: string =
     "professional-individual-membership-details";
   static title: string =
-    'Professional activity - Register as a building inspector - GOV.UK';
+    'Professional activity - Professional body membership details - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

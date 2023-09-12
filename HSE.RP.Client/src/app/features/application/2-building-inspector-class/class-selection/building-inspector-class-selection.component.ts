@@ -24,7 +24,7 @@ import { ApplicationSummaryComponent } from '../../5-application-submission/appl
 export class BuildingInspectorClassSelectionComponent extends PageComponent<ClassSelection> {
   public static route: string = BuildingInspectorRoutes.CLASS_SELECTION;
   static title: string =
-    'Building inspector class - Register as a building inspector - GOV.UK';
+    'Building inspector class - Class selection - Register as a building inspector - GOV.UK';
 
   production: boolean = environment.production;
 

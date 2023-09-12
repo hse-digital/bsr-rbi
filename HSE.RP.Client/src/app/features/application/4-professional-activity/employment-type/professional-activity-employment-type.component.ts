@@ -26,7 +26,7 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
 
   public static route: string = 'professional-activity-employment-type';
   static title: string =
-    'Professional activity - Register as a building inspector - GOV.UK';
+    'Professional activity - Employment type - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

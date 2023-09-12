@@ -22,7 +22,7 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
     BuildingInspectorRoutes.CLASS2_ACCESSING_PLANS_CATEGORIES;
   public id: string = BuildingClassTechnicalManagerComponent.route;
   static title =
-    'Building inspector class - Register as a building inspector - GOV.UK';
+    'Building inspector class - Class 2 assessing plans categories - Register as a building inspector - GOV.UK';
   production = environment.production;
   modelValid = false;
   photoHasErrors = false;

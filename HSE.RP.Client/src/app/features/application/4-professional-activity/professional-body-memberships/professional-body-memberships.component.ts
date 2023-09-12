@@ -19,7 +19,7 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
 
   public static route: string = 'professional-body-memberships';
   static title: string =
-    'Professional activity - Register as a building inspector - GOV.UK';
+    'Professional activity - Professional body memberships - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   errorMessage: string = '';

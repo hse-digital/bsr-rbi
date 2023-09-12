@@ -25,7 +25,7 @@ import { ComponentCompletionState } from 'src/app/models/component-completion-st
 export class ProfessionalConfirmationMembershipRemovalComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
   public static route: string = 'professional-confirmation-membership-removal';
   static title: string =
-    'Professional activity - Register as a building inspector - GOV.UK';
+    'Professional activity - Professional body removal - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

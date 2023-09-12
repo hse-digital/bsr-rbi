@@ -29,7 +29,7 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
   public static route: string =
     BuildingInspectorRoutes.CLASS3_ACCESSING_PLANS_CATEGORIES;
   static title: string =
-    'Building inspector class - Register as a building inspector - GOV.UK';
+    'Building inspector class - Class 3 assessing plans categories - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   public hint: string = 'Select all that apply';
   errors: boolean = false;

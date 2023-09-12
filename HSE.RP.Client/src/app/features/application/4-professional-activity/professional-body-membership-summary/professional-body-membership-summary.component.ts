@@ -24,7 +24,7 @@ import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professi
 })
 export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
   static title: string =
-    'Professional activity - Register as a building inspector - GOV.UK';
+    'Professional activity - Professional body membership summary - Register as a building inspector - GOV.UK';
   public static route: string = 'professional-body-membership-summary';
   //public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_ACTIVITY_SUMMARY;
   readonly ComponentCompletionState = ComponentCompletionState;

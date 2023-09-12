@@ -29,7 +29,7 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
   public static route: string = BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER;
   public id: string = BuildingInspectorSummaryComponent.route;
   static title =
-    'Building inspector class - Register as a building inspector - GOV.UK';
+    'Building inspector class - Register as class 4 - Register as a building inspector - GOV.UK';
   production = environment.production;
   errorMessage: string = '';
   modelValid: boolean = false;

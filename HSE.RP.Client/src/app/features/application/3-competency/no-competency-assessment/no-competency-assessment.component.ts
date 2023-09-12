@@ -19,7 +19,7 @@ export class NoCompetencyAssessmentComponent extends PageComponent<NoCompetencyA
   public static route: string = CompetencyRoutes.NO_COMPETENCY_ASSESSMENT;
   public id: string = '';
   static title: string =
-    'Competency - Register as a building inspector - GOV.UK';
+    'Competency - No competency assessment - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;
