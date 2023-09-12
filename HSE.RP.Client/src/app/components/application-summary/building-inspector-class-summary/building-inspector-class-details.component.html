@@ -7,6 +7,7 @@
       key="Type"
       [showAction]="true"
       [actionText]="'change'"
+      actionDetails="Type"
     >
       Class 1 building inspector
     </govuk-summary-list-row>
@@ -14,6 +15,7 @@
     <govuk-summary-list-row
       (onClick)="navigateTo('building-inspector-country')"
       (onKeyupEnter)="navigateTo('building-inspector-country')"
+      actionDetails="Country"
       key="Country"
       [showAction]="true"
       [actionText]="'change'"

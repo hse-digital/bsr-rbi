@@ -16,6 +16,7 @@
         (onClick)="navigateTo('professional-body-membership-summary')"
         (onKeyupEnter)="navigateTo('professional-body-membership-summary')"
         key="Membership of professional bodies"
+        actionDetails="Membership of professional bodies"
         [showAction]="true"
       >
         <div
@@ -32,6 +33,7 @@
       (onClick)="navigateTo('professional-body-memberships')"
       (onKeyupEnter)="navigateTo('professional-body-memberships')"
       key="Membership of professional bodies"
+      actionDetails="Membership of professional bodies"
       [showAction]="true"
     >
       <div
@@ -48,6 +50,7 @@
         (onClick)="navigateTo('professional-activity-employment-type')"
         (onKeyupEnter)="navigateTo('professional-activity-employment-type')"
         key="Employment type"
+        actionDetails="Employment type"
         [showAction]="true"
       >
         <dd class="govuk-summary-list__value">{{ getEmploymentTypeName() }}</dd>
@@ -59,6 +62,7 @@
         (onClick)="navigateTo('employment-public-sector-body-name')"
         (onKeyupEnter)="navigateTo('employment-public-sector-body-name')"
         key="{{ getEmploymentTypeTitle() }}"
+        actionDetails="{{ getEmploymentTypeTitle() }}"
         [showAction]="true"
       >
         <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
@@ -71,6 +75,7 @@
         (onClick)="navigateTo('employment-private-sector-body-name')"
         (onKeyupEnter)="navigateTo('employment-private-sector-body-name')"
         key="{{ getEmploymentTypeTitle() }}"
+        actionDetails="{{ getEmploymentTypeTitle() }}"
         [showAction]="true"
       >
         <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
@@ -83,6 +88,7 @@
         (onClick)="navigateTo('employment-other-name')"
         (onKeyupEnter)="navigateTo('employment-other-name')"
         key="{{ getEmploymentTypeTitle() }}"
+        actionDetails="{{ getEmploymentTypeTitle() }}"
         [showAction]="true"
       >
         <dd class="govuk-summary-list__value">{{ getEmployerName() }}</dd>
@@ -95,6 +101,7 @@
         (onClick)="navigateTo('search-empoloyment-org-address')"
         (onKeyupEnter)="navigateTo('search-empoloyment-org-address')"
         key="{{ getEmploymentAddressTitle() }}"
+        actionDetails="{{ getEmploymentAddressTitle() }}"
         [showAction]="true"
       >
         <div>

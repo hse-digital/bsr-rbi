@@ -13,6 +13,7 @@
         (onClick)="navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)"
         (onKeyupEnter)="navigateTo(CompetencyRoutes.CONFIRMATION_IA_UPDATE)"
         key="Independent assessment status"
+        actionDetails="Independent assessment status"
         [showAction]="true"
         >{{ getIndependentAssessmentStatus() }}
       </govuk-summary-list-row>
@@ -26,6 +27,7 @@
           navigateTo(CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS)
         "
         key="Independent assessment status"
+        actionDetails="Independent assessment status"
         [showAction]="true"
         >{{ getIndependentAssessmentStatus() }}
       </govuk-summary-list-row>
@@ -45,6 +47,7 @@
           )
         "
         key="Assessment organisation"
+        actionDetails="Assessment organisation"
         [showAction]="true"
         >{{ getCompetencyAssessmentOrg() }}
       </govuk-summary-list-row>
@@ -63,6 +66,7 @@
           )
         "
         key="Assessment certificate number"
+        actionDetails="Assessment certificate number"
         [showAction]="true"
         >{{ getCompetencyAssessmentCertificateNo() }}
       </govuk-summary-list-row>
@@ -81,6 +85,7 @@
           )
         "
         key="Date of assessment"
+        actionDetails="Date of assessment"
         [showAction]="true"
         >{{ GetFormattedDateofBirth() }}
       </govuk-summary-list-row>

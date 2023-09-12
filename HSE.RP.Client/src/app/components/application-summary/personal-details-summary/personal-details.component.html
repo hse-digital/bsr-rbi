@@ -5,6 +5,7 @@
     key="Name"
     [actionText]="'change'"
     [showAction]="true"
+    actionDetails="Name"
   >
     {{ PersonalDetails?.ApplicantName?.FirstName }}
     {{ PersonalDetails?.ApplicantName?.LastName }}
@@ -21,11 +22,13 @@
     key="Date of birth"
     [actionText]="'change'"
     [showAction]="true"
+    actionDetails="Date of birth"
     >{{ GetFormattedDateofBirth() }}</govuk-summary-list-row
   >
   <govuk-summary-list-row
     (onClick)="navigateTo('ADDRESS')"
     [actionText]="'change'"
+    actionDetails="Address"
     (onKeyupEnter)="navigateTo('ADDRESS')"
     key="Home address"
     [showAction]="true"
@@ -48,6 +51,7 @@
   <govuk-summary-list-row
     (onClick)="navigateTo('ALT_PHONE')"
     [actionText]="'change'"
+    actionDetails="Alternative telephone number"
     (onKeyupEnter)="navigateTo('ALT_PHONE')"
     key="Alternative telephone number"
     [showAction]="true"
@@ -57,6 +61,7 @@
   <govuk-summary-list-row
     (onClick)="navigateTo('ALT_EMAIL')"
     [actionText]="'change'"
+    actionDetails="Alternative email address"
     (onKeyupEnter)="navigateTo('ALT_EMAIL')"
     key="Alternative email address"
     [showAction]="true"
@@ -66,6 +71,7 @@
   <govuk-summary-list-row
     (onClick)="navigateTo('NATIONAL_INS_NUMBER')"
     [actionText]="'change'"
+    actionDetails="National Insurance Number"
     (onKeyupEnter)="navigateTo('NATIONAL_INS_NUMBER')"
     key="National Insurance Number"
     [showAction]="true"
