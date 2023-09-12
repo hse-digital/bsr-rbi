@@ -18,7 +18,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
   public static route: string =
     CompetencyRoutes.COMPETENCY_ASSESSMENT_ORGANISATION;
   static title: string =
-    'Competency - Register as a building inspector - GOV.UK';
+    'Competency - Assessment organisation - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   errorMessage: string = '';

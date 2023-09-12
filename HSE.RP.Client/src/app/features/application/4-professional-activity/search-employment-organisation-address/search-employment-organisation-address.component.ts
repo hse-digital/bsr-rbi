@@ -17,7 +17,7 @@ import { ApplicationSummaryComponent } from '../../5-application-submission/appl
 export class SearchEmploymentOrganisationAddressComponent extends PageComponent<AddressModel> {
   public static route: string = 'search-empoloyment-org-address';
   static title: string =
-    'Professional activity - Register as a building inspector - GOV.UK';
+    'Professional activity - Employment address search - Register as a building inspector - GOV.UK';
 
   addressBodyText = 'This address must be in England or Wales.';
   production: boolean = environment.production;

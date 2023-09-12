@@ -19,7 +19,7 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
   public static route: string = CompetencyRoutes.SUMMARY;
   static title: string =
-    'Competency - Register as a building inspector - GOV.UK';
+    'Competency - Summary - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

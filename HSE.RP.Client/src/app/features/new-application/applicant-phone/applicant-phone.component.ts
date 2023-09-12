@@ -19,7 +19,7 @@ import { StageCompletionState } from 'src/app/models/stage-completion-state.enum
 export class ApplicantPhoneComponent extends PageComponent<ApplicantPhone> {
   public static route: string = 'applicant-phone';
   static title: string =
-    'Personal details - Register as a building inspector - GOV.UK';
+    'Personal details - Phone number - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   phoneNumberHasErrors = false;

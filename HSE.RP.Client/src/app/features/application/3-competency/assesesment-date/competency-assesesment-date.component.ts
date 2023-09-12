@@ -69,7 +69,7 @@ const ERROR_MESSAGES = {
 export class CompetencyAssessmentDateComponent extends PageComponent<DateInputControlDate> {
   public static route: string = CompetencyRoutes.COMPETENCY_ASSESSMENT_DATE;
   static title: string =
-    'Competency - Register as a building inspector - GOV.UK';
+    'Competency - Assessment date - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

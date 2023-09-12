@@ -40,7 +40,7 @@ const ERROR_MESSAGES = {
 export class ProfessionalMembershipInformationComponent extends PageComponent<ApplicantProfessionalBodyMembership> {
   public static route: string = 'professional-membership-information';
   static title: string =
-    'Professional activity - Register as a building inspector - GOV.UK';
+    'Professional activity - Professional body membership information - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   validationErrors: IPageValidationItem[] = [];

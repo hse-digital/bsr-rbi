@@ -20,7 +20,7 @@ import { NoCompetencyAssessment } from 'src/app/models/no-competency-assessment.
 export class CompetencyIndependentStatusComponent extends PageComponent<CompetencyIndependentAssessmentStatus> {
   public static route: string = CompetencyRoutes.INDEPENDENT_COMPETENCY_STATUS;
   static title: string =
-    'Competency - Register as a building inspector - GOV.UK';
+    'Competency - Assessment status - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

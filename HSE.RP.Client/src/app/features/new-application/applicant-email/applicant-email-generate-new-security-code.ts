@@ -22,7 +22,7 @@ export class ApplicantGenerateNewSecurityCodeComponent extends PageComponent<App
   }
 
   public static route: string = "applicant-email-generate-new-security-code";
-  static title: string = "Personal details - Register as a building inspector - GOV.UK";
+  static title: string = "Personal details - Generate new security code - Register as a building inspector - GOV.UK";
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

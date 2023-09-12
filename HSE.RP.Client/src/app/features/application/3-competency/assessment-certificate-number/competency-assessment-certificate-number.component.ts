@@ -19,7 +19,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
   public static route: string =
     CompetencyRoutes.COMPETENCY_ASSESSMENT_CERTIFICATE_NUMBER;
   static title: string =
-    'Competency - Register as a building inspector - GOV.UK';
+    'Competency - Certificate number - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

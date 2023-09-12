@@ -35,7 +35,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
   public static route: string = BuildingInspectorRoutes.REGULATED_ACTIVITIES;
   public id: string = BuildingInspectorSummaryComponent.route;
   static title: string =
-    'Building inspector class - Register as a building inspector - GOV.UK';
+    'Building inspector class - Activities - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   public hint: string = 'Select all that apply';
   public errorText: string = '';

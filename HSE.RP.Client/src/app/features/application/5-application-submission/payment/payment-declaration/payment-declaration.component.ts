@@ -27,7 +27,7 @@ import { PaymentConfirmationComponent } from '../payment-confirmation/payment-co
 export class PaymentDeclarationComponent extends PageComponent<BuildingProfessionalModel> {
   DerivedIsComplete(value: boolean): void {}
   static route: string = 'declaration';
-  static title: string = 'Register as a building inspector - GOV.UK';
+  static title: string = 'Register as a building inspector - Declaration - GOV.UK';
   paymentEnum = PaymentStatus;
   paymentStatus?: PaymentStatus;
   paymentReference?: '';

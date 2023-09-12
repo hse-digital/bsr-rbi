@@ -33,7 +33,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
 
   public static route: string = BuildingInspectorRoutes.SUMMARY;
   static title: string =
-    'Building inspector class - Register as a building inspector - GOV.UK';
+    'Building inspector class - Summary - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
   photoHasErrors = false;

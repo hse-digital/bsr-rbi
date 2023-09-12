@@ -18,7 +18,7 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
     BuildingInspectorRoutes.CLASS2_INSPECT_BUILDING_CATEGORIES;
   public id: string = BuildingInspectorSummaryComponent.route;
   static title =
-    'Building inspector class - Register as a building inspector - GOV.UK';
+    'Building inspector class - Class 2 inspect buildings categories - Register as a building inspector - GOV.UK';
   production = environment.production;
   modelValid = false;
   public hint = 'Select all that apply';
