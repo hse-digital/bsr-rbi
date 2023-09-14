@@ -23,8 +23,11 @@ using HSE.RP.API.Models.Notification;
 namespace HSE.RP.API.Services
 {
 
+
     public class NotificationService
     {
+  
+
         private readonly IntegrationsOptions integrationsOptions;
         private readonly SwaOptions swaOptions;
         public NotificationAPIKey notificationAPIKey;
@@ -35,6 +38,12 @@ namespace HSE.RP.API.Services
             this.swaOptions = swaOptions.Value;
             this.notificationAPIKey = SplitAPIKey(this.integrationsOptions.NotificationServiceApiKey);
 
+        }
+
+
+        public static DateTime ConvertToGreenwichMeanTime(DateTime utcDateTime)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time"));
         }
 
         public string GenerateSecurityToken(string apiKey)
@@ -55,6 +64,8 @@ namespace HSE.RP.API.Services
             return tokenHandler.WriteToken(token);
         }
 
+
+
         public NotificationAPIKey SplitAPIKey(string apiKey)
         {
             NotificationAPIKey notificationAPIKey = new NotificationAPIKey();
@@ -71,7 +82,7 @@ namespace HSE.RP.API.Services
 
             string jwtToken = GenerateSecurityToken(notificationAPIKey.apiKey);
 
-            var expirationTime = DateTime.UtcNow.AddHours(1);
+            var expirationTime = ConvertToGreenwichMeanTime(DateTime.UtcNow.AddHours(1));
 
 
             try
@@ -130,7 +141,7 @@ namespace HSE.RP.API.Services
 
             string jwtToken = GenerateSecurityToken(notificationAPIKey.apiKey);
 
-            var expirationTime = DateTime.UtcNow.AddHours(1);
+            var expirationTime = ConvertToGreenwichMeanTime(DateTime.UtcNow.AddHours(1));
 
 
             try
@@ -191,7 +202,10 @@ namespace HSE.RP.API.Services
             public string apiKey { get; set; }
             public string apiSecret { get; set; }
         }
+
+
     }
+
 
 
 

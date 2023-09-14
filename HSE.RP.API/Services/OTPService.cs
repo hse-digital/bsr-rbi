@@ -33,6 +33,7 @@ namespace HSE.RP.API.Services
                 .PostJsonAsync(new TokenRequestModel { TokenData=tokenPersonaIdentifier });
 
             var responseModel = await response.GetJsonAsync<TokenResponseModel>();
+            
             return responseModel.Token;
         }
 
