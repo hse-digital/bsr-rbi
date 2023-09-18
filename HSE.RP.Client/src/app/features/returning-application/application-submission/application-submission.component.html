@@ -1,0 +1,35 @@
+<i class="fa fa-spinner fa-spin loading" *ngIf="!shouldRender"></i>
+
+<ng-container *ngIf="shouldRender">
+  <div class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-panel" style="background-color: #f3f2f1">
+          <h1 class="govuk-panel__title">This application to register as a building inspector has been submitted to the Building Safety Regulator.</h1>
+          <div class="govuk-panel__body">Application reference<br><strong>{{applicationService.model.id}}</strong>
+          </div>
+        </div>
+
+
+        <!-- <h2 class="app-task-list__section">
+          What happens next
+        </h2>
+
+        <govuk-body
+          >We will send an email to the address you gave us confirming that
+          we've received your application.</govuk-body
+        >
+        <govuk-body
+          >Your application will be examined by BSR.We will tell you the outcome
+          of your application by email.</govuk-body
+        >
+        <govuk-body
+          >If you are unhappy with BSR's decision, the details of the appeal
+          process will be in the email telling you whether your application has
+          been successful or not.</govuk-body
+        > -->
+      </div>
+    </div>
+  </div>
+</ng-container>

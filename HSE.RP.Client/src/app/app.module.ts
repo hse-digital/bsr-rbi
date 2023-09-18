@@ -24,6 +24,7 @@ import { ReturningApplicationEnterDataComponent } from './features/returning-app
 import { ReturningApplicationResendCodeComponent } from './features/returning-application/resend.component';
 import { ReturningApplicationVerifyComponent } from './features/returning-application/verify.component';
 import { NewApplicationModule } from './features/new-application/new-application.module';
+import { ApplicationSubmissionComponent } from './features/returning-application/application-submission/application-submission.component';
 
 const routes = new HseRoutes([
   HseRoute.protected(SampleComponent.route, SampleComponent, SampleComponent.title),
@@ -34,6 +35,7 @@ const routes = new HseRoutes([
   HseRoute.forLoadChildren(NewApplicationModule.baseRoute, () => import('./features/new-application/new-application.module').then(m => m.NewApplicationModule)),
   HseRoute.unsafe(NotFoundComponent.route, NotFoundComponent, undefined, NotFoundComponent.title),
   HseRoute.protected(ReturningApplicationComponent.route, ReturningApplicationComponent, ReturningApplicationComponent.title),
+  HseRoute.protected(ApplicationSubmissionComponent.route, ApplicationSubmissionComponent, ApplicationSubmissionComponent.title),
   HseRoute.protected(TimeoutComponent.route, TimeoutComponent, TimeoutComponent.title),
   //HseRoute.unsafe('**', undefined, NotFoundComponent.route)
 ]);
@@ -52,7 +54,7 @@ const routes = new HseRoutes([
     ReturningApplicationVerifyComponent,
     TimeoutComponent,
     SampleComponent,
-
+    ApplicationSubmissionComponent
     ],
   imports: [
     RouterModule.forRoot(routes.getRoutes(), { initialNavigation: 'enabledBlocking', scrollPositionRestoration: 'enabled' }),

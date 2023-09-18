@@ -39,6 +39,7 @@ export class ReturningApplicationComponent extends PageComponent<string>{
   static route: string = "returning-application";
   static title: string = "Continue a saved application - Register as a building inspector - GOV.UK";
 
+
   stepBack() {
     if(this.step == "verify")
     {
