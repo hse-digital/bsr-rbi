@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { NotFoundComponent } from 'src/app/components/not-found/not-found.component';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
+import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
 import { PaymentModel } from 'src/app/models/payment.model';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { ApplicationService } from 'src/app/services/application.service';
@@ -18,6 +19,8 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
   payment?: PaymentModel;
   shouldRender = false;
   paymentReference?: string;
+  applicationNumber?: string;
+
 
   constructor(public applicationService: ApplicationService, public paymentService: PaymentService, private navigationService: NavigationService, private activatedRoute: ActivatedRoute) {
   }
@@ -27,6 +30,7 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
 
     this.activatedRoute.queryParams.subscribe(async query => {
       this.paymentReference = query['reference'] ?? await this.getApplicationPaymentReference();
+      this.applicationNumber = this.applicationService.model.id;
 
       if (!this.paymentReference) {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
@@ -37,14 +41,18 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
       if (this.payment?.Status == 'success') {
         this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Complete;
         await this.applicationService.updateApplication();
+        this.applicationService.newApplication();
         this.shouldRender = true;
       } else {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
       }
 
+      this.applicationService.model = new BuildingProfessionalModel();
 
     });
   }
+
+
 
   private async getApplicationPaymentReference() {
     var payments = await this.applicationService.getApplicationPayments()

@@ -60,7 +60,7 @@ export class PaymentDeclarationComponent extends PageComponent<BuildingProfessio
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return true;
+    return this.applicationService.model.id != undefined;
   }
   override isValid(): boolean {
     return true;

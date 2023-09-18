@@ -19,7 +19,7 @@ namespace HSE.RP.API.Functions
         private readonly FeatureOptions featureOptions;
         private readonly NotificationService notificationService;
 
-        public VerificationFunction(DynamicsService dynamicsService , OTPService otpService, IOptions<FeatureOptions> featureOptions, NotificationService notificationService)
+        public VerificationFunction(DynamicsService dynamicsService, OTPService otpService, IOptions<FeatureOptions> featureOptions, NotificationService notificationService)
         {
             this.dynamicsService = dynamicsService;
             this.notificationService = notificationService;
@@ -99,7 +99,7 @@ namespace HSE.RP.API.Functions
 
                 return new CustomHttpResponseData { HttpResponse = await request.CreateObjectResponseAsync(new { OTPCode = otpToken }) };
             }
-            else if(request.GetQueryParameters()["phone"] != null)
+            else if (request.GetQueryParameters()["phone"] != null)
             {
                 var phoneVerificationModel = new PhoneNumberVerificationModel(request.GetQueryParameters()["phone"]);
 
@@ -127,20 +127,20 @@ namespace HSE.RP.API.Functions
         public async Task<CustomHttpResponseData> ValidateOTPToken([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
         {
             var otpValidationModel = await request.ReadAsJsonAsync<OTPValidationModel>();
-#if DEBUG
-            if(otpValidationModel.OTPToken == "111111")
-            {
-                return new CustomHttpResponseData
-                {
-                    HttpResponse = request.CreateResponse(HttpStatusCode.OK)
-                };
-            }
-#endif
-            if(!otpValidationModel.Validate().IsValid)
+
+            if (!otpValidationModel.Validate().IsValid)
             {
                 return new CustomHttpResponseData
                 {
                     HttpResponse = request.CreateResponse(HttpStatusCode.BadRequest)
+                };
+            }
+
+            if (featureOptions.DisableOtpValidation)
+            {
+                return new CustomHttpResponseData
+                {
+                    HttpResponse = request.CreateResponse(HttpStatusCode.OK)
                 };
             }
 

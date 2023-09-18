@@ -8,9 +8,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Azure;
+using Azure.Core;
 using Flurl.Http;
 using Flurl.Util;
 using HSE.RP.API.Extensions;
+using HSE.RP.API.Functions;
 using HSE.RP.API.Model;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.DynamicsSynchronisation;
@@ -31,13 +33,16 @@ namespace HSE.RP.API.Services
         private readonly SwaOptions swaOptions;
         private readonly DynamicsApi dynamicsApi;
         private readonly DynamicsOptions dynamicsOptions;
+        private readonly FeatureOptions featureOptions;
 
-        public DynamicsService(DynamicsModelDefinitionFactory dynamicsModelDefinitionFactory, IOptions<DynamicsOptions> dynamicsOptions, IOptions<SwaOptions> swaOptions, DynamicsApi dynamicsApi)
+        public DynamicsService(DynamicsModelDefinitionFactory dynamicsModelDefinitionFactory, IOptions<FeatureOptions> featureOptions, IOptions<DynamicsOptions> dynamicsOptions, IOptions<SwaOptions> swaOptions, DynamicsApi dynamicsApi)
         {
             this.dynamicsModelDefinitionFactory = dynamicsModelDefinitionFactory;
             this.dynamicsApi = dynamicsApi;
             this.swaOptions = swaOptions.Value;
             this.dynamicsOptions = dynamicsOptions.Value;
+            this.featureOptions = featureOptions.Value;
+
         }
 
         public async Task SendVerificationEmail(EmailVerificationModel emailVerificationModel, string otpToken)
@@ -705,9 +710,12 @@ namespace HSE.RP.API.Services
         public async Task<bool> CheckDupelicateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel)
         {
 
-#if DEBUG
-            return false;
-#endif
+            if (featureOptions.DisableApplicationDuplicationCheck)
+            {
+                return false;
+
+            }
+
             //Check for existing contact
             var contact = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
             {

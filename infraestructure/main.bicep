@@ -245,6 +245,12 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     name: 'Feature__DisableOtpValidation'
                     value: 'false'
                 }
+                                {
+                    name: 'Feature__DisableApplicationDuplicationCheck'
+                    value: 'false'
+                }
+                
+
                 {
                     name: 'Integrations__CommonAPIEndpoint'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--CommonAPIEndpoint)'

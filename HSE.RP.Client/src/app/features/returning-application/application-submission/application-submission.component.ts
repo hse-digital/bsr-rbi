@@ -18,16 +18,16 @@ export class ApplicationSubmissionComponent implements OnInit, CanActivate {
   payment?: PaymentModel;
   shouldRender = false;
   paymentReference?: string;
+  applicationNumber?: string;
 
   constructor(public applicationService: ApplicationService, public paymentService: PaymentService, private navigationService: NavigationService, private activatedRoute: ActivatedRoute) {
   }
 
   async ngOnInit() {
-    //await this.applicationService.syncPayment();
-
+    await this.applicationService.syncPayment();
     this.activatedRoute.queryParams.subscribe(async query => {
       this.paymentReference = query['reference'] ?? await this.getApplicationPaymentReference();
-
+      this.applicationNumber = this.applicationService.model.id;
       if (!this.paymentReference) {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
         return;
@@ -35,8 +35,7 @@ export class ApplicationSubmissionComponent implements OnInit, CanActivate {
 
       this.payment = await this.paymentService.GetPayment(this.paymentReference);
       if (this.payment?.Status == 'success') {
-        this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Complete;
-        await this.applicationService.updateApplication();
+        this.applicationService.newApplication();
         this.shouldRender = true;
       } else {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
@@ -46,13 +45,16 @@ export class ApplicationSubmissionComponent implements OnInit, CanActivate {
     });
   }
 
+
+
+
   private async getApplicationPaymentReference() {
     var payments = await this.applicationService.getApplicationPayments()
     return await payments.find(x => x.bsr_govukpaystatus == "success")?.bsr_transactionid;
   }
 
   canContinue(): boolean {
-    return true;
+    return this.applicationService.model.id != undefined;
   }
 
 
