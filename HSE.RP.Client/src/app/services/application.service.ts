@@ -17,6 +17,7 @@ export class ApplicationService {
   newApplication() {
     LocalStorage.remove('application_data');
     this.model = new BuildingProfessionalModel();
+    LocalStorage.setJSON('application_data', this.model);
   }
 
   updateLocalStorage() {

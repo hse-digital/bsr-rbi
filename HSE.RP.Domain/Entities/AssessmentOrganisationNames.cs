@@ -9,6 +9,6 @@ public static class AssessmentOrganisationNames
         ["RICS"] = "48f60522-932c-ee11-9965-0022481b59de",
         ["CIOB"] = "689d678f-962c-ee11-9965-0022481b59de",
         ["Other"] = "65f5b095-962c-ee11-9965-0022481b59de",
-
-    };
+        ["TTD"] = "d363bab4-ca56-ee11-be6f-0022481b56d1"
+        };
 }
