@@ -25,6 +25,7 @@ import { ReturningApplicationResendCodeComponent } from './features/returning-ap
 import { ReturningApplicationVerifyComponent } from './features/returning-application/verify.component';
 import { NewApplicationModule } from './features/new-application/new-application.module';
 import { ApplicationSubmissionComponent } from './features/returning-application/application-submission/application-submission.component';
+import { A11yModule } from '@angular/cdk/a11y';
 
 const routes = new HseRoutes([
   HseRoute.protected(SampleComponent.route, SampleComponent, SampleComponent.title),
@@ -54,8 +55,8 @@ const routes = new HseRoutes([
     ReturningApplicationVerifyComponent,
     TimeoutComponent,
     SampleComponent,
-    ApplicationSubmissionComponent
-    ],
+    ApplicationSubmissionComponent,
+  ],
   imports: [
     RouterModule.forRoot(routes.getRoutes(), { initialNavigation: 'enabledBlocking', scrollPositionRestoration: 'enabled' }),
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -64,7 +65,8 @@ const routes = new HseRoutes([
     CommonModule,
     HseAngularModule,
     HttpClientModule,
-    HelpPagesModule
+    HelpPagesModule,
+    A11yModule
   ],
   providers: [HttpClient, ApplicationService, CookiesBannerService, ...routes.getProviders()],
   bootstrap: [AppComponent]
