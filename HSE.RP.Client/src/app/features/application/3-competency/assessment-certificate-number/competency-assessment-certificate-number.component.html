@@ -25,7 +25,7 @@
     <govuk-input
       id="certificate-number"
       hint="For example, CABE1262IJSBFAHS840"
-      aria-labelledby="certificate-header"
+      [labelledBy]="'certificate-header'"
       [maxlength]=20
       [(model)]="model!.CertificateNumber"
       >
@@ -35,7 +35,7 @@
   <div *ngIf="organisationPrefix == 'BSCF'">
     <govuk-input hint="For example, BSCF1262IJSBFAHS840"
       id="certificate-number"
-      aria-labelledby="certificate-header"
+      [labelledBy]="'certificate-header'"
       [maxlength]=20
       [(model)]="model!.CertificateNumber"
       >
