@@ -20,7 +20,7 @@
   <govuk-body>
     <govuk-radio-group
       hintText="Select one"
-      [errorText]=errorMessage
+      [errorText]="errorMessage"
       id="competency-assesesment-organisation"
       [(model)]="model!.ComAssessmentOrganisation"
     >
@@ -36,6 +36,13 @@
         label="Chartered Association of Building Engineers (CABE)"
         value="CABE"
         id="CABE"
+        [model]="model!.ComAssessmentOrganisation"
+      ></govuk-radio>
+
+      <govuk-radio
+        label="Total Training Development (TTD)"
+        value="TTD"
+        id="TTD"
         [model]="model!.ComAssessmentOrganisation"
       ></govuk-radio>
     </govuk-radio-group>
