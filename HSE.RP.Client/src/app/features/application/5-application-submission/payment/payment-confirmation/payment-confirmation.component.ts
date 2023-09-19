@@ -41,7 +41,8 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
       if (this.payment?.Status == 'success') {
         this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Complete;
         await this.applicationService.updateApplication();
-        this.applicationService.newApplication();
+        this.applicationService.clearApplication();
+        this.applicationService.clearSession();
         this.shouldRender = true;
       } else {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);

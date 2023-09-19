@@ -29,6 +29,10 @@ export class ApplicationService {
     this.updateLocalStorage();
   }
 
+  clearSession() {
+    sessionStorage.clear();
+  }
+
   async sendVerificationEmail(EmailAddress: string): Promise<void> {
     await firstValueFrom(
       this.httpClient.post('api/SendVerificationEmail', {

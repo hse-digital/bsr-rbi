@@ -35,7 +35,8 @@ export class ApplicationSubmissionComponent implements OnInit, CanActivate {
 
       this.payment = await this.paymentService.GetPayment(this.paymentReference);
       if (this.payment?.Status == 'success') {
-        this.applicationService.newApplication();
+        this.applicationService.clearApplication();
+        this.applicationService.clearSession();
         this.shouldRender = true;
       } else {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
