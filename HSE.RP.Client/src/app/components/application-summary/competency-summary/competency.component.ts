@@ -35,11 +35,27 @@ export class ApplicationSummaryCompetencyDetailsComponent implements OnInit{
     return this.BuildingInspectorCompetencyDetails?.CompetencyIndependentAssessmentStatus?.IAStatus === 'yes';
   }
 
+
+
   public getCompetencyAssessmentOrg(): string {
-    return this.BuildingInspectorCompetencyDetails
-      ?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation === 'BSCF'
-      ? 'Building Safety Competence Foundation (BSCF)'
-      : 'Chartered Association of Building Engineers (CABE)';
+
+    let organisationName = this.BuildingInspectorCompetencyDetails?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation;
+
+    if(this.BuildingInspectorCompetencyDetails?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "BSCF")
+    {
+      return "Building Safety Competence Foundation (BSCF)";
+    }
+    if(this.BuildingInspectorCompetencyDetails?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "CABE")
+    {
+      return "Chartered Association of Building Engineers (CABE)";
+    }
+    if(this.BuildingInspectorCompetencyDetails?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "TTD")
+    {
+      return "Total Training Development (TTD)";
+    }
+    else{
+      return "Unknown organisation";
+    }
   }
 
   public getCompetencyAssessmentCertificateNo(): string {

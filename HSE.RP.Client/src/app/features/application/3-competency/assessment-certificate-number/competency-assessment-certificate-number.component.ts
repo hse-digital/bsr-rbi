@@ -74,7 +74,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     }
 
     const validCertificateNumRegex = new RegExp(
-      /^(CABE|BSCF)[a-zA-Z0-9]*$/
+      /^(CABE|BSCF|TTD)[a-zA-Z0-9]*$/
     ).test(this.model!.CertificateNumber);
 
     if (!validCertificateNumRegex) {
@@ -85,7 +85,8 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     }
 
     // 4 character prefix (CABE or BSCF) with a 20 character max string so CABE1262IJSBFAHS840.
-    let prefix = this.model!.CertificateNumber.slice(0, 4);
+
+    let prefix = this.organisationPrefix == "TTD" ? this.model!.CertificateNumber.slice(0, 3) : this.model!.CertificateNumber.slice(0, 4);
     if (prefix.toLowerCase() !== this.organisationPrefix.toLowerCase()) {
       this.errorMessage =
         'You must enter an assessment certificate number in the correct format';

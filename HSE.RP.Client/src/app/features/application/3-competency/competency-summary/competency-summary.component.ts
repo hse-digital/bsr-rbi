@@ -110,10 +110,24 @@ export class CompetencySummaryComponent extends PageComponent<string> {
   }
 
   public getCompetencyAssessmentOrg(): string {
-    return this.applicationService.model.Competency
-      ?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation === 'BSCF'
-      ? 'Building Safety Competence Foundation (BSCF)'
-      : 'Chartered Association of Building Engineers (CABE)';
+
+    let organisationName = this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation;
+
+    if(this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "BSCF")
+    {
+      return "Building Safety Competence Foundation (BSCF)";
+    }
+    if(this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "CABE")
+    {
+      return "Chartered Association of Building Engineers (CABE)";
+    }
+    if(this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "TTD")
+    {
+      return "Total Training Development (TTD)";
+    }
+    else{
+      return "Unknown organisation";
+    }
   }
 
   public getCompetencyAssessmentCertificateNo(): string {

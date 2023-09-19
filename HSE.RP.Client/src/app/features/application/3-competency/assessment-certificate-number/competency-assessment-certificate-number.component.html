@@ -42,4 +42,14 @@
     </govuk-input>
   </div>
 
+  <div *ngIf="organisationPrefix == 'TTD'">
+    <govuk-input hint="For example, TTD1262IJSBFAHS8400"
+      id="certificate-number"
+      aria-labelledby="certificate-header"
+      [maxlength]=20
+      [(model)]="model!.CertificateNumber"
+      >
+    </govuk-input>
+  </div>
+
 </govuk-formpage>
