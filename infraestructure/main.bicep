@@ -3,7 +3,6 @@ param location string = resourceGroup().location
 param swaLocation string = 'westeurope'
 param d365lKeyPrefix string = ''
 param d365EnvironmentKey string = 'SQUAD3--Dynamics--EnvironmentUrl'
-param paymentAmountKey string = 'Integrations--PaymentAmount'
 param optionalAppName string = ''
 
 
@@ -219,7 +218,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                 }
                 {
                     name: 'Integrations__PaymentAmount'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${paymentAmountKey})'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=RBI--PaymentAmount)'
                 }
                 {
                     name: 'Integrations__NotificationServiceApiKey'
