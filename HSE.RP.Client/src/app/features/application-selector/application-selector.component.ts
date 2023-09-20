@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 export class ApplicationSelectorComponent {
 
   constructor(private applicationService: ApplicationService, private router: Router, private titleService: TitleService) { }
-  static route: string = "select";
+  static route: string = environment.production ? "" : "select";
   static title: string = "Your application - Register as a building inspector - GOV.UK";
 
   continueLink?: string;
