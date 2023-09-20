@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
@@ -18,7 +18,7 @@ import { Competency } from 'src/app/models/competency.model';
 
 @Component({
   selector: 'hse-building-inspector-summary',
-  templateUrl: './building-inspector-summary.component.html',
+  templateUrl: './building-inspector-summary.component.html'
 })
 export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   override async onSave(applicationService: ApplicationService): Promise<void> {

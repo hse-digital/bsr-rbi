@@ -1,4 +1,4 @@
-<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
 
   <govuk-error-summary *ngIf="errors" title="There is a problem" #summaryError>
     <govuk-error-link anchorId="assessing-plans" message={{errorText}} />
@@ -10,33 +10,38 @@
       </span>
       Assessing plans: which category of building plans are you competent to assess?
     </h1>
-    
+
+
+
+
+
     <govuk-body>
       Competent means you can assess building plans, drawings and associated information (for example, material specifications, structural calculations and fire strategies) to ensure they comply with building regulations.
-
-      <br>
-      <br>
-
-      <govuk-checkbox-group 
-        [title]="" 
-        [hint]=hint 
+      <br />
+      <br />
+      <govuk-warning message="Your category will be published on the register." background="#0"></govuk-warning>
+      To register as a class 4 technical manager you must be competent to do all BSR regulated activities (for example, assessing plans and inspections) for all categories of class 2 or class 3 building inspectors.
+      <br />
+      <br />
+      <govuk-checkbox-group
+        [title]=""
+        [hint]=hint
         [errorText]=errorText
         [(model)]="selections"
         id="assessing-plans"
         #field
         [govukRequired]="field"
       >
-        <govuk-checkbox 
-            #checkbox 
+        <govuk-checkbox
+            #checkbox
             *ngFor="let option of options"
             [model]="selections"
-            text={{option.text}} 
+            text={{option.text}}
             value={{option.value}}
-            hint={{option.hint}} 
+            hint={{option.hint}}
         />
 
       </govuk-checkbox-group>
-  
+
     </govuk-body>
   </govuk-formpage>
-  
