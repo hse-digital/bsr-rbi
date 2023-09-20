@@ -1,4 +1,4 @@
-<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
 
   <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-bi-class-selection" [message]="errorText" />
@@ -11,6 +11,9 @@
     What BSR-regulated activities will you do?
   </h1>
 
+  <govuk-warning message="Your BSR-regulated activities will be published on the register." background="#0"></govuk-warning>
+
+
   <govuk-body>
     <govuk-checkbox-group [title]="" [hint]=hint [errorText]=errorText
                           [(model)]="selections"
@@ -19,7 +22,7 @@
                       match the property names on the BuildingInspectorRegulatedActivies -->
       <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()" id="assessing-plans"
                       [model]="selections"
-                      text="Assessing plans" value="AssessingPlans" (onClicked)="optionClicked()"
+                      text="Assess plans" value="AssessingPlans" (onClicked)="optionClicked()"
                       hint="" />
       <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()"
                       [model]="selections"

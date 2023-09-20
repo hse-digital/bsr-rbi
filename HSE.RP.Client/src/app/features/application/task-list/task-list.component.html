@@ -6,13 +6,9 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">Register as a building inspector</h1>
       <ng-container *ngIf="!model!.ReturningApplication">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">
-          Returning to this application
-        </h2>
         <govuk-body
           >We will save your information for each page you complete.</govuk-body
         >
-
         <govuk-warning
           message="We have sent your application number and instructions on how to return to {{
             model!.PersonalDetails!.ApplicantEmail?.Email
@@ -87,7 +83,7 @@
       </ol>
 
       <govuk-body
-        >After you have paid your fee and applied, we will be in touch. You may
+        >After you have paid your fee and applied, we will contact you. You may
         be asked for additional information.</govuk-body
       >
     </div>
