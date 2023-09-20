@@ -25,9 +25,7 @@
     Competent means you can assess building plans, drawings and associated information (for example, material specifications, structural calculations and fire strategies) to ensure they comply with building regulations.
     <br />
     <br />
-    Your category will be published on the register.
-    <br />
-    <br />
+    <govuk-warning message="Your category will be published on the register." background="#0"></govuk-warning>
     To register as a class 4 technical manager you must be competent to do all BSR regulated activities (for example, assessing plans and inspections) for all categories of class 2 or class 3 building inspectors.
     <br />
     <br />
@@ -48,6 +46,7 @@
         [model]="selections"
         text="Category A"
         value="CategoryA"
+        
         (onClicked)="optionClicked()"
         hint="Residential dwelling houses (single household) less than 7.5m in height"
       />

@@ -1,5 +1,5 @@
 
-<govuk-formpage saveAndContinueText="Verify Email" [hideSaveAndComeBack]=true (saveAndContinue)="validateOTP()" [hideBackButton]=false>
+<govuk-formpage saveAndContinueText="Verify email" [hideSaveAndComeBack]=true (saveAndContinue)="validateOTP()" [hideBackButton]=false>
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
     <govuk-error-link anchorId="input-security-code" [message]="getOtpError()" />
   </govuk-error-summary>
@@ -13,7 +13,7 @@
 
   <govuk-body>If you cannot find the email, check your spam folder. If you still cannot find the email, or the code has expired, <a class="govuk-link" [routerLink]="['/new-application/applicant-email']">generate a new security code</a>.</govuk-body>
 
-  <govuk-body>If you did not receive the email, ask us<a class="govuk-link" [routerLink]="['/new-application/applicant-email']"> to resend it</a>. Or if you want to use a different email address, you can <a class="govuk-link" [routerLink]="['/new-application/applicant-email']">enter a different email.</a></govuk-body>
+  <govuk-body>If you did not receive the email, ask us<a class="govuk-link" [routerLink]="['/new-application/applicant-email']"> to resend it</a>. Or if you want to use a different email address, you can <a class="govuk-link" [routerLink]="['/new-application/applicant-email']">enter a different email address.</a></govuk-body>
 
 
   <govuk-input id="email-verify" label="Security code"

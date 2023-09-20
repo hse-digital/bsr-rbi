@@ -1,12 +1,12 @@
-<govuk-formpage saveAndContinueText="Save &amp; Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()"  [hideBackButton]=false>
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()"  [hideBackButton]=false>
 
 
   <h1 class="govuk-heading-l" id="nsi-header">National Insurance number</h1>
   <govuk-body>
-    We collect your National Insurance Number to confirm that you are eligible to work in the UK, and as a unique identifier to cross-check and confirm your independent assessment.
+    We collect your National Insurance number to confirm that you are eligible to work in the UK, and as a unique identifier to cross-check and confirm your independent assessment.
   </govuk-body>
 
-  <govuk-warning message="Your National Insurance Number will not be published." background="#0"></govuk-warning>
+  <govuk-warning message="Your National Insurance number will not be published." background="#0"></govuk-warning>
 
   <govuk-input
                id="nsi-input"
@@ -14,7 +14,7 @@
                label="National Insurance number"
                [(model)]="model!.NationalInsuranceNumber"
                labelClass="govuk-label--s"
-               hint="It's on your National Insurance card, benefit letter, payslip or P60'. For example, 'QQ 12 34 56 C'."
+               hint="Your number is on your National Insurance card, benefit letter, payslip or P60. For example, 'QQ 12 34 56 C'."
                [errorText]="getErrorDescription(nsiHasErrors, getErrorMessage())"
                hintClass="no-margin-top"
                (onKeyupEnter)="saveAndContinue()" />

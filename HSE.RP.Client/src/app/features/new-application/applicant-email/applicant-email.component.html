@@ -1,46 +1,80 @@
-
-<govuk-formpage saveAndContinueText="Send verification email" [hideSaveAndComeBack]=true (saveAndContinue)="DuplicateApplicationCheck()" [hideBackButton]=false>
-
-  <govuk-error-summary *ngIf="emailHasErrors" title="There is a problem" #summaryError>
-    <govuk-summary-error-linkable *ngIf="emailHasErrors" anchorId="applicant-email" message={{emailErrorMessage}} linkText={{duplicateApplicationLinkText}} linkUri={{duplicateApplicationLinkUri}}/>
+<govuk-formpage
+  saveAndContinueText="Send verification email"
+  [hideSaveAndComeBack]="true"
+  (saveAndContinue)="DuplicateApplicationCheck()"
+  [hideBackButton]="false"
+>
+  <govuk-error-summary
+    *ngIf="emailHasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-summary-error-linkable
+      *ngIf="emailHasErrors"
+      anchorId="applicant-email"
+      message="{{ emailErrorMessage }}"
+      linkText="{{ duplicateApplicationLinkText }}"
+      linkUri="{{ duplicateApplicationLinkUri }}"
+    />
   </govuk-error-summary>
-
 
   <h1 class="govuk-heading-l">Your email address</h1>
 
   <govuk-body>
-    We will email you a 6-digit code so you can verify your email address with us.
+    We will email you a 6-digit code so you can verify your email address with
+    us.
   </govuk-body>
 
   <govuk-body>
-    We will use this email address if we need to contact you about your application, and to inform you of the outcome.
+    We will use this email address if we need to contact you about your
+    application, and to inform you of the outcome.
   </govuk-body>
 
   <govuk-body>
-    If you lose access to this email address, you will have to begin your application again.
+    If you lose access to this email address, you will have to begin your
+    application again.
   </govuk-body>
 
-  <govuk-warning message="Your personal email address will not be published." background="#0"></govuk-warning>
+  <govuk-warning
+    message="Your personal email address will not be published."
+    background="#0"
+  ></govuk-warning>
 
   <govuk-inset-text>
     <govuk-body>
-      Use your individual or personal email address to apply. You as an individual, not your organisation, will be registered as a building inspector.
-    </govuk-body>
-    <govuk-body>
-      You will be able to add a second email address later.
+      Use your individual or personal email address to apply. You as an
+      individual, not your organisation, will be registered as a building
+      inspector.
     </govuk-body>
   </govuk-inset-text>
 
-  <govuk-body>If you do not have an email address, <a href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm" class="govuk-link" target="_blank">contact us</a> apply to register as a building inspector.</govuk-body>
+  <govuk-body>
+    <govuk-hint text="You will be able to add a second email address later.">
+    </govuk-hint>
+  </govuk-body>
 
-  <govuk-input-linkable id="applicant-email" label="Enter your email address"
-               [(model)]="model!.Email" [maxlength]=100
-               labelClass="govuk-label--s"
-               [errorText]="getErrorDescription(!modelValid, emailErrorMessage)"
-               hintClass="no-margin-top"
-               class="govuk-!-margin-bottom-1"
-               (onKeyupEnter)="saveAndContinue()"
-               [linkText]="duplicateApplicationLinkText!"
-               [linkUri]="duplicateApplicationLinkUri!" />
+  <govuk-body
+    >If you do not have an email address,
+    <a
+      href="https://www.hse.gov.uk/contact/tell-us-about-a-health-and-safety-issue.htm"
+      class="govuk-link"
+      target="_blank"
+      >contact us</a
+    >
+    apply to register as a building inspector.</govuk-body
+  >
 
+  <govuk-input-linkable
+    id="applicant-email"
+    label="Enter your email address"
+    [(model)]="model!.Email"
+    [maxlength]="100"
+    labelClass="govuk-label--s"
+    [errorText]="getErrorDescription(!modelValid, emailErrorMessage)"
+    hintClass="no-margin-top"
+    class="govuk-!-margin-bottom-1"
+    (onKeyupEnter)="saveAndContinue()"
+    [linkText]="duplicateApplicationLinkText!"
+    [linkUri]="duplicateApplicationLinkUri!"
+  />
 </govuk-formpage>

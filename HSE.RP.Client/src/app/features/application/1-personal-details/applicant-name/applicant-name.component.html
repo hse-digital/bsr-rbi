@@ -26,45 +26,47 @@
     />
   </govuk-error-summary>
 
-  <h1 class="govuk-heading-l">Your Name</h1>
+  <h1 class="govuk-heading-l">Your name</h1>
 
   <govuk-body>
     We collect personal information so we can contact you if required.
   </govuk-body>
 
+  <govuk-body>
+    We will tell you in this service which items of information will be
+    published in the public register.
+  </govuk-body>
+
   <govuk-inset-text>
-    <govuk-body>
-      We will tell you in this service which items of information will be
-      published in the public register.
-    </govuk-body>
+    <govuk-warning
+      message="Your name will be published in the public register."
+      background="#0"
+    ></govuk-warning>
   </govuk-inset-text>
 
-  <govuk-warning message="Your name will be published in the public register." background="#0"></govuk-warning>
-
   <div class="govuk-form-group">
-
-  <govuk-input
-    id="first-name"
-    label="First Name"
-    [(model)]="model.FirstName"
-    class="govuk-input--width-30"
-    [errorText]="getErrorDescription(!FirstNameValid, 'Enter your first name')"
-    hintClass="no-margin-top"
-    (onKeyupEnter)="saveAndContinue()"
-  />
-
+    <govuk-input
+      id="first-name"
+      label="First Name"
+      [(model)]="model.FirstName"
+      class="govuk-input--width-30"
+      [errorText]="
+        getErrorDescription(!FirstNameValid, 'Enter your first name')
+      "
+      hintClass="no-margin-top"
+      (onKeyupEnter)="saveAndContinue()"
+    />
   </div>
 
   <div class="govuk-form-group">
-
-  <govuk-input
-    id="last-name"
-    label="Last Name"
-    [(model)]="model.LastName"
-    class="govuk-input--width-30"
-    [errorText]="getErrorDescription(!LastNameValid, 'Enter your last name')"
-    hintClass="no-margin-top"
-    (onKeyupEnter)="saveAndContinue()"
-  />
+    <govuk-input
+      id="last-name"
+      label="Last Name"
+      [(model)]="model.LastName"
+      class="govuk-input--width-30"
+      [errorText]="getErrorDescription(!LastNameValid, 'Enter your last name')"
+      hintClass="no-margin-top"
+      (onKeyupEnter)="saveAndContinue()"
+    />
   </div>
 </govuk-formpage>
