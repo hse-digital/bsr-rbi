@@ -43,6 +43,7 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
         await this.applicationService.updateApplication();
         this.applicationService.clearApplication();
         this.applicationService.clearSession();
+        this.applicationService.newApplication();
         this.shouldRender = true;
       } else {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
