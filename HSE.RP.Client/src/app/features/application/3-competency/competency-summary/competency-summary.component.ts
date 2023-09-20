@@ -12,6 +12,7 @@ import { StageCompletionState } from 'src/app/models/stage-completion-state.enum
 @Component({
   selector: 'hse-competency-summary',
   templateUrl: './competency-summary.component.html',
+
 })
 export class CompetencySummaryComponent extends PageComponent<string> {
   DerivedIsComplete(value: boolean): void {}

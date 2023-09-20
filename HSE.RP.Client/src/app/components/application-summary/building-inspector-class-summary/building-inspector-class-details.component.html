@@ -94,7 +94,8 @@
           (keyup.enter)="navigateTo('building-inspector-class-selection')" tabindex="0"
         >
           change<span class="govuk-visually-hidden"> class</span>
-        </a><br>
+        </a>        <br />
+        <br />
         <a *ngIf="this.BuildingInspectorClassDetails!.ClassTechnicalManager === 'yes'" class="govuk-link" role="link"
           (click)="navigateTo('building-class-technical-manager')"
           (keyup.enter)="navigateTo('building-class-technical-manager')" tabindex="0"
