@@ -13,7 +13,7 @@
     "build:ssr": "ng build && ng run hserpclient:server",
     "prerender": "ng run hserpclient:prerender",
     "build:dev": "ng build --configuration development",
-    "prerender:dev": "npm run build:dev && ng run hsepacclient:prerender"
+    "prerender:dev": "npm run build:dev && ng run hserpclient:prerender"
   },
   "private": true,
   "dependencies": {
