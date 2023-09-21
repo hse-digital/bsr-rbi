@@ -11,7 +11,9 @@
     "dev:ssr": "ng run hserpclient:serve-ssr",
     "serve:ssr": "node dist/hserpclient/server/main.js",
     "build:ssr": "ng build && ng run hserpclient:server",
-    "prerender": "ng run hserpclient:prerender"
+    "prerender": "ng run hserpclient:prerender",
+    "build:dev": "ng build --configuration development",
+    "prerender:dev": "npm run build:dev && ng run hsepacclient:prerender"
   },
   "private": true,
   "dependencies": {
