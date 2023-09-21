@@ -33,7 +33,7 @@ export class HelpPagesModule {
   static baseRoute: string = 'help';
 
   static footerLinks = [
-    { title: "Contact us", href: 'https://contact-the-building-safety-regulator.hse.gov.uk/'},
+    { title: "Contact us", href: 'https://www.gov.uk/guidance/contact-the-building-safety-regulator'},
     { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityComponent.route}` },
     { title: "Cookies", href: `/${HelpPagesModule.baseRoute}/${CookiesComponent.route}` },
     { title: "Feedback", href: "https://forms.office.com/e/p1rYGz27V6" },

@@ -39,7 +39,6 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
       applicationService.model.PersonalDetails!.ApplicantEmail = new ApplicantEmail();
     }
     this.model = applicationService.model.PersonalDetails?.ApplicantEmail;
-    console.log(this.model);
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
