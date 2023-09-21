@@ -745,10 +745,9 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
     return (
-      this.applicationService.model?.StageStatus['EmailVerification'] ==
-        StageCompletionState.Complete &&
-      this.applicationService.model?.StageStatus['PhoneVerification'] ==
-        StageCompletionState.Complete &&
+      this.applicationService.model?.StageStatus['EmailVerification'] == StageCompletionState.Complete &&
+      this.applicationService.model?.StageStatus['PhoneVerification'] == StageCompletionState.Complete &&
+      this.applicationService.model.StageStatus['Payment'] != StageCompletionState.Complete &&
       FieldValidations.IsNotNullOrWhitespace(this.applicationService.model.id)
     );
   }

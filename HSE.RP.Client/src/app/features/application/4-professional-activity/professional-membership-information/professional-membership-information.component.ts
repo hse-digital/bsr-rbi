@@ -67,8 +67,6 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
     });
 
     this.initializeModel(applicationService);
-    console.log(this.model.MembershipYear?.toString())
-    console.log(this.model.MembershipYear?.toString() ?? '0')
     if(this.model.MembershipYear?.toString() == '0' || this.model.MembershipYear?.toString() == undefined ){
       this.membershipYearString = '';
     }else{

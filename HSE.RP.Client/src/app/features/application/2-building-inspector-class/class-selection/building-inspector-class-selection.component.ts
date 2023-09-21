@@ -179,30 +179,7 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
     ) {
       const queryParam = this.queryParam;
       if (this.queryParam == 'application-summary') {
-        // if (
-        //   this.resetIA === true &&
-        //   this.model?.Class === BuildingInspectorClassType.Class1
-        // ) {
-        //   return this.navigationService.navigateRelative(
-        //     `../application-submission/${ApplicationSummaryComponent.route}`,
-        //     this.activatedRoute
-        //   );
-        // }
 
-        // if (this.model?.Class === this.originalOption) {
-        //   return this.navigationService.navigateRelative(
-        //     `../application-submission/${ApplicationSummaryComponent.route}`,
-        //     this.activatedRoute
-        //   );
-        // }
-
-        // if (this.model?.Class === this.originalOption) {
-        //   console.log('original option')
-        //   return this.navigationService.navigateRelative(
-        //     `../building-inspector-class/${BuildingInspectorClassSelectionComponent.route}`,
-        //     this.activatedRoute
-        //   );
-        // }
 
         if (this.model?.Class === BuildingInspectorClassType.Class1) {
           return this.navigationService.navigateRelative(

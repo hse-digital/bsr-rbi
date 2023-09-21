@@ -142,7 +142,6 @@ export class ReturningApplicationVerifyComponent implements OnInit {
 
       while(this.checkingPaymentStatus){
         await new Promise(resolve => setTimeout(resolve, 1000));
-        console.log("Waiting for payment status");
       }
 
       if (this.paymentStatus == PaymentStatus.Success) {
@@ -153,6 +152,8 @@ export class ReturningApplicationVerifyComponent implements OnInit {
         );
       }
       else{
+        this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Incomplete;
+        this.applicationService.updateApplication();
         this.navigationService.navigate(`application/${this.applicationNumber}`);
       }
 
@@ -183,9 +184,7 @@ export class ReturningApplicationVerifyComponent implements OnInit {
               x.bsr_paymentreconciliationstatus !== PaymentReconciliationStatus.FAILED_PAYMENT &&
               x.bsr_paymentreconciliationstatus !== PaymentReconciliationStatus.REFUNDED
           );
-          console.log(successsfulpayment);
           this.paymentStatus = successsfulpayment ? PaymentStatus.Success: PaymentStatus.Failed;
-          console.log(this.paymentStatus);
           this.paymentReference = successsfulpayment?.bsr_paymentreference;
           this.checkingPaymentStatus = false;
         } else {
