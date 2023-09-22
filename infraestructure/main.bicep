@@ -230,11 +230,11 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                 }
                 {
                     name: 'Integrations__NotificationServiceOTPEmailTemplateId'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--NotificationServiceOTPEmailTemplateId)'
+                    value: 'a866ddd1-2e02-4055-b2df-34b468da634b'
                 }                
                 {
                     name: 'Integrations__NotificationServiceOTPSmsTemplateId'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--NotificationServiceOTPSmsTemplateId)'
+                    value: '0a8fc6a7-cea1-4d7b-9e81-7ef8937751db'
                 }
                 {
                     name: 'Swa__Url'
