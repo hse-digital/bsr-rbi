@@ -133,7 +133,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<NumberComponent
       return 'You must enter your 6 digit security code';
     } else if (this.otpError) {
       const route = "/new-application/applicant-phone";
-      return `Your 6-digit verification code is incorrect or has expired. Request a new verification code by clicking the "resend the security code" link on this page.`;
+      return `Your 6-digit verification code is incorrect or has expired. Request a new verification code by clicking the "resend the code" link on this page.`;
     } else {
       return 'You must enter your 6 digit security code';
     }
