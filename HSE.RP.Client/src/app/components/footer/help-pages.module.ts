@@ -38,6 +38,6 @@ export class HelpPagesModule {
     { title: "Cookies", href: `/${HelpPagesModule.baseRoute}/${CookiesComponent.route}` },
     { title: "Feedback", href: "https://forms.office.com/e/p1rYGz27V6" },
     { title: "Privacy", href: `/${HelpPagesModule.baseRoute}/${PrivacyNoticeComponent.route}` },
-    { title: "Terms and conditions", href: `/${HelpPagesModule.baseRoute}/${TermsConditionsComponent.route}` },
+    //{ title: "Terms and conditions", href: `/${HelpPagesModule.baseRoute}/${TermsConditionsComponent.route}` },
   ];
 }
