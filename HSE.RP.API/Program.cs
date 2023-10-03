@@ -4,6 +4,7 @@ using AutoMapper;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using HSE.RP.API.Enums;
+using HSE.RP.API.Extensions;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.CompaniesHouse;
 using HSE.RP.API.Models.LocalAuthority;
@@ -16,7 +17,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureFunctionsWorkerDefaults(workerOptions =>
+    {
+        workerOptions.InputConverters.Register<EncodedRequestConverter>();
+    })
     .ConfigureServices(ConfigureServices)
     .Build();
 

@@ -37,67 +37,75 @@ public class DynamicsSynchronisationFunctions
     }
 
     [Function(nameof(SyncEmploymentDetails))]
-    public async Task<HttpResponseData> SyncEmploymentDetails([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    public async Task<HttpResponseData> SyncEmploymentDetails([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient)
     {
-        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplicationModel = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseEmploymentDetails), buildingProfessionApplicationModel);
         return request.CreateResponse();
     }
 
     [Function(nameof(SyncFullApplication))]
-    public async Task<HttpResponseData> SyncFullApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    public async Task<HttpResponseData> SyncFullApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient)
     {
-        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplicationModel = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseFullApplication), buildingProfessionApplicationModel);
         return request.CreateResponse();
     }
 
     [Function(nameof(SyncDeclaration))]
-    public async Task<HttpResponseData> SyncDeclaration([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    public async Task<HttpResponseData> SyncDeclaration([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient)
     {
-        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplicationModel = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseDeclaration), buildingProfessionApplicationModel);
 
         return request.CreateResponse();
     }
 
     [Function(nameof(SyncPayment))]
-    public async Task<HttpResponseData> SyncPayment([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    public async Task<HttpResponseData> SyncPayment([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient)
     {
-        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplicationModel = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchronisePayment), buildingProfessionApplicationModel);
 
         return request.CreateResponse();
     }
 
     [Function(nameof(SyncPersonalDetails))]
-    public async Task<HttpResponseData> SyncPersonalDetails([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    public async Task<HttpResponseData> SyncPersonalDetails([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient)
     {
-        var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplication = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchronisePersonalDetails), buildingProfessionApplication);
         return request.CreateResponse();
     }
 
     [Function(nameof(SyncBuildingInspectorClass))]
-    public async Task<HttpResponseData> SyncBuildingInspectorClass([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    public async Task<HttpResponseData> SyncBuildingInspectorClass([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient)
     {
-        var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplication = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseBuildingInspectorClass), buildingProfessionApplication);
         return request.CreateResponse();
     }
 
     [Function(nameof(SyncCompetency))]
-    public async Task<HttpResponseData> SyncCompetency([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    public async Task<HttpResponseData> SyncCompetency([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient)
     {
-        var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplication = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseCompetency), buildingProfessionApplication);
         return request.CreateResponse();
     }
 
     [Function(nameof(SyncProfessionalBodyMemberships))]
-    public async Task<HttpResponseData> SyncProfessionalBodyMemberships([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, [DurableClient] DurableTaskClient durableTaskClient)
+    public async Task<HttpResponseData> SyncProfessionalBodyMemberships([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient)
     {
-        var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplication = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplication = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseProfessionalBodyMemberships), buildingProfessionApplication);
         return request.CreateResponse();
     }

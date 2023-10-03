@@ -28,10 +28,11 @@ namespace HSE.RP.API.Functions
         }
 
         [Function(nameof(SendVerificationEmail))]
-        public async Task<CustomHttpResponseData> SendVerificationEmail([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+        public async Task<CustomHttpResponseData> SendVerificationEmail([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest)
         {
 
-            var emailVerificationModel = await request.ReadAsJsonAsync<EmailVerificationModel>();
+            //var emailVerificationModel = await request.ReadAsJsonAsync<EmailVerificationModel>();
+            var emailVerificationModel = encodedRequest.GetDecodedData<EmailVerificationModel>();
             var validation = emailVerificationModel.Validate();
             if (!validation.IsValid)
             {
@@ -48,9 +49,10 @@ namespace HSE.RP.API.Functions
         }
 
         [Function(nameof(SendVerificationSms))]
-        public async Task<CustomHttpResponseData> SendVerificationSms([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+        public async Task<CustomHttpResponseData> SendVerificationSms([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest)
         {
-            var phoneVerificationModel = await request.ReadAsJsonAsync<PhoneNumberVerificationModel>();
+            //var phoneVerificationModel = await request.ReadAsJsonAsync<PhoneNumberVerificationModel>();
+            var phoneVerificationModel = encodedRequest.GetDecodedData<PhoneNumberVerificationModel>();
             var validation = phoneVerificationModel.Validate();
             if (!validation.IsValid)
             {
@@ -124,9 +126,10 @@ namespace HSE.RP.API.Functions
 
 
         [Function(nameof(ValidateOTPToken))]
-        public async Task<CustomHttpResponseData> ValidateOTPToken([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+        public async Task<CustomHttpResponseData> ValidateOTPToken([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest)
         {
-            var otpValidationModel = await request.ReadAsJsonAsync<OTPValidationModel>();
+            //var otpValidationModel = await request.ReadAsJsonAsync<OTPValidationModel>();
+            var otpValidationModel = encodedRequest.GetDecodedData<OTPValidationModel>();
 
             if (!otpValidationModel.Validate().IsValid)
             {
