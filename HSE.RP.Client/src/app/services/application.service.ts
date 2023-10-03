@@ -5,6 +5,7 @@ import { LocalStorage } from 'src/app/helpers/local-storage';
 import { BuildingProfessionalModel } from '../models/building-professional.model';
 import { ApplicationStatus } from '../models/application-status.enum';
 import { StageCompletionState } from '../models/stage-completion-state.enum';
+import { Sanitizer } from '../helpers/sanitizer';
 
 @Injectable()
 export class ApplicationService {
@@ -35,26 +36,26 @@ export class ApplicationService {
 
   async sendVerificationEmail(EmailAddress: string): Promise<void> {
     await firstValueFrom(
-      this.httpClient.post('api/SendVerificationEmail', {
+      this.httpClient.post('api/SendVerificationEmail', Sanitizer.sanitize({
         EmailAddress: EmailAddress,
-      })
+      }))
     );
   }
 
   async sendVerificationSms(PhoneNumber: string): Promise<void> {
     await firstValueFrom(
-      this.httpClient.post('api/SendVerificationSms', {
+      this.httpClient.post('api/SendVerificationSms', Sanitizer.sanitize({
         PhoneNumber: PhoneNumber,
-      })
+      }))
     );
   }
 
   async validateOTPToken(OTPToken: string, Data: string): Promise<void> {
     var response = await firstValueFrom(
-      this.httpClient.post('api/ValidateOTPToken', {
+      this.httpClient.post('api/ValidateOTPToken', Sanitizer.sanitize({
         OTPToken: OTPToken.trim(),
         Data: Data.toLowerCase().trim().replace("+44", "0"),
-      })
+      }))
     );
     var xx = response;
   }
@@ -65,7 +66,7 @@ export class ApplicationService {
     this.model = await firstValueFrom(
       this.httpClient.post<BuildingProfessionalModel>(
         'api/NewBuildingProfessionalApplication',
-        this.model
+        Sanitizer.sanitize(this.model)
       )
     );
     this.updateLocalStorage();
@@ -78,7 +79,7 @@ export class ApplicationService {
       await firstValueFrom(
         this.httpClient.put(
           `api/UpdateApplication/${this.model.id}`,
-          this.model
+          Sanitizer.sanitize(this.model)
         )
       );
     }
@@ -163,7 +164,7 @@ export class ApplicationService {
   }
 
   async syncPayment(): Promise<void> {
-    await firstValueFrom(this.httpClient.post(`api/SyncPayment`, this.model));
+    await firstValueFrom(this.httpClient.post(`api/SyncPayment`, Sanitizer.sanitize(this.model)));
   }
 
   async getApplicationPayments(): Promise<any[]> {
@@ -184,49 +185,49 @@ export class ApplicationService {
 
   async syncDeclaration(): Promise<void> {
     await firstValueFrom(
-      this.httpClient.post(`api/SyncDeclaration`, this.model)
+      this.httpClient.post(`api/SyncDeclaration`, Sanitizer.sanitize(this.model))
     );
   }
 
   async syncCompetency(): Promise<void> {
     await firstValueFrom(
-      this.httpClient.post(`api/SyncCompetency`, this.model)
+      this.httpClient.post(`api/SyncCompetency`, Sanitizer.sanitize(this.model))
     );
   }
 
   async syncPersonalDetails(): Promise<void> {
     await firstValueFrom(
-      this.httpClient.post(`api/SyncPersonalDetails`, this.model)
+      this.httpClient.post(`api/SyncPersonalDetails`, Sanitizer.sanitize(this.model))
     );
   }
 
   async syncBuildingInspectorClass(): Promise<void> {
     await firstValueFrom(
-      this.httpClient.post(`api/SyncBuildingInspectorClass`, this.model)
+      this.httpClient.post(`api/SyncBuildingInspectorClass`, Sanitizer.sanitize(this.model))
     );
   }
 
   async syncProfessionalBodyMemberships(): Promise<void> {
     await firstValueFrom(
-      this.httpClient.post(`api/SyncProfessionalBodyMemberships`, this.model)
+      this.httpClient.post(`api/SyncProfessionalBodyMemberships`, Sanitizer.sanitize(this.model))
     );
   }
 
   async syncEmploymentDetails(): Promise<void> {
     await firstValueFrom(
-      this.httpClient.post(`api/SyncEmploymentDetails`, this.model)
+      this.httpClient.post(`api/SyncEmploymentDetails`, Sanitizer.sanitize(this.model))
     );
   }
 
   async syncFullApplication(): Promise<void> {
     await firstValueFrom(
-      this.httpClient.post(`api/SyncFullApplication`, this.model)
+      this.httpClient.post(`api/SyncFullApplication`, Sanitizer.sanitize(this.model))
     );
   }
 
   async CheckDuplicateBuildingProfessionalApplication(): Promise<boolean> {
    return await lastValueFrom(
-      this.httpClient.post<boolean>(`api/CheckDuplicateBuildingProfessionalApplication`, this.model)
+      this.httpClient.post<boolean>(`api/CheckDuplicateBuildingProfessionalApplication`, Sanitizer.sanitize(this.model))
     );
   }
 

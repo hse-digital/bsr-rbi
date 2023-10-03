@@ -27,10 +27,11 @@ public class BuildingProfessionApplicationFunctions
 
 
     [Function(nameof(CheckDuplicateBuildingProfessionalApplication))]
-    public async Task<DuplicateApplicationCheckHttpResponseData> CheckDuplicateBuildingProfessionalApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+    public async Task<DuplicateApplicationCheckHttpResponseData> CheckDuplicateBuildingProfessionalApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest)
     {
 
-        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplicationModel = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
 
         var dupelicateApplicationCheck = await dynamicsService.CheckDupelicateBuildingProfessionApplicationAsync(buildingProfessionApplicationModel);
 
@@ -44,9 +45,10 @@ public class BuildingProfessionApplicationFunctions
     }
 
     [Function(nameof(NewBuildingProfessionalApplication))]
-    public async Task<CustomHttpResponseData> NewBuildingProfessionalApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request)
+    public async Task<CustomHttpResponseData> NewBuildingProfessionalApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest)
     {
-        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplicationModel =  request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplicationModel =  encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         var validation = buildingProfessionApplicationModel.Validate();
         if (!featureOptions.DisableOtpValidation && !validation.IsValid)
         {
@@ -175,9 +177,10 @@ public class BuildingProfessionApplicationFunctions
     }
 
     [Function(nameof(UpdateApplication))]
-    public async Task<CustomHttpResponseData> UpdateApplication([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "UpdateApplication/{applicationNumber}")] HttpRequestData request)
+    public async Task<CustomHttpResponseData> UpdateApplication([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "UpdateApplication/{applicationNumber}")] HttpRequestData request, EncodedRequest encodedRequest)
     {
-        var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        //var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplicationModel = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         var validation = buildingProfessionApplicationModel.Validate();
         if (!validation.IsValid)
         {
