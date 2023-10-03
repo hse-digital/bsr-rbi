@@ -25,7 +25,7 @@ namespace HSE.RP.API.Extensions
             var content = body;
             if (body.StartsWith("base64:"))
             {
-                content = Encoding.UTF8.GetString(Convert.FromBase64String(content[7..]));
+                content = Uri.UnescapeDataString(Encoding.UTF8.GetString(Convert.FromBase64String(content[7..])));
             }
 
             return JsonSerializer.Deserialize<T>(content);
