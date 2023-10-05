@@ -15,3 +15,5 @@ extends:
   template: /pipelines/swa_template.yml@AngularTools  
   parameters:
     projectName: 'RP'
+
+    
