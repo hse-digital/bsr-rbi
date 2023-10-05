@@ -1,5 +1,7 @@
 trigger:
 - main
+- release-*
+- hotfix-*
 
 pool:
   vmImage: ubuntu-latest
