@@ -1,16 +1,23 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+// import { BlockBlobClient } from '@azure/storage-blob';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GovUKDataService {
-
   constructor(private readonly httpClient: HttpClient) {}
 
   async getGovUKData(): Promise<void> {
-    const uri = await this.getGovUKDataUri();
+    const uri = await this.getGovUKDataSASUri();
+
+    // try {
+    //   const blockBlobClient = new BlockBlobClient(url);
+    //   const result = await blockBlobClient.downloadToFile('GovUKData.csv');
+    // } catch (err) {
+    //   console.error(err);
+    // }
 
     const httpOptions: Object = {
       headers: new HttpHeaders({
@@ -22,7 +29,7 @@ export class GovUKDataService {
 
     this.httpClient.get<any>(uri, httpOptions).subscribe({
       next: (data: any) => {
-        const blob = new Blob([data], { type: 'application/csv' }); // application/csv
+        const blob = new Blob([data], { type: 'application/text' }); // application/csv
 
         var downloadURL = window.URL.createObjectURL(blob);
         var link = document.createElement('a');
@@ -37,7 +44,9 @@ export class GovUKDataService {
     });
   }
 
-  async getGovUKDataUri(): Promise<string> {
-    return await firstValueFrom(this.httpClient.get<string>(`api/GetGovUKDataUri`));
+  async getGovUKDataSASUri(): Promise<string> {
+    return await firstValueFrom(
+      this.httpClient.get<string>(`api/GetGovUKDataSASUri`)
+    );
   }
 }

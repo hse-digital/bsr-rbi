@@ -19,11 +19,11 @@ namespace HSE.RP.API.Functions
             _ttlMinutes = TimeSpan.FromMinutes(govUkDataOptions.Value.TTLMinutes);
         }
 
-        [Function(nameof(GetGovUKDataUri))]
-        public async Task<HttpResponseData> GetGovUKDataUri([HttpTrigger(AuthorizationLevel.Anonymous, "get",
-        Route = $"{nameof(GetGovUKDataUri)}")] HttpRequestData request)
+        [Function(nameof(GetGovUKDataSASUri))]
+        public async Task<HttpResponseData> GetGovUKDataSASUri([HttpTrigger(AuthorizationLevel.Anonymous, "get",
+        Route = $"{nameof(GetGovUKDataSASUri)}")] HttpRequestData request)
         {
-            var blobString = _govUKDataUri.GetReadableGovUKDataSASUri($"{_govUKDataOptions.ContainerName}/{_govUKDataOptions.BlobName}", _ttlMinutes);
+            var blobString = _govUKDataUri.GetReadableGovUKDataSASUri(_govUKDataOptions.BlobName, _ttlMinutes);
 
             return await request.CreateObjectResponseAsync(blobString);
         }
