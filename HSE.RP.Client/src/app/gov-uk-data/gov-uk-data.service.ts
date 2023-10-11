@@ -2,16 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class GovukDataService {
+@Injectable()
+export class GovUKDataService {
   private readonly _url: string = '';
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  async getGovUkData(): Promise<void> {
-    const uri = await this.getSASUri();
+  async getGovUKData(): Promise<void> {
+    const uri = await this.getGovUKDataUri();
 
     const httpOptions: Object = {
       headers: new HttpHeaders({
@@ -28,7 +26,7 @@ export class GovukDataService {
         var downloadURL = window.URL.createObjectURL(blob);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = 'govukdata.csv';
+        link.download = 'GovUKData.csv';
         link.click();
         window.history.back();
       },
@@ -38,7 +36,7 @@ export class GovukDataService {
     });
   }
 
-  async getSASUri(): Promise<string> {
-    return await firstValueFrom(this.httpClient.get<string>(`api/GetSASUri`));
+  async getGovUKDataUri(): Promise<string> {
+    return await firstValueFrom(this.httpClient.get<string>(`api/GetGovUKDataUri`));
   }
 }

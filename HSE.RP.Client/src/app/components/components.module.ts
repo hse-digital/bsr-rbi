@@ -26,12 +26,6 @@ import {
 import { GovukInputLinkableComponent } from './govuk-input-linkable/govuk-input-linkable.component';
 import { FormsModule } from '@angular/forms';
 import { GovukFieldLinkableComponent } from './govuk-field-linkable/govuk-field-linkable.component';
-import { GovukDataComponent } from './gov-uk-data/gov-uk-data.component';
-import { RouterModule, Routes } from '@angular/router';
-
-const routes: Routes = [
-  { path: GovukDataComponent.route, component: GovukDataComponent },
-];
 
 @NgModule({
   declarations: [
@@ -53,15 +47,8 @@ const routes: Routes = [
     GovukErrorLinkableComponent,
     GovukInputLinkableComponent,
     GovukFieldLinkableComponent,
-    GovukDataComponent,
   ],
-  imports: [
-    HseAngularModule,
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forChild(routes),
-  ],
+  imports: [HseAngularModule, CommonModule, HttpClientModule, FormsModule],
   exports: [
     GovukRequiredDirective,
     TaskListItemComponent,
