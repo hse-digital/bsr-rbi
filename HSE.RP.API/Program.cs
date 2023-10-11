@@ -6,7 +6,6 @@ using Flurl.Http.Configuration;
 using HSE.RP.API.BlobStore;
 using HSE.RP.API.Enums;
 using HSE.RP.API.Extensions;
-using HSE.RP.API.GovUKData;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.CompaniesHouse;
 using HSE.RP.API.Models.LocalAuthority;
@@ -32,11 +31,12 @@ host.Run();
 
 
 static void ConfigureServices(HostBuilderContext builderContext, IServiceCollection serviceCollection)
-{   
+{
     serviceCollection.Configure<DynamicsOptions>(builderContext.Configuration.GetSection(DynamicsOptions.Dynamics));
     serviceCollection.Configure<IntegrationsOptions>(builderContext.Configuration.GetSection(IntegrationsOptions.Integrations));
     serviceCollection.Configure<FeatureOptions>(builderContext.Configuration.GetSection(FeatureOptions.Feature));
-    serviceCollection.Configure<SwaOptions>(builderContext.Configuration.GetSection(SwaOptions.Swa));    
+    serviceCollection.Configure<SwaOptions>(builderContext.Configuration.GetSection(SwaOptions.Swa));
+    serviceCollection.Configure<BlobStoreOptions>(builderContext.Configuration.GetSection(BlobStoreOptions.BlobStore));
 
     serviceCollection.AddTransient<DynamicsModelDefinitionFactory>();
     serviceCollection.AddTransient<DynamicsService>();
@@ -44,7 +44,7 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
     serviceCollection.AddTransient<OTPService>();
     serviceCollection.AddTransient<NotificationService>();
     serviceCollection.AddTransient<CompanySearchService>();
-    serviceCollection.AddTransient<CompanySearchFactory>();    
+    serviceCollection.AddTransient<CompanySearchFactory>();
 
     serviceCollection.AddSingleton(_ => new MapperConfiguration(config =>
     {
@@ -54,8 +54,6 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
         config.AddProfile<LocalAuthoritiesSearchResponseProfile>();
 
     }).CreateMapper());
-
-    serviceCollection.AddGovUKData(builderContext);
 }
 
 

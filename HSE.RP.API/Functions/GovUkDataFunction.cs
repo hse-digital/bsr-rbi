@@ -8,22 +8,20 @@ namespace HSE.RP.API.Functions
 {
     public class GovUkDataFunction
     {
-        private readonly IGovUKDataSASUri _govUKDataUri;
-        private readonly GovUKDataOptions _govUKDataOptions;
-        private readonly TimeSpan _ttlMinutes;
+        private readonly IBlobSASUri blobSASUri;
+        private readonly BlobStoreOptions blobStoreOptions;
 
-        public GovUkDataFunction(IGovUKDataSASUri govUKDataUri, IOptions<GovUKDataOptions> govUkDataOptions)
+        public GovUkDataFunction(IBlobSASUri blobSASUri, IOptions<BlobStoreOptions> blobStoreOptions)
         {
-            this._govUKDataUri = govUKDataUri;
-            this._govUKDataOptions = govUkDataOptions.Value;
-            _ttlMinutes = TimeSpan.FromMinutes(govUkDataOptions.Value.TTLMinutes);
+            this.blobSASUri = blobSASUri;
+            this.blobStoreOptions = blobStoreOptions.Value;
         }
 
-        [Function(nameof(GetGovUKDataUri))]
-        public async Task<HttpResponseData> GetGovUKDataUri([HttpTrigger(AuthorizationLevel.Anonymous, "get",
-        Route = $"{nameof(GetGovUKDataUri)}")] HttpRequestData request)
+        [Function(nameof(GetSASUri))]
+        public async Task<HttpResponseData> GetSASUri([HttpTrigger(AuthorizationLevel.Anonymous, "get",
+        Route = $"{nameof(GetSASUri)}")] HttpRequestData request)
         {
-            var blobString = _govUKDataUri.GetReadableGovUKDataSASUri($"{_govUKDataOptions.ContainerName}/{_govUKDataOptions.BlobName}", _ttlMinutes);
+            var blobString = blobSASUri.GetReadableSASUri($"{blobStoreOptions.ContainerName}/{blobStoreOptions.BlobName}");
 
             return await request.CreateObjectResponseAsync(blobString);
         }
