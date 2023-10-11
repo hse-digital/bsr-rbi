@@ -131,6 +131,10 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
     properties: {}
 }
 
+resource govDataFilesStorageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' existing = {
+    name: 's118${environment}bsrgovdatafiles'
+}
+
 resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
     name: 's118-${appName}-bsr-acs-rp-fa'
     location: location
@@ -237,6 +241,14 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     value: '0a8fc6a7-cea1-4d7b-9e81-7ef8937751db'
                 }
                 {
+                    name: 'Integrations__CommonAPIEndpoint'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--CommonAPIEndpoint)'
+                }
+                {
+                    name: 'Integrations__CommonAPIKey'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--CommonAPIKey)'
+                }
+                {
                     name: 'Swa__Url'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=SQUAD3--Swa--Url)'
                 }
@@ -248,15 +260,21 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     name: 'Feature__DisableApplicationDuplicationCheck'
                     value: 'false'
                 }
-                
-
                 {
-                    name: 'Integrations__CommonAPIEndpoint'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--CommonAPIEndpoint)'
+                    name: 'GovUKDataStore__ConnectionString'
+                    value: 'DefaultEndpointsProtocol=https;AccountName=${bsrFilesStorageAccount.name};EndpointSuffix=${az.environment().suffixes.storage};AccountKey=${bsrFilesStorageAccount.listKeys().keys[0].value}'
                 }
                 {
-                    name: 'Integrations__CommonAPIKey'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--CommonAPIKey)'
+                    name: 'GovUKDataStore__ContainerName'
+                    value: 'GovUKData'
+                }
+                {
+                    name: 'GovUKDataStore__BlobName'
+                    value: 'rbi/govukdata.csv'
+                }
+                {
+                    name: 'GovUKDataStore__TTLMinutes'
+                    value: '5'
                 }
             ]
         }
