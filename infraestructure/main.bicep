@@ -258,18 +258,6 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     name: 'Integrations__CommonAPIKey'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--CommonAPIKey)'
                 }
-                {
-                    name: 'BlobStore__ConnectionString'
-                    value: ''
-                }
-                {
-                    name: 'BlobStore__ContainerName'
-                    value: ''
-                }
-                {
-                    name: 'BlobStore__BlobName'
-                    value: ''
-                }
             ]
         }
         httpsOnly: true
