@@ -68,7 +68,8 @@
     [errorText]="getErrorDescription(!modelValid, emailErrorMessage)"
     hintClass="no-margin-top"
     class="govuk-!-margin-bottom-1"
-    (onKeyupEnter)="saveAndContinue()"
+    (onKeyupEnter)="DuplicateApplicationCheck()"
+    (onInputSubmit)="DuplicateApplicationCheck()"
     [linkText]="duplicateApplicationLinkText!"
     [linkUri]="duplicateApplicationLinkUri!"
   />
