@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-// import { BlockBlobClient } from '@azure/storage-blob';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
@@ -11,13 +10,6 @@ export class GovUKDataService {
 
   async getGovUKData(): Promise<void> {
     const uri = await this.getGovUKDataSASUri();
-
-    // try {
-    //   const blockBlobClient = new BlockBlobClient(url);
-    //   const result = await blockBlobClient.downloadToFile('GovUKData.csv');
-    // } catch (err) {
-    //   console.error(err);
-    // }
 
     const httpOptions: Object = {
       headers: new HttpHeaders({

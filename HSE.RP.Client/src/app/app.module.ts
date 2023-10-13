@@ -26,7 +26,6 @@ import { ReturningApplicationVerifyComponent } from './features/returning-applic
 import { NewApplicationModule } from './features/new-application/new-application.module';
 import { ApplicationSubmissionComponent } from './features/returning-application/application-submission/application-submission.component';
 import { A11yModule } from '@angular/cdk/a11y';
-import { HttpInterceptorService } from './services/http-interceptor.service';
 import { GovUKDataModule } from './gov-uk-data/gov-uk-data.module';
 
 const routes = new HseRoutes([
