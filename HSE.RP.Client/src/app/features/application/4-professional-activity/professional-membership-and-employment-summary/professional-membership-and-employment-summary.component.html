@@ -116,39 +116,6 @@
                 ?.EmployerAddress?.Address
             }}
           </div>
-          <div
-            *ngIf="
-              applicationService.model.ProfessionalActivity?.EmploymentDetails
-                ?.EmployerAddress?.AddressLineTwo
-            "
-          >
-            {{
-              applicationService.model.ProfessionalActivity.EmploymentDetails
-                ?.EmployerAddress?.AddressLineTwo
-            }}
-          </div>
-          <div
-            *ngIf="
-              applicationService.model.ProfessionalActivity?.EmploymentDetails
-                ?.EmployerAddress?.Town
-            "
-          >
-            {{
-              applicationService.model.ProfessionalActivity.EmploymentDetails
-                ?.EmployerAddress?.Town
-            }}
-          </div>
-          <div
-            *ngIf="
-              applicationService.model.ProfessionalActivity?.EmploymentDetails
-                ?.EmployerAddress?.Postcode
-            "
-          >
-            {{
-              applicationService.model.ProfessionalActivity.EmploymentDetails
-                ?.EmployerAddress?.Postcode
-            }}
-          </div>
         </div></govuk-summary-list-row
       >
     </govuk-summary-list>
