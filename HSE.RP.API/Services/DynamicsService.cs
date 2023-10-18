@@ -250,6 +250,7 @@ namespace HSE.RP.API.Services
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 throw;
             }
         }

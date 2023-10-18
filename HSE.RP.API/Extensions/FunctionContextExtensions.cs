@@ -5,7 +5,7 @@ namespace HSE.RP.API.Extensions
 {
     public static class FunctionContextExtensions
     {
-        public static HttpRequestData? GetHttpRequestData(this FunctionContext functionContext)
+        public static HttpRequestData GetHttpRequestData(this FunctionContext functionContext)
         {
             try
             {

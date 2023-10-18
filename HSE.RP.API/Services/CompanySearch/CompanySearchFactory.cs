@@ -7,9 +7,9 @@ public class CompanySearchFactory
 {
     private readonly IMapper mapper;
     private readonly IntegrationsOptions integrationsOptions;
-    private readonly DynamicsService dynamicsService;
+    private readonly IDynamicsService dynamicsService;
 
-    public CompanySearchFactory(IOptions<IntegrationsOptions> integrationsOptions, DynamicsService dynamicsService, IMapper mapper)
+    public CompanySearchFactory(IOptions<IntegrationsOptions> integrationsOptions, IDynamicsService dynamicsService, IMapper mapper)
     {
         this.mapper = mapper;
         this.dynamicsService = dynamicsService;

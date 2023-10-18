@@ -7,14 +7,14 @@ namespace HSE.RP.API.Extensions
 {
     public class EncodedRequest
     {
-        private readonly string? body;
+        private readonly string body;
 
-        public EncodedRequest(string? body)
+        public EncodedRequest(string body)
         {
             this.body = body;
         }
 
-        public T? GetDecodedData<T>() where T : class
+        public T GetDecodedData<T>() where T : class
         {
             if (string.IsNullOrEmpty(body)) return null;
 

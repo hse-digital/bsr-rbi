@@ -5,10 +5,10 @@ namespace HSE.RP.API.Services.CompanySearch;
 
 public class SocialHousingSearch : ISearchCompany
 {
-    private readonly DynamicsService dynamicsService;
+    private readonly IDynamicsService dynamicsService;
     private readonly IMapper mapper;
 
-    public SocialHousingSearch(DynamicsService dynamicsService, IMapper mapper)
+    public SocialHousingSearch(IDynamicsService dynamicsService, IMapper mapper)
     {
         this.dynamicsService = dynamicsService;
         this.mapper = mapper;

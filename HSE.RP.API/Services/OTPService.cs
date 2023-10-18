@@ -7,9 +7,9 @@ namespace HSE.RP.API.Services
 {
     public class OTPService
     {
-        public record TokenRequestModel(string? Token = null, string? TokenData = null);
+        public record TokenRequestModel(string Token = null, string TokenData = null);
 
-        public record TokenResponseModel(string? Token, string? TokenData, DateTime? Expiry, string? id = null);
+        public record TokenResponseModel(string Token, string TokenData, DateTime? Expiry, string id = null);
 
 
         private readonly IntegrationsOptions integrationOptions;
