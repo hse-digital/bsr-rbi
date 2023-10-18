@@ -1,6 +1,6 @@
-﻿using Microsoft.Azure.Functions.Worker;
+﻿using HSE.RP.API.Extensions;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using HSE.RP.API.Extensions;
 
 namespace HSE.RP.API.Functions;
 

@@ -1,5 +1,4 @@
-﻿using System;
-namespace HSE.RP.API.Enums
+﻿namespace HSE.RP.API.Enums
 {
     public enum StageCompletionState
     {

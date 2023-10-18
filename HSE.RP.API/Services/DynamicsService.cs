@@ -1,33 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Azure;
-using Azure.Core;
-using Flurl.Http;
+﻿using Flurl.Http;
 using Flurl.Util;
 using HSE.RP.API.Extensions;
-using HSE.RP.API.Functions;
 using HSE.RP.API.Model;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.DynamicsSynchronisation;
 using HSE.RP.API.Models.LocalAuthority;
+using HSE.RP.API.Models.Payment.Request;
 using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSE.RP.Domain.Entities;
-using Microsoft.DurableTask;
 using Microsoft.Extensions.Options;
-using Microsoft.Identity.Client;
-using static System.Net.Mime.MediaTypeNames;
+using System.Text.RegularExpressions;
 
 namespace HSE.RP.API.Services
 {
-    public class DynamicsService
+    public interface IDynamicsService
+    {
+        Task<DynamicsPayment> CreatePaymentAsync(DynamicsPayment dynamicsPayment, string ApplicationId);
+
+        Task<bool> CheckDupelicateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel);
+        Task<BuildingInspectorEmploymentDetail> CreateOrUpdateBuildingInspectorEmploymentDetails(BuildingInspectorEmploymentDetail buildingInspectorEmploymentDetail);
+        Task<BuildingInspectorProfessionalBodyMembership> CreateOrUpdateBuildingInspectorProfessionalBodyMembership(BuildingInspectorProfessionalBodyMembership buildingInspectorProfessionalBodyMembership);
+        Task<DynamicsAccount> CreateOrUpdateEmployer(BuildingProfessionApplicationModel buildingProfessionApplicationModel);
+        Task<BuildingInspectorRegistrationActivity> CreateOrUpdateRegistrationActivity(BuildingInspectorRegistrationActivity buildingInspectorRegistrationActivity);
+        Task<BuildingInspectorRegistrationClass> CreateOrUpdateRegistrationClass(BuildingInspectorRegistrationClass buildingInspectorRegistrationClass);
+        Task<BuildingInspectorRegistrationCountry> CreateOrUpdateRegistrationCountry(BuildingInspectorRegistrationCountry buildingInspectorRegistrationCountry);
+        Task CreatePayment(BuildingProfessionApplicationPayment buildingProfessionApplicationPayment);
+        Task<List<DynamicsBuildingInspectorProfessionalBodyMembership>> GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId(string applicationId);
+        Task<DynamicsBuildingProfessionApplication> GetBuildingProfessionApplicationUsingId(string applicationId);
+        Task<DynamicsContact> GetContactUsingId(string contactId);
+        Task<DynamicsYear> GetDynamicsYear(string year);
+        Task<DynamicsBuildingInspectorEmploymentDetail> GetEmploymentDetailsUsingId(string applicationId);
+        Task<DynamicsPayment> GetPaymentByReference(string reference);
+        Task<List<DynamicsPayment>> GetPayments(string applicationNumber);
+        Task<string[]> GetPublicSectorBodies();
+        Task<List<DynamicsBuildingInspectorRegistrationActivity>> GetRegistrationActivitiesUsingApplicationId(string applicationId);
+        Task<List<DynamicsBuildingInspectorRegistrationClass>> GetRegistrationClassesUsingApplicationId(string applicationId);
+        Task<List<DynamicsBuildingInspectorRegistrationCountry>> GetRegistrationCountriesUsingApplicationId(string applicationId);
+        Task NewPayment(string applicationId, PaymentResponseModel payment);
+        Task<BuildingProfessionApplicationModel> RegisterNewBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel);
+        Task<DynamicsOrganisationsSearchResponse> SearchLocalAuthorities(string authorityName);
+        Task<DynamicsOrganisationsSearchResponse> SearchSocialHousingOrganisations(string authorityName);
+        Task SendVerificationEmail(EmailVerificationModel emailVerificationModel, string otpToken);
+        Task UpdateBuildingProfessionApplication(DynamicsBuildingProfessionApplication dynamicsBuildingProfessionApplication, DynamicsBuildingProfessionApplication buildingProfessionApplication);
+        Task UpdateBuildingProfessionApplicationCompetency(DynamicsBuildingProfessionApplication dynamicsBuildingProfessionApplication, DynamicsBuildingProfessionApplication buildingProfessionApplication);
+        Task UpdateContact(DynamicsContact dynamicsContact, DynamicsContact contact);
+        Task<DynamicsPayment> CreateDynamicsPaymentAsync(DynamicsPayment dynamicsPayment);
+        Task UpdateDynamicsPaymentAsync(DynamicsPayment dynamicsPayment);
+        Task<DynamicsContact> GetOrCreateInvoiceContactAsync(NewInvoicePaymentRequestModel invoicePaymentRequest);
+        Task<DynamicsResponse<DynamicsContact>> GetContactsAsync(string firstName, string lastName, string emailAddress);
+        Task UpdateInvoicePaymentAsync(DynamicsPayment dynamicsPayment);
+    }
+    public class DynamicsService : IDynamicsService
     {
         private readonly DynamicsModelDefinitionFactory dynamicsModelDefinitionFactory;
         private readonly SwaOptions swaOptions;
@@ -45,6 +69,50 @@ namespace HSE.RP.API.Services
 
         }
 
+        public async Task<DynamicsPayment> CreatePaymentAsync(DynamicsPayment dynamicsPayment, string ApplicationId)
+        {
+            var existingPayment = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"bsr_service eq 'RBI' and bsr_transactionid eq '{dynamicsPayment.bsr_transactionid}'"));
+            if (existingPayment.value.Count == 0)
+            {
+
+                var pending = await dynamicsApi.Get<DynamicsResponse<DynamicsPayment>>("bsr_payments", ("$filter", $"bsr_service eq 'RBI' and bsr_govukpaystatus eq 'created' and _bsr_buildingprofessionapplicationid_value eq '{ApplicationId}'"));
+
+                foreach (var record in pending.value)
+                {
+                    await dynamicsApi.Update($"bsr_payments({record.bsr_paymentid})", dynamicsPayment with
+                    {
+                        bsr_govukpaystatus = "failed",
+                        bsr_paymentreconciliationstatus = DynamicsPaymentReconciliationStatus.FailedPayment,
+                    });
+                }
+
+                dynamicsPayment = await CreateDynamicsPaymentAsync(dynamicsPayment);
+            }
+            else
+            {
+                await UpdateDynamicsPaymentAsync(dynamicsPayment);
+            }
+            return dynamicsPayment;
+        }
+
+        public async Task<DynamicsPayment> CreateDynamicsPaymentAsync(DynamicsPayment dynamicsPayment)
+        {
+            var response = await dynamicsApi.Create("bsr_payments", dynamicsPayment);
+            var paymentId = ExtractEntityIdFromHeader(response.Headers);
+            return dynamicsPayment with { bsr_paymentid = paymentId };
+        }
+
+        public async Task UpdateDynamicsPaymentAsync(DynamicsPayment dynamicsPayment)
+        {
+            await dynamicsApi.Update($"bsr_payments({dynamicsPayment.bsr_paymentid})", dynamicsPayment);
+
+        }
+
+        public async Task UpdateInvoicePaymentAsync(DynamicsPayment dynamicsPayment)
+        {
+            await dynamicsApi.Update($"bsr_payments({dynamicsPayment.bsr_paymentid})", dynamicsPayment);
+        }
+
         public async Task SendVerificationEmail(EmailVerificationModel emailVerificationModel, string otpToken)
         {
             await dynamicsOptions.EmailVerificationFlowUrl.PostJsonAsync(new
@@ -55,11 +123,47 @@ namespace HSE.RP.API.Services
             });
         }
 
+        public async Task<DynamicsContact> GetOrCreateInvoiceContactAsync(NewInvoicePaymentRequestModel invoicePaymentRequest)
+        {
+            var splitName = invoicePaymentRequest.Name.Split(' ');
+            var lastName = string.Join(' ', splitName.Skip(1));
+            var responseContact = await GetContactsAsync(splitName[0], lastName, invoicePaymentRequest.Email);
+            var records = responseContact.value;
+            if (!records.Any())
+            {
+                var contact = await CreateNewContactAsync(new DynamicsContact
+                {
+                    firstname = splitName[0],
+                    lastname = lastName,
+                    emailaddress1 = invoicePaymentRequest.Email,
+                    address1_line1 = invoicePaymentRequest.AddressLine1,
+                    address1_line2 = invoicePaymentRequest.AddressLine2,
+                    address1_postalcode = invoicePaymentRequest.Postcode,
+                    address1_city = invoicePaymentRequest.Town
+                });
+                return contact;
+            }
+
+            return records.FirstOrDefault();
+        }
+
+        public async Task<DynamicsContact> CreateNewContactAsync(DynamicsContact contact, bool returnObjectResponse = false)
+        {
+            var response = await dynamicsApi.Create("contacts", contact, returnObjectResponse);
+            var contactId = ExtractEntityIdFromHeader(response.Headers);
+
+            return contact with { contactid = contactId };
+        }
+
+
+        public async Task<DynamicsResponse<DynamicsContact>> GetContactsAsync(string firstName, string lastName, string emailAddress)
+        {
+            return await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", ("$filter", $"firstname eq '{firstName}' and lastname eq '{lastName}' and emailaddress1 eq '{emailAddress}' "));
+        }
+
         public async Task<BuildingProfessionApplicationModel> RegisterNewBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel)
         {
             var contact = await CreateContactAsync(buildingProfessionApplicationModel);
-
-
 
             var buildingProfessionApplication = await CreateBuildingProfessionApplicationAsync(buildingProfessionApplicationModel: buildingProfessionApplicationModel, contact);
 
@@ -76,6 +180,8 @@ namespace HSE.RP.API.Services
                 Id = dynamicsBuildingProfessionApplication.bsr_buildingproappid,
             };
         }
+
+
 
         private async Task<Contact> CreateContactAsync(BuildingProfessionApplicationModel model)
         {
@@ -309,7 +415,7 @@ namespace HSE.RP.API.Services
                     bsr_amountpaid = Math.Round((float)payment.Amount / 100, 2),
                     bsr_govukpaystatus = payment.Status,
                     bsr_govukpaymentid = payment.PaymentId
-                    
+
                 });
             }
             else
@@ -730,11 +836,11 @@ namespace HSE.RP.API.Services
                         ("$filter", $"_bsr_applicantid_value eq '{contact.value.FirstOrDefault().contactid}' and statecode ne 1"),
             });
 
-                return application.value.Count>0;
+                return application.value.Count > 0;
             }
             else
             {
-                return false;   
+                return false;
 
             }
 

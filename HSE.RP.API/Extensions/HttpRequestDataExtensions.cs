@@ -1,9 +1,9 @@
-﻿using System.Collections.Specialized;
+﻿using HSE.RP.API.Functions;
+using HSE.RP.API.Models;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Collections.Specialized;
 using System.Net;
 using System.Text.Json;
-using HSE.RP.API.Models;
-using HSE.RP.API.Functions;
-using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HSE.RP.API.Extensions;
 
@@ -40,7 +40,7 @@ public static class HttpRequestDataExtensions
     {
         var stream = new MemoryStream();
         await originalStream.CopyToAsync(stream);
-        
+
         stream.Flush();
         stream.Seek(0, SeekOrigin.Begin);
 

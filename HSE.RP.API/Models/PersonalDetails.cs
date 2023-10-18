@@ -1,7 +1,4 @@
-﻿using System;
-using HSE.RP.Domain.Entities;
-
-namespace HSE.RP.API.Models
+﻿namespace HSE.RP.API.Models
 {
     public record PersonalDetails
     {

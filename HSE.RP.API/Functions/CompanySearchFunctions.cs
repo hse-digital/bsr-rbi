@@ -1,8 +1,8 @@
-using System.Net;
 using HSE.RP.API.Extensions;
+using HSE.RP.API.Services.CompanySearch;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using HSE.RP.API.Services.CompanySearch;
+using System.Net;
 
 namespace HSEPortal.API.Functions;
 

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Flurl;
+﻿using Flurl;
 using Flurl.Http;
 using Microsoft.Extensions.Options;
-using OtpNet;
+using System.Net;
 
 namespace HSE.RP.API.Services
 {
@@ -30,10 +24,10 @@ namespace HSE.RP.API.Services
                 .AppendPathSegment("GenerateToken")
                 .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
                 .AllowHttpStatus(HttpStatusCode.BadRequest)
-                .PostJsonAsync(new TokenRequestModel { TokenData=tokenPersonaIdentifier });
+                .PostJsonAsync(new TokenRequestModel { TokenData = tokenPersonaIdentifier });
 
             var responseModel = await response.GetJsonAsync<TokenResponseModel>();
-            
+
             return responseModel.Token;
         }
 
@@ -55,7 +49,7 @@ namespace HSE.RP.API.Services
                 .AppendPathSegment("CheckIsTokenExpired")
                 .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
                 .PostJsonAsync(new TokenRequestModel { Token = otpToken, TokenData = tokenPersonaIdentifier });
-            if(response.StatusCode == (int)HttpStatusCode.ExpectationFailed)
+            if (response.StatusCode == (int)HttpStatusCode.ExpectationFailed)
             {
                 return true;
             }

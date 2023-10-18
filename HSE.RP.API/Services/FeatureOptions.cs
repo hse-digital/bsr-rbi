@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HSE.RP.API.Services
+﻿namespace HSE.RP.API.Services
 {
     public class FeatureOptions
     {

@@ -1,13 +1,10 @@
-using System.Net;
-using AutoMapper.Internal;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Models;
 using HSE.RP.API.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Net;
 
 namespace HSE.RP.API.Functions
 {
@@ -15,11 +12,11 @@ namespace HSE.RP.API.Functions
     {
 
         private readonly OTPService otpService;
-        private readonly DynamicsService dynamicsService;
+        private readonly IDynamicsService dynamicsService;
         private readonly FeatureOptions featureOptions;
         private readonly NotificationService notificationService;
 
-        public VerificationFunction(DynamicsService dynamicsService, OTPService otpService, IOptions<FeatureOptions> featureOptions, NotificationService notificationService)
+        public VerificationFunction(IDynamicsService dynamicsService, OTPService otpService, IOptions<FeatureOptions> featureOptions, NotificationService notificationService)
         {
             this.dynamicsService = dynamicsService;
             this.notificationService = notificationService;

@@ -6,7 +6,7 @@ public class CompanySearchResponse
     {
         Companies = new List<Company>();
     }
-    
+
     public List<Company> Companies { get; set; }
     public int Results { get; set; }
 }

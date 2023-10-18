@@ -18,4 +18,7 @@ public class IntegrationsOptions
     public string CompaniesHouseEndpoint { get; set; }
     public string CompaniesHouseApiKey { get; set; }
 
+    public string Environment { get; set; }
+
+
 }

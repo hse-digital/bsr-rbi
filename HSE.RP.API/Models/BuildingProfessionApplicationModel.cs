@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using HSE.RP.API.Enums;
+﻿using HSE.RP.API.Enums;
+using System.Text.Json.Serialization;
 
 namespace HSE.RP.API.Models
 {

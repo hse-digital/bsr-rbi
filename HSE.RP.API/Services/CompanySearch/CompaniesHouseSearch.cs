@@ -1,9 +1,9 @@
-using System.Net;
 using AutoMapper;
 using Flurl;
 using Flurl.Http;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.CompaniesHouse;
+using System.Net;
 
 namespace HSE.RP.API.Services.CompanySearch;
 

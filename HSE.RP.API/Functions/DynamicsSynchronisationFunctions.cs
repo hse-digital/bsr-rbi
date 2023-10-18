@@ -1,11 +1,6 @@
-using System.Globalization;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using AutoMapper;
 using Flurl;
 using Flurl.Http;
-using Google.Protobuf.WellKnownTypes;
-using Grpc.Core;
 using HSE.RP.API.Enums;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Models;
@@ -13,23 +8,21 @@ using HSE.RP.API.Models.DynamicsSynchronisation;
 using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.API.Services;
 using HSE.RP.Domain.Entities;
-using JWT.Builder;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Options;
-using BuildingApplicationStatus = HSE.RP.Domain.Entities.BuildingApplicationStatus;
 
 namespace HSE.RP.API.Functions;
 
 public class DynamicsSynchronisationFunctions
 {
-    private readonly DynamicsService dynamicsService;
+    private readonly IDynamicsService dynamicsService;
     private readonly IMapper mapper;
     private readonly IntegrationsOptions integrationOptions;
 
-    public DynamicsSynchronisationFunctions(DynamicsService dynamicsService, IOptions<IntegrationsOptions> integrationOptions, IMapper mapper)
+    public DynamicsSynchronisationFunctions(IDynamicsService dynamicsService, IOptions<IntegrationsOptions> integrationOptions, IMapper mapper)
     {
         this.dynamicsService = dynamicsService;
         this.mapper = mapper;
@@ -167,22 +160,22 @@ public class DynamicsSynchronisationFunctions
         {
             //IF unemployed delete employment details
 
-                var employmentDetails = new BuildingInspectorEmploymentDetail
-                {
-                    Id = dynamicsEmploymentDetails?.bsr_biemploymentdetailid ?? null,
-                    BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
-                    BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
-                    EmployerIdAccount = null,
-                    EmployerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})",
-                    EmploymentTypeId = BuildingInspectorEmploymentTypeSelection.Ids[(int)buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType],
-                    IsCurrent = true,
-                    StatusCode = 1,
-                    StateCode = 0
-                };
+            var employmentDetails = new BuildingInspectorEmploymentDetail
+            {
+                Id = dynamicsEmploymentDetails?.bsr_biemploymentdetailid ?? null,
+                BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
+                EmployerIdAccount = null,
+                EmployerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})",
+                EmploymentTypeId = BuildingInspectorEmploymentTypeSelection.Ids[(int)buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType],
+                IsCurrent = true,
+                StatusCode = 1,
+                StateCode = 0
+            };
 
-                //Create or update employment
-                await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorEmploymentDetails), employmentDetails);
-            
+            //Create or update employment
+            await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateBuildingInspectorEmploymentDetails), employmentDetails);
+
         }
         else
         {
@@ -1339,7 +1332,7 @@ public class DynamicsSynchronisationFunctions
     {
         return dynamicsService.UpdateBuildingProfessionApplication(buildingProfessionApplication, new DynamicsBuildingProfessionApplication
         {
-            statuscode = (int) BuildingProfessionApplicationStatus.Submitted
+            statuscode = (int)BuildingProfessionApplicationStatus.Submitted
         });
     }
 

@@ -1,18 +1,11 @@
-﻿using AutoMapper;
-using HSE.RP.API.Services;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Flurl;
+﻿using Flurl;
 using Flurl.Http;
-using System.Net;
 using HSE.RP.API.Extensions;
+using HSE.RP.API.Services;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Options;
+using System.Net;
 
 namespace HSE.RP.API.Functions;
 

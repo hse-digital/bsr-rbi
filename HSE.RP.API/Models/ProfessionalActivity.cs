@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HSE.RP.API.Models
+﻿namespace HSE.RP.API.Models
 {
     public record ProfessionalActivity
     {

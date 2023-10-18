@@ -1,11 +1,9 @@
-﻿using System;
-using HSE.RP.API.Enums;
-using HSE.RP.Domain.Entities;
+﻿using HSE.RP.API.Enums;
 
 namespace HSE.RP.API.Models
 {
-	public record BuildingAssessingPlansBase
-	{
+    public record BuildingAssessingPlansBase
+    {
         public bool? CategoryA { get; set; }
         public bool? CategoryB { get; set; }
         public bool? CategoryC { get; set; }

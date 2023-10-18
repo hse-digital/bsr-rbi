@@ -1,5 +1,4 @@
-﻿using System;
-using HSE.RP.API.Enums;
+﻿using HSE.RP.API.Enums;
 
 namespace HSE.RP.API.Models
 {

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace HSE.RP.API.Models.Payment.Response;
 
-namespace HSE.RP.API.Models.Payment.Response;
 
 public class PaymentResponseModel
 {
@@ -30,4 +25,6 @@ public class PaymentResponseModel
     public string City { get; set; }
     public string Country { get; set; }
     public string Postcode { get; set; }
+    public string bsr_paymentId { get; set; }
+    public string ApplicationId { get; set; }
 }

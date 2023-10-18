@@ -1,5 +1,5 @@
 namespace HSE.RP.API.Extensions;
- 
+
 public static class StringExtensions
 {
     public static string EscapeSingleQuote(this string value)

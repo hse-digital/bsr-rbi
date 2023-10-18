@@ -1,6 +1,5 @@
 using AutoMapper;
 using HSE.RP.API.Models;
-using HSE.RP.API.Models.SocialHousing;
 
 namespace HSE.RP.API.Services.CompanySearch;
 

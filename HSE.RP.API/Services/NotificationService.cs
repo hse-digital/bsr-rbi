@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Flurl;
+using Flurl.Http;
 using HSE.RP.API.Models;
-using HSE.RP.API.Services;
+using HSE.RP.API.Models.Notification;
 using Microsoft.Extensions.Options;
-using System.Globalization;
-using System.Net.Mail;
-using Azure.Core;
-using Notify.Exceptions;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Net;
-using Flurl;
-using Flurl.Http;
-using Flurl.Http.Configuration;
-using Newtonsoft.Json;
-using HSE.RP.API.Models.Notification;
+using System.Security.Claims;
+using System.Text;
 
 namespace HSE.RP.API.Services
 {
@@ -26,7 +15,7 @@ namespace HSE.RP.API.Services
 
     public class NotificationService
     {
-  
+
 
         private readonly IntegrationsOptions integrationsOptions;
         private readonly SwaOptions swaOptions;
@@ -118,7 +107,7 @@ namespace HSE.RP.API.Services
                 }
                 if (response.StatusCode == (int)HttpStatusCode.Forbidden ||
                     response.StatusCode == (int)HttpStatusCode.BadRequest ||
-                    response.StatusCode == (int)HttpStatusCode.Unauthorized ||                    
+                    response.StatusCode == (int)HttpStatusCode.Unauthorized ||
                     response.StatusCode == (int)HttpStatusCode.InternalServerError)
                 {
                     var error = await response.GetJsonAsync<NotificationErrorResponse>();

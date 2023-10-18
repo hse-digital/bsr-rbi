@@ -17,6 +17,15 @@ public record DynamicsPayment(
     DynamicsPaymentCardType? bsr_cardtypecreditdebit = null,
     string bsr_govukpaystatus = null,
     string bsr_govukpaymentid = null,
+    string bsr_invoicenumber = null,
+    string bsr_invoicereference = null,
+    [property: JsonPropertyName("bsr_invoicedcontactid@odata.bind")]
+    string bsr_invoicedcontactid = null,
+    string bsr_purchaseordernumberifsupplied = null,
+    string bsr_invoicecreationdate = null,
+    string bsr_emailaddress = null,
+    int? bsr_paymenttypecode = null,
+
     DynamicsPaymentReconciliationStatus? bsr_paymentreconciliationstatus = null);
 
 public enum DynamicsPaymentCardType

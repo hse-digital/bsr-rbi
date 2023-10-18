@@ -1,24 +1,20 @@
-using System.Diagnostics;
-using System.Net;
-using System.Net.Mail;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Models;
 using HSE.RP.API.Services;
-using HSE.RP.Domain.Entities;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Options;
-using static System.Net.Mime.MediaTypeNames;
+using System.Net;
 
 namespace HSE.RP.API.Functions;
 
 public class BuildingProfessionApplicationFunctions
 {
-    private readonly DynamicsService dynamicsService;
+    private readonly IDynamicsService dynamicsService;
     private readonly OTPService otpService;
     private readonly FeatureOptions featureOptions;
 
-    public BuildingProfessionApplicationFunctions(DynamicsService dynamicsService, OTPService otpService, IOptions<FeatureOptions> featureOptions)
+    public BuildingProfessionApplicationFunctions(IDynamicsService dynamicsService, OTPService otpService, IOptions<FeatureOptions> featureOptions)
     {
         this.dynamicsService = dynamicsService;
         this.otpService = otpService;
@@ -48,7 +44,7 @@ public class BuildingProfessionApplicationFunctions
     public async Task<CustomHttpResponseData> NewBuildingProfessionalApplication([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest)
     {
         //var buildingProfessionApplicationModel =  request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
-        var buildingProfessionApplicationModel =  encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplicationModel = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
         var validation = buildingProfessionApplicationModel.Validate();
         if (!featureOptions.DisableOtpValidation && !validation.IsValid)
         {
@@ -150,7 +146,7 @@ public class BuildingProfessionApplicationFunctions
         if (buildingProfessionApplications.Any())
         {
             var application = buildingProfessionApplications[0];
-            if (await otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantPhone.PhoneNumber)|| featureOptions.DisableOtpValidation)
+            if (await otpService.ValidateToken(otpToken, application.PersonalDetails.ApplicantPhone.PhoneNumber) || featureOptions.DisableOtpValidation)
             {
                 return await request.CreateObjectResponseAsync(application);
             }

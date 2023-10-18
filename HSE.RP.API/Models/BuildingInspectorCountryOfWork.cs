@@ -1,5 +1,4 @@
 ﻿using HSE.RP.API.Enums;
-using System;
 namespace HSE.RP.API.Models
 {
     public record BuildingInspectorCountryOfWork

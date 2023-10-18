@@ -1,10 +1,9 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using AutoMapper;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using HSE.RP.API.Enums;
 using HSE.RP.API.Extensions;
+using HSE.RP.API.Mappers;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.CompaniesHouse;
 using HSE.RP.API.Models.LocalAuthority;
@@ -15,6 +14,8 @@ using HSE.RP.Domain.DynamicsDefinitions;
 using HSEPortal.API.Models.Payment;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(workerOptions =>
@@ -37,7 +38,10 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
     serviceCollection.Configure<SwaOptions>(builderContext.Configuration.GetSection(SwaOptions.Swa));
     serviceCollection.AddTransient<DynamicsModelDefinitionFactory>();
 
-    serviceCollection.AddTransient<DynamicsService>();
+    serviceCollection.AddTransient<IDynamicsService, DynamicsService>();
+    serviceCollection.AddTransient<IPaymentService, PaymentService>();
+    serviceCollection.AddTransient<IPaymentMapper, PaymentMapper>();
+
     serviceCollection.AddTransient<DynamicsApi>();
     serviceCollection.AddTransient<OTPService>();
     serviceCollection.AddTransient<NotificationService>();

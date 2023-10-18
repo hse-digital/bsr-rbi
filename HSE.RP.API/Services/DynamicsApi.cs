@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Flurl;
 using Flurl.Http;
-using Flurl;
 using HSE.RP.API.Models;
 using Microsoft.Extensions.Options;
-using Polly.Retry;
 using Polly;
+using Polly.Retry;
 
 namespace HSE.RP.API.Services
 {
@@ -16,7 +11,7 @@ namespace HSE.RP.API.Services
     {
         private readonly DynamicsOptions dynamicsOptions;
         private readonly AsyncRetryPolicy retryPolicy;
-            
+
         public DynamicsApi(IOptions<DynamicsOptions> dynamicsOptions)
         {
             retryPolicy = Policy
@@ -41,7 +36,7 @@ namespace HSE.RP.API.Services
                     request = request.WithHeader("Prefer", "return=representation");
                 }
 
-                
+
                 return await request.PostJsonAsync(entity);
             });
         }

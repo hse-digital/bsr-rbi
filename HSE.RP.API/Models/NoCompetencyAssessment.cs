@@ -1,9 +1,8 @@
-﻿using System;
-using HSE.RP.API.Enums;
+﻿using HSE.RP.API.Enums;
 
 namespace HSE.RP.API.Models
 {
-	public record NoCompetencyAssessment()
+    public record NoCompetencyAssessment()
     {
 
         public bool Declaration { get; set; } = false;
