@@ -66,7 +66,6 @@ namespace HSE.RP.API.Services
             this.swaOptions = swaOptions.Value;
             this.dynamicsOptions = dynamicsOptions.Value;
             this.featureOptions = featureOptions.Value;
-
         }
 
         public async Task<DynamicsPayment> CreatePaymentAsync(DynamicsPayment dynamicsPayment, string ApplicationId)
