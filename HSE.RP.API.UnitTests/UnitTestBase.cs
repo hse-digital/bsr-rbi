@@ -80,15 +80,6 @@ namespace HSE.RP.API.UnitTests
             var options = new Mock<IOptions<DynamicsOptions>>();
             options.SetupGet(x => x.Value).Returns(DynamicsOptions);
 
-            /*public DynamicsService(DynamicsModelDefinitionFactory dynamicsModelDefinitionFactory, IOptions<FeatureOptions> featureOptions, IOptions<DynamicsOptions> dynamicsOptions, IOptions<SwaOptions> swaOptions, DynamicsApi dynamicsApi)
-            {
-                this.dynamicsModelDefinitionFactory = dynamicsModelDefinitionFactory;
-                this.dynamicsApi = dynamicsApi;
-                this.swaOptions = swaOptions.Value;
-                this.dynamicsOptions = dynamicsOptions.Value;
-                this.featureOptions = featureOptions.Value;
-            }*/
-
             HttpTest = new HttpTest();
             DynamicsApi = new DynamicsApi(options.Object);
             DynamicsService = new DynamicsService(new DynamicsModelDefinitionFactory(), new OptionsWrapper<FeatureOptions>(featureOptions), options.Object, new OptionsWrapper<SwaOptions>(new SwaOptions()), new DynamicsApi(options.Object));

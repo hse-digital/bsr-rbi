@@ -1,10 +1,12 @@
-﻿using Flurl.Http;
+﻿using Flurl;
+using Flurl.Http;
 using Flurl.Util;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Model;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.DynamicsSynchronisation;
 using HSE.RP.API.Models.LocalAuthority;
+using HSE.RP.API.Models.Payment;
 using HSE.RP.API.Models.Payment.Request;
 using HSE.RP.API.Models.Payment.Response;
 using HSE.RP.Domain.DynamicsDefinitions;
@@ -50,6 +52,9 @@ namespace HSE.RP.API.Services
         Task<DynamicsContact> GetOrCreateInvoiceContactAsync(NewInvoicePaymentRequestModel invoicePaymentRequest);
         Task<DynamicsResponse<DynamicsContact>> GetContactsAsync(string firstName, string lastName, string emailAddress);
         Task UpdateInvoicePaymentAsync(DynamicsPayment dynamicsPayment);
+
+        Task<InvoiceData> SendCreateInvoiceRequest(IntegrationsOptions integrationOptions, CreateInvoiceRequest invoiceRequest);
+
     }
     public class DynamicsService : IDynamicsService
     {
@@ -120,6 +125,16 @@ namespace HSE.RP.API.Services
                 otp = otpToken,
                 hrbRegUrl = swaOptions.Url
             });
+        }
+
+        public async Task<InvoiceData> SendCreateInvoiceRequest(IntegrationsOptions integrationOptions, CreateInvoiceRequest invoiceRequest)
+        {
+            return await integrationOptions.CommonAPIEndpoint
+                .AppendPathSegments("api", "CreateInvoice")
+                .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
+                .AllowAnyHttpStatus()
+                .PostJsonAsync(invoiceRequest).ReceiveJson<InvoiceData>();
+
         }
 
         public async Task<DynamicsContact> GetOrCreateInvoiceContactAsync(NewInvoicePaymentRequestModel invoicePaymentRequest)

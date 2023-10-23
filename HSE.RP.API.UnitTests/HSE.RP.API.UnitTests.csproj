@@ -7,8 +7,9 @@
 
   <ItemGroup>
 	<PackageReference Include="FluentAssertions" Version="6.9.0" />
+	<PackageReference Include="Flurl.Http" Version="3.2.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="Moq" Version="4.20.69" />
+    <PackageReference Include="Moq" Version="4.18.4" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HSE.RP.API\HSE.RP.API.csproj" />
+    <ProjectReference Include="..\HSE.RP.Domain\HSE.RP.Domain.csproj" />
   </ItemGroup>
 
 </Project>

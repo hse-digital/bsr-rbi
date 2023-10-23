@@ -97,7 +97,7 @@ namespace HSE.RP.API.Services
             var dynamicsPayment = await dynamicsService.CreatePaymentAsync(paymentMapper.ToDynamics(buildingProfessionApplicationModel.Id, invoiceContact, invoicePaymentRequest), buildingProfessionApplicationModel.Id);
 
 
-            var invoicePaymentResponse = await SendCreateInvoiceRequest(
+            var invoicePaymentResponse = await dynamicsService.SendCreateInvoiceRequest(
                 integrationOptions,
                 new CreateInvoiceRequest
                 {
@@ -121,14 +121,7 @@ namespace HSE.RP.API.Services
             await dynamicsService.UpdateInvoicePaymentAsync(paymentMapper.ToDynamics(dynamicsPayment.bsr_paymentid, invoicePaymentResponse));
         }
 
-        public async Task<InvoiceData> SendCreateInvoiceRequest(IntegrationsOptions integrationOptions, CreateInvoiceRequest invoiceRequest)
-        {
-            return await integrationOptions.CommonAPIEndpoint
-                .AppendPathSegments("api", "CreateInvoice")
-                .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
-                .AllowAnyHttpStatus()
-                .PostJsonAsync(invoiceRequest).ReceiveJson<InvoiceData>();
-        }
+
 
         public async Task UpdateInvoicePayment(InvoicePaidEventData invoicePaidEventData)
         {
