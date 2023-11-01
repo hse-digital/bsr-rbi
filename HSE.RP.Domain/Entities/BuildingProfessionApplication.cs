@@ -12,7 +12,8 @@ public record BuildingProfessionApplication(
     string AsessmentCertificateNumber = null,
     bool? HasIndependentAssessment = false,
     DateOnly? AssessmentdDate = null,
-    BuildingProfessionApplicationStatus? StatusCode = null
+    BuildingProfessionApplicationStatus? StatusCode = null,
+    BuildingProfessionApplicationStage? BuildingProfessionApplicationStage = null
 
     ) : Entity(Id);
 
@@ -29,7 +30,8 @@ public record DynamicsBuildingProfessionApplication(
     int? statuscode = null,
     string bsr_assessmentcertnumber = null,
     DateOnly? bsr_assessmentdate = null,
-    bool? bsr_hasindependentassessment = null
+    bool? bsr_hasindependentassessment = null,
+    BuildingProfessionApplicationStage bsr_buildingprofessionalapplicationstage
 ) : DynamicsEntity<BuildingProfessionApplication>;
 
 
@@ -38,6 +40,17 @@ public record DynamicsBuildingProfessionApplication(
 public enum BuildingProfessionType
 {
     BuildingInspector = 760_810_000
+}
+
+public enum BuildingProfessionApplicationStage
+{
+    PersonalDetails = 760_810_000,
+    BuildingInspectorClass = 760_810_001,
+    Competency = 760810002,
+    ProfessionalMembershipsAndEmployment = 760_810_003,
+    ApplicationSummary = 760_810_004,
+    PayAndSubmit = 760_810_005,
+    ApplicationSubmitted = 760_810_006,
 }
 
 

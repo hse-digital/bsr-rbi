@@ -21,12 +21,13 @@ import {
 } from '@angular/router';
 import { IComponentModel } from '../models/component. interface';
 import { ComponentCompletionState } from '../models/component-completion-state.enum';
+import { ApplicationStage } from '../models/application-stage.enum';
 
 @Component({ template: '' })
 export abstract class PageComponent<T> implements OnInit {
-// This implementation should really extend the generic to an IComponentModel as in the export statement below ,
-// but it's breaking too much at the moment to fix this up, just don't have the time.
-//export abstract class PageComponent<T extends IComponentModel> implements OnInit {
+  // This implementation should really extend the generic to an IComponentModel as in the export statement below ,
+  // but it's breaking too much at the moment to fix this up, just don't have the time.
+  //export abstract class PageComponent<T extends IComponentModel> implements OnInit {
   model?: T;
   processing: boolean = false;
   hasErrors: boolean = false;
@@ -61,18 +62,69 @@ export abstract class PageComponent<T> implements OnInit {
     this.originalModelStringified = JSON.stringify(this.model);
     if (this.modelImplementsIComponent(this.model)) {
       var componentModel = this.model as IComponentModel;
-      if(componentModel.CompletionState === ComponentCompletionState.NotStarted) {
+      if (
+        componentModel.CompletionState === ComponentCompletionState.NotStarted
+      ) {
         componentModel.CompletionState = ComponentCompletionState.InProgress;
       }
+    }
+    this.updateApplicationStage();
+  }
+
+  updateApplicationStage() {
+    var currentRoute = this.getCurrentRoute();
+    var section = currentRoute.split('/')[3];
+    console.log(section);
+    switch (section) {
+      case 'personal-details':
+        this.applicationService.model.ApplicationStage =
+          ApplicationStage.PersonalDetails;
+        break;
+      case 'building-inspector-class':
+        this.applicationService.model.ApplicationStage =
+          ApplicationStage.BuildingInspectorClass;
+        break;
+      case 'competency':
+        this.applicationService.model.ApplicationStage =
+          ApplicationStage.Competency;
+        break;
+      case 'professional-activity':
+        this.applicationService.model.ApplicationStage =
+          ApplicationStage.ProfessionalMembershipsAndEmployment;
+        break;
+      case 'application-submission':
+        if (currentRoute.split('/')[4] === 'application-summary') {
+          this.applicationService.model.ApplicationStage =
+            ApplicationStage.ApplicationSummary;
+          break;
+        } else if (currentRoute.split('/')[4] === 'payment') {
+          if (currentRoute.split('/')[5] === 'declaration') {
+            this.applicationService.model.ApplicationStage =
+              ApplicationStage.PayAndSubmit;
+            break;
+          }
+          if (currentRoute.split('/')[5] === 'confirm') {
+            this.applicationService.model.ApplicationStage =
+              ApplicationStage.ApplicationSubmitted;
+            break;
+          }
+        }
+        break;
+      default:
+        // Add code to handle unknown section
+        break;
     }
   }
 
   modelImplementsIComponent(obj: any): obj is IComponentModel {
-    return this.model !== undefined && this.model !== null && 'CompletionState' in this.model
-      && (obj.CompletionState === undefined
-        || Object.values(ComponentCompletionState).includes(obj.CompletionState));
+    return (
+      this.model !== undefined &&
+      this.model !== null &&
+      'CompletionState' in this.model &&
+      (obj.CompletionState === undefined ||
+        Object.values(ComponentCompletionState).includes(obj.CompletionState))
+    );
   }
-
 
   async saveAndContinue(): Promise<void> {
     this.processing = true;
@@ -104,7 +156,6 @@ export abstract class PageComponent<T> implements OnInit {
   }
 
   async saveAndComeBack(): Promise<void> {
-
     this.processing = true;
     let canSave = this.requiredFieldsAreEmpty() || this.isValid();
     this.hasErrors = !canSave;
@@ -115,8 +166,10 @@ export abstract class PageComponent<T> implements OnInit {
     //------------------------------------------------------------------------------
     if (this.modelImplementsIComponent(this.model)) {
       var componentModel = this.model as IComponentModel;
-      if (componentModel.CompletionState === ComponentCompletionState.Complete) {
-        if(this.originalModelStringified !== JSON.stringify(this.model)) {
+      if (
+        componentModel.CompletionState === ComponentCompletionState.Complete
+      ) {
+        if (this.originalModelStringified !== JSON.stringify(this.model)) {
           componentModel.CompletionState = ComponentCompletionState.InProgress;
         }
       }
@@ -166,6 +219,10 @@ export abstract class PageComponent<T> implements OnInit {
     }
   }
 
+  getCurrentRoute(): string {
+    return this.navigationService.getCurrentRoute();
+  }
+
   private requiredFieldsAreEmpty() {
     return (
       this.requiredFields?.filter((x) => {
@@ -192,5 +249,9 @@ export abstract class PageComponent<T> implements OnInit {
   protected focusAndUpdateErrors() {
     this.summaryError?.first?.focus();
     this.titleService.setTitleError();
+  }
+
+  protected updateApplicationStatus(): void {
+    this.navigationService;
   }
 }
