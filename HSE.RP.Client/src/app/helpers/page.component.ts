@@ -157,19 +157,6 @@ export abstract class PageComponent<T> implements OnInit {
               }
               break;
             }
-            if (currentRoute.split('/')[5] === 'confirm') {
-              if (
-                this.applicationService.model.ApplicationStage ==
-                ApplicationStage.ApplicationSubmitted
-              ) {
-                hasChanged = false;
-              } else {
-                this.applicationService.model.ApplicationStage =
-                  ApplicationStage.ApplicationSubmitted;
-                hasChanged = true;
-              }
-              break;
-            }
           }
           break;
         default:
