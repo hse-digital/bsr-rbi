@@ -3,6 +3,7 @@ using Flurl;
 using Flurl.Http;
 using HSE.RP.API.Enums;
 using HSE.RP.API.Extensions;
+using HSE.RP.API.Mappers;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.DynamicsSynchronisation;
 using HSE.RP.API.Models.Payment.Response;
@@ -27,6 +28,15 @@ public class DynamicsSynchronisationFunctions
         this.dynamicsService = dynamicsService;
         this.mapper = mapper;
         this.integrationOptions = integrationOptions.Value;
+    }
+
+    [Function(nameof(SyncApplicationStage))]
+    public async Task<HttpResponseData> SyncApplicationStage([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient)
+    {
+        //var buildingProfessionApplicationModel = await request.ReadAsJsonAsync<BuildingProfessionApplicationModel>();
+        var buildingProfessionApplicationModel = encodedRequest.GetDecodedData<BuildingProfessionApplicationModel>();
+        await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(SynchroniseApplicationStage), buildingProfessionApplicationModel);
+        return request.CreateResponse();
     }
 
     [Function(nameof(SyncEmploymentDetails))]
@@ -146,6 +156,28 @@ public class DynamicsSynchronisationFunctions
             await Task.WhenAll(paymentSyncTasks);
         }
     }
+
+    [Function(nameof(SynchroniseApplicationStage))]
+    public async Task SynchroniseApplicationStage([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
+    {
+
+        ApplicationStageMapper applicationStageMapper = new ApplicationStageMapper();
+
+        var buildingProfessionApplicationModel = orchestrationContext.GetInput<BuildingProfessionApplicationModel>();
+
+        var dynamicsBuildingProfessionApplication = await orchestrationContext.CallActivityAsync<DynamicsBuildingProfessionApplication>(nameof(GetBuildingProfessionApplicationUsingId), buildingProfessionApplicationModel.Id);
+
+        BuildingProfessionApplicationStage? applicationStage = applicationStageMapper.ToBuildingApplicationStage(buildingProfessionApplicationModel.ApplicationStage);
+
+        if(applicationStage != null)
+        {
+            await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingInspectorApplicationStage), dynamicsBuildingProfessionApplication with { bsr_buildingprofessionalapplicationstage = applicationStage});
+        }
+
+    }
+
+
+
 
     [Function(nameof(SynchroniseEmploymentDetails))]
     public async Task SynchroniseEmploymentDetails([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext)
@@ -1336,6 +1368,15 @@ public class DynamicsSynchronisationFunctions
         });
     }
 
+    [Function(nameof(UpdateBuildingInspectorApplicationStage))]
+    public Task UpdateBuildingInspectorApplicationStage([ActivityTrigger] DynamicsBuildingProfessionApplication buildingProfessionApplication)
+    {
+        Console.WriteLine($"Updating application stage to {buildingProfessionApplication.bsr_buildingprofessionalapplicationstage}");
+        return dynamicsService.UpdateBuildingProfessionApplication(buildingProfessionApplication, new DynamicsBuildingProfessionApplication
+        {
+            bsr_buildingprofessionalapplicationstage = buildingProfessionApplication.bsr_buildingprofessionalapplicationstage
+        });
+    }
 
 
     [Function(nameof(GetDynamicsPayments))]

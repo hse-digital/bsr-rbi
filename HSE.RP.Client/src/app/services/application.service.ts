@@ -183,6 +183,12 @@ export class ApplicationService {
     );
   }
 
+  async syncApplicationStage(): Promise<void> {
+    await firstValueFrom(
+      this.httpClient.post(`api/SyncApplicationStage`, Sanitizer.sanitize(this.model))
+    );
+  }
+
   async syncDeclaration(): Promise<void> {
     await firstValueFrom(
       this.httpClient.post(`api/SyncDeclaration`, Sanitizer.sanitize(this.model))

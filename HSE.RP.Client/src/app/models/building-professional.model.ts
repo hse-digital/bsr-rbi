@@ -18,7 +18,7 @@ export class BuildingProfessionalModel implements IComponentModel {
   ProfessionalMemberships: ApplicantProfessionBodyMemberships =
     new ApplicantProfessionBodyMemberships();
 
-    ApplicationStage: ApplicationStage = ApplicationStage.NotStarted;
+  ApplicationStage: ApplicationStage = ApplicationStage.NotStarted;
 
   private _completionState: ComponentCompletionState =
     ComponentCompletionState.NotStarted;

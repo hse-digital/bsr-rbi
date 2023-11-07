@@ -71,48 +71,114 @@ export abstract class PageComponent<T> implements OnInit {
     this.updateApplicationStage();
   }
 
+  /**
+   * Updates the application stage based on the current route.
+   * @returns void
+   */
   updateApplicationStage() {
     var currentRoute = this.getCurrentRoute();
     var section = currentRoute.split('/')[3];
-    console.log(section);
-    switch (section) {
-      case 'personal-details':
-        this.applicationService.model.ApplicationStage =
-          ApplicationStage.PersonalDetails;
-        break;
-      case 'building-inspector-class':
-        this.applicationService.model.ApplicationStage =
-          ApplicationStage.BuildingInspectorClass;
-        break;
-      case 'competency':
-        this.applicationService.model.ApplicationStage =
-          ApplicationStage.Competency;
-        break;
-      case 'professional-activity':
-        this.applicationService.model.ApplicationStage =
-          ApplicationStage.ProfessionalMembershipsAndEmployment;
-        break;
-      case 'application-submission':
-        if (currentRoute.split('/')[4] === 'application-summary') {
-          this.applicationService.model.ApplicationStage =
-            ApplicationStage.ApplicationSummary;
+    var hasChanged = false;
+    if (section) {
+      switch (section) {
+        case 'personal-details':
+          if (
+            this.applicationService.model.ApplicationStage ==
+            ApplicationStage.PersonalDetails
+          ) {
+            hasChanged = false;
+          } else {
+            this.applicationService.model.ApplicationStage =
+              ApplicationStage.PersonalDetails;
+            hasChanged = true;
+          }
           break;
-        } else if (currentRoute.split('/')[4] === 'payment') {
-          if (currentRoute.split('/')[5] === 'declaration') {
+        case 'building-inspector-class':
+          if (
+            this.applicationService.model.ApplicationStage ==
+            ApplicationStage.BuildingInspectorClass
+          ) {
+            hasChanged = false;
+          } else {
             this.applicationService.model.ApplicationStage =
-              ApplicationStage.PayAndSubmit;
-            break;
+              ApplicationStage.BuildingInspectorClass;
+            hasChanged = true;
           }
-          if (currentRoute.split('/')[5] === 'confirm') {
+          break;
+        case 'competency':
+          if (
+            this.applicationService.model.ApplicationStage ==
+            ApplicationStage.Competency
+          ) {
+            hasChanged = false;
+          } else {
             this.applicationService.model.ApplicationStage =
-              ApplicationStage.ApplicationSubmitted;
-            break;
+              ApplicationStage.Competency;
+            hasChanged = true;
           }
-        }
-        break;
-      default:
-        // Add code to handle unknown section
-        break;
+          break;
+        case 'professional-activity':
+          if (
+            this.applicationService.model.ApplicationStage ==
+            ApplicationStage.ProfessionalMembershipsAndEmployment
+          ) {
+            hasChanged = false;
+          } else {
+            this.applicationService.model.ApplicationStage =
+              ApplicationStage.ProfessionalMembershipsAndEmployment;
+            hasChanged = true;
+          }
+          break;
+        case 'application-submission':
+          console.log("application-submission");
+          if (currentRoute.split('/')[4] === 'application-summary') {
+            if (
+              this.applicationService.model.ApplicationStage ==
+              ApplicationStage.ApplicationSummary
+            ) {
+              hasChanged = false;
+            } else {
+              this.applicationService.model.ApplicationStage =
+                ApplicationStage.ApplicationSummary;
+                hasChanged = true;
+            }
+            break;
+          } else if (currentRoute.split('/')[4] === 'payment') {
+            if (currentRoute.split('/')[5] === 'declaration') {
+              if (
+                this.applicationService.model.ApplicationStage ==
+                ApplicationStage.PayAndSubmit
+              ) {
+                hasChanged = false;
+              } else {
+                this.applicationService.model.ApplicationStage =
+                  ApplicationStage.PayAndSubmit;
+                hasChanged = true;
+              }
+              break;
+            }
+            if (currentRoute.split('/')[5] === 'confirm') {
+              if (
+                this.applicationService.model.ApplicationStage ==
+                ApplicationStage.ApplicationSubmitted
+              ) {
+                hasChanged = false;
+              } else {
+                this.applicationService.model.ApplicationStage =
+                  ApplicationStage.ApplicationSubmitted;
+                hasChanged = true;
+              }
+              break;
+            }
+          }
+          break;
+        default:
+          // Add code to handle unknown section
+          break;
+      }
+      if(hasChanged){
+        this.applicationService.syncApplicationStage();
+      }
     }
   }
 
@@ -249,9 +315,5 @@ export abstract class PageComponent<T> implements OnInit {
   protected focusAndUpdateErrors() {
     this.summaryError?.first?.focus();
     this.titleService.setTitleError();
-  }
-
-  protected updateApplicationStatus(): void {
-    this.navigationService;
   }
 }

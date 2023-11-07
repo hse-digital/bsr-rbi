@@ -27,11 +27,11 @@ public record DynamicsBuildingProfessionApplication(
     [property: JsonPropertyName("bsr_assessmentorganisationid@odata.bind")]
     string bsr_assessmentorganisationid = null,
     string _bsr_applicantid_value = null,
+    BuildingProfessionApplicationStage? bsr_buildingprofessionalapplicationstage = null,
     int? statuscode = null,
     string bsr_assessmentcertnumber = null,
     DateOnly? bsr_assessmentdate = null,
-    bool? bsr_hasindependentassessment = null,
-    BuildingProfessionApplicationStage bsr_buildingprofessionalapplicationstage
+    bool? bsr_hasindependentassessment = null
 ) : DynamicsEntity<BuildingProfessionApplication>;
 
 
