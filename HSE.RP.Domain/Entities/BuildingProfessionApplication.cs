@@ -46,7 +46,7 @@ public enum BuildingProfessionApplicationStage
 {
     PersonalDetails = 760_810_000,
     BuildingInspectorClass = 760_810_001,
-    Competency = 760810002,
+    Competency = 760_810_002,
     ProfessionalMembershipsAndEmployment = 760_810_003,
     ApplicationSummary = 760_810_004,
     PayAndSubmit = 760_810_005,

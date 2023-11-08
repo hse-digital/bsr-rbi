@@ -19,38 +19,17 @@ namespace HSE.RP.API.Mappers
 
         public BuildingProfessionApplicationStage? ToBuildingApplicationStage(ApplicationStage applicationStage)
         {
-            if (applicationStage == ApplicationStage.PersonalDetails)
+            return applicationStage switch
             {
-                return BuildingProfessionApplicationStage.PersonalDetails;
-            }
-            else if (applicationStage == ApplicationStage.BuildingInspectorClass)
-            {
-                return BuildingProfessionApplicationStage.BuildingInspectorClass;
-            }
-            else if (applicationStage == ApplicationStage.Competency)
-            {
-                return BuildingProfessionApplicationStage.Competency;
-            }
-            else if (applicationStage == ApplicationStage.ProfessionalMembershipsAndEmployment)
-            {
-                return BuildingProfessionApplicationStage.ProfessionalMembershipsAndEmployment;
-            }
-            else if (applicationStage == ApplicationStage.ApplicationSummary)
-            {
-                return BuildingProfessionApplicationStage.ApplicationSummary;
-            }
-            else if (applicationStage == ApplicationStage.PayAndSubmit)
-            {
-                return BuildingProfessionApplicationStage.PayAndSubmit;
-            }
-            else if (applicationStage == ApplicationStage.ApplicationSubmitted)
-            {
-                return BuildingProfessionApplicationStage.ApplicationSubmitted;
-            }
-            else
-            {
-                return null;
-            }
+                ApplicationStage.PersonalDetails => BuildingProfessionApplicationStage.PersonalDetails,
+                ApplicationStage.BuildingInspectorClass => BuildingProfessionApplicationStage.BuildingInspectorClass,
+                ApplicationStage.Competency => BuildingProfessionApplicationStage.Competency,
+                ApplicationStage.ProfessionalMembershipsAndEmployment => BuildingProfessionApplicationStage.ProfessionalMembershipsAndEmployment,
+                ApplicationStage.ApplicationSummary => BuildingProfessionApplicationStage.ApplicationSummary,
+                ApplicationStage.PayAndSubmit => BuildingProfessionApplicationStage.PayAndSubmit,
+                ApplicationStage.ApplicationSubmitted => BuildingProfessionApplicationStage.ApplicationSubmitted,
+                _ => null
+            };
         }
     }
 }
