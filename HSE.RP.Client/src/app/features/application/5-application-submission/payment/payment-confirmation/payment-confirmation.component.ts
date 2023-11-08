@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { NotFoundComponent } from 'src/app/components/not-found/not-found.component';
+import { ApplicationStage } from 'src/app/models/application-stage.enum';
 import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { BuildingProfessionalModel } from 'src/app/models/building-professional.model';
 import { PaymentModel } from 'src/app/models/payment.model';
@@ -40,7 +41,10 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
       this.payment = await this.paymentService.GetPayment(this.paymentReference);
       if (this.payment?.Status == 'success') {
         this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Complete;
+        this.applicationService.model.ApplicationStage =ApplicationStage.ApplicationSubmitted;
         await this.applicationService.updateApplication();
+        await this.applicationService.syncApplicationStage();
+
         this.shouldRender = true;
       } else {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
@@ -68,11 +72,7 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
 
 
   canActivate(_: ActivatedRouteSnapshot) {
-    return this.applicationService.model.StageStatus!["ApplicationConfirmed"] == StageCompletionState.Complete
-
+    return this.applicationService.model.StageStatus!["ApplicationConfirmed"] == StageCompletionState.Complete;
   }
 
-  // async continueToKbi() {
-  //   await this.navigationService.navigateRelative("../kbi", this.activatedRoute);
-  // }
 }

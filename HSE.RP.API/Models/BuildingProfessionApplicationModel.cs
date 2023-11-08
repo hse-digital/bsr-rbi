@@ -11,6 +11,7 @@ namespace HSE.RP.API.Models
         Competency Competency = null,
         ProfessionalActivity ProfessionalActivity = null,
         ApplicantProfessionBodyMemberships ProfessionalMemberships = null,
+        ApplicationStage ApplicationStage = ApplicationStage.NotStarted,
         Dictionary<string, StageCompletionState> StageStatus = null) : IValidatableModel
     {
         public ValidationSummary Validate()

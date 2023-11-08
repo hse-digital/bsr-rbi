@@ -1,6 +1,5 @@
-import { ApplicantEmploymentDetails } from './applicant-employment-details';
 import { ApplicantProfessionBodyMemberships } from './applicant-professional-body-membership';
-import { ApplicationStatus } from './application-status.enum';
+import { ApplicationStage } from './application-stage.enum';
 import { BuildingInspectorClass } from './building-inspector-class.model';
 import { Competency } from './competency.model';
 import { ComponentCompletionState } from './component-completion-state.enum';
@@ -18,8 +17,13 @@ export class BuildingProfessionalModel implements IComponentModel {
   //ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
   ProfessionalMemberships: ApplicantProfessionBodyMemberships =
     new ApplicantProfessionBodyMemberships();
+
+  ApplicationStage: ApplicationStage = ApplicationStage.NotStarted;
+
   private _completionState: ComponentCompletionState =
     ComponentCompletionState.NotStarted;
+
+
 
   //TODO test StageStatus and replace ApplicationStatus
   StageStatus: Record<string, StageCompletionState> = {
@@ -33,6 +37,8 @@ export class BuildingProfessionalModel implements IComponentModel {
     Declaration: StageCompletionState.Incomplete,
     Payment: StageCompletionState.Incomplete,
   };
+
+
 
   ReturningApplication: boolean = false;
 
