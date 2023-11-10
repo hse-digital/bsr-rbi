@@ -27,6 +27,7 @@ import { NewApplicationModule } from './features/new-application/new-application
 import { ApplicationSubmissionComponent } from './features/returning-application/application-submission/application-submission.component';
 import { A11yModule } from '@angular/cdk/a11y';
 import { HttpInterceptorService } from './services/http-interceptor.service';
+import { InsightsModule } from './modules/insights.module';
 
 const routes = new HseRoutes([
   HseRoute.protected(SampleComponent.route, SampleComponent, SampleComponent.title),
@@ -67,9 +68,10 @@ const routes = new HseRoutes([
     HseAngularModule,
     HttpClientModule,
     HelpPagesModule,
-    A11yModule
+    A11yModule,
+    InsightsModule
   ],
-  providers: [HttpClient, ApplicationService, CookiesBannerService, ...routes.getProviders()],
+  providers: [HttpClient, ApplicationService, CookiesBannerService, InsightsModule, ...routes.getProviders()],
   bootstrap: [AppComponent]
 })
 export class AppModule {

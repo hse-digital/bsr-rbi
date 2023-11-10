@@ -28,6 +28,8 @@
     "@angular/platform-server": "^15.1.5",
     "@angular/router": "^15.1.5",
     "@azure/static-web-apps-cli": "^1.1.4",
+    "@microsoft/applicationinsights-angularplugin-js": "^15.0.1",
+    "@microsoft/applicationinsights-web": "^3.0.5",
     "@nguniversal/express-engine": "^15.1.0",
     "express": "^4.15.2",
     "govuk-frontend": "^4.4.1",
