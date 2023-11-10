@@ -11,6 +11,7 @@ import { Insights } from '../services/insights.service';
     },
   ],
 })
+
 export class InsightsModule {
   constructor(private insights: Insights) {}
 }
