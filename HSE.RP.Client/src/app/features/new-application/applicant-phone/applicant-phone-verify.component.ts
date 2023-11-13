@@ -75,6 +75,8 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<NumberComponent
   }
 
   async validateOTP() {
+    if(this.processing) return;
+    
     this.processing=true;
     this.otpError = false;
     this.isOtpNotNumber = false;
