@@ -19,6 +19,7 @@ import { TitleService } from 'src/app/services/title.service';
 import { PaymentConfirmationComponent } from '../application/5-application-submission/payment/payment-confirmation/payment-confirmation.component';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationSubmissionComponent } from './application-submission/application-submission.component';
+import { ApplicationStage } from 'src/app/models/application-stage.enum';
 
 @Component({
   selector: 'application-verify',
@@ -153,7 +154,9 @@ export class ReturningApplicationVerifyComponent implements OnInit {
       }
       else{
         this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Incomplete;
+        this.applicationService.model.ApplicationStage = ApplicationStage.ApplicationSummary;
         this.applicationService.updateApplication();
+        await this.applicationService.syncApplicationStage();
         this.navigationService.navigate(`application/${this.applicationNumber}`);
       }
 
@@ -185,7 +188,7 @@ export class ReturningApplicationVerifyComponent implements OnInit {
               x.bsr_paymentreconciliationstatus !== PaymentReconciliationStatus.REFUNDED
           );
           this.paymentStatus = successsfulpayment ? PaymentStatus.Success: PaymentStatus.Failed;
-          this.paymentReference = successsfulpayment?.bsr_paymentreference;
+          this.paymentReference = successsfulpayment?.bsr_transactionid;
           this.checkingPaymentStatus = false;
         } else {
           this.paymentStatus = PaymentStatus.Pending;

@@ -25,9 +25,9 @@ export class ApplicationSubmissionComponent implements OnInit, CanActivate {
   }
 
   async ngOnInit() {
-    await this.applicationService.syncPayment();
+
     this.activatedRoute.queryParams.subscribe(async query => {
-      this.paymentReference = query['reference'] ?? await this.getApplicationPaymentReference();
+      this.paymentReference = query['reference']
       this.applicationNumber = this.applicationService.model.id;
       if (!this.paymentReference) {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
@@ -37,25 +37,21 @@ export class ApplicationSubmissionComponent implements OnInit, CanActivate {
       this.payment = await this.paymentService.GetPayment(this.paymentReference);
       if (this.payment?.Status == 'success') {
         this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Complete;
-        this.applicationService.model.ApplicationStage =ApplicationStage.ApplicationSubmitted;
+        this.applicationService.model.ApplicationStage = ApplicationStage.ApplicationSubmitted;
         await this.applicationService.updateApplication();
         await this.applicationService.syncApplicationStage();
 
         this.shouldRender = true;
       } else {
+        this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Incomplete;
+        this.applicationService.model.ApplicationStage = ApplicationStage.ApplicationSummary;
+        await this.applicationService.updateApplication();
+        await this.applicationService.syncApplicationStage();
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
       }
 
 
     });
-  }
-
-
-
-
-  private async getApplicationPaymentReference() {
-    var payments = await this.applicationService.getApplicationPayments()
-    return await payments.find(x => x.bsr_govukpaystatus == "success")?.bsr_transactionid;
   }
 
   canContinue(): boolean {
