@@ -50,6 +50,10 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<NumberComponent
   }
 
   override onInit(applicationService: ApplicationService): void {
+    if(this.applicationService.model.id)
+    {
+      this.navigationService.navigate(`application/${this.applicationService.model.id}`);
+    }
     this.model = new NumberComponent();
     this.PhoneNumber = applicationService.model.PersonalDetails!.ApplicantPhone?.PhoneNumber;
     this.model.PhoneNumber = this.PhoneNumber ?? '';
@@ -76,7 +80,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<NumberComponent
 
   async validateOTP() {
     if(this.processing) return;
-    
+
     this.processing=true;
     this.otpError = false;
     this.isOtpNotNumber = false;
