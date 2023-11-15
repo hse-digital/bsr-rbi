@@ -11,6 +11,7 @@ import { StageCompletionState } from 'src/app/models/stage-completion-state.enum
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { app } from '../../../../../server';
 import { Competency } from 'src/app/models/competency.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -32,6 +33,10 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
   }
 
   override onInit(applicationService: ApplicationService): void {
+    if(!applicationService.model.CosmosId)
+    {
+      applicationService.model.CosmosId = uuidv4();
+    }
     if(!applicationService.model.PersonalDetails)
     {
       applicationService.model.PersonalDetails = {};

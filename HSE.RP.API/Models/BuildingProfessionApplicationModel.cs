@@ -6,6 +6,7 @@ namespace HSE.RP.API.Models
     public record BuildingProfessionApplicationModel
     (
         [property: JsonPropertyName("id")] string Id,
+        string CosmosId = null,
         PersonalDetails PersonalDetails = null,
         BuildingInspectorClass InspectorClass = null,
         Competency Competency = null,
