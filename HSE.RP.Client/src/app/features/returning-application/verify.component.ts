@@ -154,7 +154,10 @@ export class ReturningApplicationVerifyComponent implements OnInit {
       }
       else{
         this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Incomplete;
-        this.applicationService.model.ApplicationStage = ApplicationStage.ApplicationSummary;
+        if(this.applicationService.model.ApplicationStage == ApplicationStage.ApplicationSubmitted)
+        {
+          this.applicationService.model.ApplicationStage = ApplicationStage.PayAndSubmit;
+        }
         this.applicationService.updateApplication();
         await this.applicationService.syncApplicationStage();
         this.navigationService.navigate(`application/${this.applicationNumber}`);
