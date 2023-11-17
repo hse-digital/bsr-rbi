@@ -21,6 +21,8 @@ namespace HSE.RP.API.Services
         Task<DynamicsPayment> CreatePaymentAsync(DynamicsPayment dynamicsPayment, string ApplicationId);
 
         Task<bool> CheckDupelicateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel);
+        Task<DynamicsBuildingProfessionApplication> CheckDupelicateBuildingProfessionApplicationUsingCosmosIdAsync(string cosmosId);
+
         Task<BuildingInspectorEmploymentDetail> CreateOrUpdateBuildingInspectorEmploymentDetails(BuildingInspectorEmploymentDetail buildingInspectorEmploymentDetail);
         Task<BuildingInspectorProfessionalBodyMembership> CreateOrUpdateBuildingInspectorProfessionalBodyMembership(BuildingInspectorProfessionalBodyMembership buildingInspectorProfessionalBodyMembership);
         Task<DynamicsAccount> CreateOrUpdateEmployer(BuildingProfessionApplicationModel buildingProfessionApplicationModel);
@@ -227,15 +229,33 @@ namespace HSE.RP.API.Services
 
         private async Task<BuildingProfessionApplicationModel> CreateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel, Contact contact)
         {
-            var modelDefinition = dynamicsModelDefinitionFactory.GetDefinitionFor<BuildingProfessionApplication, DynamicsBuildingProfessionApplication>();
-            var buildingProfessionApplication = new BuildingProfessionApplication(ContactId: contact.Id, BuildingProfessionTypeCode: BuildingProfessionType.BuildingInspector, StatusCode: BuildingProfessionApplicationStatus.New);
-            var dynamicsBuildingProfessionApplication = modelDefinition.BuildDynamicsEntity(buildingProfessionApplication);
-            var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsBuildingProfessionApplication);
-            var buildingProfessionalApplicationId = ExtractEntityIdFromHeader(response.Headers);
+
+            try
+            {
+                var modelDefinition = dynamicsModelDefinitionFactory.GetDefinitionFor<BuildingProfessionApplication, DynamicsBuildingProfessionApplication>();
+                var buildingProfessionApplication = new BuildingProfessionApplication(ContactId: contact.Id, BuildingProfessionTypeCode: BuildingProfessionType.BuildingInspector, StatusCode: BuildingProfessionApplicationStatus.New, CosmosId: buildingProfessionApplicationModel.CosmosId);
+                var dynamicsBuildingProfessionApplication = modelDefinition.BuildDynamicsEntity(buildingProfessionApplication);
+                var response = await dynamicsApi.Create(modelDefinition.Endpoint, dynamicsBuildingProfessionApplication);
+                var buildingProfessionalApplicationId = ExtractEntityIdFromHeader(response.Headers);
 
 
-            return buildingProfessionApplicationModel with { Id = buildingProfessionalApplicationId };
+                return buildingProfessionApplicationModel with { Id = buildingProfessionalApplicationId };
+            }
+            catch (FlurlHttpException ex) when (ex.StatusCode == 412)
+            {
+                //Check for existing application and return the id
+                var existingBuildingProfessionApplication = await CheckDupelicateBuildingProfessionApplicationUsingCosmosIdAsync(buildingProfessionApplicationModel.CosmosId);
+
+                if (existingBuildingProfessionApplication != null)
+                {
+                    return buildingProfessionApplicationModel with { Id = existingBuildingProfessionApplication.bsr_buildingprofessionapplicationid };
+                }
+
+                throw;
+            }
         }
+            
+        
 
 
         private async Task<DynamicsContact> FindExistingContactAsync(string firstName, string lastName, string email, string phoneNumber)
@@ -859,6 +879,16 @@ namespace HSE.RP.API.Services
 
             }
 
+        }
+
+        public async Task<DynamicsBuildingProfessionApplication> CheckDupelicateBuildingProfessionApplicationUsingCosmosIdAsync(string cosmosId)
+        {
+            var application = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
+                        {
+                        ("$filter", $"bsr_cosmosid eq '{cosmosId}'"),
+            }); 
+            
+            return application.value.FirstOrDefault();
         }
     }
 }

@@ -12,7 +12,9 @@ public class BuildingProfessionApplicationModelDefinition : DynamicsModelDefinit
             bsr_buildingprofessiontypecode: entity.BuildingProfessionTypeCode,
             bsr_buildingprofessionapplicationid: entity.Id,
             bsr_hasindependentassessment: entity.HasIndependentAssessment,
-            statuscode: (int)entity.StatusCode
+            statuscode: (int)entity.StatusCode,
+            CosmosId: entity.CosmosId
+
             ); 
     }
 
@@ -23,7 +25,8 @@ public class BuildingProfessionApplicationModelDefinition : DynamicsModelDefinit
             ApplicationReturnId: dynamicsEntity.bsr_buildingproappid,
             BuildingProfessionTypeCode: dynamicsEntity.bsr_buildingprofessiontypecode,
             HasIndependentAssessment: dynamicsEntity.bsr_hasindependentassessment,
-            StatusCode: (BuildingProfessionApplicationStatus)dynamicsEntity.statuscode
+            StatusCode: (BuildingProfessionApplicationStatus)dynamicsEntity.statuscode,
+            CosmosId: dynamicsEntity.CosmosId
             );
     }
 }   

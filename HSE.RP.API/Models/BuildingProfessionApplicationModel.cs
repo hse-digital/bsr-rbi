@@ -5,12 +5,14 @@ namespace HSE.RP.API.Models
 {
     public record BuildingProfessionApplicationModel
     (
-        [property: JsonPropertyName("id")] string Id = null,
+        [property: JsonPropertyName("id")] string Id,
+        string CosmosId = null,
         PersonalDetails PersonalDetails = null,
         BuildingInspectorClass InspectorClass = null,
         Competency Competency = null,
         ProfessionalActivity ProfessionalActivity = null,
         ApplicantProfessionBodyMemberships ProfessionalMemberships = null,
+        ApplicationStage ApplicationStage = ApplicationStage.NotStarted,
         Dictionary<string, StageCompletionState> StageStatus = null) : IValidatableModel
     {
         public ValidationSummary Validate()

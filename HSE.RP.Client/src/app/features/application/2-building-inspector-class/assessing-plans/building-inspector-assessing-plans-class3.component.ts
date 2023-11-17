@@ -38,32 +38,32 @@ export class BuildingInspectorAssessingPlansClass3Component extends PageComponen
     {
       value: 'CategoryA',
       text: 'Category A',
-      hint: 'Residential dwelling houses (single household) less than 7.5m in height',
+      hint: 'Residential dwelling houses (single household) less than 7.5 metres in height',
     },
     {
       value: 'CategoryB',
       text: 'Category B',
-      hint: 'Residential flats and dwelling houses, less than 11m in height',
+      hint: 'Residential flats and dwelling houses, less than 11 metres in height',
     },
     {
       value: 'CategoryC',
       text: 'Category C',
-      hint: 'Residential flats and dwelling houses, 11m or more but less than 18m in height',
+      hint: 'Residential flats and dwelling houses, 11 metres or more but less than 18 metres in height',
     },
     {
       value: 'CategoryD',
       text: 'Category D',
-      hint: 'All building types and uses less than 7.5m in height',
+      hint: 'All building types and uses less than 7.5 metres in height',
     },
     {
       value: 'CategoryE',
       text: 'Category E',
-      hint: 'All building types 7.5m or more but less than 11m in height',
+      hint: 'All building types 7.5 metres or more but less than 11 metres in height',
     },
     {
       value: 'CategoryF',
       text: 'Category F',
-      hint: 'All building types 11m or more but less than 18m in height',
+      hint: 'All building types 11 metres or more but less than 18 metres in height',
     },
     {
       value: 'CategoryG',

@@ -16,4 +16,8 @@ export class NavigationService {
   navigateAppend(subRoute: string, activatedRoute: ActivatedRoute, queryParams?: Params): Promise<boolean> {
     return this.router.navigate([subRoute], { relativeTo: activatedRoute, queryParams: queryParams });
   }
+
+  getCurrentRoute(): string {
+    return this.router.url;
+  }
 }
