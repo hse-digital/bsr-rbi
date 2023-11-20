@@ -56,7 +56,17 @@ namespace HSE.RP.API.Services
         Task UpdateInvoicePaymentAsync(DynamicsPayment dynamicsPayment);
 
         Task<InvoiceData> SendCreateInvoiceRequest(IntegrationsOptions integrationOptions, CreateInvoiceRequest invoiceRequest);
-
+        Task<DynamicsContact> CreateNewContactAsync(DynamicsContact contact, bool returnObjectResponse = false);
+        Task<Contact> CreateContactAsync(BuildingProfessionApplicationModel model);
+        Task<BuildingProfessionApplicationModel> CreateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel, Contact contact);
+        Task<DynamicsContact> FindExistingContactAsync(string firstName, string lastName, string email, string phoneNumber);
+        Task<DynamicsBuildingInspectorRegistrationClass> FindExistingBuildingInspectorRegistrationClass(string classId, string buidingProfessionApplicationId);
+        Task<DynamicsBuildingInspectorProfessionalBodyMembership> FindExistingBuildingProfessionalBodyMembership(string membershipBodyId, string buidingProfessionApplicationId);
+        Task<DynamicsBuildingInspectorRegistrationCountry> FindExistingBuildingInspectorRegistrationCountry(string countryId, string buidingProfessionApplicationId);
+        Task<DynamicsBuildingInspectorRegistrationActivity> FindExistingBuildingInspectorRegistrationActivity(string activityId, string categoryId, string buidingProfessionApplicationId);
+        string ExtractEntityIdFromHeader(IReadOnlyNameValueList<string> headers);
+        Task AssignContactType(string contactId, string contactTypeId);
+        Task<DynamicsOrganisationsSearchResponse> SearchOrganisations(string authorityName, string accountTypeId);
     }
     public class DynamicsService : IDynamicsService
     {
@@ -199,7 +209,7 @@ namespace HSE.RP.API.Services
 
 
 
-        private async Task<Contact> CreateContactAsync(BuildingProfessionApplicationModel model)
+        public async Task<Contact> CreateContactAsync(BuildingProfessionApplicationModel model)
         {
             var modelDefinition = dynamicsModelDefinitionFactory.GetDefinitionFor<Contact, DynamicsContact>();
             var contact = new Contact(FirstName: model.PersonalDetails.ApplicantName.FirstName ?? "",
@@ -227,7 +237,7 @@ namespace HSE.RP.API.Services
             return contact with { Id = existingContact.contactid };
         }
 
-        private async Task<BuildingProfessionApplicationModel> CreateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel, Contact contact)
+        public async Task<BuildingProfessionApplicationModel> CreateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel, Contact contact)
         {
 
             try
@@ -254,11 +264,11 @@ namespace HSE.RP.API.Services
                 throw;
             }
         }
-            
-        
 
 
-        private async Task<DynamicsContact> FindExistingContactAsync(string firstName, string lastName, string email, string phoneNumber)
+
+
+        public async Task<DynamicsContact> FindExistingContactAsync(string firstName, string lastName, string email, string phoneNumber)
         {
             var response = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
              {
@@ -270,7 +280,7 @@ namespace HSE.RP.API.Services
             return response.value.FirstOrDefault();
         }
 
-        private async Task<DynamicsBuildingInspectorRegistrationClass> FindExistingBuildingInspectorRegistrationClass(string classId, string buidingProfessionApplicationId)
+        public async Task<DynamicsBuildingInspectorRegistrationClass> FindExistingBuildingInspectorRegistrationClass(string classId, string buidingProfessionApplicationId)
         {
             try
             {
@@ -289,7 +299,7 @@ namespace HSE.RP.API.Services
             }
         }
 
-        private async Task<DynamicsBuildingInspectorProfessionalBodyMembership> FindExistingBuildingProfessionalBodyMembership(string membershipBodyId, string buidingProfessionApplicationId)
+        public async Task<DynamicsBuildingInspectorProfessionalBodyMembership> FindExistingBuildingProfessionalBodyMembership(string membershipBodyId, string buidingProfessionApplicationId)
         {
 
             var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership>>("bsr_biprofessionalmemberships", new[]
@@ -302,7 +312,7 @@ namespace HSE.RP.API.Services
 
         }
 
-        private async Task<DynamicsBuildingInspectorRegistrationCountry> FindExistingBuildingInspectorRegistrationCountry(string countryId, string buidingProfessionApplicationId)
+        public async Task<DynamicsBuildingInspectorRegistrationCountry> FindExistingBuildingInspectorRegistrationCountry(string countryId, string buidingProfessionApplicationId)
         {
 
 
@@ -317,7 +327,7 @@ namespace HSE.RP.API.Services
 
         }
 
-        private async Task<DynamicsBuildingInspectorRegistrationActivity> FindExistingBuildingInspectorRegistrationActivity(string activityId, string categoryId, string buidingProfessionApplicationId)
+        public async Task<DynamicsBuildingInspectorRegistrationActivity> FindExistingBuildingInspectorRegistrationActivity(string activityId, string categoryId, string buidingProfessionApplicationId)
         {
 
             var response = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingInspectorRegistrationActivity>>("bsr_biregactivities", new[]
@@ -331,7 +341,7 @@ namespace HSE.RP.API.Services
         }
 
 
-        private string ExtractEntityIdFromHeader(IReadOnlyNameValueList<string> headers)
+        public string ExtractEntityIdFromHeader(IReadOnlyNameValueList<string> headers)
         {
             var header = headers.FirstOrDefault(x => x.Name == "OData-EntityId");
             var id = Regex.Match(header.Value, @"\((.+)\)");
@@ -340,7 +350,7 @@ namespace HSE.RP.API.Services
         }
 
 
-        private async Task AssignContactType(string contactId, string contactTypeId)
+        public async Task AssignContactType(string contactId, string contactTypeId)
         {
             await dynamicsApi.Create($"contacts({contactId})/bsr_contacttype_contact/$ref",
                 new DynamicsContactType { contactTypeReferenceId = $"{dynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_contacttypes({contactTypeId})" });
@@ -820,7 +830,7 @@ namespace HSE.RP.API.Services
             return SearchOrganisations(authorityName, DynamicsOptions.SocialHousingTypeId);
         }
 
-        private Task<DynamicsOrganisationsSearchResponse> SearchOrganisations(string authorityName, string accountTypeId)
+        public Task<DynamicsOrganisationsSearchResponse> SearchOrganisations(string authorityName, string accountTypeId)
         {
             return dynamicsApi.Get<DynamicsOrganisationsSearchResponse>("accounts",
                 new[] { ("$filter", $"_bsr_accounttype_accountid_value eq '{accountTypeId}' and contains(name, '{authorityName.EscapeSingleQuote()}')"), ("$select", "name") });
