@@ -99,6 +99,7 @@ namespace HSE.RP.API.UnitTests.Payment
         public BuildingProfessionApplicationModel Application = new BuildingProfessionApplicationModel()
         {
             Id = "ABC123",
+            CosmosId = "ABC123",
             PersonalDetails = new PersonalDetails
             {
                 ApplicantName = new ApplicantName
