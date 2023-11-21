@@ -68,7 +68,7 @@ namespace HSE.RP.API.Services
         Task AssignContactType(string contactId, string contactTypeId);
         Task<DynamicsOrganisationsSearchResponse> SearchOrganisations(string authorityName, string accountTypeId);
     }
-    public class DynamicsService : IDynamicsService
+    public class DynamicsService : IDynamicsService 
     {
         private readonly DynamicsModelDefinitionFactory dynamicsModelDefinitionFactory;
         private readonly SwaOptions swaOptions;
