@@ -221,7 +221,6 @@ namespace HSE.RP.API.Services
             var dynamicsContact = modelDefinition.BuildDynamicsEntity(contact);
 
 
-
             var existingContact = await FindExistingContactAsync(contact.FirstName, contact.LastName, contact.Email, contact.PhoneNumber);
 
 
