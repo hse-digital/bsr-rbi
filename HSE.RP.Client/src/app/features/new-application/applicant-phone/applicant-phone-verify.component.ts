@@ -124,7 +124,7 @@ export class ApplicantPhoneVerifyComponent extends PageComponent<NumberComponent
       this.hasErrors = true;
       this.processing=false;
     }
-
+    await this.applicationService.syncApplicationStage();
     this.saveAndContinue();
   }
 
