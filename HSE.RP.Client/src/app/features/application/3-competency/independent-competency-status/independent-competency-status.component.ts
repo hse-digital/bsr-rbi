@@ -49,8 +49,7 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
       applicationService.model.Competency
         ?.CompetencyIndependentAssessmentStatus == null
     ) {
-      applicationService.model.Competency!.CompetencyIndependentAssessmentStatus =
-        new CompetencyIndependentAssessmentStatus();
+      applicationService.model.Competency!.CompetencyIndependentAssessmentStatus = new CompetencyIndependentAssessmentStatus();
       this.selectedOption = '';
     }
 
@@ -59,6 +58,8 @@ export class CompetencyIndependentStatusComponent extends PageComponent<Competen
       ? applicationService.model.Competency
           ?.CompetencyIndependentAssessmentStatus.IAStatus!
       : 'no';
+
+      this.model = applicationService.model.Competency?.CompetencyIndependentAssessmentStatus
   }
 
   override async saveAndComeBack(): Promise<void> {
