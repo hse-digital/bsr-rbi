@@ -123,7 +123,7 @@ export class CompetencySummaryComponent extends PageComponent<string> {
     }
     if(this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "TTD")
     {
-      return "Total Training Development (TTD)";
+      return "Total Training and Development (TTD)";
     }
     else{
       return "Unknown organisation";
