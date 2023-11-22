@@ -49,7 +49,7 @@ export class ApplicationSummaryCompetencyDetailsComponent implements OnInit{
     }
     if(this.BuildingInspectorCompetencyDetails?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "TTD")
     {
-      return "Total Training Development (TTD)";
+      return "Total Training and Development (TTD)";
     }
     else{
       return "Unknown organisation";
