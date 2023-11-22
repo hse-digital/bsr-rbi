@@ -41,16 +41,18 @@ export class SearchEmploymentOrganisationAddressComponent extends PageComponent<
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
     });
+
     this.orgFullName =
       this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerName?.FullName;
 
-      if(this.queryParam == 'application-summary' || this.queryParam == 'professional-membership-and-employment-summary')
+      if((this.queryParam == 'application-summary' || this.queryParam == 'professional-membership-and-employment-summary') && this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerAddress?.CompletionState == ComponentCompletionState.Complete )
       {
         this.step = 'confirm';
         this.address = this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmployerAddress;
       }
 
   }
+
   override async onSave(
     applicationService: ApplicationService
   ): Promise<void> {

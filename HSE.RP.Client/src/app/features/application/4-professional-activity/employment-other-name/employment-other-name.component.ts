@@ -111,6 +111,7 @@ export class EmploymentOtherNameComponent extends PageComponent<EmployerName> {
           { queryParam: this.queryParam }
         );
       }
+
     }
 
     return this.navigationService.navigateRelative(
