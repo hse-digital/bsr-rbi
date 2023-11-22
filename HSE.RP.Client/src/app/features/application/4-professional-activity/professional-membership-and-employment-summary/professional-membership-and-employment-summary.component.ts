@@ -12,6 +12,7 @@ import { ProfessionalActivityHelper } from 'src/app/helpers/professional-activit
 import { EmploymentType } from 'src/app/models/employment-type.enum';
 import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 @Component({
   selector: 'hse-professional-membership-and-employment-summary',
@@ -24,6 +25,7 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
     'Professional memberships and employment summary - Register as a building inspector - GOV.UK';
   production: boolean = environment.production;
   modelValid: boolean = false;
+  queryParam?: string = '';
 
 
   constructor(
@@ -34,6 +36,9 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
   }
 
   override onInit(applicationService: ApplicationService): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['queryParam'];
+    });
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -63,20 +68,29 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.navigationService.navigateRelative(
-      `../${ApplicationTaskListComponent.route}`,
-      this.activatedRoute
-    );
+
+    if (this.queryParam === 'application-summary') {
+      return this.navigationService.navigateRelative(
+        `../application-submission/${ApplicationSummaryComponent.route}`,
+        this.activatedRoute
+      )
+    }
+    else {
+      return this.navigationService.navigateRelative(
+        `../${ApplicationTaskListComponent.route}`,
+        this.activatedRoute
+      );
+    }
   }
 
   public navigateTo(route: string) {
     const queryParam = 'professional-membership-and-employment-summary';
 
-      return this.navigationService.navigateRelative(
-        `${route}`,
-        this.activatedRoute,
-        { queryParam }
-        );
+    return this.navigationService.navigateRelative(
+      `${route}`,
+      this.activatedRoute,
+      { queryParam }
+    );
 
   }
 
@@ -103,13 +117,12 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
       professionalBodyMemberships.push(ProfessionalActivityHelper.professionalBodyNames["OTHER"]);
     }
 
-    if(professionalBodyMemberships.length == 0)
-    {
+    if (professionalBodyMemberships.length == 0) {
       return ["None"]
     }
-    else{
+    else {
 
-    return professionalBodyMemberships;
+      return professionalBodyMemberships;
     }
 
 
@@ -124,45 +137,38 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
   }
 
   public getEmployerName(): string {
-    if(FieldValidations.IsNotNullOrWhitespace(this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName?.FullName))
-    {
+    if (FieldValidations.IsNotNullOrWhitespace(this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName?.FullName)) {
       return this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName!.FullName!
     }
-    else{
+    else {
       return "None"
     }
   }
 
   public getEmploymentTypeTitle(): string | null {
-    if(this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.PublicSector
-      || this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.PrivateSector)
-      {
-        return "Employer"
-      }
-      else if(this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.Other)
-      {
-        return "Business name";
-      }
-      else
-      {
-        return null;
-      }
+    if (this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.PublicSector
+      || this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.PrivateSector) {
+      return "Employer"
+    }
+    else if (this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.Other) {
+      return "Business name";
+    }
+    else {
+      return null;
+    }
   }
 
   public getEmploymentAddressTitle(): string | null {
-    if(this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.PublicSector
-      || this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.PrivateSector)
-      {
-        return "Employer address"
-      }
-      else if(this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.Other)
-      {
-        return "Business address";
-      }
-      else
-      {
-        return null;
-      }
+    if (this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.PublicSector
+      || this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.PrivateSector) {
+      return "Employer address"
+    }
+    else if (this.applicationService.model.ProfessionalActivity.EmploymentDetails?.EmploymentTypeSelection?.EmploymentType == EmploymentType.Other) {
+      return "Business address";
+    }
+    else {
+      return null;
+    }
   }
 
   public isUnemployed(): boolean {
