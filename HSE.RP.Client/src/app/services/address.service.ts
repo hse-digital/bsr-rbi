@@ -34,7 +34,7 @@ export class AddressService {
 
   async SearchAddress(query: string): Promise<AddressResponseModel> {
     return await firstValueFrom(
-      this.httpClient.get<AddressResponseModel>(`api/SearchAddress/${query}`)
+      this.httpClient.get<AddressResponseModel>(`api/SearchAddress/${query}?includeAllUKAddresses=1`)
     );
   }
 }
