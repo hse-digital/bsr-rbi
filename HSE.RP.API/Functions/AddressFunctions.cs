@@ -26,6 +26,7 @@ public class AddressFunctions
                 .AppendPathSegment("api")
                 .AppendPathSegment(nameof(SearchPostalAddressByPostcode))
                 .AppendPathSegment(postcode)
+                .SetQueryParam("includeAllUKAddresses", request.Query.Get("includeAllUKAddresses"))
                 .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
                 .AllowHttpStatus(HttpStatusCode.BadRequest)
                 .GetAsync();
@@ -48,6 +49,7 @@ public class AddressFunctions
                 .AppendPathSegment("api")
             .AppendPathSegment(nameof(SearchAddress))
             .SetQueryParam("query", query)
+            .SetQueryParam("includeAllUKAddresses", request.Query.Get("includeAllUKAddresses"))
             .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
             .AllowHttpStatus(HttpStatusCode.BadRequest)
             .GetAsync();
