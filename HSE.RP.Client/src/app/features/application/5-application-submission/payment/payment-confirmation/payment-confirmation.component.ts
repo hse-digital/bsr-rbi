@@ -44,7 +44,8 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
         this.applicationService.model.ApplicationStage =ApplicationStage.ApplicationSubmitted;
         await this.applicationService.updateApplication();
         await this.applicationService.syncApplicationStage();
-
+        await this.applicationService.clearSession();
+        await this.applicationService.clearApplication();
         this.shouldRender = true;
       } else {
         this.navigationService.navigate(`/application/${this.applicationService.model.id}`);
@@ -72,7 +73,7 @@ export class PaymentConfirmationComponent implements OnInit, CanActivate {
 
 
   canActivate(_: ActivatedRouteSnapshot) {
-    return this.applicationService.model.StageStatus!["ApplicationConfirmed"] == StageCompletionState.Complete;
+    return this.applicationService.model.id != undefined && this.applicationService.model.id != null && this.applicationService.model.id != '' && this.applicationService.model.StageStatus!["ApplicationConfirmed"] == StageCompletionState.Complete;
   }
 
 }
