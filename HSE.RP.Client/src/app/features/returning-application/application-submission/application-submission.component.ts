@@ -40,7 +40,8 @@ export class ApplicationSubmissionComponent implements OnInit, CanActivate {
         this.applicationService.model.ApplicationStage = ApplicationStage.ApplicationSubmitted;
         await this.applicationService.updateApplication();
         await this.applicationService.syncApplicationStage();
-
+        await this.applicationService.clearSession();
+        await this.applicationService.clearApplication();
         this.shouldRender = true;
       } else {
         this.applicationService.model.StageStatus['Payment'] = StageCompletionState.Incomplete;
