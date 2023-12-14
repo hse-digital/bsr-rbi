@@ -13,10 +13,12 @@ using Xunit;
 using HSE.RP.API.Extensions;
 using HSE.RP.API.Model;
 using Grpc.Core;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+using System.Reflection.Metadata;
 
 namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 {
-    public class DynamicsServiceTest : UnitTestBase
+    public class DynamicsServiceTests : UnitTestBase
     {
         private readonly IDynamicsService _dynamicsService;
         private BuildingProfessionApplicationModel buildingProfessionApplicationModel;
@@ -38,7 +40,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
 
 
-        public DynamicsServiceTest()
+        public DynamicsServiceTests()
         {
             _dynamicsService = DynamicsService;
 
@@ -67,6 +69,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
                 }
             };
+
             dynamicsBuildingProfessionApplicationNewApplication = new DynamicsBuildingProfessionApplication
             {
                 
@@ -452,13 +455,17 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         [Fact]
         public async Task WhenCalledCreateBuildingProfessionApplication_NoExistingApplication()
         {
+
             //Arrange
             HttpTest.RespondWithJson(body: new DynamicsResponse<DynamicsContact> { value = new List<DynamicsContact>() });
             HttpTest.RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsContact.contactid));
-
+            HttpTest.RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid));
 
             //Act
             var contact = await _dynamicsService.CreateContactAsync(buildingProfessionApplicationModel);
+
+            var application = await _dynamicsService.CreateBuildingProfessionApplicationAsync(buildingProfessionApplicationModelNewApplication, contact);
+
 
             //Assert
             HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
@@ -477,7 +484,13 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             .WithOAuthBearerToken(DynamicsAuthToken)
             .WithVerb(HttpMethod.Post);
 
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications")
+            .WithRequestJson(new DynamicsBuildingProfessionApplication(bsr_applicantid: $"/contacts({contact.Id})", bsr_buildingprofessiontypecode: BuildingProfessionType.BuildingInspector, statuscode: (int)BuildingProfessionApplicationStatus.New, CosmosId: buildingProfessionApplicationModelNewApplication.CosmosId, bsr_hasindependentassessment: false))
+            .WithOAuthBearerToken(DynamicsAuthToken)
+            .WithVerb(HttpMethod.Post);
+
             Assert.Equal(contact, contactNewApplication);
+            Assert.Equal(application, buildingProfessionApplicationModelNewApplication with { Id = dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid });
 
         }
     }

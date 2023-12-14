@@ -27,7 +27,7 @@ using System.Text.RegularExpressions;
 
 namespace HSE.RP.API.UnitTests.Payment
 {
-    public class PaymentFuncationTest
+    public class PaymentFuncationTests
     {
         public BuildingProfessionApplicationModel Application = new BuildingProfessionApplicationModel()
         {
