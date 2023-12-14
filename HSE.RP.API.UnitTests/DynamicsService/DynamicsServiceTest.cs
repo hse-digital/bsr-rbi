@@ -454,7 +454,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         {
             //Arrange
             HttpTest.RespondWithJson(body: new DynamicsResponse<DynamicsContact> { value = new List<DynamicsContact>() });
-            HttpTest.RespondWith(status: 204, headers: BuildODataEntityHeader(dynamics.contactid));
+            HttpTest.RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsContact.contactid));
 
 
             //Act
