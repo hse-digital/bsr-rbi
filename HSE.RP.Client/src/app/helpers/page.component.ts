@@ -130,7 +130,6 @@ export abstract class PageComponent<T> implements OnInit {
           }
           break;
         case 'application-submission':
-          console.log("application-submission");
           if (currentRoute.split('/')[4] === 'application-summary') {
             if (
               this.applicationService.model.ApplicationStage ==

@@ -144,7 +144,7 @@ public class DynamicsSynchronisationFunctions
                 if (paymentResponse != null)
                 {
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdatePayment), new BuildingProfessionApplicationPayment(dynamicsBuildingProfessionApplication.bsr_buildingproappid, paymentResponse));
-                    if (paymentResponse.Status == "success"/* && dynamicsBuildingProfessionApplication.bsr_applicationstage != BuildingApplicationStage.ApplicationSubmitted*/)
+                    if (paymentResponse.Status == "success" && dynamicsBuildingProfessionApplication.statuscode != (int)BuildingProfessionApplicationStatus.Completed)
                     {
                         await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingProfessionApplicationToSubmitted), dynamicsBuildingProfessionApplication);
                     }
@@ -1371,7 +1371,6 @@ public class DynamicsSynchronisationFunctions
     [Function(nameof(UpdateBuildingInspectorApplicationStage))]
     public Task UpdateBuildingInspectorApplicationStage([ActivityTrigger] DynamicsBuildingProfessionApplication buildingProfessionApplication)
     {
-        Console.WriteLine($"Updating application stage to {buildingProfessionApplication.bsr_buildingprofessionalapplicationstage}");
         return dynamicsService.UpdateBuildingProfessionApplication(buildingProfessionApplication, new DynamicsBuildingProfessionApplication
         {
             bsr_buildingprofessionalapplicationstage = buildingProfessionApplication.bsr_buildingprofessionalapplicationstage

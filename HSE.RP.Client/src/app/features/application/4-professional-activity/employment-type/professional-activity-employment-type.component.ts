@@ -16,6 +16,7 @@ import { TaskListItemComponent } from 'src/app/components/task-list-item/task-li
 import { GovukTaskListComponent } from 'hse-angular';
 import { EmploymentPrivateSectorBodyNameComponent } from '../employment-private-sector-body-name/employment-private-sector-body-name.component';
 import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
+import { AddressModel } from 'src/app/models/address.model';
 
 @Component({
   selector: 'hse-professional-activity-employment-type',
@@ -178,6 +179,7 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
           );
         }
         if (this.model?.EmploymentType == EmploymentType.Unemployed) {
+          this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerAddress = new AddressModel();
           this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.Complete
           return this.navigationService.navigateRelative(
             ProfessionalMembershipAndEmploymentSummaryComponent.route,
