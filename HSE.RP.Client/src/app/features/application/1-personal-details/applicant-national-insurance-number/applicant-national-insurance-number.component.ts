@@ -60,6 +60,14 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<App
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+    
+    //set this.model.NationInsuranceNumber to be uppercase and add a space after every second character in the string and trim to remove any trailing spaces
+    this.model!.NationalInsuranceNumber = this.model!.NationalInsuranceNumber!
+      .toUpperCase()
+      .replace(/\s/g, '')
+      .replace(/(.{2})/g, '$1 ')
+      .trim();
+
     this.applicationService.model.PersonalDetails!.ApplicantNationalInsuranceNumber =
       this.model;
   }
@@ -83,6 +91,8 @@ export class ApplicantNationalInsuranceNumberComponent extends PageComponent<App
 
   override isValid(): boolean {
     this.nsiIsNullOrWhiteSpace = !FieldValidations.IsNotNullOrWhitespace(
+      //remove spaces from string this.model?.NationalInsuranceNumber?.replace(/\s/g, '')
+
       this.model?.NationalInsuranceNumber
     );
     this.nsiIsInvalidFormat = !NationalInsuranceNumberValidator.isValid(

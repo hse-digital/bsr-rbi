@@ -1,7 +1,7 @@
 export class NationalInsuranceNumberValidator {
 
   private static _isNationalInsuranceNumberValid(nationalInsuranceNumber: string): boolean {
-    return new RegExp(/^[A-Za-z]{2}\s\d{2}\s\d{2}\s\d{2}\s[A-Za-z]$/, "gm").test(nationalInsuranceNumber);
+    return new RegExp(/^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)[A-Z]*[^DFIQUV][A-Z]*[^DFIOQUV][0-9]{6}[A-D]$/, "gmi").test(nationalInsuranceNumber.replace(/\s/g, ''));
   }
 
 
