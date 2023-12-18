@@ -15,6 +15,7 @@ import {
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { Competency } from 'src/app/models/competency.model';
+import { NextStage } from 'src/app/helpers/next-section.helper';
 
 @Component({
   selector: 'hse-building-inspector-summary',
@@ -122,10 +123,11 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   override navigateNext(): Promise<boolean> {
 
 
-    return this.buildingInspectorRouter.navigateTo(
-      this.applicationService.model,
-      BuildingInspectorRoutes.TASK_LIST
+    return this.navigationService.navigateRelative(
+      `../${ApplicationTaskListComponent.route}`,
+      this.activatedRoute, undefined, NextStage.getNextStage(this.applicationService.model)
     );
+
   }
 
   public navigateTo(route: string) {
