@@ -18,6 +18,7 @@ import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { AddressModel } from 'src/app/models/address.model';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { NextStage } from 'src/app/helpers/next-section.helper';
 
 @Component({
   selector: 'hse-applicant-summary',
@@ -93,10 +94,13 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   override navigateNext(): Promise<boolean> {
-    return this.personalDetailRouter.navigateTo(
-      this.applicationService.model,
-      PersonalDetailRoutes.TASK_LIST
+
+    return this.navigationService.navigateRelative(
+      `../${ApplicationTaskListComponent.route}`,
+      this.activatedRoute, undefined, NextStage.getNextStage(this.applicationService.model)
     );
+
+
   }
 
   public navigateToNamedRoute(namedRoute: string) {

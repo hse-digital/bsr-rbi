@@ -10,11 +10,6 @@ import { GovukErrorSummaryComponent } from 'hse-angular';
 import { ApplicationService } from 'src/app/services/application.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { PageComponent } from 'src/app/helpers/page.component';
-//import { PersonalDetailsPlaceholderComponent } from '../1-personal-details/personal-details-placeholder/personal-details-placeholder.component';
-//import { BuildingInspectorClassPlaceholderComponent } from '../2-building-inspector-class/building-inspector-class-placeholder/building-inspector-class-placeholder.component';
-//import { CompetencyPlaceholderComponent } from '../3-competency/competency-placeholder/competency-placeholder.component';
-//import { ProfessionalActivityPlaceholderComponent } from '../4-professional-activity/professional-activity-placeholder/professional-activity-placeholder.component';
-//import { ApplicationSubmissionPlaceholderComponent } from '../5-application-submission/application-submission-placeholder/application-submission-placeholder.component';
 import { environment } from 'src/environments/environment';
 import { ApplicantDateOfBirthComponent } from '../1-personal-details/applicant-date-of-birth/applicant-date-of-birth.component';
 import { ApplicantAddressComponent } from '../1-personal-details/applicant-address/applicant-address.component';
@@ -67,10 +62,13 @@ import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-
 import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../4-professional-activity/professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 import { ClassSelection } from 'src/app/models/class-selection.model';
 
+
+
 interface ITaskListParent {
   prompt: string;
   show: boolean;
   relativeRoute: string;
+  id: string;
   children: ITaskListChild[];
 }
 interface ITaskListChild {
@@ -148,25 +146,51 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     activatedRoute: ActivatedRoute,
     applicationService: ApplicationService,
     private personalDetailsRouter: PersonalDetailRouter,
-    personalDetailRouter: PersonalDetailRouter
+    personalDetailRouter: PersonalDetailRouter,
   ) {
     super(activatedRoute);
     this.updateOnSave = false;
     this.activatedRoute.params.subscribe((params) => {
       this.QueryApplicationId = params['id'];
     });
+
+
     this.getPaymentStatus();
     this.ModelApplicationId = applicationService.model.id!;
     this.PersonalDetailRouter = personalDetailRouter;
+
   }
 
+
+
   override async onInit(applicationService: ApplicationService): Promise<void> {
+
     this.model = applicationService.model;
     this.checkingStatus = true;
     if (this.isInspectorClassOne()) this.hideCompetencySection();
 
     this.showCompetencyAssement();
+
   }
+
+
+
+  ngAfterViewInit() {
+    this.activatedRoute.fragment.subscribe((fragment) => {
+      if (fragment) {
+
+          const element = document.querySelector('#' + fragment);
+          if (element) {
+            setTimeout(() => {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }); 
+            }, 100);
+          }
+      }
+    });
+  }
+  
+
+
 
   private isInspectorClassOne() {
     return (
@@ -440,6 +464,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       prompt: 'Personal details',
       relativeRoute: ApplicationPersonalDetailsModule.baseRoute,
       show: true,
+      id: 'personal-details',
       children: [
         {
           show: true,
@@ -536,6 +561,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       prompt: 'Building inspector class',
       relativeRoute: BuildingInspectorClassModule.baseRoute,
       show: true,
+      id: 'building-inspector-class',
       children: [
         {
           show: true,
@@ -576,6 +602,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       prompt: 'Competency',
       relativeRoute: CompetencyModule.baseRoute,
       show: true,
+      id: 'competency',
       children: [
         {
           show: true,
@@ -644,6 +671,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       prompt: 'Professional memberships and employment',
       relativeRoute: ProfessionalActivityModule.baseRoute,
       show: true,
+      id: 'professional-memberships-and-employment',
       children: [
         {
           show: true,
@@ -683,6 +711,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       prompt: 'Application summary',
       relativeRoute: 'application-submission',
       show: true,
+      id: 'application-summary',
       children: [
         {
           show: true,
