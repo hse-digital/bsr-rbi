@@ -16,7 +16,7 @@
     />
   </govuk-error-summary>
 
-  <govuk-body>
+  <govuk-body >
     <h1 class="govuk-heading-l">Summary of your professional memberships</h1>
     <govuk-summary-list>
       <govuk-summary-list-row
@@ -79,11 +79,10 @@
         (onClick2)="navigateToRemove('OTHER')"
         (onKeyupEnter2)="navigateToRemove('OTHER')"
         [actionText]="emptyActionText()"
-        actionDetails="Other"
         [actionText2]="removeActionText()"
         actionDetails="Other"
         key="Other"
-        [showAction]="true"
+        [showAction]="false"
         [showAction2]="true"
       >
       </govuk-summary-list-row>
