@@ -81,7 +81,7 @@ namespace HSE.RP.API.Services
 
                 foreach (var record in pending.value)
                 {
-                    await dynamicsApi.Update($"bsr_payments({record.bsr_paymentid})", dynamicsPayment with
+                    await dynamicsApi.Update($"bsr_payments({record.bsr_paymentid})", record with
                     {
                         bsr_govukpaystatus = "failed",
                         bsr_paymentreconciliationstatus = DynamicsPaymentReconciliationStatus.FailedPayment,
