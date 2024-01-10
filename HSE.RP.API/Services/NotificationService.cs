@@ -97,7 +97,7 @@ namespace HSE.RP.API.Services
                     personalisation = new Dictionary<string, dynamic>()
                     {
                         { "security code", otpToken },
-                        { "expiration_time", expirationTime.ToString("dd-MM-yyyy hh:mm:ss tt")},
+                        { "expiration_time", expirationTime.ToString("dd/MM/yyyy hh:mm:ss tt")},
                         { "link", swaOptions.Url }
                     }
                 }
@@ -156,7 +156,7 @@ namespace HSE.RP.API.Services
                     personalisation = new Dictionary<string, dynamic>()
                     {
                         { "security code", otpToken },
-                        { "expiration_time", expirationTime.ToString("dd-MM-yyyy hh:mm:ss tt")},
+                        { "expiration_time", expirationTime.ToString("dd/MM/yyyy hh:mm:ss tt")},
                     }
                 }
                 );

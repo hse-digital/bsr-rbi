@@ -8,7 +8,7 @@
   <ng-container *ngIf="verificationOption == 'email-option'" >
       <govuk-body>We have sent a 6-digit security code to: <b>{{ emailAddress }}</b>.</govuk-body>
       <govuk-body>If you cannot find the email, check your spam folder.</govuk-body>
-      <govuk-body>If you still cannot find the code or it has expired, ask us to <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new code</a>, or <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification code to your phone</a>.</govuk-body>
+      <govuk-body>If you still cannot find the code or it has expired, ask us to <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new code</a>, or <a (click)="showChangeVerificationStep()" (keyup.enter)="showChangeVerificationStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification code to your phone</a>.</govuk-body>
 
       <govuk-input id="security-code" label="Security code" labelClass="govuk-label--s"
                   hint="For example, '123456'." [(model)]="securityCode" class="govuk-input--width-10"
@@ -19,7 +19,7 @@
 
   <ng-container *ngIf="verificationOption == 'phone-option'" >
     <govuk-body>We have sent a 6-digit security code to: <b>{{ phoneNumber }}</b>.</govuk-body>
-    <govuk-body>If you did not receive the text message, or the security code timed out, ask us to <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new security code</a>, or <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification code to your email</a>.</govuk-body>
+    <govuk-body>If you did not receive the text message, or the security code timed out, ask us to <a (click)="showResendStep()" (keyup.enter)="showResendStep()" class="govuk-link cursor" role="link" tabindex="0">generate a new security code</a>, or <a (click)="showChangeVerificationStep()" (keyup.enter)="showChangeVerificationStep()" class="govuk-link cursor" role="link" tabindex="0">send the verification code to your email</a>.</govuk-body>
 
 
     <govuk-input id="security-code" label="Security code" labelClass="govuk-label--s"
