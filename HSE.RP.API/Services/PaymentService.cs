@@ -49,8 +49,9 @@ namespace HSE.RP.API.Services
                 ReturnUrl = $"{swaOptions.Url}/application/{model.Id}/application-submission/payment/confirm?reference={reference}",
 
                 Environment = integrationOptions.Environment,
-                Application = "RBI",
+                Application = "rbiportal",
                 ApplicationId = model.Id,
+
                 CardHolder = new GovukPaymentCardHolderDetails
                 {
                     Name = model.PersonalDetails.ApplicantName.FirstName + " " + model.PersonalDetails.ApplicantName.LastName,
@@ -109,7 +110,7 @@ namespace HSE.RP.API.Services
                     AddressLine2 = invoicePaymentRequest.AddressLine2,
                     Town = invoicePaymentRequest.Town,
                     Postcode = invoicePaymentRequest.Postcode,
-                    Application = "RBI",
+                    Application = "rbiportal",
                     Description = $"Building Professional Application: {buildingProfessionApplicationModel.Id}",
                     Title = "RBI",
                     OrderNumber = invoicePaymentRequest.OrderNumber,
