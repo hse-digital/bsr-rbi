@@ -181,9 +181,10 @@
                 navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)
               "
               tabindex="0"
-            >
-              change<span class="govuk-visually-hidden">class</span> </a
-            ><br />
+            >change
+            <span *ngIf=" applicationService.model.InspectorClass?.ClassType?.Class === BuildingInspectorClassType.Class3 " class="govuk-visually-hidden">class three</span> 
+            <span *ngIf=" applicationService.model.InspectorClass?.ClassType?.Class === BuildingInspectorClassType.Class2 " class="govuk-visually-hidden">class two</span> 
+           </a><br />
           </div>
           <br />
           <br />
@@ -204,7 +205,7 @@
               "
               tabindex="0"
             >
-              change<span class="govuk-visually-hidden"> class</span>
+              change<span class="govuk-visually-hidden">class four</span>
             </a>
           </div>
         </dd>
@@ -273,7 +274,7 @@
               (keyup.enter)="navigateTo(assessPlansLink)"
               tabindex="0"
             >
-              change<span class="govuk-visually-hidden">categories</span>
+              change<span class="govuk-visually-hidden">categories assess plans</span>
             </a>
             <br />
           </div>
@@ -290,7 +291,7 @@
             (keyup.enter)="navigateTo(inspectionLink)"
             tabindex="0"
           >
-          change<span class="govuk-visually-hidden">categories</span>
+          change<span class="govuk-visually-hidden">categories inspection</span>
         </a>
         </dd>
       </div>
@@ -328,7 +329,7 @@
             "
             tabindex="0"
           >
-            change<span class="govuk-visually-hidden"> country</span>
+            change<span class="govuk-visually-hidden">country</span>
           </a>
         </dd>
       </div>
