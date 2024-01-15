@@ -1,36 +1,68 @@
-<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
+<govuk-formpage
+  saveAndContinueText="Save and continue"
+  [hideSaveAndComeBack]="false"
+  (saveAndContinue)="saveAndContinue()"
 
-  <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-bi-class-selection" [message]="errorText" />
+  (saveAndComeBack)="saveAndComeBack()"
+
+  [hideBackButton]="false"
+>
+  <govuk-error-summary
+    *ngIf="selectedOptionError"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="selectedOptionError"
+      anchorId="radios-bi-class-selection"
+      [message]="errorText"
+    />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">
     <span class="govuk-caption-l">
-      Class {{getClassType()}} building inspector
+      Class {{ getClassType() }} building inspector
     </span>
     What BSR-regulated activities will you do?
   </h1>
 
-  <govuk-warning message="Your BSR-regulated activities will be published on the register." background="#0"></govuk-warning>
-
+  <govuk-warning
+    message="Your BSR-regulated activities will be published on the register."
+    background="#0"
+  ></govuk-warning>
 
   <govuk-body>
-    <govuk-checkbox-group [title]="" [hint]=hint [errorText]=errorText
-                          [(model)]="selections"
-                          id="activity-selection" #field [govukRequired]="field">
+    <govuk-checkbox-group
+      [title]=""
+      [hint]="hint"
+      [errorText]="errorText"
+      [(model)]="selections"
+      id="activity-selection"
+      #field
+      [govukRequired]="field"
+    >
       <!-- IMPORTANT: Make sure the names in the values property on the checkbox ,
                       match the property names on the BuildingInspectorRegulatedActivies -->
-      <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()" id="assessing-plans"
-                      [model]="selections"
-                      text="Assess plans" value="AssessingPlans" (onClicked)="optionClicked()"
-                      hint="" />
-      <govuk-checkbox #checkbox (onKeyupEnter)="onKeyupEnter.emit()"
-                      [model]="selections"
-                      text="Inspection" value="Inspection" (onClicked)="optionClicked()" id="inspection"
-                      hint="" />
-
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        id="assessing-plans"
+        [model]="selections"
+        text="Assess plans"
+        value="AssessingPlans"
+        (onClicked)="optionClicked()"
+        hint=""
+      />
+      <govuk-checkbox
+        #checkbox
+        (onKeyupEnter)="onKeyupEnter.emit()"
+        [model]="selections"
+        text="Inspection"
+        value="Inspection"
+        (onClicked)="optionClicked()"
+        id="inspection"
+        hint=""
+      />
     </govuk-checkbox-group>
-
   </govuk-body>
 </govuk-formpage>
-
