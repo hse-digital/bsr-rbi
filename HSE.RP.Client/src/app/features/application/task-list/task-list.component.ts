@@ -475,7 +475,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            TaskStatus.Complete,
+          this.getModelStatus(aModel.PersonalDetails?.ApplicantName),
         },
         {
           show: true,
