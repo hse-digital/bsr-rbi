@@ -61,6 +61,7 @@ import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-pro
 import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-details';
 import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../4-professional-activity/professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 import { ClassSelection } from 'src/app/models/class-selection.model';
+import { SubjourneyHelper } from 'src/app/helpers/subjourney-helper';
 
 
 
@@ -567,7 +568,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           show: true,
           prompt: 'Class selection',
           relativeRoute: (): TaskListRoute => {
-            return { route: BuildingInspectorClassSelectionComponent.route };
+            return { route: SubjourneyHelper.getClassSelectionRoute(this.model!.InspectorClass!) };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getClassSelectionModelStatus(
