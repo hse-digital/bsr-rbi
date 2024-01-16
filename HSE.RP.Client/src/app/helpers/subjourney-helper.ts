@@ -11,12 +11,13 @@ export class SubjourneyHelper {
 
     static getClassSelectionRoute(model: BuildingInspectorClass): string {
 
-        if (model.ClassType.CompletionState == ComponentCompletionState.Complete || model.ClassType.CompletionState == ComponentCompletionState.NotStarted) {
+        if (model.CompletionState == ComponentCompletionState.Complete || model.CompletionState == ComponentCompletionState.NotStarted) {
             return "building-inspector-class-selection";
         }
         else {
+
             //If class 1 return class selection screen
-            if (model.ClassType.Class == BuildingInspectorClassType.Class1) {
+            if (model.ClassType.Class == BuildingInspectorClassType.Class1 || model.ClassType.CompletionState != ComponentCompletionState.Complete) {
                 return "building-inspector-class-selection";
             }
 

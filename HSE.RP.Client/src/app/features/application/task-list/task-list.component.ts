@@ -572,7 +572,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getClassSelectionModelStatus(
-              aModel.InspectorClass?.ClassType,
+              aModel.InspectorClass!,
               aModel
             ),
         },
