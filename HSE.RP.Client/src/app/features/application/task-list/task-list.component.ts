@@ -404,7 +404,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   determineClassSummaryTask(model?: BuildingInspectorClass): TaskStatus {
     if (
-      model?.ClassType!.CompletionState! ===
+      model?.CompletionState! ===
         ComponentCompletionState.Complete &&
       model?.InspectorCountryOfWork!.CompletionState! ===
         ComponentCompletionState.Complete
