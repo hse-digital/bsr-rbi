@@ -1,3 +1,4 @@
+import { ApplicantProfessionalBodyMembership } from "../models/applicant-professional-body-membership";
 import { BuildingInspectorClass } from "../models/building-inspector-class.model";
 import { BuildingInspectorClassType } from "../models/building-inspector-classtype.enum";
 import { BuildingProfessionalModel } from "../models/building-professional.model";
@@ -61,5 +62,12 @@ export class SubjourneyHelper {
             
         }
 
+    }
+
+    
+    static getProfessionalBodyMembershipRoute(model: ApplicantProfessionalBodyMembership): string {
+
+
+        return "";
     }
 }
