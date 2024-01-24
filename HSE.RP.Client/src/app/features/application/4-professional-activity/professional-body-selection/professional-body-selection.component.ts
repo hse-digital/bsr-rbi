@@ -32,6 +32,7 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
     super(activatedRoute);
   }
   override onInit(applicationService: ApplicationService): void {
+    this.ignoreComponentState = true;
     this.updateOnSave = true;
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
@@ -115,8 +116,8 @@ export class ProfessionalBodySelectionComponent extends PageComponent<ApplicantP
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
     return (
-      this.applicationService.model.ProfessionalMemberships
-        .IsProfessionBodyRelevantYesNo === 'yes'
+      this.applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships
+        .IsProfessionBodyRelevantYesNo === 'yes' && this.applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships.CompletionState === ComponentCompletionState.Complete
     );
   }
 

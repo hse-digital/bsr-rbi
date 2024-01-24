@@ -1,3 +1,6 @@
+
+{{applicationService.model.ProfessionalMemberships | json}}
+
 <govuk-formpage
   saveAndContinueText="Continue"
   [hideSaveAndComeBack]="false"
@@ -46,21 +49,21 @@
       hintText=" "
       [errorText]=errorMessage
       id="professional-body-membership"
-      [(model)]="selectedOption"
+      [(model)]="model!.IsProfessionBodyRelevantYesNo"
     >
       <govuk-radio
         class=""
         label="Yes"
         value="yes"
         id="yes"
-        [model]="selectedOption"
+        [model]="model!.IsProfessionBodyRelevantYesNo"
       >
       </govuk-radio>
       <govuk-radio
         label="No"
         value="no"
         id="no"
-        [model]="selectedOption"
+        [model]="model!.IsProfessionBodyRelevantYesNo"
       ></govuk-radio>
     </govuk-radio-group>
   </govuk-body>

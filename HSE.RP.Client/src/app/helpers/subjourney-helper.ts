@@ -1,8 +1,12 @@
-import { ApplicantProfessionalBodyMembership } from "../models/applicant-professional-body-membership";
+import { Params, Route } from "@angular/router";
+import { ApplicantProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper, ApplicantProfessionalBodyMembership } from "../models/applicant-professional-body-membership";
 import { BuildingInspectorClass } from "../models/building-inspector-class.model";
 import { BuildingInspectorClassType } from "../models/building-inspector-classtype.enum";
 import { BuildingProfessionalModel } from "../models/building-professional.model";
 import { ComponentCompletionState } from "../models/component-completion-state.enum";
+
+
+export type ProfessionalBodyMembershipRoute = {route: string, queryParams?: Params};
 
 export class SubjourneyHelper {
 
@@ -10,6 +14,7 @@ export class SubjourneyHelper {
     private constructor() {
     }
 
+    
     static getClassSelectionRoute(model: BuildingInspectorClass): string {
 
         if (model.CompletionState == ComponentCompletionState.Complete || model.CompletionState == ComponentCompletionState.NotStarted) {
@@ -64,10 +69,38 @@ export class SubjourneyHelper {
 
     }
 
+    //Change return type to dictionary of two string
     
-    static getProfessionalBodyMembershipRoute(model: ApplicantProfessionalBodyMembership): string {
+    static getProfessionalBodyMembershipRoute(model: ApplicantProfessionBodyMemberships): ProfessionalBodyMembershipRoute {
 
 
-        return "";
+
+
+        //If no professional body memberships return start screen
+        if (model.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "no") {
+            return { route:"professional-body-memberships"};
+        }
+
+        
+
+        //If yes professional body memberships return professional-body-selection
+        if (model.CompletionState == ComponentCompletionState.InProgress && model.ApplicantHasProfessionBodyMemberships.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "yes") {
+            //If any body is currently in progress return that body details screen
+            var inProgress = ApplicantProfessionBodyMembershipsHelper.GetInProgress(model);
+            if(inProgress != null){
+                return { route: "professional-membership-information", queryParams:{membershipCode: inProgress.MembershipBodyCode} };
+            }
+            
+            //If any body selected return the professional body summary screen
+            if(ApplicantProfessionBodyMembershipsHelper.AnyCompleted(model)){
+                return { route: "professional-body-membership-summary"};
+            }
+            else if(!ApplicantProfessionBodyMembershipsHelper.AnyCompleted(model)){
+                return { route: "professional-body-selection"};
+            }
+        }
+
+        
+        return { route: "professional-body-memberships"};
     }
 }

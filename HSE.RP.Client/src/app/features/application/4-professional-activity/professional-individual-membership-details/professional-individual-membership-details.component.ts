@@ -82,7 +82,7 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
-    return this.applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo === 'yes';
+    return this.applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo === 'yes';
   }
   override isValid(): boolean {
     return true;

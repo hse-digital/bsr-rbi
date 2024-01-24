@@ -13,11 +13,17 @@ public class ApplicantProfessionalBodyMembership
 
 public class ApplicantProfessionBodyMemberships
 {
-    public string IsProfessionBodyRelevantYesNo { get; set; }
+    public ApplicantHasProfessionBodyMemberships ApplicantHasProfessionBodyMemberships { get; set; }
     public ApplicantProfessionalBodyMembership RICS { get; set; }
     public ApplicantProfessionalBodyMembership CABE { get; set; }
     public ApplicantProfessionalBodyMembership CIOB { get; set; }
     public ApplicantProfessionalBodyMembership OTHER { get; set; }
     public ComponentCompletionState CompletionState { get; set; }
 
+}
+
+public class ApplicantHasProfessionBodyMemberships
+{
+    public string IsProfessionBodyRelevantYesNo { get; set; }
+    public ComponentCompletionState CompletionState { get; set; }
 }
