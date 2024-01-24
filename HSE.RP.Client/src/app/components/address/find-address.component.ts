@@ -76,7 +76,7 @@ export class FindAddressComponent {
   }
 
   private searchAddress(): Promise<AddressResponseModel> {
-    return this.addressService.SearchPostalAddressByPostcode(this.searchModel.postcode!);
+    return this.addressService.SearchAllAddressByPostcode(this.searchModel.postcode!);
   }
 
   warningMessage(): string {

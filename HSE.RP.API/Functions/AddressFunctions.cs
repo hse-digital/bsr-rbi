@@ -45,7 +45,7 @@ public class AddressFunctions
     public async Task<HttpResponseData> SearchAddress([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{nameof(SearchAddress)}/{{query}}")] HttpRequestData request, string query)
     {
         var resp = await integrationOptions.CommonAPIEndpoint
-                .AppendPathSegment("api")
+            .AppendPathSegment("api")
             .AppendPathSegment(nameof(SearchAddress))
             .SetQueryParam("query", query)
             .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
@@ -56,5 +56,29 @@ public class AddressFunctions
 
         return await request.CreateObjectResponseFromStreamAsync(stream);
 
+    }
+
+    [Function(nameof(SearchAllAddressByPostcode))]
+    public async Task<HttpResponseData> SearchAllAddressByPostcode([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{nameof(SearchAllAddressByPostcode)}/{{postcode}}")] HttpRequestData request, string postcode)
+    {
+        try
+        {
+            var resp = await integrationOptions.CommonAPIEndpoint
+                .AppendPathSegment("api")
+                .AppendPathSegment(nameof(SearchAllAddressByPostcode))
+                .AppendPathSegment(postcode)
+                .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
+                .AllowHttpStatus(HttpStatusCode.BadRequest)
+                .GetAsync();
+
+            var stream = await resp.GetStreamAsync();
+
+            return await request.CreateObjectResponseFromStreamAsync(stream);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
     }
 }
