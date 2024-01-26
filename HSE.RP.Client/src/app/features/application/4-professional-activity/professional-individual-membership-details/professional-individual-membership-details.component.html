@@ -1,3 +1,5 @@
+{{this.model | json}}
+
 <govuk-formpage
   saveAndContinueText="Save and continue"
   [hideSaveAndComeBack]="false"
@@ -16,7 +18,7 @@
         [showAction]="true"
         (onClick)="changeMembershipDetails()"
         (onKeyupEnter)="changeMembershipDetails()"
-        >{{ getMembershipNumber() }}
+        >{{ model?.MembershipNumber}}
       </govuk-summary-list-row>
 
       <govuk-summary-list-row
@@ -24,7 +26,7 @@
         [showAction]="true"
         (onClick)="changeMembershipDetails()"
         (onKeyupEnter)="changeMembershipDetails()"
-        >{{ getMembershipLevel() }}
+        >{{ model?.MembershipLevel }}
       </govuk-summary-list-row>
 
       <govuk-summary-list-row
@@ -32,7 +34,7 @@
         [showAction]="true"
         (onClick)="changeMembershipDetails()"
         (onKeyupEnter)="changeMembershipDetails()"
-        >{{ getMembershipYear() }}
+        >{{ model?.MembershipYear }}
       </govuk-summary-list-row>
     </govuk-summary-list>
   </govuk-body>

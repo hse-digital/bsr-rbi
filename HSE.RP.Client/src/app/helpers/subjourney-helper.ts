@@ -4,6 +4,7 @@ import { BuildingInspectorClass } from "../models/building-inspector-class.model
 import { BuildingInspectorClassType } from "../models/building-inspector-classtype.enum";
 import { BuildingProfessionalModel } from "../models/building-professional.model";
 import { ComponentCompletionState } from "../models/component-completion-state.enum";
+import { ProfessionalBodyMembershipStep } from "../models/professional-body-membership-step.enum";
 
 
 export type ProfessionalBodyMembershipRoute = {route: string, queryParams?: Params};
@@ -88,7 +89,15 @@ export class SubjourneyHelper {
             //If any body is currently in progress return that body details screen
             var inProgress = ApplicantProfessionBodyMembershipsHelper.GetInProgress(model);
             if(inProgress != null){
-                return { route: "professional-membership-information", queryParams:{membershipCode: inProgress.MembershipBodyCode} };
+
+                if(inProgress.CurrentStep == ProfessionalBodyMembershipStep.EnterDetails){
+                    return { route: "professional-membership-information", queryParams:{membershipCode: inProgress.MembershipBodyCode} };
+                }
+
+                if(inProgress.CurrentStep == ProfessionalBodyMembershipStep.ConfirmDetails){
+                    return { route: "professional-individual-membership-details", queryParams:{membershipCode: inProgress.MembershipBodyCode} };
+                }
+
             }
             
             //If any body selected return the professional body summary screen
