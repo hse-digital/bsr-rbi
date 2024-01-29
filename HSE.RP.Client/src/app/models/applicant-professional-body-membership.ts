@@ -11,6 +11,7 @@ export class ApplicantProfessionalBodyMembership implements IComponentModel {
   MembershipYear?: number;
   CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
   CurrentStep?: ProfessionalBodyMembershipStep = ProfessionalBodyMembershipStep.NotStarted;
+  RemoveOptionSelected?: string = '';
 }
 
 
@@ -27,7 +28,7 @@ export class ApplicantProfessionBodyMemberships implements IComponentModel {
   CABE: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CABE.BodyCode);
   CIOB: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CIOB.BodyCode);
   OTHER: ApplicantProfessionalBodyMembership = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.OTHER.BodyCode);
-
+  
 
 }
 
@@ -80,6 +81,7 @@ export class ApplicantProfessionBodyMembershipsHelper {
     memberShip.MembershipBodyCode = bodyCode;
     memberShip.CompletionState = ComponentCompletionState.NotStarted;
     memberShip.CurrentStep = ProfessionalBodyMembershipStep.NotStarted;
+    memberShip.RemoveOptionSelected = '';
     switch (bodyCode) {
       case ProfessionalBodies.RICS.BodyCode:
       case ProfessionalBodies.CABE.BodyCode:

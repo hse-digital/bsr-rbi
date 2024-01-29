@@ -68,29 +68,51 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
     }
 
     this.model!.CurrentStep = ProfessionalBodyMembershipStep.Remove;
+    this.model?.CompletionState == ComponentCompletionState.InProgress;
+
 
 
   }
-  
+
   override async onSave(applicationService: ApplicationService): Promise<void> {
     const memberships = applicationService.model.ProfessionalMemberships;
 
-    if (this.selectedOption === 'yes') {
-      let result = ApplicantProfessionBodyMembershipsHelper.Reset(
-        this.membershipCode
-      );
-      if (this.membershipCode === 'CABE') {
-        memberships.CABE = result;
-      } else if (this.membershipCode === 'RICS') {
-        memberships.RICS = result;
-      } else if (this.membershipCode === 'CIOB') {
-        memberships.CIOB = result;
-      } else if (this.membershipCode === 'OTHER') {
-        memberships.OTHER = result;
+    if (this.model?.CompletionState == ComponentCompletionState.Complete) {
+      if (this.model.RemoveOptionSelected === 'yes') {
+        let result = ApplicantProfessionBodyMembershipsHelper.Reset(
+          this.membershipCode
+        );
+        if (this.membershipCode === 'CABE') {
+          memberships.CABE = result;
+        } else if (this.membershipCode === 'RICS') {
+          memberships.RICS = result;
+        } else if (this.membershipCode === 'CIOB') {
+          memberships.CIOB = result;
+        } else if (this.membershipCode === 'OTHER') {
+          memberships.OTHER = result;
+        }
+        applicationService.model.ProfessionalMemberships = memberships;
       }
+      else {
+        this.model.RemoveOptionSelected = '';
+        this.model.CurrentStep = ProfessionalBodyMembershipStep.ConfirmDetails;
+      }
+    }
 
+    else {
+
+      if (this.membershipCode === 'CABE') {
+        memberships.CABE = this.model!;
+      } else if (this.membershipCode === 'RICS') {
+        memberships.RICS = this.model!;
+      } else if (this.membershipCode === 'CIOB') {
+        memberships.CIOB = this.model!;
+      } else if (this.membershipCode === 'OTHER') {
+        memberships.OTHER = this.model!;
+      }
       applicationService.model.ProfessionalMemberships = memberships;
     }
+
   }
   override canAccess(
     applicationService: ApplicationService,
@@ -101,7 +123,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
   override isValid(): boolean {
     this.hasErrors = false;
     this.errorMessage = '';
-    if (this.selectedOption === '') {
+    if (this.model?.RemoveOptionSelected === '') {
       this.hasErrors = true;
       this.errorMessage =
         'Select whether you want to delete a professional body membership or not';
@@ -129,7 +151,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
       return this.navigationService.navigateRelative(
         ProfessionalBodyMembershipSummaryComponent.route,
         this.activatedRoute,
-        { queryParam}
+        { queryParam }
       );
     }
   }

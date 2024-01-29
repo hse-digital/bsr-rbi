@@ -25,21 +25,21 @@
       hintText=" "
       [errorText]="errorMessage"
       id="professional-body-membership"
-      [(model)]="selectedOption"
+      [(model)]="model!.RemoveOptionSelected"
     >
       <govuk-radio
         class=""
         label="Yes"
         value="yes"
         id="yes"
-        [model]="selectedOption"
+        [model]="model!.RemoveOptionSelected"
       >
       </govuk-radio>
       <govuk-radio
         label="No"
         value="no"
         id="no"
-        [model]="selectedOption"
+        [model]="model!.RemoveOptionSelected"
       ></govuk-radio>
     </govuk-radio-group>
   </govuk-body>

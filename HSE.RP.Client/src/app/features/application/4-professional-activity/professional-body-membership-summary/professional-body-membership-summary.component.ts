@@ -54,7 +54,11 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    this.model!.CompletionState = ComponentCompletionState.Complete;
+
+    if(this.model?.CompletionState == ComponentCompletionState.Complete && this.selectedOption == 'yes')
+    {
+      this.model.CompletionState = ComponentCompletionState.InProgress;
+    }
     this.applicationService.model.ProfessionalMemberships = this.model!;
   }
 

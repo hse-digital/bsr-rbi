@@ -9,6 +9,10 @@ public class ApplicantProfessionalBodyMembership
     public string MembershipLevel { get; set; }
     public int MembershipYear { get; set; }
     public ComponentCompletionState CompletionState { get; set; }
+
+    public ProfessionalBodyMembershipStep CurrentStep { get; set; }
+
+    public string RemoveOptionSelected { get; set; }
 }
 
 public class ApplicantProfessionBodyMemberships
