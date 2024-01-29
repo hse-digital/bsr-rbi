@@ -10,19 +10,21 @@ import { environment } from 'src/environments/environment';
 import {
   ApplicantProfessionBodyMemberships,
   ApplicantProfessionBodyMembershipsHelper,
+  ApplicantProfessionalBodyMembership,
   ProfessionalBodies,
 } from 'src/app/models/applicant-professional-body-membership';
 import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
 import { ProfessionalBodyMembershipSummaryComponent } from '../professional-body-membership-summary/professional-body-membership-summary.component';
 import { ProfessionalBodyMembershipsComponent } from '../professional-body-memberships/professional-body-memberships.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
+import { ProfessionalBodyMembershipStep } from 'src/app/models/professional-body-membership-step.enum';
 
 @Component({
   selector: 'hse-professional-confirmation-membership-removal',
   templateUrl: './professional-confirmation-membership-removal.component.html',
   styles: [],
 })
-export class ProfessionalConfirmationMembershipRemovalComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
+export class ProfessionalConfirmationMembershipRemovalComponent extends PageComponent<ApplicantProfessionalBodyMembership> {
   public static route: string = 'professional-confirmation-membership-removal';
   static title: string =
     'Professional activity - Professional body removal - Register as a building inspector - GOV.UK';
@@ -54,7 +56,22 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
     this.getProfessionalBodyOrgName(this.membershipCode);
 
     this.applicationService = applicationService;
+
+    if (this.membershipCode === 'CABE') {
+      this.model = applicationService.model.ProfessionalMemberships.CABE;
+    } else if (this.membershipCode === 'RICS') {
+      this.model = applicationService.model.ProfessionalMemberships.RICS;
+    } else if (this.membershipCode === 'CIOB') {
+      this.model = applicationService.model.ProfessionalMemberships.CIOB;
+    } else if (this.membershipCode === 'OTHER') {
+      this.model = applicationService.model.ProfessionalMemberships.OTHER;
+    }
+
+    this.model!.CurrentStep = ProfessionalBodyMembershipStep.Remove;
+
+
   }
+  
   override async onSave(applicationService: ApplicationService): Promise<void> {
     const memberships = applicationService.model.ProfessionalMemberships;
 
