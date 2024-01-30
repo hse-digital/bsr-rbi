@@ -8,69 +8,65 @@ import { ProfessionalBodyMembershipStep } from "../models/professional-body-memb
 import { ApplicantEmploymentDetails } from "../models/applicant-employment-details";
 import { EmploymentType } from "../models/employment-type.enum";
 
-
+/**
+ * Type for the route of a professional body membership.
+ */
 export type ProfessionalBodyMembershipRoute = { route: string, queryParams?: Params };
 
+/**
+ * Helper class for subjourneys.
+ */
 export class SubjourneyHelper {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private constructor() {}
 
-
-    private constructor() {
-    }
-
-
+    /**
+     * Determines the next route for a building inspector class.
+     * @param model The building inspector class model.
+     * @returns The next route as a string.
+     */
     static getClassSelectionRoute(model: BuildingInspectorClass): string {
-
         if (model.CompletionState == ComponentCompletionState.Complete || model.CompletionState == ComponentCompletionState.NotStarted) {
             return "building-inspector-class-selection";
         }
-        else {
 
-            //If class 1 return class selection screen
-            if (model.ClassType.Class == BuildingInspectorClassType.Class1 || model.ClassType.CompletionState != ComponentCompletionState.Complete) {
-                return "building-inspector-class-selection";
-            }
-
-            //If class 2 or 3 determine next screen
-            else {
-
-                //If activities not selected return activities screen
-                if (model.Activities.CompletionState != ComponentCompletionState.Complete) {
-                    return "building-inspector-regulated-activities";
-                }
-
-                //Else determine next screen based on class type
-                else {
-                    if (model.ClassType.Class == BuildingInspectorClassType.Class2) {
-                        if (model.Activities.AssessingPlans == true && model.AssessingPlansClass2.CompletionState != ComponentCompletionState.Complete) {
-                            return "building-class2-assessing-plans-categories";
-                        }
-                        if (model.Activities.Inspection == true && model.Class2InspectBuildingCategories.CompletionState != ComponentCompletionState.Complete) {
-                            return "building-class2-inspect-building-categories";
-                        }
-                    }
-
-                    if (model.ClassType.Class == BuildingInspectorClassType.Class3) {
-                        if (model.Activities.AssessingPlans == true && model.AssessingPlansClass3.CompletionState != ComponentCompletionState.Complete) {
-                            return "building-class3-assessing-plans-categories";
-                        }
-                        if (model.Activities.Inspection == true && model.Class3InspectBuildingCategories.CompletionState != ComponentCompletionState.Complete) {
-                            return "building-class3-inspect-building-categories";
-                        }
-                    }
-
-                }
-                //If class 2 or 3 and all activities complete return technical manager screen
-
-                return "building-class-technical-manager";
-            }
-
-
+        if (model.ClassType.Class == BuildingInspectorClassType.Class1 || model.ClassType.CompletionState != ComponentCompletionState.Complete) {
+            return "building-inspector-class-selection";
         }
 
+        if (model.Activities.CompletionState != ComponentCompletionState.Complete) {
+            return "building-inspector-regulated-activities";
+        }
+
+        if (model.ClassType.Class == BuildingInspectorClassType.Class2) {
+            if (model.Activities.AssessingPlans == true && model.AssessingPlansClass2.CompletionState != ComponentCompletionState.Complete) {
+                return "building-class2-assessing-plans-categories";
+            }
+            if (model.Activities.Inspection == true && model.Class2InspectBuildingCategories.CompletionState != ComponentCompletionState.Complete) {
+                return "building-class2-inspect-building-categories";
+            }
+        }
+
+        if (model.ClassType.Class == BuildingInspectorClassType.Class3) {
+            if (model.Activities.AssessingPlans == true && model.AssessingPlansClass3.CompletionState != ComponentCompletionState.Complete) {
+                return "building-class3-assessing-plans-categories";
+            }
+            if (model.Activities.Inspection == true && model.Class3InspectBuildingCategories.CompletionState != ComponentCompletionState.Complete) {
+                return "building-class3-inspect-building-categories";
+            }
+        }
+
+        return "building-class-technical-manager";
     }
 
+    /**
+     * Determines the next route for an applicant's employment details.
+     * @param model The applicant's employment details model.
+     * @returns The next route as a string.
+     */
     static getEmploymentRoute(model: ApplicantEmploymentDetails): string {
-
         if (model.CompletionState == ComponentCompletionState.Complete || model.CompletionState == ComponentCompletionState.NotStarted) {
             return "professional-activity-employment-type";
         }
@@ -80,92 +76,64 @@ export class SubjourneyHelper {
         }
 
         if (model.CompletionState == ComponentCompletionState.InProgress && model.EmploymentTypeSelection!.CompletionState == ComponentCompletionState.Complete) {
-
             if (model.EmployerName?.CompletionState != ComponentCompletionState.Complete) {
-
-                if (model!.EmploymentTypeSelection!.EmploymentType == EmploymentType.Other) {
-                    return "employment-other-name"
-                }
-
-                if (model!.EmploymentTypeSelection!.EmploymentType == EmploymentType.PublicSector) {
-                    return "employment-public-sector-body-name"
-                }
-
-                if (model!.EmploymentTypeSelection!.EmploymentType == EmploymentType.PrivateSector) {
-                    return "employment-private-sector-body-name"
-                }
-
-                if (model!.EmploymentTypeSelection!.EmploymentType == EmploymentType.Unemployed) {
-                    return "professional-membership-and-employment-summary"
+                switch (model!.EmploymentTypeSelection!.EmploymentType) {
+                    case EmploymentType.Other:
+                        return "employment-other-name";
+                    case EmploymentType.PublicSector:
+                        return "employment-public-sector-body-name";
+                    case EmploymentType.PrivateSector:
+                        return "employment-private-sector-body-name";
+                    case EmploymentType.Unemployed:
+                        return "professional-membership-and-employment-summary";
                 }
             }
-            
-            if(model.EmployerAddress?.CompletionState != ComponentCompletionState.Complete)
-            {
-                return "search-employment-org-address"
-            }
 
-            return "professional-membership-and-employment-summary"
-
+            return "search-employment-org-address";
         }
 
         return "professional-activity-employment-type";
     }
 
-    //Change return type to dictionary of two string
-
+    /**
+     * Determines the next route for an applicant's professional body memberships.
+     * @param model The applicant's professional body memberships model.
+     * @returns The next route as a ProfessionalBodyMembershipRoute object.
+     */
     static getProfessionalBodyMembershipRoute(model: ApplicantProfessionBodyMemberships): ProfessionalBodyMembershipRoute {
-
-
-
-
-        //If no professional body memberships return start screen
-        if (model.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "no") {
-
-            return { route: "professional-body-memberships" };
-        }
-
-        if (model.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "yes") {
-
-            //If any body selected return the professional body summary screen
-            if (ApplicantProfessionBodyMembershipsHelper.AnyCompleted(model)) {
-                return { route: "professional-body-membership-summary" };
-            }
-            else {
+        if (model.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.CompletionState == ComponentCompletionState.Complete) {
+            if (model.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "no") {
                 return { route: "professional-body-memberships" };
             }
+
+            if (model.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "yes") {
+                if (ApplicantProfessionBodyMembershipsHelper.AnyCompleted(model)) {
+                    return { route: "professional-body-membership-summary" };
+                } else {
+                    return { route: "professional-body-memberships" };
+                }
+            }
         }
 
-
-        //If yes professional body memberships return professional-body-selection
         if (model.CompletionState == ComponentCompletionState.InProgress && model.ApplicantHasProfessionBodyMemberships.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "yes") {
-            //If any body is currently in progress return that body details screen
-            var inProgress = ApplicantProfessionBodyMembershipsHelper.GetInProgress(model);
+            const inProgress = ApplicantProfessionBodyMembershipsHelper.GetInProgress(model);
             if (inProgress != null) {
+                const routes: { [key in ProfessionalBodyMembershipStep]: string } = {
+                    [ProfessionalBodyMembershipStep.NotStarted]: "professional-membership-information",
+                    [ProfessionalBodyMembershipStep.EnterDetails]: "professional-membership-information",
+                    [ProfessionalBodyMembershipStep.ConfirmDetails]: "professional-individual-membership-details",
+                    [ProfessionalBodyMembershipStep.Remove]: "professional-confirmation-membership-removal"
+                };
 
-                if (inProgress.CurrentStep == ProfessionalBodyMembershipStep.EnterDetails) {
-                    return { route: "professional-membership-information", queryParams: { membershipCode: inProgress.MembershipBodyCode } };
-                }
-
-                if (inProgress.CurrentStep == ProfessionalBodyMembershipStep.ConfirmDetails) {
-                    return { route: "professional-individual-membership-details", queryParams: { membershipCode: inProgress.MembershipBodyCode } };
-                }
-
-                if (inProgress.CurrentStep == ProfessionalBodyMembershipStep.Remove && inProgress.CompletionState == ComponentCompletionState.InProgress) {
-                    return { route: "professional-confirmation-membership-removal", queryParams: { membershipCode: inProgress.MembershipBodyCode } };
-                }
-
+                return { route: routes[inProgress.CurrentStep!], queryParams: { membershipCode: inProgress.MembershipBodyCode } };
             }
 
-            //If any body selected return the professional body summary screen
             if (ApplicantProfessionBodyMembershipsHelper.AnyCompleted(model)) {
                 return { route: "professional-body-membership-summary" };
-            }
-            else if (!ApplicantProfessionBodyMembershipsHelper.AnyCompleted(model)) {
+            } else {
                 return { route: "professional-body-selection" };
             }
         }
-
 
         return { route: "professional-body-memberships" };
     }
