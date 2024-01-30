@@ -61,6 +61,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
       this.model = applicationService.model.ProfessionalMemberships.CABE;
     } else if (this.membershipCode === 'RICS') {
       this.model = applicationService.model.ProfessionalMemberships.RICS;
+
     } else if (this.membershipCode === 'CIOB') {
       this.model = applicationService.model.ProfessionalMemberships.CIOB;
     } else if (this.membershipCode === 'OTHER') {
@@ -68,7 +69,9 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
     }
 
     this.model!.CurrentStep = ProfessionalBodyMembershipStep.Remove;
-    this.model?.CompletionState == ComponentCompletionState.InProgress;
+    this.model!.CompletionState = ComponentCompletionState.InProgress;
+
+
 
 
 
