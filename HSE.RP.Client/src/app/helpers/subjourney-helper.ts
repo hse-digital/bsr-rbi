@@ -5,6 +5,8 @@ import { BuildingInspectorClassType } from "../models/building-inspector-classty
 import { BuildingProfessionalModel } from "../models/building-professional.model";
 import { ComponentCompletionState } from "../models/component-completion-state.enum";
 import { ProfessionalBodyMembershipStep } from "../models/professional-body-membership-step.enum";
+import { ApplicantEmploymentDetails } from "../models/applicant-employment-details";
+import { EmploymentType } from "../models/employment-type.enum";
 
 
 export type ProfessionalBodyMembershipRoute = { route: string, queryParams?: Params };
@@ -67,6 +69,49 @@ export class SubjourneyHelper {
 
     }
 
+    static getEmploymentRoute(model: ApplicantEmploymentDetails): string {
+
+        if (model.CompletionState == ComponentCompletionState.Complete || model.CompletionState == ComponentCompletionState.NotStarted) {
+            return "professional-activity-employment-type";
+        }
+
+        if (model.CompletionState == ComponentCompletionState.InProgress && model.EmploymentTypeSelection!.CompletionState != ComponentCompletionState.Complete) {
+            return "professional-activity-employment-type";
+        }
+
+        if (model.CompletionState == ComponentCompletionState.InProgress && model.EmploymentTypeSelection!.CompletionState == ComponentCompletionState.Complete) {
+
+            if (model.EmployerName?.CompletionState != ComponentCompletionState.Complete) {
+
+                if (model!.EmploymentTypeSelection!.EmploymentType == EmploymentType.Other) {
+                    return "employment-other-name"
+                }
+
+                if (model!.EmploymentTypeSelection!.EmploymentType == EmploymentType.PublicSector) {
+                    return "employment-public-sector-body-name"
+                }
+
+                if (model!.EmploymentTypeSelection!.EmploymentType == EmploymentType.PrivateSector) {
+                    return "employment-private-sector-body-name"
+                }
+
+                if (model!.EmploymentTypeSelection!.EmploymentType == EmploymentType.Unemployed) {
+                    return "professional-membership-and-employment-summary"
+                }
+            }
+            
+            if(model.EmployerAddress?.CompletionState != ComponentCompletionState.Complete)
+            {
+                return "search-employment-org-address"
+            }
+
+            return "professional-membership-and-employment-summary"
+
+        }
+
+        return "professional-activity-employment-type";
+    }
+
     //Change return type to dictionary of two string
 
     static getProfessionalBodyMembershipRoute(model: ApplicantProfessionBodyMemberships): ProfessionalBodyMembershipRoute {
@@ -76,7 +121,7 @@ export class SubjourneyHelper {
 
         //If no professional body memberships return start screen
         if (model.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.CompletionState == ComponentCompletionState.Complete && model.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "no") {
-            
+
             return { route: "professional-body-memberships" };
         }
 
@@ -86,7 +131,7 @@ export class SubjourneyHelper {
             if (ApplicantProfessionBodyMembershipsHelper.AnyCompleted(model)) {
                 return { route: "professional-body-membership-summary" };
             }
-            else{
+            else {
                 return { route: "professional-body-memberships" };
             }
         }

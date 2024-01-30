@@ -689,8 +689,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
         {
           show: true,
           prompt: 'Employment',
+          // relativeRoute: (): TaskListRoute => {
+          //   return { route: ProfessionalActivityEmploymentTypeComponent.route };
+          // },
           relativeRoute: (): TaskListRoute => {
-            return { route: ProfessionalActivityEmploymentTypeComponent.route };
+            return { route: SubjourneyHelper.getEmploymentRoute(this.model!.ProfessionalActivity.EmploymentDetails!) };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getModelStatus(aModel.ProfessionalActivity?.EmploymentDetails),
