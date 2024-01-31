@@ -97,8 +97,8 @@ export class BuildingAssessingPlansCategoriesComponent extends PageComponent<Bui
       demandModel[value] = true;
     });
 
-    this.applicationService.model.InspectorClass!.ClassType.CompletionState =
-      ComponentCompletionState.InProgress;
+    // this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+    //   ComponentCompletionState.InProgress;
   }
 
   override canAccess(

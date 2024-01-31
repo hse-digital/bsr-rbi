@@ -1,7 +1,9 @@
+
 <govuk-formpage
   saveAndContinueText="Save and continue"
-  [hideSaveAndComeBack]="true"
+  [hideSaveAndComeBack]="false"
   (saveAndContinue)="SyncAndContinue()"
+  (saveAndComeBack)="saveAndComeBack()"
   [hideBackButton]="false"
 >
   <govuk-error-summary
