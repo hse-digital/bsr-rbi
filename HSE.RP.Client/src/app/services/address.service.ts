@@ -17,7 +17,7 @@ export class AddressService {
   ): Promise<AddressResponseModel> {
     return await firstValueFrom(
       this.httpClient.get<AddressResponseModel>(
-        `api/SearchBuildingByPostcode/${postcode}`
+        `api/SearchBuildingByPostcode/${postcode}?includeAllUKAddresses=1`
       )
     );
   }
@@ -27,14 +27,20 @@ export class AddressService {
   ): Promise<AddressResponseModel> {
     return await firstValueFrom(
       this.httpClient.get<AddressResponseModel>(
-        `api/SearchPostalAddressByPostcode/${postcode}`
+        `api/SearchPostalAddressByPostcode/${postcode}?includeAllUKAddresses=1`
       )
     );
   }
 
   async SearchAddress(query: string): Promise<AddressResponseModel> {
     return await firstValueFrom(
-      this.httpClient.get<AddressResponseModel>(`api/SearchAddress/${query}`)
+      this.httpClient.get<AddressResponseModel>(`api/SearchAddress/${query}?includeAllUKAddresses=1`)
+    );
+  }
+
+  async SearchAllAddressByPostcode(query: string): Promise<AddressResponseModel> {
+    return await firstValueFrom(
+      this.httpClient.get<AddressResponseModel>(`api/SearchAllAddressByPostcode/${query}?includeAllUKAddresses=1`)
     );
   }
 }
