@@ -1,5 +1,5 @@
-<!--*ngIf="!production"-->
 <govuk-back-link>Back</govuk-back-link>
+
 
 <div class="govuk-main-wrapper" id="main-content">
   <div class="govuk-grid-row">
@@ -18,7 +18,7 @@
       </ng-container>
       <ol class="app-task-list">
         <li *ngFor="let parent of items; let index = index">
-          <h2 class="app-task-list__section">
+          <h2 id="{{parent.id}}" class="app-task-list__section" >
             <span class="app-task-list__section-number">{{ index + 1 }}.</span>
             {{ parent.prompt }}
           </h2>

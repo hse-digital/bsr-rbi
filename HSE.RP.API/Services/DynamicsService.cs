@@ -81,7 +81,7 @@ namespace HSE.RP.API.Services
 
                 foreach (var record in pending.value)
                 {
-                    await dynamicsApi.Update($"bsr_payments({record.bsr_paymentid})", dynamicsPayment with
+                    await dynamicsApi.Update($"bsr_payments({record.bsr_paymentid})", record with
                     {
                         bsr_govukpaystatus = "failed",
                         bsr_paymentreconciliationstatus = DynamicsPaymentReconciliationStatus.FailedPayment,
@@ -840,7 +840,6 @@ namespace HSE.RP.API.Services
             if (featureOptions.DisableApplicationDuplicationCheck)
             {
                 return false;
-
             }
 
             //Check for existing contact
@@ -854,7 +853,7 @@ namespace HSE.RP.API.Services
             {
                 var application = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
             {
-                        ("$filter", $"_bsr_applicantid_value eq '{contact.value.FirstOrDefault().contactid}' and statecode ne 1"),
+                        ("$filter", $"_bsr_applicantid_value eq '{contact.value.FirstOrDefault().contactid}' and statecode ne 1 and bsr_buildingprofessiontypecode eq {(int)BuildingProfessionType.BuildingInspector}"),
             });
 
                 return application.value.Count > 0;

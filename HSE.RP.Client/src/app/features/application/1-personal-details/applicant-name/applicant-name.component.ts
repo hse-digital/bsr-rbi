@@ -56,10 +56,7 @@ export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    applicationService.model.PersonalDetails!.ApplicantName!.FirstName =
-      this.model.FirstName;
-    applicationService.model.PersonalDetails!.ApplicantName!.LastName =
-      this.model.LastName;
+    applicationService.model.PersonalDetails!.ApplicantName! = this.model;
   }
 
   override canAccess(

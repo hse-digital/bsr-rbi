@@ -33,6 +33,7 @@ export abstract class PageComponent<T> implements OnInit {
   hasErrors: boolean = false;
   updateOnSave: boolean = true;
   originalModelStringified: string = '';
+  ignoreComponentState: boolean = false;
   private injector: Injector = GetInjector();
   protected applicationService: ApplicationService =
     this.injector.get(ApplicationService);
@@ -186,7 +187,7 @@ export abstract class PageComponent<T> implements OnInit {
       //------------------------------------------------------------------------------
       // If the model implements IComponentModel, set the completion state to complete
       //------------------------------------------------------------------------------
-      if (this.modelImplementsIComponent(this.model)) {
+      if (this.modelImplementsIComponent(this.model) && !this.ignoreComponentState) {
         var componentModel = this.model as IComponentModel;
         componentModel.CompletionState = ComponentCompletionState.Complete;
       }
@@ -216,7 +217,7 @@ export abstract class PageComponent<T> implements OnInit {
     // completed. If the model has been modified, set the completion state to in progress,
     // otherwise leave it as completed.
     //------------------------------------------------------------------------------
-    if (this.modelImplementsIComponent(this.model)) {
+    if (this.modelImplementsIComponent(this.model) && !this.ignoreComponentState) {
       var componentModel = this.model as IComponentModel;
       if (
         componentModel.CompletionState === ComponentCompletionState.Complete

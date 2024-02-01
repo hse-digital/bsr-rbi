@@ -13,6 +13,7 @@ import { EmploymentType } from 'src/app/models/employment-type.enum';
 import { FieldValidations } from 'src/app/helpers/validators/fieldvalidations';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
+import { NextStage } from 'src/app/helpers/next-section.helper';
 
 @Component({
   selector: 'hse-professional-membership-and-employment-summary',
@@ -78,8 +79,9 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
     else {
       return this.navigationService.navigateRelative(
         `../${ApplicationTaskListComponent.route}`,
-        this.activatedRoute
+        this.activatedRoute, undefined, NextStage.getNextStage(this.applicationService.model)
       );
+
     }
   }
 

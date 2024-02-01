@@ -221,6 +221,10 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=RBI--PaymentAmount)'
                 }
                 {
+                    name: 'Integrations__Environment'
+                    value: '${environment}'
+                }
+                {
                     name: 'Integrations__NotificationServiceApiKey'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--NotificationServiceApiKey)'
                 }                

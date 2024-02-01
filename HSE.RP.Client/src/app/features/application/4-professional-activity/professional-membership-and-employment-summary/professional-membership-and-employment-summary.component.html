@@ -1,5 +1,5 @@
 <govuk-formpage
-  saveAndContinueText="Continue"
+  saveAndContinueText="Save and continue"
   [hideSaveAndComeBack]="true"
   (saveAndContinue)="SyncAndContinue()"
   [hideBackButton]="false"
@@ -98,8 +98,8 @@
       <govuk-summary-list-row *ngIf="!isUnemployed()"
       [actionText]="'change'"
 
-        (onClick)="navigateTo('search-empoloyment-org-address')"
-        (onKeyupEnter)="navigateTo('search-empoloyment-org-address')"
+        (onClick)="navigateTo('search-employment-org-address')"
+        (onKeyupEnter)="navigateTo('search-employment-org-address')"
         key="{{ getEmploymentAddressTitle() }}"
         actionDetails="{{ getEmploymentAddressTitle() }}"
         [showAction]="true"
