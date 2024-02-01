@@ -972,7 +972,7 @@ public class DynamicsSynchronisationFunctions
                 if (buildingProfessionApplicationModel.InspectorClass.Activities.AssessingPlans == true)
                 {
 
-                    foreach (var category in buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2.GetType().GetProperties().Where(x => x.Name != "CompletionState").ToList())
+                    foreach (var category in buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass3.GetType().GetProperties().Where(x => x.Name != "CompletionState").ToList())
 
                     {
                         //Get all existing activities for application
@@ -1880,7 +1880,7 @@ public class DynamicsSynchronisationFunctions
                 if (buildingProfessionApplicationModel.InspectorClass.Activities.AssessingPlans == true)
                 {
 
-                    foreach (var category in buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass2.GetType().GetProperties().Where(x => x.Name != "CompletionState").ToList())
+                    foreach (var category in buildingProfessionApplicationModel.InspectorClass.AssessingPlansClass3.GetType().GetProperties().Where(x => x.Name != "CompletionState").ToList())
 
                     {
                         //Get all existing activities for application
