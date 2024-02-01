@@ -37,4 +37,10 @@ export class AddressService {
       this.httpClient.get<AddressResponseModel>(`api/SearchAddress/${query}?includeAllUKAddresses=1`)
     );
   }
+
+  async SearchAllAddressByPostcode(query: string): Promise<AddressResponseModel> {
+    return await firstValueFrom(
+      this.httpClient.get<AddressResponseModel>(`api/SearchAllAddressByPostcode/${query}?includeAllUKAddresses=1`)
+    );
+  }
 }
