@@ -7,7 +7,14 @@ using Polly.Retry;
 
 namespace HSE.RP.API.Services
 {
-    public class DynamicsApi
+    public interface IDynamicsApi
+    {
+        Task<IFlurlResponse> Create(string endpoint, object entity, bool returnObjectResponse = false);
+        Task<T> Get<T>(string endpoint, params (string, string)[] filters);
+        Task<IFlurlResponse> Update(string endpoint, object entity);
+    }
+
+    public class DynamicsApi : IDynamicsApi
     {
         private readonly DynamicsOptions dynamicsOptions;
         private readonly AsyncRetryPolicy retryPolicy;

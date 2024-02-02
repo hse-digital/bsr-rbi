@@ -217,7 +217,7 @@ namespace HSE.RP.API.Services
                                       PhoneNumber: model.PersonalDetails.ApplicantPhone.PhoneNumber ?? "",
                                       Email: model.PersonalDetails.ApplicantEmail.Email,
                                       jobRoleReferenceId: $"/bsr_jobroles({DynamicsJobRole.Ids["building_inspector"]})"
-                                      ); ;
+                                      );
             var dynamicsContact = modelDefinition.BuildDynamicsEntity(contact);
 
 
