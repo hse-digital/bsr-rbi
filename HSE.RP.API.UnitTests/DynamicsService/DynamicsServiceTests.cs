@@ -408,7 +408,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         }
 
         [Fact]
-        public async Task WhenCalledCreateNewContact_NoExistingContact()
+        public async Task CreateNewContact_NoExistingContact()
         {
             //Arrange
             HttpTest.RespondWithJson(body: new DynamicsResponse<DynamicsContact> { value = new List<DynamicsContact>() });
@@ -440,7 +440,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         }
 
         [Fact]
-        public async Task WhenCalledCreateNewContact_ExistingContact()
+        public async Task CreateNewContact_ExistingContact()
         {
             //Arrange
             HttpTest.RespondWithJson(
@@ -466,7 +466,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         }
 
         [Fact]
-        public async Task WhenCalledCreateBuildingProfessionApplication_NoExistingApplication()
+        public async Task CreateBuildingProfessionApplication_NoExistingApplication()
         {
 
             //Arrange
@@ -509,7 +509,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         }
 
         [Fact]
-        public async Task WhenCalledCreateBuildingProfessionApplication_ExistingApplication()
+        public async Task CreateBuildingProfessionApplication_ExistingApplication()
         {
 
             //Arrange
@@ -627,8 +627,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             //Act
             var testBuildingProfessionApplication = await _dynamicsService.RegisterNewBuildingProfessionApplicationAsync(buildingProfessionApplicationModelNewApplication);
 
-
-
             //Assert
             HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
             .WithQueryParam("$filter", $"firstname eq '{testBuildingProfessionApplication.PersonalDetails.ApplicantName.FirstName}' and lastname eq '{testBuildingProfessionApplication.PersonalDetails.ApplicantName.LastName}' and statuscode eq 1 and emailaddress1 eq '{testBuildingProfessionApplication.PersonalDetails.ApplicantEmail.Email}' and contains(telephone1, '{testBuildingProfessionApplication.PersonalDetails.ApplicantPhone.PhoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')")
@@ -673,7 +671,111 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
 
         [Fact]
-        public async Task WhenCalledSyncEmploymentDetails()
+        public async Task RegisterNewBuildingProfessionApplication_ExistingApplication()
+        {
+
+            //Arrange
+
+            //Create contact check if existing, return existing
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email}' and contains(telephone1, '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')")
+            .WithQueryParam("$expand", "bsr_contacttype_contact")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsContact>
+            {
+                value = new List<DynamicsContact> { dynamicsContactNewApplication with {
+                        contactid = dynamicsContact.contactid }
+                    }
+            });
+
+
+            //Create Building Profession Application return 412 as application exists
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications")
+            .WithRequestJson(new DynamicsBuildingProfessionApplication(
+                    bsr_applicantid: $"/contacts({dynamicsContact.contactid})",
+                    bsr_buildingprofessiontypecode: BuildingProfessionType.BuildingInspector,
+                    statuscode: (int)BuildingProfessionApplicationStatus.New,
+                    CosmosId: buildingProfessionApplicationModelNewApplication.CosmosId,
+                    bsr_hasindependentassessment: false))
+             .WithVerb(HttpMethod.Post)
+             .RespondWith(status: 412);
+
+            //Return existing application
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications")
+            .WithQueryParam("$filter", $"bsr_cosmosid eq '{dynamicsBuildingProfessionApplicationNewApplication.CosmosId}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingProfessionApplication>
+            {
+                value = new List<DynamicsBuildingProfessionApplication> { dynamicsBuildingProfessionApplicationNewApplication }
+            });
+
+            //Get Contact ID for new contact
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts({dynamicsContact.contactid})")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(dynamicsContactNewApplication with { contactid = dynamicsContact.contactid });
+
+            //Update Application with contact id
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts({dynamicsContact.contactid})")
+            .WithRequestJson(dynamicsContactNewApplication with
+            {
+                contactid = dynamicsContact.contactid,
+                bsr_buildingprofessionapplicationid = $"/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid})"
+            })
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204);
+
+            //Get Application
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid})")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(status: 204, body: dynamicsBuildingProfessionApplicationNewApplication with { bsr_buildingproappid = "RBCP00509D2P" });
+
+
+            //Act
+            var testBuildingProfessionApplication = await _dynamicsService.RegisterNewBuildingProfessionApplicationAsync(buildingProfessionApplicationModelNewApplication);
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithQueryParam("$filter", $"firstname eq '{testBuildingProfessionApplication.PersonalDetails.ApplicantName.FirstName}' and lastname eq '{testBuildingProfessionApplication.PersonalDetails.ApplicantName.LastName}' and statuscode eq 1 and emailaddress1 eq '{testBuildingProfessionApplication.PersonalDetails.ApplicantEmail.Email}' and contains(telephone1, '{testBuildingProfessionApplication.PersonalDetails.ApplicantPhone.PhoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')")
+            .WithQueryParam("$expand", "bsr_contacttype_contact")
+            .WithOAuthBearerToken(DynamicsAuthToken)
+            .WithVerb(HttpMethod.Get);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications")
+            .WithRequestJson(new DynamicsBuildingProfessionApplication(
+                    bsr_applicantid: $"/contacts({dynamicsContact.contactid})",
+                    bsr_buildingprofessiontypecode: BuildingProfessionType.BuildingInspector,
+                    statuscode: (int)BuildingProfessionApplicationStatus.New,
+                    CosmosId: testBuildingProfessionApplication.CosmosId,
+                    bsr_hasindependentassessment: false))
+             .WithVerb(HttpMethod.Post);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications")
+            .WithQueryParam("$filter", $"bsr_cosmosid eq '{dynamicsBuildingProfessionApplicationNewApplication.CosmosId}'")
+            .WithVerb(HttpMethod.Get);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts({dynamicsContact.contactid})")
+            .WithVerb(HttpMethod.Get);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts({dynamicsContact.contactid})")
+            .WithRequestJson(dynamicsContactNewApplication with
+            {
+                contactid = dynamicsContact.contactid,
+                bsr_buildingprofessionapplicationid = $"/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid})"
+            }
+            )
+            .WithVerb(HttpMethod.Patch);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid})")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Equal(testBuildingProfessionApplication, buildingProfessionApplicationModelNewApplication);
+
+
+        }
+
+
+        [Fact]
+        public async Task SyncEmploymentDetails()
         {
 
             //Arrange
