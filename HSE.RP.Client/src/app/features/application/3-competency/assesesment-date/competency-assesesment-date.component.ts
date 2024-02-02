@@ -60,6 +60,7 @@ const ERROR_MESSAGES = {
     'Your date of assessment must include all four numbers of the year, for example 1981, not just 81.',
   DATE_IN_PRESENT_OR_PAST:
     'Your date of assessment must be today or a date in the past',
+  DATE_BEFORE_1900: 'Please check your assessment date',
 };
 
 @Component({
@@ -167,6 +168,12 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
     } else if (Number(this.model?.year!) < 1000) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.YEAR_FORMAT,
+        Anchor: 'doa-input-year',
+      });
+    }
+    else if (Number(this.model?.year!) < 1900) {
+      this.validationErrors.push({
+        Text: ERROR_MESSAGES.DATE_BEFORE_1900,
         Anchor: 'doa-input-year',
       });
     }
