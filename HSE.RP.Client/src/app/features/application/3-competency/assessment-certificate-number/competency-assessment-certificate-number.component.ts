@@ -50,7 +50,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     this.organisationPrefix =
       applicationService.model.Competency!.CompetencyAssessmentOrganisation!.ComAssessmentOrganisation;
 
-      this.model = applicationService.model.Competency!.CompetencyAssessmentCertificateNumber;
+    this.model = applicationService.model.Competency!.CompetencyAssessmentCertificateNumber;
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
@@ -74,7 +74,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     }
 
     const validCertificateNumRegex = new RegExp(
-      /^(CABE|BSCF|TTD)[a-zA-Z0-9]*$/
+      /^(CABE|BSCF|TTD|CV)[a-zA-Z0-9]*$/
     ).test(this.model!.CertificateNumber);
 
     if (!validCertificateNumRegex) {
@@ -85,8 +85,18 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     }
 
     // 4 character prefix (CABE or BSCF) with a 20 character max string so CABE1262IJSBFAHS840.
+
     let prefix = this.organisationPrefix == "TTD" ? this.model!.CertificateNumber.slice(0, 3) : this.model!.CertificateNumber.slice(0, 4);
-    if (prefix.toLowerCase() !== this.organisationPrefix.toLowerCase()) {
+
+    if (this.organisationPrefix === "BSCF") {
+      if (this.model!.CertificateNumber.slice(0, 4) !== "BSCF" && this.model!.CertificateNumber.slice(0, 2) !== "CV") {
+        console.log('ERROR')
+        this.errorMessage = 'You must enter an assessment certificate number in the correct format';
+        this.hasErrors = true;
+        return false;
+      }
+    }
+    else if (prefix.toLowerCase() !== this.organisationPrefix.toLowerCase()) {
       this.errorMessage =
         'You must enter an assessment certificate number in the correct format';
       this.hasErrors = true;
@@ -108,7 +118,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
     } else if (this.queryParam === 'application-summary') {
       return this.navigationService.navigateRelative(`../application-submission/${ApplicationSummaryComponent.route}`, this.activatedRoute);
     }
-    else{
+    else {
       return this.navigationService.navigateRelative(
         CompetencyAssessmentDateComponent.route,
         this.activatedRoute

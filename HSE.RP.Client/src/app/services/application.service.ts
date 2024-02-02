@@ -6,6 +6,7 @@ import { BuildingProfessionalModel } from '../models/building-professional.model
 import { ApplicationStatus } from '../models/application-status.enum';
 import { StageCompletionState } from '../models/stage-completion-state.enum';
 import { Sanitizer } from '../helpers/sanitizer';
+import { ComponentCompletionState } from '../models/component-completion-state.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -108,6 +109,27 @@ export class ApplicationService {
       this.model = application;
     }
     this.model.ReturningApplication = true;
+
+    //If application does not have inspector class completion state required for #9319 add it
+    if(!this.model.InspectorClass?.CompletionState)
+    {
+      
+      switch(this.model.InspectorClass?.ClassType?.CompletionState)
+      {
+        case ComponentCompletionState.Complete:
+          this.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete;
+          break;
+        case ComponentCompletionState.InProgress:
+          this.model.InspectorClass!.CompletionState = ComponentCompletionState.InProgress;
+          break;
+        default:
+          this.model.InspectorClass!.CompletionState = ComponentCompletionState.NotStarted;
+          break;
+      }
+      
+      
+
+    }
     this.updateLocalStorage();
   }
 

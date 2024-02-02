@@ -26,6 +26,7 @@ public class AddressFunctions
                 .AppendPathSegment("api")
                 .AppendPathSegment(nameof(SearchPostalAddressByPostcode))
                 .AppendPathSegment(postcode)
+                .SetQueryParam("includeAllUKAddresses", request.Query.Get("includeAllUKAddresses"))
                 .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
                 .AllowHttpStatus(HttpStatusCode.BadRequest)
                 .GetAsync();
@@ -48,6 +49,25 @@ public class AddressFunctions
                 .AppendPathSegment("api")
             .AppendPathSegment(nameof(SearchAddress))
             .SetQueryParam("query", query)
+            .SetQueryParam("includeAllUKAddresses", request.Query.Get("includeAllUKAddresses"))
+            .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
+            .AllowHttpStatus(HttpStatusCode.BadRequest)
+            .GetAsync();
+
+        var stream = await resp.GetStreamAsync();
+
+        return await request.CreateObjectResponseFromStreamAsync(stream);
+
+    }
+
+    [Function(nameof(SearchAllAddressByPostcode))]
+    public async Task<HttpResponseData> SearchAllAddressByPostcode([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"{nameof(SearchAllAddressByPostcode)}/{{postcode}}")] HttpRequestData request, string postcode)
+    {
+        var resp = await integrationOptions.CommonAPIEndpoint
+            .AppendPathSegment("api")
+            .AppendPathSegment(nameof(SearchAllAddressByPostcode))
+            .AppendPathSegment(postcode)
+            .SetQueryParam("includeAllUKAddresses", request.Query.Get("includeAllUKAddresses"))
             .WithHeader("x-functions-key", integrationOptions.CommonAPIKey)
             .AllowHttpStatus(HttpStatusCode.BadRequest)
             .GetAsync();

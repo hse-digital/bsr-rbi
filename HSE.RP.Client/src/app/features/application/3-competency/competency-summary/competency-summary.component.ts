@@ -8,6 +8,7 @@ import { ApplicationStatus } from 'src/app/models/application-status.enum';
 import { CompetencyRoutes } from '../CompetencyRoutes';
 import { DateFormatHelper } from 'src/app/helpers/date-format-helper';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
+import { NextStage } from 'src/app/helpers/next-section.helper';
 
 @Component({
   selector: 'hse-competency-summary',
@@ -66,8 +67,9 @@ export class CompetencySummaryComponent extends PageComponent<string> {
   override navigateNext(): Promise<boolean> {
     return this.navigationService.navigateRelative(
       `../${ApplicationTaskListComponent.route}`,
-      this.activatedRoute
+      this.activatedRoute, undefined, NextStage.getNextStage(this.applicationService.model)
     );
+
   }
 
   public navigateTo(route: string, queryParam?: string) {

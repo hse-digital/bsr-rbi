@@ -2,6 +2,7 @@
 using Flurl.Http;
 using HSE.RP.API.Models;
 using HSE.RP.API.Models.Notification;
+using HSE.RP.API.Models.OrdnanceSurvey;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -32,7 +33,7 @@ namespace HSE.RP.API.Services
 
         public static DateTime ConvertToGreenwichMeanTime(DateTime utcDateTime)
         {
-            return TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time"));
+            return TimeZoneInfo.ConvertTimeFromUtc(utcDateTime.ToUniversalTime(), TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time"));
         }
 
         public string GenerateSecurityToken(string apiKey)
@@ -96,7 +97,7 @@ namespace HSE.RP.API.Services
                     personalisation = new Dictionary<string, dynamic>()
                     {
                         { "security code", otpToken },
-                        { "expiration_time", expirationTime.ToString()},
+                        { "expiration_time", expirationTime.ToString("dd/MM/yyyy hh:mm:ss tt")},
                         { "link", swaOptions.Url }
                     }
                 }
@@ -155,7 +156,7 @@ namespace HSE.RP.API.Services
                     personalisation = new Dictionary<string, dynamic>()
                     {
                         { "security code", otpToken },
-                        { "expiration_time", expirationTime.ToString()}
+                        { "expiration_time", expirationTime.ToString("dd/MM/yyyy hh:mm:ss tt")},
                     }
                 }
                 );

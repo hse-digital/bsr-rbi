@@ -154,6 +154,16 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
         });
       }
 
+      if (
+        this.isDateNumber(this.model?.year) &&
+        Number(this.model?.year!) < 1900
+      ) {
+        this.validationErrors.push({
+          Text: 'Please check the year you were born',
+          Anchor: 'dob-input-year',
+        });
+      }
+
       if (this.validationErrors.length == 0) {
         if (new Date() < this.getDateOfBirth()) {
           this.validationErrors.push({

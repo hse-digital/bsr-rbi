@@ -1,4 +1,5 @@
-<hse-address *ngIf="!queryParam"
+<hse-address
+  *ngIf="!queryParam"
   [addressName]="getAddressName()"
   [showOptionalAddressLineOne]="true"
   [selfAddress]="true"
@@ -10,11 +11,11 @@
   (onAddressConfirmed)="addressConfirmed($event)"
   (onChangeStep)="changeStep($event)"
   isBusinessAddressSearch="true"
-
 >
 </hse-address>
 
-<hse-address *ngIf="queryParam && address"
+<hse-address
+  *ngIf="queryParam && address"
   [addressName]="getAddressName()"
   [showOptionalAddressLineOne]="true"
   [selfAddress]="true"
@@ -25,13 +26,14 @@
   [searchMode]="searchMode"
   (onAddressConfirmed)="addressConfirmed($event)"
   (onChangeStep)="changeStep($event)"
-  step={{step}}
+  step="{{ step }}"
   [address]="address"
   isBusinessAddressSearch="true"
 >
 </hse-address>
 
-<hse-address *ngIf="queryParam && !address"
+<hse-address
+  *ngIf="queryParam && !address"
   [addressName]="getAddressName()"
   [showOptionalAddressLineOne]="true"
   [selfAddress]="true"

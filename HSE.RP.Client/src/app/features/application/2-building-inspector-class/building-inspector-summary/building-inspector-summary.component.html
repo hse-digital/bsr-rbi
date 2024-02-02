@@ -1,5 +1,5 @@
 <govuk-formpage
-  saveAndContinueText="Continue"
+  saveAndContinueText="Save and continue"
   [hideSaveAndComeBack]="true"
   (saveAndContinue)="SyncAndContinue()"
   [hideBackButton]="false"
@@ -20,7 +20,7 @@
       <govuk-summary-list-row
         (onClick)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
         (onKeyupEnter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
-        actionDetails="Type"
+        actionDetails="Class"
         key="Type"
         [showAction]="true"
         [actionText]="'change'"
@@ -98,11 +98,12 @@
             Wales
           </div>
         </dd>
-        <dt style="visibility: hidden;">Actions</dt>
+        <dt style="visibility: hidden">Actions</dt>
         <dd class="govuk-summary-list__actions">
           <a
             class="govuk-link"
             role="link"
+            actionDetails="Country"
             (click)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"
             (keyup.enter)="
               navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)
@@ -138,7 +139,7 @@
         <dt class="govuk-summary-list__key">Type</dt>
 
         <dd class="govuk-summary-list__value">
-          <div
+          <div id="ia-class3" 
             *ngIf="
               applicationService.model.InspectorClass?.ClassType?.Class ===
               BuildingInspectorClassType.Class3
@@ -147,7 +148,7 @@
             Class 3 building inspector<br />
           </div>
 
-          <div
+          <div id="ia-class2" aria-flowto="ia-class-change-link" aria-owns="ia-class-change-link"
             *ngIf="
               applicationService.model.InspectorClass?.ClassType?.Class ===
               BuildingInspectorClassType.Class2
@@ -156,7 +157,7 @@
             Class 2 building inspector<br />
           </div>
 
-          <div
+          <div id="ia-class4" aria-flowto="ia-class4-change-link" aria-owns="ia-class4-change-link"
             *ngIf="
               applicationService.model.InspectorClass?.ClassTechnicalManager ===
               'yes'
@@ -168,40 +169,45 @@
 
         <dt style="visibility: hidden">Actions</dt>
 
-
         <dd class="govuk-summary-list__actions">
-          <div>
-          <a
-            class="govuk-link"
-            role="link"
-            (click)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
-            (keyup.enter)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
-            tabindex="0"
-          >
-            change<span class="govuk-visually-hidden">class</span> </a
-          ><br />
-        </div>
-        <br />
-        <br />
-        <div>
-          <a
-            *ngIf="
-              applicationService.model.InspectorClass?.ClassTechnicalManager ===
-              'yes'
-            "
-            class="govuk-link"
-            role="link"
-            (click)="
-              navigateTo(BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER)
-            "
-            (keyup.enter)="
-              navigateTo(BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER)
-            "
-            tabindex="0"
-          >
-            change<span class="govuk-visually-hidden"> class</span>
-          </a>
-        </div>
+          <div id="ia-class-change-link">
+            <a 
+              
+              class="govuk-link"
+              actionDetails="Class"
+              role="link"
+              (click)="navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)"
+              (keyup.enter)="
+                navigateTo(BuildingInspectorRoutes.CLASS_SELECTION)
+              "
+              tabindex="0"
+            >change
+            <span *ngIf=" applicationService.model.InspectorClass?.ClassType?.Class === BuildingInspectorClassType.Class3 " class="govuk-visually-hidden">class three</span> 
+            <span *ngIf=" applicationService.model.InspectorClass?.ClassType?.Class === BuildingInspectorClassType.Class2 " class="govuk-visually-hidden">class two</span> 
+           </a><br />
+          </div>
+          <br />
+          <br />
+          <div id="ia-class4-change-link" >
+            <a
+              *ngIf="
+                applicationService.model.InspectorClass
+                  ?.ClassTechnicalManager === 'yes'
+              "
+              class="govuk-link"
+              role="link"
+              actionDetails="Class"
+              (click)="
+                navigateTo(BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER)
+              "
+              (keyup.enter)="
+                navigateTo(BuildingInspectorRoutes.CLASS_TECHNICAL_MANAGER)
+              "
+              tabindex="0"
+            >
+              change<span class="govuk-visually-hidden">class four</span>
+            </a>
+          </div>
         </dd>
       </div>
 
@@ -229,6 +235,7 @@
         <dd class="govuk-summary-list__actions">
           <a
             class="govuk-link"
+            actionDetails="Activities"
             role="link"
             (click)="navigateTo(BuildingInspectorRoutes.REGULATED_ACTIVITIES)"
             (keyup.enter)="
@@ -245,28 +252,29 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Categories</dt>
         <dd class="govuk-summary-list__value">
-          <div *ngIf="assessPlansCategories">
+          <div *ngIf="assessPlansCategories" id="ia-assessplans-categories" aria-owns="ia-assessplans-categories-change-link" aria-flowto="ia-assessplans-categories-change-link">
             {{ assessPlansCategories
             }}<span class="govuk-caption-m">[Assess plans]</span>
           </div>
 
-          <div *ngIf="inspectionCategories">
+          <div *ngIf="inspectionCategories" id="ia-inspection-categories" aria-owns="ia-inspection-categories-change-link" aria-flowto="ia-inspection-categories-change-link">
             {{ inspectionCategories
             }}<span class="govuk-caption-m">[Inspection]</span>
           </div>
         </dd>
         <dt style="visibility: hidden">Actions</dt>
         <dd class="govuk-summary-list__actions">
-
           <div *ngIf="assessPlansCategories">
-            <a
+            <a id="ia-assessplans-categories-change-link"
+              aria-flowto="ia-inspection-categories"
               class="govuk-link"
+              actionDetails="Categories"
               role="link"
               (click)="navigateTo(assessPlansLink)"
               (keyup.enter)="navigateTo(assessPlansLink)"
               tabindex="0"
             >
-              change<span class="govuk-visually-hidden">activities</span>
+              change<span class="govuk-visually-hidden">categories assess plans</span>
             </a>
             <br />
           </div>
@@ -274,16 +282,17 @@
           <br *ngIf="assessPlansCategories === 'false'" />
           <br *ngIf="assessPlansCategories" />
 
-          <a
+          <a id="ia-inspection-categories-change-link"
             class="govuk-link"
+            actionDetails="Categories"
             role="link"
             *ngIf="inspectionCategories"
             (click)="navigateTo(inspectionLink)"
             (keyup.enter)="navigateTo(inspectionLink)"
             tabindex="0"
           >
-            change<span class="govuk-visually-hidden">activities</span>
-          </a>
+          change<span class="govuk-visually-hidden">categories inspection</span>
+        </a>
         </dd>
       </div>
 
@@ -312,6 +321,7 @@
         <dd class="govuk-summary-list__actions">
           <a
             class="govuk-link"
+            actionDetails="Country"
             role="link"
             (click)="navigateTo(BuildingInspectorRoutes.INSPECTOR_COUNTRY)"
             (keyup.enter)="
@@ -319,7 +329,7 @@
             "
             tabindex="0"
           >
-            change<span class="govuk-visually-hidden"> country</span>
+            change<span class="govuk-visually-hidden">country</span>
           </a>
         </dd>
       </div>
