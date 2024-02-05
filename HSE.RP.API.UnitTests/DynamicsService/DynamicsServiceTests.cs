@@ -1409,8 +1409,9 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
 };
 
-        [Fact]
-        public async Task FindExistingBuildingInspectorRegistrationActivity_NoActivitiesExist()
+        [Theory]
+        [MemberData(nameof(ActivitiesNoExisting))]
+        public async Task FindExistingBuildingInspectorRegistrationActivity_NoActivitiesExist(BuildingInspectorRegistrationActivity buildingInspectorRegistrationActivity, DynamicsBuildingInspectorRegistrationActivity dynamicsBuildingInspectorRegistrationActivity)
         {
 
             //Arrange
@@ -1418,71 +1419,62 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             var testDynamicsBuildingProfessionApplication = dynamicsBuildingProfessionApplicationNewApplication;
 
             HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
-            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'  and _bsr_biactivityid_value eq '{activityId}' and _bsr_bibuildingcategoryid_value eq '{categoryId}'")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}' and _bsr_biactivityid_value eq '{buildingInspectorRegistrationActivity.ActivityId}' and _bsr_bibuildingcategoryid_value eq '{buildingInspectorRegistrationActivity.BuildingCategoryId}'")
             .WithVerb(HttpMethod.Get)
-            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationClass>
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationActivity>
             {
-                value = new List<DynamicsBuildingInspectorRegistrationClass>()
-
+                value = new List<DynamicsBuildingInspectorRegistrationActivity>()
             });
 
             //Act
 
-            var classes = await _dynamicsService.GetRegistrationClassesUsingApplicationId(testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+            var activities = await _dynamicsService.FindExistingBuildingInspectorRegistrationActivity(buildingInspectorRegistrationActivity.ActivityId, buildingInspectorRegistrationActivity.BuildingCategoryId, testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
 
 
             //Assert
-            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregclasses")
-            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}' and _bsr_biactivityid_value eq '{buildingInspectorRegistrationActivity.ActivityId}' and _bsr_bibuildingcategoryid_value eq '{buildingInspectorRegistrationActivity.BuildingCategoryId}'")
             .WithVerb(HttpMethod.Get);
 
-            Assert.Empty(classes);
+            Assert.Null(activities);
 
         }
 
-        [Fact]
-        public async Task FindExistingBuildingInspectorRegistrationActivity_ActivitiesExist()
+        [Theory]
+        [MemberData(nameof(ActivitiesExisting))]
+        public async Task FindExistingBuildingInspectorRegistrationActivity_ActivitiesExist(BuildingInspectorRegistrationActivity buildingInspectorRegistrationActivity, DynamicsBuildingInspectorRegistrationActivity dynamicsBuildingInspectorRegistrationActivity)
         {
 
             //Arrange
-            var testBuildingProfessionApplication = buildingProfessionApplicationModelNewApplication with { InspectorClass = dynamicsServiceInspectorClassConfigrations.Class1 };
+            var testBuildingProfessionApplication = buildingProfessionApplicationModelNewApplication with { InspectorClass = dynamicsServiceInspectorClassConfigrations.Class2 };
             var testDynamicsBuildingProfessionApplication = dynamicsBuildingProfessionApplicationNewApplication;
 
-            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregclasses")
-            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}' and _bsr_biactivityid_value eq '{buildingInspectorRegistrationActivity.ActivityId}' and _bsr_bibuildingcategoryid_value eq '{buildingInspectorRegistrationActivity.BuildingCategoryId}'")
             .WithVerb(HttpMethod.Get)
-            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationClass>
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationActivity>
             {
-                value = new List<DynamicsBuildingInspectorRegistrationClass>()
-            {
-
-                new DynamicsBuildingInspectorRegistrationClass
+                value = new List<DynamicsBuildingInspectorRegistrationActivity>()
                 {
-                    bsr_biregclassid = "dd31ab1b-b671-ee11-8179-0022481b5210",
-                    _bsr_biapplicationid_value = testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
-                    _bsr_biclassid_value = BuildingInspectorClassNames.Ids[1],
-                    _bsr_buildinginspectorid_value = testDynamicsBuildingProfessionApplication._bsr_applicantid_value,
-                    bsr_name = "Class 1 trainee building inspector",
-                    statuscode = (int)BuildingInspectorRegistrationClassStatus.Registered,
-                    statecode = 0
+                    dynamicsBuildingInspectorRegistrationActivity
                 }
-            }
             });
 
             //Act
 
-            var classes = await _dynamicsService.GetRegistrationClassesUsingApplicationId(testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+            var activities = await _dynamicsService.FindExistingBuildingInspectorRegistrationActivity(buildingInspectorRegistrationActivity.ActivityId, buildingInspectorRegistrationActivity.BuildingCategoryId, testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
 
 
             //Assert
-            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregclasses")
-            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}' and _bsr_biactivityid_value eq '{buildingInspectorRegistrationActivity.ActivityId}' and _bsr_bibuildingcategoryid_value eq '{buildingInspectorRegistrationActivity.BuildingCategoryId}'")
             .WithVerb(HttpMethod.Get);
 
-            Assert.Single(classes);
+            Assert.NotNull(activities);
 
         }
+
     }
 }
