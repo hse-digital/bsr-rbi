@@ -1298,5 +1298,191 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             Assert.Equal(testRegisterCountry.StateCode, buildingInspectorRegistrationCountry.StateCode);
         }
 
+
+
+        public static IEnumerable<object[]> ActivitiesNoExisting =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2A with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2B with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2C with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2D with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2E with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2F with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2F },
+
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2A with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2B with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2C with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2D with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2E with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2F with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2F },
+            
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3A with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3B with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3C with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3D with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3E with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3F with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3F },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3G with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3G },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3H with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3H },
+
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3A with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3B with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3C with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3D with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3E with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3F with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3F },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3G with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3G },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3H with { Id = null}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3H },
+
+        };
+        public static IEnumerable<object[]> ActivitiesExisting =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2A with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2B with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2C with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2D with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2E with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2F with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2F },
+
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2A with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2B with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2C with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2D with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2E with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2F with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2F },
+
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3A with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3B with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3C with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3D with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3E with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3F with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3F },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3G with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3G },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3H with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3H },
+
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3A with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3B with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3C with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3D with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3E with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3F with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3F },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3G with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3G },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3H with { Id = null, StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3H },
+
+        };
+        public static IEnumerable<object[]> ActivitiesExistingIdProvided =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2A with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2B with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2C with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2D with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2E with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans2F with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans2F },
+
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2A with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2B with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2C with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2D with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2E with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings2F with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings2F },
+
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3A with {StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3B with {StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3C with {StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3D with {StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3E with {StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3F with {StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3F },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3G with {StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3G },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityAssessingPlans3H with {StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityAssessingPlans3H },
+
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3A with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3A },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3B with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3B },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3C with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3C },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3D with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3D },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3E with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3E },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3F with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3F },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3G with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3G },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BIActivityInspectBuildings3H with { StatusCode = 2, StateCode =1}, dynamicsServiceInspectorClassConfigrations.DynamicsBIActivityInspectBuildings3H },
+
+};
+
+        [Fact]
+        public async Task FindExistingBuildingInspectorRegistrationActivity_NoActivitiesExist()
+        {
+
+            //Arrange
+            var testBuildingProfessionApplication = buildingProfessionApplicationModelNewApplication with { InspectorClass = dynamicsServiceInspectorClassConfigrations.Class2 };
+            var testDynamicsBuildingProfessionApplication = dynamicsBuildingProfessionApplicationNewApplication;
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'  and _bsr_biactivityid_value eq '{activityId}' and _bsr_bibuildingcategoryid_value eq '{categoryId}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationClass>
+            {
+                value = new List<DynamicsBuildingInspectorRegistrationClass>()
+
+            });
+
+            //Act
+
+            var classes = await _dynamicsService.GetRegistrationClassesUsingApplicationId(testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregclasses")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Empty(classes);
+
+        }
+
+        [Fact]
+        public async Task FindExistingBuildingInspectorRegistrationActivity_ActivitiesExist()
+        {
+
+            //Arrange
+            var testBuildingProfessionApplication = buildingProfessionApplicationModelNewApplication with { InspectorClass = dynamicsServiceInspectorClassConfigrations.Class1 };
+            var testDynamicsBuildingProfessionApplication = dynamicsBuildingProfessionApplicationNewApplication;
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregclasses")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationClass>
+            {
+                value = new List<DynamicsBuildingInspectorRegistrationClass>()
+            {
+
+                new DynamicsBuildingInspectorRegistrationClass
+                {
+                    bsr_biregclassid = "dd31ab1b-b671-ee11-8179-0022481b5210",
+                    _bsr_biapplicationid_value = testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
+                    _bsr_biclassid_value = BuildingInspectorClassNames.Ids[1],
+                    _bsr_buildinginspectorid_value = testDynamicsBuildingProfessionApplication._bsr_applicantid_value,
+                    bsr_name = "Class 1 trainee building inspector",
+                    statuscode = (int)BuildingInspectorRegistrationClassStatus.Registered,
+                    statecode = 0
+                }
+            }
+            });
+
+            //Act
+
+            var classes = await _dynamicsService.GetRegistrationClassesUsingApplicationId(testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregclasses")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Single(classes);
+
+        }
     }
 }
