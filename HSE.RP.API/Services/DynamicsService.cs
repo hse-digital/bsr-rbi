@@ -628,7 +628,7 @@ namespace HSE.RP.API.Services
                 //If an entry exists then update it
                 else
                 {
-                    var response = await dynamicsApi.Update($"bsr_biregcountries({existingRegistrationCountry._bsr_countryid_value})", dynamicsBuildingInspectorRegistraionCountry);
+                    var response = await dynamicsApi.Update($"bsr_biregcountries({existingRegistrationCountry.bsr_biregcountryid})", dynamicsBuildingInspectorRegistraionCountry);
                     var buildingInspectorRegistrationCountryId = ExtractEntityIdFromHeader(response.Headers);
                     return buildingInspectorRegistrationCountry with { Id = buildingInspectorRegistrationCountryId };
                 }

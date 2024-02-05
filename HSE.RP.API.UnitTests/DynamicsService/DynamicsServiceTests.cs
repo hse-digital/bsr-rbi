@@ -834,7 +834,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             var testBuildingProfessionApplication = buildingProfessionApplicationModelNewApplication with { InspectorClass = dynamicsServiceInspectorClassConfigrations.Class1 };
             var testDynamicsBuildingProfessionApplication = dynamicsBuildingProfessionApplicationNewApplication;
 
-            //Create contact check if existing, return null
             HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregclasses")
             .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
             .WithVerb(HttpMethod.Get)
@@ -867,7 +866,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             var testBuildingProfessionApplication = buildingProfessionApplicationModelNewApplication with { InspectorClass = dynamicsServiceInspectorClassConfigrations.Class1 };
             var testDynamicsBuildingProfessionApplication = dynamicsBuildingProfessionApplicationNewApplication;
 
-            //Create contact check if existing, return null
             HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregclasses")
             .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
             .WithVerb(HttpMethod.Get)
@@ -875,8 +873,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             {
                 value = new List<DynamicsBuildingInspectorRegistrationClass>()
             {
-                //New DynamicsBuildingInspectorRegistrationClass for application
-
 
                 new DynamicsBuildingInspectorRegistrationClass
                 {
@@ -914,7 +910,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             var existingDynamicsApplication = dynamicsBuildingProfessionApplicationNewApplication;
             var updatedExistingDynamicsApplication = dynamicsBuildingProfessionApplicationNewApplication with { bsr_hasindependentassessment = false };
 
-            //Create contact check if existing, return null
             HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid})")
             .WithRequestJson(updatedExistingDynamicsApplication)
             .WithVerb(HttpMethod.Patch)
@@ -1071,7 +1066,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             statecode: buildingInspectorRegistrationClass.StateCode
             );
 
-            //Create Building Profession Application return 412 as application exists
             HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregclasses({dynamicsBuildingInspectorRegistrationClass.bsr_biregclassid})")
             .WithRequestJson(testDynamicsBuildingInspectorRegistraionClass)
             .WithVerb(HttpMethod.Patch)
@@ -1088,6 +1082,219 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
             Assert.Equal(testRegisterClass, buildingInspectorRegistrationClass with { Id = dynamicsBuildingInspectorRegistrationClass.bsr_biregclassid });
             Assert.Equal(testRegisterClass.StatusCode, buildingInspectorRegistrationClass.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetRegistrationCountriesUsingApplicationId_CountriesExisting()
+        {
+
+            //Arrange
+            var testBuildingProfessionApplication = buildingProfessionApplicationModelNewApplication with { InspectorClass = dynamicsServiceInspectorClassConfigrations.Class1 };
+            var testDynamicsBuildingProfessionApplication = dynamicsBuildingProfessionApplicationNewApplication;
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationCountry>
+            {
+                value = new List<DynamicsBuildingInspectorRegistrationCountry>()
+            {
+                dynamicsServiceInspectorClassConfigrations.BIRegistrationCountryEngland,
+                dynamicsServiceInspectorClassConfigrations.BIRegistrationCountryWales
+            }
+            });
+
+            //Act
+
+            var countries = await _dynamicsService.GetRegistrationCountriesUsingApplicationId(testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Equal(2, countries.Count);
+
+        }
+
+        [Fact]
+        public async Task GetRegistrationCountriesUsingApplicationId_CountriesNoExisting()
+        {
+
+            //Arrange
+            var testBuildingProfessionApplication = buildingProfessionApplicationModelNewApplication with { InspectorClass = dynamicsServiceInspectorClassConfigrations.Class1 };
+            var testDynamicsBuildingProfessionApplication = dynamicsBuildingProfessionApplicationNewApplication;
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationCountry>
+            {
+                value = new List<DynamicsBuildingInspectorRegistrationCountry>()
+            });
+
+            //Act
+
+            var countries = await _dynamicsService.GetRegistrationCountriesUsingApplicationId(testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testDynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Empty(countries);
+
+        }
+
+        public static IEnumerable<object[]> CountryRegistrationNoExisting =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceInspectorClassConfigrations.BICountryEngland with { Id = null}, dynamicsServiceInspectorClassConfigrations.BIRegistrationCountryEngland },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BICountryWales with { Id = null}, dynamicsServiceInspectorClassConfigrations.BIRegistrationCountryWales }
+
+        };
+
+        public static IEnumerable<object[]> CountryRegistrationExisting =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceInspectorClassConfigrations.BICountryEngland with {Id = null, StatusCode=2,StateCode=1 }, dynamicsServiceInspectorClassConfigrations.BIRegistrationCountryEngland },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BICountryWales with { Id = null, StatusCode = 2, StateCode=1 }, dynamicsServiceInspectorClassConfigrations.BIRegistrationCountryWales },
+        };
+
+        public static IEnumerable<object[]> CountryRegistrationExistingIdProvided =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceInspectorClassConfigrations.BICountryEngland with { StatusCode=2,StateCode=1 }, dynamicsServiceInspectorClassConfigrations.BIRegistrationCountryEngland },
+            new object[] { dynamicsServiceInspectorClassConfigrations.BICountryWales with { StatusCode = 2, StateCode=1 }, dynamicsServiceInspectorClassConfigrations.BIRegistrationCountryWales },
+        };
+
+        [Theory]
+        [MemberData(nameof(CountryRegistrationNoExisting))]
+        public async Task CreateOrUpdateRegistrationCountry_NoExistingRegistration(BuildingInspectorRegistrationCountry buildingInspectorRegistrationCountry, DynamicsBuildingInspectorRegistrationCountry dynamicsBuildingInspectorRegistrationCountry)
+        {
+            //Arrange
+
+            var testDynamicsBuildingInspectorRegistraionCountry = new DynamicsBuildingInspectorRegistrationCountry(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorRegistrationCountry.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorRegistrationCountry.BuildingInspectorId})",
+                countryRefId: $"/bsr_countries({buildingInspectorRegistrationCountry.CountryID})",
+                statuscode: buildingInspectorRegistrationCountry.StatusCode,
+                statecode: buildingInspectorRegistrationCountry.StateCode
+                );
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorRegistrationCountry.BuildingProfessionApplicationId}' and _bsr_countryid_value eq '{buildingInspectorRegistrationCountry.CountryID}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationCountry>
+            {
+                value = new List<DynamicsBuildingInspectorRegistrationCountry>()
+            });
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionCountry)
+            .WithVerb(HttpMethod.Post)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid));
+
+            //Act
+            var testRegisterCountry = await _dynamicsService.CreateOrUpdateRegistrationCountry(buildingInspectorRegistrationCountry);
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{testRegisterCountry.BuildingProfessionApplicationId}' and _bsr_countryid_value eq '{testRegisterCountry.CountryID}'")
+            .WithVerb(HttpMethod.Get);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionCountry)
+            .WithVerb(HttpMethod.Post);
+
+            Assert.Equal(testRegisterCountry, buildingInspectorRegistrationCountry with { Id = dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid });
+        }
+
+        [Theory]
+        [MemberData(nameof(CountryRegistrationExisting))]
+        public async Task CreateOrUpdateRegistrationCountry_ExistingRegistration(BuildingInspectorRegistrationCountry buildingInspectorRegistrationCountry, DynamicsBuildingInspectorRegistrationCountry dynamicsBuildingInspectorRegistrationCountry)
+        {
+            //Arrange
+
+            var testDynamicsBuildingInspectorRegistraionCountry = new DynamicsBuildingInspectorRegistrationCountry(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorRegistrationCountry.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorRegistrationCountry.BuildingInspectorId})",
+                countryRefId: $"/bsr_countries({buildingInspectorRegistrationCountry.CountryID})",
+                statuscode: buildingInspectorRegistrationCountry.StatusCode,
+                statecode: buildingInspectorRegistrationCountry.StateCode
+                );
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorRegistrationCountry.BuildingProfessionApplicationId}' and _bsr_countryid_value eq '{buildingInspectorRegistrationCountry.CountryID}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationCountry>
+            {
+                value = new List<DynamicsBuildingInspectorRegistrationCountry>()
+                {
+                    dynamicsBuildingInspectorRegistrationCountry
+                }
+            });
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries({dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid})")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionCountry)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid));
+
+            //Act
+            var testRegisterCountry = await _dynamicsService.CreateOrUpdateRegistrationCountry(buildingInspectorRegistrationCountry);
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorRegistrationCountry.BuildingProfessionApplicationId}' and _bsr_countryid_value eq '{buildingInspectorRegistrationCountry.CountryID}'")
+            .WithVerb(HttpMethod.Get);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries({dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid})")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionCountry)
+            .WithVerb(HttpMethod.Patch);
+
+            Assert.Equal(testRegisterCountry, buildingInspectorRegistrationCountry with { Id = dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid });
+            Assert.Equal(testRegisterCountry.StatusCode, buildingInspectorRegistrationCountry.StatusCode);
+            Assert.Equal(testRegisterCountry.StateCode, buildingInspectorRegistrationCountry.StateCode);
+        }
+
+        [Theory]
+        [MemberData(nameof(CountryRegistrationExistingIdProvided))]
+        public async Task CreateOrUpdateRegistrationCountry_ExistingRegistrationIdProvided(BuildingInspectorRegistrationCountry buildingInspectorRegistrationCountry, DynamicsBuildingInspectorRegistrationCountry dynamicsBuildingInspectorRegistrationCountry)
+        {
+            //Arrange
+
+            var testDynamicsBuildingInspectorRegistraionCountry = new DynamicsBuildingInspectorRegistrationCountry(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorRegistrationCountry.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorRegistrationCountry.BuildingInspectorId})",
+                countryRefId: $"/bsr_countries({buildingInspectorRegistrationCountry.CountryID})",
+                statuscode: buildingInspectorRegistrationCountry.StatusCode,
+                statecode: buildingInspectorRegistrationCountry.StateCode
+                );
+
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries({dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid})")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionCountry)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid));
+
+            //Act
+            var testRegisterCountry = await _dynamicsService.CreateOrUpdateRegistrationCountry(buildingInspectorRegistrationCountry);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregcountries({dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid})")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionCountry)
+            .WithVerb(HttpMethod.Patch);
+
+            Assert.Equal(testRegisterCountry, buildingInspectorRegistrationCountry with { Id = dynamicsBuildingInspectorRegistrationCountry.bsr_biregcountryid });
+            Assert.Equal(testRegisterCountry.StatusCode, buildingInspectorRegistrationCountry.StatusCode);
+            Assert.Equal(testRegisterCountry.StateCode, buildingInspectorRegistrationCountry.StateCode);
         }
 
     }
@@ -1108,6 +1315,12 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         public DynamicsBuildingInspectorRegistrationClass Class2DynamicsRegistration;
         public DynamicsBuildingInspectorRegistrationClass Class3DynamicsRegistration;
         public DynamicsBuildingInspectorRegistrationClass Class4DynamicsRegistration;
+
+        public BuildingInspectorRegistrationCountry BICountryEngland;
+        public BuildingInspectorRegistrationCountry BICountryWales;
+
+        public DynamicsBuildingInspectorRegistrationCountry BIRegistrationCountryEngland;
+        public DynamicsBuildingInspectorRegistrationCountry BIRegistrationCountryWales;
 
 
 
@@ -1268,6 +1481,54 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 statuscode = (int)BuildingInspectorRegistrationClassStatus.Applied,
                 statecode = 0
             };
+
+            BICountryEngland = new BuildingInspectorRegistrationCountry
+            {
+                Id = "cb97db0d-a771-ee11-8179-0022481b5210",
+                BuildingProfessionApplicationId = "21ca463a-8988-ee11-be36-0022481b5210",
+                CountryID = BuildingInspectorCountryNames.Ids["England"],
+                BuildingInspectorId = "123456789",
+                Name = "England",
+                StatusCode = 1,
+                StateCode = 0
+            };
+
+            BICountryWales = new BuildingInspectorRegistrationCountry
+            {
+                Id = "e631ab1b-b671-ee11-8179-0022481b5210",
+                BuildingProfessionApplicationId = "21ca463a-8988-ee11-be36-0022481b5210",
+                CountryID = BuildingInspectorCountryNames.Ids["Wales"],
+                BuildingInspectorId = "123456789",
+                Name = "Wales",
+                StatusCode = 1,
+                StateCode = 0
+            };
+
+            BIRegistrationCountryEngland = new DynamicsBuildingInspectorRegistrationCountry
+            {
+                bsr_biregcountryid = "cb97db0d-a771-ee11-8179-0022481b5210",
+                _bsr_biapplicationid_value = "21ca463a-8988-ee11-be36-0022481b5210",
+                _bsr_countryid_value = BuildingInspectorCountryNames.Ids["England"],
+                _bsr_buildinginspectorid_value = "123456789",
+                bsr_name = "England",
+                statuscode = 1,
+                statecode = 0
+            };
+
+            BIRegistrationCountryWales = new DynamicsBuildingInspectorRegistrationCountry
+            {
+                bsr_biregcountryid = "e631ab1b-b671-ee11-8179-0022481b5210",
+                _bsr_biapplicationid_value = "21ca463a-8988-ee11-be36-0022481b5210",
+                _bsr_countryid_value = BuildingInspectorCountryNames.Ids["Wales"],
+                _bsr_buildinginspectorid_value = "123456789",
+                bsr_name = "Wales",
+                statuscode = 1,
+                statecode = 0
+            };
+
+
+
+
 
 
         }
