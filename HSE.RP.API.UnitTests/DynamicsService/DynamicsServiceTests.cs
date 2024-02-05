@@ -1322,6 +1322,36 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         public DynamicsBuildingInspectorRegistrationCountry BIRegistrationCountryEngland;
         public DynamicsBuildingInspectorRegistrationCountry BIRegistrationCountryWales;
 
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings2A;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings2B;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings2C;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings2D;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings2E;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings2F;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings3A;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings3B;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings3C;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings3D;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings3E;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings3F;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings3G;
+        public BuildingInspectorRegistrationActivity BIActivityInspectBuildings3H;
+
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans2A;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans2B;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans2C;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans2D;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans2E;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans2F;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans3A;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans3B;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans3C;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans3D;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans3E;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans3F;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans3G;
+        public BuildingInspectorRegistrationActivity BIActivityAssessingPlans3H;
+
 
 
         public InspectorClassTestConfigrations()
@@ -1391,9 +1421,138 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                     CompletionState = ComponentCompletionState.NotStarted
                 }
             };
+            Class2 = new BuildingInspectorClass
+            {
+                ClassType = new ClassSelection
+                {
+                    Class = BuildingInspectorClassType.Class2,
+                    CompletionState = ComponentCompletionState.Complete
+                },
+                Activities = new BuildingInspectorRegulatedActivies
+                {
+                    AssessingPlans = true,
+                    Inspection = true,
+                    CompletionState = ComponentCompletionState.Complete
+                },
+                AssessingPlansClass2 = new BuildingAssessingPlansCategoriesClass2
+                {
+                    CategoryA = true,
+                    CategoryB = true,
+                    CategoryC = true,
+                    CategoryD = true,
+                    CategoryE = true,
+                    CategoryF = true,
+                    CompletionState = ComponentCompletionState.Complete
+                },
+                AssessingPlansClass3 = new BuildingAssessingPlansCategoriesClass3
+                {
+                    CategoryG = false,
+                    CategoryH = false,
+                    CategoryA = false,
+                    CategoryB = false,
+                    CategoryC = false,
+                    CategoryD = false,
+                    CategoryE = false,
+                    CategoryF = false,
+                    CompletionState = ComponentCompletionState.NotStarted
+                },
+                ClassTechnicalManager = "no",
+                InspectorCountryOfWork = new BuildingInspectorCountryOfWork
+                {
+                    England = true,
+                    Wales = true,
+                    CompletionState = ComponentCompletionState.Complete
+                },
+                Class2InspectBuildingCategories = new Class2InspectBuildingCategories
+                {
+                    CategoryA = true,
+                    CategoryB = true,
+                    CategoryC = true,
+                    CategoryD = true,
+                    CategoryE = true,
+                    CategoryF = true,
+                    CompletionState = ComponentCompletionState.Complete
+                },
+                Class3InspectBuildingCategories = new Class3InspectBuildingCategories
+                {
+                    CategoryG = false,
+                    CategoryH = false,
+                    CategoryA = false,
+                    CategoryB = false,
+                    CategoryC = false,
+                    CategoryD = false,
+                    CategoryE = false,
+                    CategoryF = false,
+                    CompletionState = ComponentCompletionState.NotStarted
+                }
+            };
+            Class3 = new BuildingInspectorClass
+            {
+                ClassType = new ClassSelection
+                {
+                    Class = BuildingInspectorClassType.Class3,
+                    CompletionState = ComponentCompletionState.Complete
+                },
+                Activities = new BuildingInspectorRegulatedActivies
+                {
+                    AssessingPlans = true,
+                    Inspection = true,
+                    CompletionState = ComponentCompletionState.Complete
+                },
+                AssessingPlansClass2 = new BuildingAssessingPlansCategoriesClass2
+                {
+                    CategoryA = false,
+                    CategoryB = false,
+                    CategoryC = false,
+                    CategoryD = false,
+                    CategoryE = false,
+                    CategoryF = false,
+                    CompletionState = ComponentCompletionState.NotStarted
+                },
+                AssessingPlansClass3 = new BuildingAssessingPlansCategoriesClass3
+                {
+                    CategoryG = true,
+                    CategoryH = true,
+                    CategoryA = true,
+                    CategoryB = true,
+                    CategoryC = true,
+                    CategoryD = true,
+                    CategoryE = true,
+                    CategoryF = true,
+                    CompletionState = ComponentCompletionState.Complete
+                },
+                ClassTechnicalManager = "no",
+                InspectorCountryOfWork = new BuildingInspectorCountryOfWork
+                {
+                    England = true,
+                    Wales = true,
+                    CompletionState = ComponentCompletionState.Complete
+                },
+                Class2InspectBuildingCategories = new Class2InspectBuildingCategories
+                {
+                    CategoryA = false,
+                    CategoryB = false,
+                    CategoryC = false,
+                    CategoryD = false,
+                    CategoryE = false,
+                    CategoryF = false,
+                    CompletionState = ComponentCompletionState.NotStarted
+                },
+                Class3InspectBuildingCategories = new Class3InspectBuildingCategories
+                {
+                    CategoryG = true,
+                    CategoryH = true,
+                    CategoryA = true,
+                    CategoryB = true,
+                    CategoryC = true,
+                    CategoryD = true,
+                    CategoryE = true,
+                    CategoryF = true,
+                    CompletionState = ComponentCompletionState.Complete
+                }
+            };
+            Class4 = Class3 with { ClassTechnicalManager = "yes" };
 
-
-            //Create a BuildingInspectorRegistrationClass class 1 registration
             Class1Registration = new BuildingInspectorRegistrationClass
             {
                 Id = "dd31ab1b-b671-ee11-8179-0022481b5210",
@@ -1404,7 +1563,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 StatusCode = (int)BuildingInspectorRegistrationClassStatus.Registered,
                 StateCode = 0
             };
-
             Class2Registration = new BuildingInspectorRegistrationClass
             {
                 Id = "63e2f453-a4be-ee11-9079-0022481b5210",
@@ -1415,7 +1573,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
                 StateCode = 0
             };
-
             Class3Registration = new BuildingInspectorRegistrationClass
             {
                 Id = "679e2bbb-4ec0-ee11-9079-0022481b5210",
@@ -1426,7 +1583,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
                 StateCode = 0
             };
-
             Class4Registration = new BuildingInspectorRegistrationClass
             {
                 Id = "779a75c3-ba7f-ee11-8179-0022481b5210",
@@ -1448,7 +1604,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 statuscode = (int)BuildingInspectorRegistrationClassStatus.Registered,
                 statecode = 0
             };
-
             Class2DynamicsRegistration = new DynamicsBuildingInspectorRegistrationClass
             {
                 bsr_biregclassid = "63e2f453-a4be-ee11-9079-0022481b5210",
@@ -1459,7 +1614,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 statuscode = (int)BuildingInspectorRegistrationClassStatus.Applied,
                 statecode = 0
             };
-
             Class3DynamicsRegistration = new DynamicsBuildingInspectorRegistrationClass
             {
                 bsr_biregclassid = "679e2bbb-4ec0-ee11-9079-0022481b5210",
@@ -1470,7 +1624,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 statuscode = (int)BuildingInspectorRegistrationClassStatus.Applied,
                 statecode = 0
             };
-
             Class4DynamicsRegistration = new DynamicsBuildingInspectorRegistrationClass
             {
                 bsr_biregclassid = "779a75c3-ba7f-ee11-8179-0022481b5210",
@@ -1492,7 +1645,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 StatusCode = 1,
                 StateCode = 0
             };
-
             BICountryWales = new BuildingInspectorRegistrationCountry
             {
                 Id = "e631ab1b-b671-ee11-8179-0022481b5210",
@@ -1514,7 +1666,6 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 statuscode = 1,
                 statecode = 0
             };
-
             BIRegistrationCountryWales = new DynamicsBuildingInspectorRegistrationCountry
             {
                 bsr_biregcountryid = "e631ab1b-b671-ee11-8179-0022481b5210",
@@ -1524,6 +1675,13 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 bsr_name = "Wales",
                 statuscode = 1,
                 statecode = 0
+            };
+
+            BIActivityInspectBuildings2A = new BuildingInspectorRegistrationActivity
+            {
+                Id = "ad0872cc-8b5c-ee11-8def-0022481b5210",
+                ActivityId = BuildingInspectorActivityNames.Ids["Inspect"],
+                BuildingCategoryId = BuildingInspectorBuildingCategoryNames.Ids["CategoryAClass2"],
             };
 
 
