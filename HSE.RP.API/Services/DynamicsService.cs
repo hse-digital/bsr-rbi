@@ -583,6 +583,7 @@ namespace HSE.RP.API.Services
                     var buildingInspectorRegistrationClassId = ExtractEntityIdFromHeader(response.Headers);
                     return buildingInspectorRegistrationClass with { Id = buildingInspectorRegistrationClassId };
                 }
+
                 //If an entry exists then update it
                 else
                 {
