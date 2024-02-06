@@ -24,6 +24,7 @@ using Moq;
 using FluentAssertions;
 using BuildingInspectorClass = HSE.RP.API.Models.BuildingInspectorClass;
 using HSE.RP.API.UnitTests.TestData;
+using DurableTask.Core;
 
 namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 {
@@ -54,7 +55,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         private const string DynamicsAuthToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkd";
 
         public static InspectorClassTestConfigrations dynamicsServiceInspectorClassConfigrations = new InspectorClassTestConfigrations();
-
+        public static CompetencyTestConfigrations dynamicsServiceCompetencyTestConfigrations = new CompetencyTestConfigrations();
 
         public DynamicsServiceTests()
         {
@@ -1603,6 +1604,49 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             Assert.Equal(testRegisterActivity.StatusCode, buildingInspectorRegistrationActivity.StatusCode);
             Assert.Equal(testRegisterActivity.StateCode, buildingInspectorRegistrationActivity.StateCode);
         }
+
+        public static IEnumerable<object[]> CompetencyTestData =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceCompetencyTestConfigrations.BSCF, dynamicsServiceCompetencyTestConfigrations.BSCFDynamicsBuildingProfessionApplicationNewApplication },
+            new object[] { dynamicsServiceCompetencyTestConfigrations.CABE, dynamicsServiceCompetencyTestConfigrations.CABEDynamicsBuildingProfessionApplicationNewApplication },
+            new object[] { dynamicsServiceCompetencyTestConfigrations.TTD, dynamicsServiceCompetencyTestConfigrations.TTDDynamicsBuildingProfessionApplicationNewApplication },
+
+        };
+
+        [Theory]
+        [MemberData(nameof(CompetencyTestData))]
+        public async Task UpdateBuildingProfessionApplicationCompetency(Competency competencyModel, DynamicsBuildingProfessionApplication dynamicsBuildingProfessionApplication)
+        {
+            //Arrange
+
+            var testDynamicsCompetency = dynamicsBuildingProfessionApplication with
+            {
+                bsr_hasindependentassessment = true,
+                bsr_assessmentorganisationid = competencyModel.CompetencyAssessmentOrganisation.ComAssessmentOrganisation is null ? null : $"accounts({AssessmentOrganisationNames.Ids[competencyModel.CompetencyAssessmentOrganisation.ComAssessmentOrganisation]})",
+                bsr_assessmentdate = competencyModel.CompetencyDateOfAssessment is null ? null :
+                                        new DateOnly(int.Parse(competencyModel.CompetencyDateOfAssessment.Year),
+                                                     int.Parse(competencyModel.CompetencyDateOfAssessment.Month),
+                                                     int.Parse(competencyModel.CompetencyDateOfAssessment.Day)),
+                bsr_assessmentcertnumber = competencyModel.CompetencyAssessmentCertificateNumber is null ? null : competencyModel.CompetencyAssessmentCertificateNumber.CertificateNumber,
+            };
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid})")
+            .WithRequestJson(dynamicsBuildingProfessionApplication)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204);
+
+
+            //Act
+            await _dynamicsService.UpdateBuildingProfessionApplicationCompetency(testDynamicsCompetency, testDynamicsCompetency);
+
+            //Assert
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid})")
+            .WithRequestJson(testDynamicsCompetency)
+            .WithVerb(HttpMethod.Patch);
+        }
+
 
     }
 }

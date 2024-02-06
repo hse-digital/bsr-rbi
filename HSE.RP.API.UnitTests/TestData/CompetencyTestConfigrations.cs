@@ -8,14 +8,13 @@ namespace HSE.RP.API.UnitTests.TestData
     public class CompetencyTestConfigrations
     {
         public Competency CABE;
-        public Competency TDD;
+        public Competency TTD;
         public Competency BSCF;
-        public Competency RICS;
-        public Competency Other;
+
 
 
         public DynamicsBuildingProfessionApplication CABEDynamicsBuildingProfessionApplicationNewApplication;
-        public DynamicsBuildingProfessionApplication TDDDynamicsBuildingProfessionApplicationNewApplication;
+        public DynamicsBuildingProfessionApplication TTDDynamicsBuildingProfessionApplicationNewApplication;
         public DynamicsBuildingProfessionApplication BSCFDynamicsBuildingProfessionApplicationNewApplication;
 
         public CompetencyTestConfigrations()
@@ -52,7 +51,7 @@ namespace HSE.RP.API.UnitTests.TestData
                     CompletionState = ComponentCompletionState.Complete
                 }
             };
-            TDD = new Competency
+            TTD = new Competency
             {
                 CompetencyIndependentAssessmentStatus = new CompetencyIndependentAssessmentStatus
                 {
@@ -61,7 +60,7 @@ namespace HSE.RP.API.UnitTests.TestData
                 },
                 CompetencyAssessmentOrganisation = new CompetencyAssessmentOrganisation
                 {
-                    ComAssessmentOrganisation = "TDD",
+                    ComAssessmentOrganisation = "TTD",
                     CompletionState = ComponentCompletionState.Complete
                 },
                 NoCompetencyAssessment = new NoCompetencyAssessment
@@ -121,7 +120,7 @@ namespace HSE.RP.API.UnitTests.TestData
                 bsr_buildingprofessiontypecode = BuildingProfessionType.BuildingInspector,
                 bsr_buildingproappid = null,
                 bsr_buildingprofessionapplicationid = "21ca463a-8988-ee11-be36-0022481b5210",
-                bsr_assessmentorganisationid = AssessmentOrganisationNames.Ids["CABE"],
+                bsr_assessmentorganisationid = $"accounts({AssessmentOrganisationNames.Ids["CABE"]})",
                 _bsr_applicantid_value = "123456789",
                 CosmosId = "6EC5ACFE-7055-4978-BF24-CE0F2E00400E",
                 bsr_buildingprofessionalapplicationstage = null,
@@ -131,14 +130,14 @@ namespace HSE.RP.API.UnitTests.TestData
                 bsr_hasindependentassessment = true
             };
 
-            TDDDynamicsBuildingProfessionApplicationNewApplication = new DynamicsBuildingProfessionApplication
+            TTDDynamicsBuildingProfessionApplicationNewApplication = new DynamicsBuildingProfessionApplication
             {
                 bsr_applicantid = "contacts(123456789)",
                 bsr_applicantid_contact = null,
                 bsr_buildingprofessiontypecode = BuildingProfessionType.BuildingInspector,
                 bsr_buildingproappid = null,
                 bsr_buildingprofessionapplicationid = "21ca463a-8988-ee11-be36-0022481b5210",
-                bsr_assessmentorganisationid = AssessmentOrganisationNames.Ids["TDD"],
+                bsr_assessmentorganisationid = $"accounts({AssessmentOrganisationNames.Ids["TTD"]})",
                 _bsr_applicantid_value = "123456789",
                 CosmosId = "6EC5ACFE-7055-4978-BF24-CE0F2E00400E",
                 bsr_buildingprofessionalapplicationstage = null,
@@ -155,7 +154,7 @@ namespace HSE.RP.API.UnitTests.TestData
                 bsr_buildingprofessiontypecode = BuildingProfessionType.BuildingInspector,
                 bsr_buildingproappid = null,
                 bsr_buildingprofessionapplicationid = "21ca463a-8988-ee11-be36-0022481b5210",
-                bsr_assessmentorganisationid = AssessmentOrganisationNames.Ids["BSCF"],
+                bsr_assessmentorganisationid = $"accounts({AssessmentOrganisationNames.Ids["BSCF"]})",
                 _bsr_applicantid_value = "123456789",
                 CosmosId = "6EC5ACFE-7055-4978-BF24-CE0F2E00400E",
                 bsr_buildingprofessionalapplicationstage = null,
