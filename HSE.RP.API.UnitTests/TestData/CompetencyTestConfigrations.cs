@@ -13,6 +13,7 @@ namespace HSE.RP.API.UnitTests.TestData
         public Competency RICS;
         public Competency Other;
 
+
         public DynamicsBuildingProfessionApplication CABEDynamicsBuildingProfessionApplicationNewApplication;
         public DynamicsBuildingProfessionApplication TDDDynamicsBuildingProfessionApplicationNewApplication;
         public DynamicsBuildingProfessionApplication BSCFDynamicsBuildingProfessionApplicationNewApplication;
