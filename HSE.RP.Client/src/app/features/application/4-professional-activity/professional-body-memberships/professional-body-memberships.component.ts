@@ -96,6 +96,7 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
         this.applicationService.model.ProfessionalMemberships.CABE = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CABE.BodyCode)
         this.applicationService.model.ProfessionalMemberships.CIOB = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CIOB.BodyCode)
         this.applicationService.model.ProfessionalMemberships.OTHER = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.OTHER.BodyCode)
+        this.applicationService.model.ProfessionalMemberships.CompletionState = ComponentCompletionState.Complete;
       }
       if (this.model?.IsProfessionBodyRelevantYesNo === 'yes') {
         this.applicationService.model.ProfessionalMemberships.CompletionState = ComponentCompletionState.InProgress;
