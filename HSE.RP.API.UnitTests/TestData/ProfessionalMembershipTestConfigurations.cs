@@ -13,10 +13,10 @@ namespace HSE.RP.API.UnitTests.TestData
         public ApplicantProfessionalBodyMembership OtherApplicantProfessionalBodyMembership;
 
 
-        public BuildingInspectorProfessionalBodyMembership RICSBuildingProfessionApplication;
-        public BuildingInspectorProfessionalBodyMembership CABEBuildingProfessionApplication;
-        public BuildingInspectorProfessionalBodyMembership CIOBBuildingProfessionApplication;
-        public BuildingInspectorProfessionalBodyMembership OtherBuildingProfessionApplication;
+        public BuildingInspectorProfessionalBodyMembership RICSBuildingProfessionApplicationBodyMembership;
+        public BuildingInspectorProfessionalBodyMembership CABEBuildingProfessionApplicationBodyMembership;
+        public BuildingInspectorProfessionalBodyMembership CIOBBuildingProfessionApplicationBodyMembership;
+        public BuildingInspectorProfessionalBodyMembership OtherBuildingProfessionApplicationBodyMembership;
 
 
         public DynamicsBuildingInspectorProfessionalBodyMembership RICSDynamicsBuildingInspectorProfessionalBodyMembership;
@@ -64,8 +64,9 @@ namespace HSE.RP.API.UnitTests.TestData
                 CompletionState = ComponentCompletionState.Complete
             };
 
-            RICSBuildingProfessionApplication = new BuildingInspectorProfessionalBodyMembership
+            RICSBuildingProfessionApplicationBodyMembership = new BuildingInspectorProfessionalBodyMembership
             {
+                Id = "759289a6-b7be-ee11-9079-0022481b5210",
                 Name = "Membership: Royal Institution of Chartered Surveyors (RICS)",
                 BuildingProfessionApplicationId = "21ca463a-8988-ee11-be36-0022481b5210",
                 BuildingInspectorId = "123456789",
@@ -76,8 +77,9 @@ namespace HSE.RP.API.UnitTests.TestData
                 StatusCode = 1,
                 StateCode = 0
             };
-            CABEBuildingProfessionApplication = new BuildingInspectorProfessionalBodyMembership
+            CABEBuildingProfessionApplicationBodyMembership = new BuildingInspectorProfessionalBodyMembership
             {
+                Id= "84062dd4-797d-ee11-8179-0022481b56d1",
                 Name = "Membership: Royal Institution of Chartered Surveyors (CABE)",
                 BuildingProfessionApplicationId = "21ca463a-8988-ee11-be36-0022481b5210",
                 BuildingInspectorId = "123456789",
@@ -88,8 +90,9 @@ namespace HSE.RP.API.UnitTests.TestData
                 StatusCode = 1,
                 StateCode = 0
             };
-            CIOBBuildingProfessionApplication = new BuildingInspectorProfessionalBodyMembership
+            CIOBBuildingProfessionApplicationBodyMembership = new BuildingInspectorProfessionalBodyMembership
             {
+                Id = "d1072ae5-ddc0-ee11-9079-0022481b5210",
                 Name = "Membership: Royal Institution of Chartered Surveyors (CIOB)",
                 BuildingProfessionApplicationId = "21ca463a-8988-ee11-be36-0022481b5210",
                 BuildingInspectorId = "123456789",
@@ -100,8 +103,9 @@ namespace HSE.RP.API.UnitTests.TestData
                 StatusCode = 1,
                 StateCode = 0
             };
-            OtherBuildingProfessionApplication = new BuildingInspectorProfessionalBodyMembership
+            OtherBuildingProfessionApplicationBodyMembership = new BuildingInspectorProfessionalBodyMembership
             {
+                Id = "0aeacf13-4fc0-ee11-9079-0022481b5210",
                 Name = "Membership: Royal Institution of Chartered Surveyors (Other)",
                 BuildingProfessionApplicationId = "21ca463a-8988-ee11-be36-0022481b5210",
                 BuildingInspectorId = "123456789",
