@@ -787,7 +787,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
 
         [Fact]
-        public async Task SyncEmploymentDetails()
+        public async Task SyncPersonalDetails()
         {
 
             //Arrange
