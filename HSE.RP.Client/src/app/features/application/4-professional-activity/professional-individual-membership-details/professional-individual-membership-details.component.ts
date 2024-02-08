@@ -175,11 +175,11 @@ export class ProfessionalIndividualMembershipDetailsComponent extends PageCompon
   }
 
   public changeMembershipDetails() {
-    const queryParams = this.membershipCode;
+    const membershipCode = this.membershipCode;
     return this.navigationService.navigateRelative(
       ProfessionalMembershipInformationComponent.route,
       this.activatedRoute,
-      { queryParams }
+      { membershipCode }
     ); // Back to the task list.
 
   }
