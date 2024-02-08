@@ -1,4 +1,3 @@
-
 <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
   <!-- <govuk-error-link
     *ngFor="let error of validationErrors"
@@ -12,7 +11,7 @@
 </govuk-error-summary>
 <govuk-formpage
   saveAndContinueText="Save and continue"
-  [hideSaveAndComeBack]="false"
+  [hideSaveAndComeBack]="true"
   (saveAndContinue)="saveAndContinue()"
   (saveAndComeBack)="saveAndComeBack()"
   [hideBackButton]="false"

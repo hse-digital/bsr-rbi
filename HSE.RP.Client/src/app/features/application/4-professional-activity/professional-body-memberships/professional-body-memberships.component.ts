@@ -4,20 +4,18 @@ import { environment } from '../../../../../environments/environment';
 import { PageComponent } from '../../../../helpers/page.component';
 import { ApplicationService } from '../../../../services/application.service';
 import { ProfessionalActivityEmploymentTypeComponent } from '../employment-type/professional-activity-employment-type.component';
-import { ApplicantHasProfessionBodyMemberships, ApplicantProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper, ProfessionalBodies } from 'src/app/models/applicant-professional-body-membership';
+import { ApplicantProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper, ProfessionalBodies } from 'src/app/models/applicant-professional-body-membership';
 import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
-
-
-
 @Component({
   selector: 'hse-professional-body-memberships',
   templateUrl: './professional-body-memberships.component.html',
 })
-export class ProfessionalBodyMembershipsComponent extends PageComponent<ApplicantHasProfessionBodyMemberships> {
+export class ProfessionalBodyMembershipsComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
+  // public static route: string = ProfessionalActivityRoutes.PROFESSIONAL_BODY_MEMBERSHIPS;
 
   public static route: string = 'professional-body-memberships';
   static title: string =
@@ -25,55 +23,62 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
   production: boolean = environment.production;
   modelValid: boolean = false;
   errorMessage: string = '';
+  selectedOption: string = '';
   queryParam?: string = '';
-  originalSelection?: string = '';
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
   }
 
   override onInit(applicationService: ApplicationService): void {
-    //this.applicationService.model.ProfessionalMemberships = new ApplicantProfessionBodyMemberships();
     this.updateOnSave = true;
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
     });
     if (!applicationService.model.ProfessionalMemberships) {
-      applicationService.model.ProfessionalMemberships = new ApplicantProfessionBodyMemberships();
-      applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships = new ApplicantHasProfessionBodyMemberships();
-      this.applicationService.model.ProfessionalMemberships.CompletionState = ComponentCompletionState.InProgress;
-      this.model = applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships;
+      applicationService.model.ProfessionalMemberships =
+        new ApplicantProfessionBodyMemberships();
+      this.model = applicationService.model.ProfessionalMemberships;
     } else {
-      if (!applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships) {
-        applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships = new ApplicantHasProfessionBodyMemberships();
-      }
-      if (this.applicationService.model.ProfessionalMemberships.CompletionState == ComponentCompletionState.NotStarted) {
-        this.applicationService.model.ProfessionalMemberships.CompletionState = ComponentCompletionState.InProgress;
-      }
-      this.model = applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships;
+      this.model = applicationService.model.ProfessionalMemberships;
     }
 
-    if (this.model.IsProfessionBodyRelevantYesNo == null) {
-      this.model.IsProfessionBodyRelevantYesNo = '';
+    if (
+      applicationService.model.ProfessionalMemberships
+        .IsProfessionBodyRelevantYesNo == null
+    ) {
+      applicationService.model.ProfessionalMemberships =
+        new ApplicantProfessionBodyMemberships();
+      this.selectedOption = '';
     }
 
-    this.originalSelection = applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo;
-
+    this.selectedOption = applicationService.model.ProfessionalMemberships
+      .IsProfessionBodyRelevantYesNo
+      ? applicationService.model.ProfessionalMemberships
+          .IsProfessionBodyRelevantYesNo!
+      : '';
   }
 
   override async saveAndComeBack(): Promise<void> {
     this.processing = true;
 
-    if (this.model!.IsProfessionBodyRelevantYesNo === this.originalSelection) {
-      this.applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships = this.model!
-    }
-    else {
-      this.model!.CompletionState = ComponentCompletionState.InProgress;
-      this.applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships = this.model!
-      this.applicationService.model.ProfessionalMemberships.CompletionState = ComponentCompletionState.InProgress;
-    }
+    const STATUS =
+      this.applicationService.model.ProfessionalMemberships.CompletionState;
 
+    const IS_PROFESSIONALBODY_RELEVENT_YES_NO =
+      this.applicationService.model.ProfessionalMemberships
+        .IsProfessionBodyRelevantYesNo;
 
+    if (
+      this.selectedOption === IS_PROFESSIONALBODY_RELEVENT_YES_NO &&
+      STATUS === 2
+    ) {
+      this.applicationService.model.ProfessionalMemberships.CompletionState =
+        ComponentCompletionState.Complete;
+    } else {
+      this.applicationService.model.ProfessionalMemberships.CompletionState =
+        ComponentCompletionState.InProgress;
+    }
 
     if (!this.hasErrors) {
       this.triggerScreenReaderNotification();
@@ -86,25 +91,24 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
 
     const taskListRoute: string = `application/${this.applicationService.model.id}`;
     this.navigationService.navigate(taskListRoute);
-
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
-    if (['no', 'yes'].includes(this.model!.IsProfessionBodyRelevantYesNo)) {
-      if (this.model?.IsProfessionBodyRelevantYesNo === 'no') {
+    if (['no', 'yes'].includes(this.selectedOption)) {
+      if(this.selectedOption === 'no')
+      {
         this.applicationService.model.ProfessionalMemberships.RICS = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.RICS.BodyCode)
         this.applicationService.model.ProfessionalMemberships.CABE = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CABE.BodyCode)
         this.applicationService.model.ProfessionalMemberships.CIOB = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.CIOB.BodyCode)
         this.applicationService.model.ProfessionalMemberships.OTHER = ApplicantProfessionBodyMembershipsHelper.Reset(ProfessionalBodies.OTHER.BodyCode)
         this.applicationService.model.ProfessionalMemberships.CompletionState = ComponentCompletionState.Complete;
       }
-      if (this.model?.IsProfessionBodyRelevantYesNo === 'yes') {
-        this.applicationService.model.ProfessionalMemberships.CompletionState = ComponentCompletionState.InProgress;
-      }
-
-      applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships = this.model!;
+      applicationService.model.ProfessionalMemberships.IsProfessionBodyRelevantYesNo =
+        this.selectedOption;
     }
 
+    this.applicationService.model.ProfessionalMemberships.CompletionState =
+      ComponentCompletionState.Complete;
   }
 
   override canAccess(
@@ -117,7 +121,7 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
   override isValid(): boolean {
     this.hasErrors = false;
     this.errorMessage = '';
-    if (this.model!.IsProfessionBodyRelevantYesNo === '') {
+    if (this.selectedOption === '') {
       this.hasErrors = true;
       this.errorMessage =
         'Select whether you hold a membership with a professional body or not';
@@ -129,13 +133,13 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
   override async navigateNext(): Promise<boolean> {
     const queryParam = this.queryParam;
 
-    if (this.model!.IsProfessionBodyRelevantYesNo === 'no') {
+    if (this.selectedOption === 'no') {
 
       if (this.queryParam == 'professional-membership-and-employment-summary') {
-        return this.navigationService.navigateRelative(
-          ProfessionalMembershipAndEmploymentSummaryComponent.route,
-          this.activatedRoute
-        );
+          return this.navigationService.navigateRelative(
+            ProfessionalMembershipAndEmploymentSummaryComponent.route,
+            this.activatedRoute
+          );
       }
       else if (this.queryParam == 'application-summary') {
         return this.navigationService.navigateRelative(
@@ -146,7 +150,7 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
 
       await this.applicationService.syncProfessionalBodyMemberships();
       this.model!.CompletionState = ComponentCompletionState.Complete;
-      this.applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships = this.model!;
+      this.applicationService.model.ProfessionalMemberships = this.model!;
       return this.navigationService.navigateRelative(
         ProfessionalActivityEmploymentTypeComponent.route,
         this.activatedRoute
@@ -154,11 +158,11 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     }
 
     if (
-      this.model!.IsProfessionBodyRelevantYesNo === 'yes' &&
-      this.applicationService.model.ProfessionalMemberships.RICS.CompletionState === ComponentCompletionState.Complete &&
-      this.applicationService.model.ProfessionalMemberships.CABE.CompletionState === ComponentCompletionState.Complete &&
-      this.applicationService.model.ProfessionalMemberships.CIOB.CompletionState === ComponentCompletionState.Complete &&
-      this.applicationService.model.ProfessionalMemberships.OTHER.CompletionState === ComponentCompletionState.Complete
+      this.selectedOption === 'yes' &&
+      this.model?.RICS.CompletionState === ComponentCompletionState.Complete &&
+      this.model.CABE.CompletionState === ComponentCompletionState.Complete &&
+      this.model.CIOB.CompletionState === ComponentCompletionState.Complete &&
+      this.model.OTHER.CompletionState === ComponentCompletionState.Complete
     ) {
       return this.navigationService.navigateRelative(
         `professional-body-membership-summary`,
@@ -166,12 +170,12 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
         { queryParam: this.queryParam }
 
       );
-    } else if (this.model!.IsProfessionBodyRelevantYesNo === 'yes') {
+    } else if (this.selectedOption === 'yes') {
       return this.navigationService.navigateRelative(
-        `professional-body-selection`,
-        this.activatedRoute,
-        { queryParam: this.queryParam }
-      );
+            `professional-body-selection`,
+            this.activatedRoute,
+            { queryParam: this.queryParam }
+          );
     }
 
     return this.navigationService.navigateRelative(
@@ -179,5 +183,10 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
       this.activatedRoute
     );
   }
-
+  DerivedIsComplete(value: boolean): void {
+    // this.applicationService.model.ProfessionalActivity!.ProfessionalBodiesMember!.CompletionState =
+    //   value
+    //     ? ComponentCompletionState.Complete
+    //     : ComponentCompletionState.InProgress;
+  }
 }

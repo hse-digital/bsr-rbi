@@ -1,9 +1,8 @@
 <govuk-formpage
   saveAndContinueText="Save and continue"
-  [hideSaveAndComeBack]="false"
+  [hideSaveAndComeBack]="true"
   (saveAndContinue)="saveAndContinue()"
   [hideBackButton]="false"
-  (saveAndComeBack)="saveAndComeBack()"
 >
   <govuk-error-summary
     *ngIf="selectedOptionError"

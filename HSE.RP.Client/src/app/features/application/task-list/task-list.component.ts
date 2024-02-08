@@ -57,11 +57,10 @@ import { BuildingInspectorClassType } from 'src/app/models/building-inspector-cl
 import { PersonalDetails } from 'src/app/models/personal-details.model';
 import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
 import { Competency } from 'src/app/models/competency.model';
-import { ApplicantProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper } from 'src/app/models/applicant-professional-body-membership';
+import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
 import { ApplicantEmploymentDetails } from 'src/app/models/applicant-employment-details';
 import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../4-professional-activity/professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 import { ClassSelection } from 'src/app/models/class-selection.model';
-import { SubjourneyHelper } from 'src/app/helpers/subjourney-helper';
 
 
 
@@ -180,22 +179,22 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     this.activatedRoute.fragment.subscribe((fragment) => {
       if (fragment) {
 
-        const element = document.querySelector('#' + fragment);
-        if (element) {
-          setTimeout(() => {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-          }, 100);
-        }
+          const element = document.querySelector('#' + fragment);
+          if (element) {
+            setTimeout(() => {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }); 
+            }, 100);
+          }
       }
     });
   }
-
+  
 
 
 
   private isInspectorClassOne() {
     return (
-      this.model?.InspectorClass?.ClassType.Class == BuildingInspectorClassType.Class1 && this.model?.InspectorClass?.ClassType.CompletionState == ComponentCompletionState.Complete
+      this.model?.InspectorClass?.ClassType.Class == BuildingInspectorClassType.Class1 && this.model?.InspectorClass?.ClassType.CompletionState==ComponentCompletionState.Complete
     );
   }
 
@@ -261,7 +260,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     countryModel?: IComponentModel
   ): TaskStatus {
 
-    if (this.applicationService.model.InspectorClass?.ClassType.CompletionState !== ComponentCompletionState.Complete) {
+    if(this.applicationService.model.InspectorClass?.ClassType.CompletionState!==ComponentCompletionState.Complete){
       return TaskStatus.CannotStart;
     }
 
@@ -312,7 +311,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
     countryModel?: IComponentModel
   ): TaskStatus {
 
-    if (this.applicationService.model.InspectorClass?.ClassType.CompletionState !== ComponentCompletionState.Complete || this.applicationService.model.InspectorClass?.InspectorCountryOfWork?.CompletionState !== ComponentCompletionState.Complete) {
+    if(this.applicationService.model.InspectorClass?.ClassType.CompletionState!==ComponentCompletionState.Complete || this.applicationService.model.InspectorClass?.InspectorCountryOfWork?.CompletionState!==ComponentCompletionState.Complete){
       return TaskStatus.CannotStart;
     }
 
@@ -361,19 +360,19 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
   determinePersonalSummaryTask(model?: PersonalDetails): TaskStatus {
     if (
       model?.ApplicantName!.CompletionState! ===
-      ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
       model?.ApplicantPhone?.CompletionState ===
-      ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
       model?.ApplicantAlternativePhone?.CompletionState ===
-      ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
       model?.ApplicantEmail?.CompletionState ===
-      ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
       model?.ApplicantAlternativeEmail?.CompletionState ===
-      ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
       model?.ApplicantDateOfBirth?.CompletionState ===
-      ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
       model?.ApplicantNationalInsuranceNumber?.CompletionState ===
-      ComponentCompletionState.Complete
+        ComponentCompletionState.Complete
     ) {
       return TaskStatus.SummaryCanStart;
     } else return TaskStatus.SummaryCannotStart;
@@ -388,15 +387,15 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       return TaskStatus.SummaryCanStart;
     } else if (
       model?.CompetencyIndependentAssessmentStatus!.CompletionState! ===
-      ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
       model?.CompetencyAssessmentOrganisation!.CompletionState! ===
-      ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
       model?.CompetencyDateOfAssessment!.CompletionState! ===
-      ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
       model?.CompetencyAssessmentCertificateNumber!.CompletionState! ===
-      ComponentCompletionState.Complete
-      &&
-      this.determineClassSummaryTask(this.applicationService.model.InspectorClass) === TaskStatus.SummaryCanStart
+        ComponentCompletionState.Complete
+        &&
+        this.determineClassSummaryTask(this.applicationService.model.InspectorClass) === TaskStatus.SummaryCanStart
     ) {
       return TaskStatus.SummaryCanStart;
     } else return TaskStatus.SummaryCannotStart;
@@ -404,10 +403,10 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
 
   determineClassSummaryTask(model?: BuildingInspectorClass): TaskStatus {
     if (
-      model?.CompletionState! ===
-      ComponentCompletionState.Complete &&
+      model?.ClassType!.CompletionState! ===
+        ComponentCompletionState.Complete &&
       model?.InspectorCountryOfWork!.CompletionState! ===
-      ComponentCompletionState.Complete
+        ComponentCompletionState.Complete
     ) {
       return TaskStatus.SummaryCanStart;
     } else return TaskStatus.SummaryCannotStart;
@@ -476,7 +475,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
             };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
-            this.getModelStatus(aModel.PersonalDetails?.ApplicantName),
+            TaskStatus.Complete,
         },
         {
           show: true,
@@ -568,11 +567,11 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           show: true,
           prompt: 'Class selection',
           relativeRoute: (): TaskListRoute => {
-            return { route: SubjourneyHelper.getClassSelectionRoute(this.model!.InspectorClass!) };
+            return { route: BuildingInspectorClassSelectionComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getClassSelectionModelStatus(
-              aModel.InspectorClass!,
+              aModel.InspectorClass?.ClassType,
               aModel
             ),
         },
@@ -678,10 +677,7 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
           show: true,
           prompt: 'Membership of professional bodies',
           relativeRoute: (): TaskListRoute => {
-            return { 
-              route: SubjourneyHelper.getProfessionalBodyMembershipRoute(this.model!.ProfessionalMemberships).route!, queryParams: SubjourneyHelper.getProfessionalBodyMembershipRoute(this.model!.ProfessionalMemberships).queryParams
-            };
-            //return { route: ProfessionalBodyMembershipsComponent.route };
+            return { route: ProfessionalBodyMembershipsComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getModelStatus(aModel.ProfessionalMemberships),
@@ -689,11 +685,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
         {
           show: true,
           prompt: 'Employment',
-          // relativeRoute: (): TaskListRoute => {
-          //   return { route: ProfessionalActivityEmploymentTypeComponent.route };
-          // },
           relativeRoute: (): TaskListRoute => {
-            return { route: SubjourneyHelper.getEmploymentRoute(this.model!.ProfessionalActivity.EmploymentDetails!) };
+            return { route: ProfessionalActivityEmploymentTypeComponent.route };
           },
           getStatus: (aModel: BuildingProfessionalModel): TaskStatus =>
             this.getModelStatus(aModel.ProfessionalActivity?.EmploymentDetails),
@@ -764,7 +757,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
       child.relativeRoute().route != ''
     ) {
       this.navigationService.navigateRelative(
-        `${this.ModelApplicationId}/${parent.relativeRoute}/${child.relativeRoute().route
+        `${this.ModelApplicationId}/${parent.relativeRoute}/${
+          child.relativeRoute().route
         }`,
         this.activatedRoute,
         child.relativeRoute().queryParams
@@ -819,20 +813,20 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
         var successsfulpayment = successfulPayments.find(
           (x) =>
             x.bsr_paymentreconciliationstatus !==
-            PaymentReconciliationStatus.FAILED_RECONCILIATION &&
+              PaymentReconciliationStatus.FAILED_RECONCILIATION &&
             x.bsr_paymentreconciliationstatus !==
-            PaymentReconciliationStatus.FAILED_PAYMENT &&
+              PaymentReconciliationStatus.FAILED_PAYMENT &&
             x.bsr_paymentreconciliationstatus !==
-            PaymentReconciliationStatus.REFUNDED
+              PaymentReconciliationStatus.REFUNDED
         );
         this.paymentStatus = successsfulpayment
           ? PaymentStatus.Success
           : PaymentStatus.Failed;
         this.paymentRoute = successsfulpayment
           ? {
-            route: 'payment/' + PaymentConfirmationComponent.route,
-            queryParams: { reference: successsfulpayment?.bsr_transactionid },
-          }
+              route: 'payment/' + PaymentConfirmationComponent.route,
+              queryParams: { reference: successsfulpayment?.bsr_transactionid },
+            }
           : { route: 'payment/' + PaymentDeclarationComponent.route };
       } else {
         this.paymentStatus = PaymentStatus.Failed;

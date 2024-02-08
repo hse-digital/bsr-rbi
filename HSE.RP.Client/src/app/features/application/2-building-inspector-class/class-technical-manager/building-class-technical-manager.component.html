@@ -1,5 +1,4 @@
-<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]="false"
-(saveAndComeBack)="saveAndComeBack()"
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]="true"
   (saveAndContinue)="saveAndContinue()" [hideBackButton]="false">
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="!modelValid" anchorId="class-technical-manager" message="{{ errorMessage }}" />

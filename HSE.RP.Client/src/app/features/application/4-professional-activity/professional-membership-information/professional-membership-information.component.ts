@@ -6,8 +6,6 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { ApplicationService } from 'src/app/services/application.service';
 import { FieldValidations } from '../../../../helpers/validators/fieldvalidations';
 import { ProfessionalIndividualMembershipDetailsComponent } from '../professional-individual-membership-details/professional-individual-membership-details.component';
-import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
-import { ProfessionalBodyMembershipStep } from 'src/app/models/professional-body-membership-step.enum';
 
 interface IPageValidationItem {
   Text: string;
@@ -61,7 +59,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
 
   override onInit(applicationService: ApplicationService): void {
     this.updateOnSave = true;
-    this.ignoreComponentState = true;
+
     this.activatedRoute.queryParams.subscribe((params) => {
       this.membershipCode = params['membershipCode'];
       this.queryParam = params['queryParam'];
@@ -84,8 +82,6 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
         this.model.MembershipLevel;
       applicationService.model.ProfessionalMemberships.CABE.MembershipYear =
         Number(this.membershipYearString);
-        applicationService.model.ProfessionalMemberships.CABE.CompletionState = ComponentCompletionState.InProgress;
-        applicationService.model.ProfessionalMemberships.CABE.CurrentStep = ProfessionalBodyMembershipStep.EnterDetails;
     } else if (this.membershipCode === 'RICS') {
       applicationService.model.ProfessionalMemberships.RICS.MembershipNumber =
         this.model.MembershipNumber;
@@ -93,10 +89,6 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
         this.model.MembershipLevel;
       applicationService.model.ProfessionalMemberships.RICS.MembershipYear =
       Number(this.membershipYearString);
-      applicationService.model.ProfessionalMemberships.RICS.CompletionState = ComponentCompletionState.InProgress;
-      applicationService.model.ProfessionalMemberships.RICS.CurrentStep = ProfessionalBodyMembershipStep.EnterDetails;
-
-
     } else if (this.membershipCode === 'CIOB') {
       applicationService.model.ProfessionalMemberships.CIOB.MembershipNumber =
         this.model.MembershipNumber;
@@ -104,10 +96,6 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
         this.model.MembershipLevel;
       applicationService.model.ProfessionalMemberships.CIOB.MembershipYear =
       Number(this.membershipYearString);
-      applicationService.model.ProfessionalMemberships.CIOB.CompletionState = ComponentCompletionState.InProgress;
-      applicationService.model.ProfessionalMemberships.CIOB.CurrentStep = ProfessionalBodyMembershipStep.EnterDetails;
-
-
     } else if (this.membershipCode === 'OTHER') {
       applicationService.model.ProfessionalMemberships.OTHER.MembershipNumber =
         this.model.MembershipNumber;
@@ -115,9 +103,6 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
         this.model.MembershipLevel;
       applicationService.model.ProfessionalMemberships.OTHER.MembershipYear =
       Number(this.membershipYearString);
-      applicationService.model.ProfessionalMemberships.OTHER.CompletionState = ComponentCompletionState.InProgress;
-      applicationService.model.ProfessionalMemberships.OTHER.CurrentStep = ProfessionalBodyMembershipStep.EnterDetails;
-
     }
   }
 
@@ -245,42 +230,25 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
     const { RICS, CABE, CIOB, OTHER } = memberships;
 
     if (this.membershipCode == 'RICS') {
-      this.model.MembershipBodyCode = RICS.MembershipBodyCode ?? '';
       this.model.MembershipNumber = RICS.MembershipNumber ?? '';
       this.model.MembershipLevel = RICS.MembershipLevel ?? '';
       this.model.MembershipYear = RICS.MembershipYear ?? undefined;
-      this.model.CompletionState = RICS.CompletionState;
-      this.model.CurrentStep = RICS.CurrentStep;
     } else if (this.membershipCode == 'CABE') {
-      this.model.MembershipBodyCode = CABE.MembershipBodyCode ?? '';
       this.model.MembershipNumber = CABE.MembershipNumber ?? '';
       this.model.MembershipLevel = CABE.MembershipLevel ?? '';
       this.model.MembershipYear = CABE.MembershipYear ?? undefined;
-      this.model.CompletionState = CABE.CompletionState;
-      this.model.CurrentStep = CABE.CurrentStep;
-
     } else if (this.membershipCode == 'CIOB') {
-      this.model.MembershipBodyCode = CIOB.MembershipBodyCode ?? '';
       this.model.MembershipNumber = CIOB.MembershipNumber ?? '';
       this.model.MembershipLevel = CIOB.MembershipLevel ?? '';
       this.model.MembershipYear = CIOB.MembershipYear ?? undefined;
-      this.model.CompletionState = CIOB.CompletionState;
-      this.model.CurrentStep = CIOB.CurrentStep;
-
     } else if (this.membershipCode == 'OTHER') {
-      this.model.MembershipBodyCode = OTHER.MembershipBodyCode ?? '';
       this.model.MembershipNumber = OTHER.MembershipNumber ?? '';
       this.model.MembershipLevel = OTHER.MembershipLevel ?? '';
       this.model.MembershipYear = OTHER.MembershipYear ?? undefined;
-      this.model.CompletionState = OTHER.CompletionState;
-      this.model.CurrentStep = OTHER.CurrentStep;
-
     } else {
-      this.model.MembershipBodyCode = '';
       this.model.MembershipNumber = '';
       this.model.MembershipLevel = '';
       this.model.MembershipYear = undefined;
-      this.model.CompletionState = 1;
     }
   }
 

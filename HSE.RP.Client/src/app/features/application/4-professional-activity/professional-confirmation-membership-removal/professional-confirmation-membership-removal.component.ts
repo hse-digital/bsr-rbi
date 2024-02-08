@@ -10,21 +10,19 @@ import { environment } from 'src/environments/environment';
 import {
   ApplicantProfessionBodyMemberships,
   ApplicantProfessionBodyMembershipsHelper,
-  ApplicantProfessionalBodyMembership,
   ProfessionalBodies,
 } from 'src/app/models/applicant-professional-body-membership';
 import { ProfessionalBodySelectionComponent } from '../professional-body-selection/professional-body-selection.component';
 import { ProfessionalBodyMembershipSummaryComponent } from '../professional-body-membership-summary/professional-body-membership-summary.component';
 import { ProfessionalBodyMembershipsComponent } from '../professional-body-memberships/professional-body-memberships.component';
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
-import { ProfessionalBodyMembershipStep } from 'src/app/models/professional-body-membership-step.enum';
 
 @Component({
   selector: 'hse-professional-confirmation-membership-removal',
   templateUrl: './professional-confirmation-membership-removal.component.html',
   styles: [],
 })
-export class ProfessionalConfirmationMembershipRemovalComponent extends PageComponent<ApplicantProfessionalBodyMembership> {
+export class ProfessionalConfirmationMembershipRemovalComponent extends PageComponent<ApplicantProfessionBodyMemberships> {
   public static route: string = 'professional-confirmation-membership-removal';
   static title: string =
     'Professional activity - Professional body removal - Register as a building inspector - GOV.UK';
@@ -56,66 +54,26 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
     this.getProfessionalBodyOrgName(this.membershipCode);
 
     this.applicationService = applicationService;
-
-    if (this.membershipCode === 'CABE') {
-      this.model = applicationService.model.ProfessionalMemberships.CABE;
-    } else if (this.membershipCode === 'RICS') {
-      this.model = applicationService.model.ProfessionalMemberships.RICS;
-
-    } else if (this.membershipCode === 'CIOB') {
-      this.model = applicationService.model.ProfessionalMemberships.CIOB;
-    } else if (this.membershipCode === 'OTHER') {
-      this.model = applicationService.model.ProfessionalMemberships.OTHER;
-    }
-
-    this.model!.CurrentStep = ProfessionalBodyMembershipStep.Remove;
-    this.model!.CompletionState = ComponentCompletionState.InProgress;
-
-
-
-
-
   }
-
   override async onSave(applicationService: ApplicationService): Promise<void> {
     const memberships = applicationService.model.ProfessionalMemberships;
 
-    if (this.model?.CompletionState == ComponentCompletionState.Complete) {
-      if (this.model.RemoveOptionSelected === 'yes') {
-        let result = ApplicantProfessionBodyMembershipsHelper.Reset(
-          this.membershipCode
-        );
-        if (this.membershipCode === 'CABE') {
-          memberships.CABE = result;
-        } else if (this.membershipCode === 'RICS') {
-          memberships.RICS = result;
-        } else if (this.membershipCode === 'CIOB') {
-          memberships.CIOB = result;
-        } else if (this.membershipCode === 'OTHER') {
-          memberships.OTHER = result;
-        }
-        applicationService.model.ProfessionalMemberships = memberships;
-      }
-      else {
-        this.model.RemoveOptionSelected = '';
-        this.model.CurrentStep = ProfessionalBodyMembershipStep.ConfirmDetails;
-      }
-    }
-
-    else {
-
+    if (this.selectedOption === 'yes') {
+      let result = ApplicantProfessionBodyMembershipsHelper.Reset(
+        this.membershipCode
+      );
       if (this.membershipCode === 'CABE') {
-        memberships.CABE = this.model!;
+        memberships.CABE = result;
       } else if (this.membershipCode === 'RICS') {
-        memberships.RICS = this.model!;
+        memberships.RICS = result;
       } else if (this.membershipCode === 'CIOB') {
-        memberships.CIOB = this.model!;
+        memberships.CIOB = result;
       } else if (this.membershipCode === 'OTHER') {
-        memberships.OTHER = this.model!;
+        memberships.OTHER = result;
       }
+
       applicationService.model.ProfessionalMemberships = memberships;
     }
-
   }
   override canAccess(
     applicationService: ApplicationService,
@@ -126,7 +84,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
   override isValid(): boolean {
     this.hasErrors = false;
     this.errorMessage = '';
-    if (this.model?.RemoveOptionSelected === '') {
+    if (this.selectedOption === '') {
       this.hasErrors = true;
       this.errorMessage =
         'Select whether you want to delete a professional body membership or not';
@@ -154,7 +112,7 @@ export class ProfessionalConfirmationMembershipRemovalComponent extends PageComp
       return this.navigationService.navigateRelative(
         ProfessionalBodyMembershipSummaryComponent.route,
         this.activatedRoute,
-        { queryParam }
+        { queryParam}
       );
     }
   }
