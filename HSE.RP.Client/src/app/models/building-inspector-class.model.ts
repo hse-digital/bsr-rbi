@@ -9,9 +9,8 @@ import { Class2InspectBuildingCategories } from "./class2-inspect-building-categ
 import { Class3InspectBuildingCategories } from "./class3-inspect-building-categories.model";
 
 import { ComponentCompletionState } from "./component-completion-state.enum";
-import { IComponentModel } from "./component. interface";
 
-export class BuildingInspectorClass implements IComponentModel {
+export class BuildingInspectorClass {
     ClassType: ClassSelection = {
       Class: BuildingInspectorClassType.ClassNone,
       CompletionState: ComponentCompletionState.NotStarted,
@@ -43,8 +42,6 @@ export class BuildingInspectorClass implements IComponentModel {
     Class3InspectBuildingCategories: Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
 
     ClassTechnicalManager?: string;
-    InspectorCountryOfWork?: BuildingInspectorCountryOfWork = { England: false, Wales: false };
-    Class3BuildingPlanCategories: Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
-    CompletionState?: ComponentCompletionState = ComponentCompletionState.NotStarted;
-      
+      InspectorCountryOfWork?: BuildingInspectorCountryOfWork = { England: false, Wales: false };
+      Class3BuildingPlanCategories: Class3InspectBuildingCategories = new Class3InspectBuildingCategories();
   }

@@ -13,7 +13,6 @@ import { app } from '../../../../../server';
 import { Competency } from 'src/app/models/competency.model';
 import { v4 as uuidv4 } from 'uuid';
 import { ApplicationStage } from 'src/app/models/application-stage.enum';
-import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -65,7 +64,6 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
       };
     }
     applicationService.model.Competency = new Competency();
-    applicationService.model.ProfessionalMemberships = new ApplicantProfessionBodyMemberships;
     applicationService.model.ApplicationStage = ApplicationStage.PersonalDetails;
     this.model = applicationService.model;
 

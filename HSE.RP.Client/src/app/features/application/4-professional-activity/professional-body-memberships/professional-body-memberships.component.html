@@ -1,6 +1,3 @@
-
-
-
 <govuk-formpage
   saveAndContinueText="Continue"
   [hideSaveAndComeBack]="false"
@@ -49,21 +46,21 @@
       hintText=" "
       [errorText]=errorMessage
       id="professional-body-membership"
-      [(model)]="model!.IsProfessionBodyRelevantYesNo"
+      [(model)]="selectedOption"
     >
       <govuk-radio
         class=""
         label="Yes"
         value="yes"
         id="yes"
-        [model]="model!.IsProfessionBodyRelevantYesNo"
+        [model]="selectedOption"
       >
       </govuk-radio>
       <govuk-radio
         label="No"
         value="no"
         id="no"
-        [model]="model!.IsProfessionBodyRelevantYesNo"
+        [model]="selectedOption"
       ></govuk-radio>
     </govuk-radio-group>
   </govuk-body>

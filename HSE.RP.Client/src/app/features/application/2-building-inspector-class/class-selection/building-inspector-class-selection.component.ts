@@ -55,7 +55,6 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
         Class: BuildingInspectorClassType.Class1,
         CompletionState: ComponentCompletionState.InProgress,
       };
-
     } else {
       if (
         applicationService.model.InspectorClass?.ClassType.Class ===
@@ -79,11 +78,9 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
     if (this.model?.Class === this.originalOption && STATUS === 2) {
       this.applicationService.model.InspectorClass!.ClassType.CompletionState =
         ComponentCompletionState.Complete;
-        this.applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete;
     } else {
-      this.applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.InProgress;
-        this.applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.InProgress;
-
+      this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+        ComponentCompletionState.InProgress;
     }
 
     this.applicationService.model.InspectorClass!.ClassType.Class =
@@ -106,17 +103,15 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
   override async onSave(applicationService: ApplicationService): Promise<void> {
     if (this.resetIA === true) {
       if (this.model?.Class === BuildingInspectorClassType.Class1) {
-        this.applicationService.model.InspectorClass!.ClassType!.Class = this.originalOption;
-        this.applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete;
-        this.applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.Complete;
+        this.applicationService.model.InspectorClass!.ClassType!.Class =
+          this.originalOption;
       } else {
-        this.applicationService.model.InspectorClass!.ClassType!.Class = this.model?.Class;
-        this.applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete;
-        this.applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.Complete;
-
+        this.applicationService.model.InspectorClass!.ClassType!.Class =
+          this.model?.Class;
       }
     } else {
-      this.applicationService.model.InspectorClass!.ClassType!.Class = this.model?.Class;
+      this.applicationService.model.InspectorClass!.ClassType!.Class =
+        this.model?.Class;
       // reset state if the user changes their input
       if (this.model!.Class !== this.originalOption) {
         // reset all other info to false
@@ -125,8 +120,6 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
           Inspection: false,
           CompletionState: ComponentCompletionState.NotStarted,
         };
-
-
 
         this.applicationService.model.InspectorClass!.AssessingPlansClass2 =
           new BuildingAssessingPlansCategoriesClass2();
@@ -141,16 +134,15 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
         if (this.model?.Class === BuildingInspectorClassType.Class1) {
           this.applicationService.model.InspectorClass!.ClassTechnicalManager =
             'no';
-          this.applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.Complete;
-          this.applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete;
+          this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+            ComponentCompletionState.Complete;
+
           this.applicationService.model.Competency = new Competency();
-          this.applicationService.model.StageStatus!['Competency'] = StageCompletionState.Complete;
-
+          this.applicationService.model.StageStatus!['Competency'] =
+            StageCompletionState.Complete;
         } else {
-          this.applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.Complete;
-          this.applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.InProgress;
-          this.applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.Complete;
-
+          this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+            ComponentCompletionState.InProgress;
         }
       }
     }

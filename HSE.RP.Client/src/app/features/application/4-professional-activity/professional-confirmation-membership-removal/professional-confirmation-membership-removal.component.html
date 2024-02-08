@@ -1,11 +1,7 @@
-
-
-
 <govuk-formpage
   saveAndContinueText="Continue"
-  [hideSaveAndComeBack]="false"
+  [hideSaveAndComeBack]="true"
   (saveAndContinue)="saveAndContinue()"
-  (saveAndComeBack)="saveAndComeBack()"
   [hideBackButton]="false"
 >
   <govuk-error-summary
@@ -28,21 +24,21 @@
       hintText=" "
       [errorText]="errorMessage"
       id="professional-body-membership"
-      [(model)]="model!.RemoveOptionSelected"
+      [(model)]="selectedOption"
     >
       <govuk-radio
         class=""
         label="Yes"
         value="yes"
         id="yes"
-        [model]="model!.RemoveOptionSelected"
+        [model]="selectedOption"
       >
       </govuk-radio>
       <govuk-radio
         label="No"
         value="no"
         id="no"
-        [model]="model!.RemoveOptionSelected"
+        [model]="selectedOption"
       ></govuk-radio>
     </govuk-radio-group>
   </govuk-body>

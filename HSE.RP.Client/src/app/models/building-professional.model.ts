@@ -16,7 +16,8 @@ export class BuildingProfessionalModel implements IComponentModel {
   Competency?: Competency = new Competency();
   ProfessionalActivity: ProfessionalActivity = new ProfessionalActivity();
   //ApplicationStatus: ApplicationStatus = ApplicationStatus.None;
-  ProfessionalMemberships: ApplicantProfessionBodyMemberships = new ApplicantProfessionBodyMemberships();
+  ProfessionalMemberships: ApplicantProfessionBodyMemberships =
+    new ApplicantProfessionBodyMemberships();
 
   ApplicationStage: ApplicationStage = ApplicationStage.NotStarted;
 

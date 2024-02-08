@@ -72,16 +72,8 @@ export class BuildingClassTechnicalManagerComponent extends PageComponent<YesNoM
     }
 
 
-    applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete
+    applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.Complete;
 
-  }
-
-  override async saveAndComeBack(): Promise<void> {
-
-
-      this.applicationService.model.InspectorClass!.ClassTechnicalManager = this.model?.YesNo;
-      const taskListRoute: string = `application/${this.applicationService.model.id}`;
-      this.navigationService.navigate(taskListRoute);
   }
 
   override canAccess(
