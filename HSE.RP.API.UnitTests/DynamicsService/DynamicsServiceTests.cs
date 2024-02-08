@@ -322,7 +322,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                         MembershipLevel = "",
                         MembershipYear = 0,
                         CompletionState = ComponentCompletionState.NotStarted,
-                        RemoveOptionSelected = ""
+                        //RemoveOptionSelected = ""
                     },
                     CABE = new ApplicantProfessionalBodyMembership
                     {
@@ -331,7 +331,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                         MembershipLevel = "",
                         MembershipYear = 0,
                         CompletionState = ComponentCompletionState.NotStarted,
-                        RemoveOptionSelected = ""
+                        //RemoveOptionSelected = ""
                     },
                     CIOB = new ApplicantProfessionalBodyMembership
                     {
@@ -340,7 +340,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                         MembershipLevel = "",
                         MembershipYear = 0,
                         CompletionState = ComponentCompletionState.NotStarted,
-                        RemoveOptionSelected = ""
+                        //RemoveOptionSelected = ""
                     },
                     OTHER = new ApplicantProfessionalBodyMembership
                     {
