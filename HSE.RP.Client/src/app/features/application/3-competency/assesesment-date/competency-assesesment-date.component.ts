@@ -15,7 +15,7 @@ import { CompetencyDateOfAssessment } from 'src/app/models/competency-date-of-as
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
 
 class DateInputControlDate implements IComponentModel {
-  constructor(private containedModel: CompetencyDateOfAssessment) {}
+  constructor(private containedModel: CompetencyDateOfAssessment) { }
   get day(): string | undefined {
     return this.containedModel.Day;
   }
@@ -61,6 +61,7 @@ const ERROR_MESSAGES = {
   DATE_IN_PRESENT_OR_PAST:
     'Your date of assessment must be today or a date in the past',
   DATE_BEFORE_1900: 'Please check your assessment date',
+  DATE_INVALID_LEAP_YEAR: 'Please check your assessment date',
 };
 
 @Component({
@@ -178,6 +179,36 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
       });
     }
 
+    //Check if the year is a leap year
+    if (
+      this.isDateNumber(this.model?.day) &&
+      this.isDateNumber(this.model?.month) &&
+      this.isDateNumber(this.model?.year)
+    ) {
+      let day = Number(this.model?.day);
+      let month = Number(this.model?.month);
+      let year = Number(this.model?.year);
+      if (month == 2 && day > 29) {
+        this.validationErrors.push({
+          Text: ERROR_MESSAGES.DATE_INVALID_LEAP_YEAR,
+          Anchor: 'dob-input-day',
+        });
+      } else if (
+        month == 2 &&
+        day == 29 &&
+        !(
+          (year % 4 == 0 && year % 100 != 0) ||
+          (year % 100 == 0 && year % 400 == 0)
+        )
+      ) {
+        this.validationErrors.push({
+          Text: ERROR_MESSAGES.DATE_INVALID_LEAP_YEAR,
+          Anchor: 'dob-input-day',
+        });
+      }
+    }
+
+
     const currentDate = new Date();
     const selectedDate = this.getDateOfAssessment();
     if (selectedDate > currentDate) {
@@ -191,7 +222,7 @@ export class CompetencyAssessmentDateComponent extends PageComponent<DateInputCo
   }
 
   override navigateNext(): Promise<boolean> {
-   if (this.queryParam === 'application-summary') {
+    if (this.queryParam === 'application-summary') {
       return this.navigationService.navigateRelative(
         `../application-submission/${ApplicationSummaryComponent.route}`,
         this.activatedRoute

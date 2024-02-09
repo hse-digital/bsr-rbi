@@ -164,6 +164,35 @@ export class ApplicantDateOfBirthComponent extends PageComponent<DateInputContro
         });
       }
 
+      //Check if the year is a leap year
+      if (
+        this.isDateNumber(this.model?.day) &&
+        this.isDateNumber(this.model?.month) &&
+        this.isDateNumber(this.model?.year)
+      ) {
+        let day = Number(this.model?.day);
+        let month = Number(this.model?.month);
+        let year = Number(this.model?.year);
+        if (month == 2 && day > 29) {
+          this.validationErrors.push({
+            Text: 'Your date of birth must be a valid date',
+            Anchor: 'dob-input-day',
+          });
+        } else if (
+          month == 2 &&
+          day == 29 &&
+          !(
+            (year % 4 == 0 && year % 100 != 0) ||
+            (year % 100 == 0 && year % 400 == 0)
+          )
+        ) {
+          this.validationErrors.push({
+            Text: 'Your date of birth must be a valid date',
+            Anchor: 'dob-input-day',
+          });
+        }
+      }
+
       if (this.validationErrors.length == 0) {
         if (new Date() < this.getDateOfBirth()) {
           this.validationErrors.push({
