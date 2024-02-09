@@ -24,6 +24,7 @@ using Moq;
 using FluentAssertions;
 using BuildingInspectorClass = HSE.RP.API.Models.BuildingInspectorClass;
 using HSE.RP.API.UnitTests.TestData;
+using DurableTask.Core;
 
 namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 {
@@ -54,7 +55,8 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         private const string DynamicsAuthToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkd";
 
         public static InspectorClassTestConfigrations dynamicsServiceInspectorClassConfigrations = new InspectorClassTestConfigrations();
-
+        public static CompetencyTestConfigrations dynamicsServiceCompetencyTestConfigrations = new CompetencyTestConfigrations();
+        public static ProfessionalMembershipTestConfigurations dynamicsServiceProfessionalMembershipTestConfigurations = new ProfessionalMembershipTestConfigurations();
 
         public DynamicsServiceTests()
         {
@@ -785,7 +787,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
 
         [Fact]
-        public async Task SyncEmploymentDetails()
+        public async Task SyncPersonalDetails()
         {
 
             //Arrange
@@ -1475,6 +1477,454 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             Assert.NotNull(activities);
 
         }
+
+        [Theory]
+        [MemberData(nameof(ActivitiesNoExisting))]
+        public async Task CreateOrUpdateRegistrationActivity_NoExistingRegistration(BuildingInspectorRegistrationActivity buildingInspectorRegistrationActivity, DynamicsBuildingInspectorRegistrationActivity dynamicsBuildingInspectorRegistrationActivity)
+        {
+            //Arrange
+
+
+            var testDynamicsBuildingInspectorRegistraionActivity = new DynamicsBuildingInspectorRegistrationActivity(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorRegistrationActivity.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorRegistrationActivity.BuildingInspectorId})",
+                buildingActivityReferenceId: $"/bsr_biactivities({buildingInspectorRegistrationActivity.ActivityId})",
+                buidingCategoryReferenceId: $"/bsr_bibuildingcategories({buildingInspectorRegistrationActivity.BuildingCategoryId})",
+                statuscode: buildingInspectorRegistrationActivity.StatusCode,
+                statecode: buildingInspectorRegistrationActivity.StateCode
+                );
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorRegistrationActivity.BuildingProfessionApplicationId}' and _bsr_biactivityid_value eq '{buildingInspectorRegistrationActivity.ActivityId}' and _bsr_bibuildingcategoryid_value eq '{buildingInspectorRegistrationActivity.BuildingCategoryId}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationActivity>
+            {
+                value = new List<DynamicsBuildingInspectorRegistrationActivity>()
+            });
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionActivity)
+            .WithVerb(HttpMethod.Post)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId));
+
+            //Act
+            var testRegisterActivity = await _dynamicsService.CreateOrUpdateRegistrationActivity(buildingInspectorRegistrationActivity);
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorRegistrationActivity.BuildingProfessionApplicationId}' and _bsr_biactivityid_value eq '{buildingInspectorRegistrationActivity.ActivityId}' and _bsr_bibuildingcategoryid_value eq '{buildingInspectorRegistrationActivity.BuildingCategoryId}'")
+            .WithVerb(HttpMethod.Get);
+
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionActivity)
+            .WithVerb(HttpMethod.Post);
+
+            Assert.Equal(testRegisterActivity, buildingInspectorRegistrationActivity with { Id = dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId });
+        }
+
+        [Theory]
+        [MemberData(nameof(ActivitiesExisting))]
+        public async Task CreateOrUpdateRegistrationActivity_ExistingRegistration(BuildingInspectorRegistrationActivity buildingInspectorRegistrationActivity, DynamicsBuildingInspectorRegistrationActivity dynamicsBuildingInspectorRegistrationActivity)
+        {
+            //Arrange
+
+            var testDynamicsBuildingInspectorRegistraionActivity = new DynamicsBuildingInspectorRegistrationActivity(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorRegistrationActivity.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorRegistrationActivity.BuildingInspectorId})",
+                buildingActivityReferenceId: $"/bsr_biactivities({buildingInspectorRegistrationActivity.ActivityId})",
+                buidingCategoryReferenceId: $"/bsr_bibuildingcategories({buildingInspectorRegistrationActivity.BuildingCategoryId})",
+                statuscode: buildingInspectorRegistrationActivity.StatusCode,
+                statecode: buildingInspectorRegistrationActivity.StateCode
+                );
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorRegistrationActivity.BuildingProfessionApplicationId}' and _bsr_biactivityid_value eq '{buildingInspectorRegistrationActivity.ActivityId}' and _bsr_bibuildingcategoryid_value eq '{buildingInspectorRegistrationActivity.BuildingCategoryId}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorRegistrationActivity>
+            {
+                value = new List<DynamicsBuildingInspectorRegistrationActivity>()
+                { dynamicsBuildingInspectorRegistrationActivity }
+            });
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities({dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId})")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionActivity)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId));
+
+            //Act
+            var testRegisterActivity = await _dynamicsService.CreateOrUpdateRegistrationActivity(buildingInspectorRegistrationActivity);
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorRegistrationActivity.BuildingProfessionApplicationId}' and _bsr_biactivityid_value eq '{buildingInspectorRegistrationActivity.ActivityId}' and _bsr_bibuildingcategoryid_value eq '{buildingInspectorRegistrationActivity.BuildingCategoryId}'")
+            .WithVerb(HttpMethod.Get);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities({dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId})")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionActivity)
+            .WithVerb(HttpMethod.Patch);
+
+            Assert.Equal(testRegisterActivity, buildingInspectorRegistrationActivity with { Id = dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId });
+            Assert.Equal(testRegisterActivity.StatusCode, buildingInspectorRegistrationActivity.StatusCode);
+            Assert.Equal(testRegisterActivity.StateCode, buildingInspectorRegistrationActivity.StateCode);
+        }
+
+        [Theory]
+        [MemberData(nameof(ActivitiesExistingIdProvided))]
+        public async Task CreateOrUpdateRegistrationActivity_ExistingRegistrationIdProvided(BuildingInspectorRegistrationActivity buildingInspectorRegistrationActivity, DynamicsBuildingInspectorRegistrationActivity dynamicsBuildingInspectorRegistrationActivity)
+        {
+            //Arrange
+
+            var testDynamicsBuildingInspectorRegistraionActivity = new DynamicsBuildingInspectorRegistrationActivity(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorRegistrationActivity.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorRegistrationActivity.BuildingInspectorId})",
+                buildingActivityReferenceId: $"/bsr_biactivities({buildingInspectorRegistrationActivity.ActivityId})",
+                buidingCategoryReferenceId: $"/bsr_bibuildingcategories({buildingInspectorRegistrationActivity.BuildingCategoryId})",
+                statuscode: buildingInspectorRegistrationActivity.StatusCode,
+                statecode: buildingInspectorRegistrationActivity.StateCode
+                );
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities({dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId})")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionActivity)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId));
+
+            //Act
+            var testRegisterActivity = await _dynamicsService.CreateOrUpdateRegistrationActivity(buildingInspectorRegistrationActivity);
+
+            //Assert
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biregactivities({dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId})")
+            .WithRequestJson(testDynamicsBuildingInspectorRegistraionActivity)
+            .WithVerb(HttpMethod.Patch);
+
+            Assert.Equal(testRegisterActivity, buildingInspectorRegistrationActivity with { Id = dynamicsBuildingInspectorRegistrationActivity.bsr_biregactivityId });
+            Assert.Equal(testRegisterActivity.StatusCode, buildingInspectorRegistrationActivity.StatusCode);
+            Assert.Equal(testRegisterActivity.StateCode, buildingInspectorRegistrationActivity.StateCode);
+        }
+
+        public static IEnumerable<object[]> CompetencyTestData =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceCompetencyTestConfigrations.BSCF, dynamicsServiceCompetencyTestConfigrations.BSCFDynamicsBuildingProfessionApplicationNewApplication },
+            new object[] { dynamicsServiceCompetencyTestConfigrations.CABE, dynamicsServiceCompetencyTestConfigrations.CABEDynamicsBuildingProfessionApplicationNewApplication },
+            new object[] { dynamicsServiceCompetencyTestConfigrations.TTD, dynamicsServiceCompetencyTestConfigrations.TTDDynamicsBuildingProfessionApplicationNewApplication },
+
+        };
+
+        [Theory]
+        [MemberData(nameof(CompetencyTestData))]
+        public async Task UpdateBuildingProfessionApplicationCompetency(Competency competencyModel, DynamicsBuildingProfessionApplication dynamicsBuildingProfessionApplication)
+        {
+            //Arrange
+
+            var testDynamicsCompetency = dynamicsBuildingProfessionApplication with
+            {
+                bsr_hasindependentassessment = true,
+                bsr_assessmentorganisationid = competencyModel.CompetencyAssessmentOrganisation.ComAssessmentOrganisation is null ? null : $"accounts({AssessmentOrganisationNames.Ids[competencyModel.CompetencyAssessmentOrganisation.ComAssessmentOrganisation]})",
+                bsr_assessmentdate = competencyModel.CompetencyDateOfAssessment is null ? null :
+                                        new DateOnly(int.Parse(competencyModel.CompetencyDateOfAssessment.Year),
+                                                     int.Parse(competencyModel.CompetencyDateOfAssessment.Month),
+                                                     int.Parse(competencyModel.CompetencyDateOfAssessment.Day)),
+                bsr_assessmentcertnumber = competencyModel.CompetencyAssessmentCertificateNumber is null ? null : competencyModel.CompetencyAssessmentCertificateNumber.CertificateNumber,
+            };
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid})")
+            .WithRequestJson(dynamicsBuildingProfessionApplication)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204);
+
+
+            //Act
+            await _dynamicsService.UpdateBuildingProfessionApplicationCompetency(testDynamicsCompetency, testDynamicsCompetency);
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid})")
+            .WithRequestJson(testDynamicsCompetency)
+            .WithVerb(HttpMethod.Patch);
+        }
+
+        public static IEnumerable<object[]> YearTestData =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.RICSApplicantProfessionalBodyMembership, dynamicsServiceProfessionalMembershipTestConfigurations.RICSDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.CABEApplicantProfessionalBodyMembership, dynamicsServiceProfessionalMembershipTestConfigurations.CABEDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.CIOBApplicantProfessionalBodyMembership, dynamicsServiceProfessionalMembershipTestConfigurations.CIOBDynamicsBuildingInspectorProfessionalBodyMembership },
+
+        };
+
+        [Theory]
+        [MemberData(nameof(YearTestData))]
+        public async Task GetDynamicsYear(ApplicantProfessionalBodyMembership applicantProfessionalBodyMembership, DynamicsBuildingInspectorProfessionalBodyMembership dynamicsBuildingInspectorProfessionalBodyMembership)
+        {
+            //Arrange
+            DynamicsYear year = new DynamicsYear(
+    bsr_name: applicantProfessionalBodyMembership.MembershipYear.ToString(),
+    bsr_yearid: ProfessionalMembershipTestConfigurations.GetYear(applicantProfessionalBodyMembership.MembershipYear));
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_years")
+            .WithQueryParam("$filter", $"bsr_name eq '{applicantProfessionalBodyMembership.MembershipYear}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsYear>
+            {
+                value = new List<DynamicsYear>()
+                {
+                    year         
+                }
+            });
+
+
+            //Act
+
+            var dynamicsYear = await _dynamicsService.GetDynamicsYear(applicantProfessionalBodyMembership.MembershipYear.ToString());
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_years")
+            .WithQueryParam("$filter", $"bsr_name eq '{applicantProfessionalBodyMembership.MembershipYear}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Equal(year, dynamicsYear);
+            Assert.Equal(dynamicsYear.bsr_yearid, dynamicsBuildingInspectorProfessionalBodyMembership._bsr_yearid_value);
+
+        }
+
+        [Fact]
+        public async Task GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId_MembershipsExist()
+        {
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership>
+            {
+                value = new List<DynamicsBuildingInspectorProfessionalBodyMembership>()
+                {
+                    dynamicsServiceProfessionalMembershipTestConfigurations.RICSDynamicsBuildingInspectorProfessionalBodyMembership,
+                    dynamicsServiceProfessionalMembershipTestConfigurations.CABEDynamicsBuildingInspectorProfessionalBodyMembership,
+                    dynamicsServiceProfessionalMembershipTestConfigurations.CIOBDynamicsBuildingInspectorProfessionalBodyMembership,
+                    dynamicsServiceProfessionalMembershipTestConfigurations.OtherDynamicsBuildingInspectorProfessionalBodyMembership,
+                }
+            });
+
+
+            //Act
+
+            var professionalMemberships = await _dynamicsService.GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId(dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.NotEmpty(professionalMemberships);
+            Assert.Equal(4, professionalMemberships.Count);
+
+        }
+
+        [Fact]
+        public async Task GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId_NoMembershipsExist()
+        {
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership>
+            {
+                value = new List<DynamicsBuildingInspectorProfessionalBodyMembership>()
+                {
+                }
+            });
+
+
+            //Act
+
+            var professionalMemberships = await _dynamicsService.GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId(dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Empty(professionalMemberships);
+
+        }
+
+
+        public static IEnumerable<object[]> MembershipsNoExisting =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership with { Id = null}, dynamicsServiceProfessionalMembershipTestConfigurations.RICSDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.CABEBuildingProfessionApplicationBodyMembership with { Id = null }, dynamicsServiceProfessionalMembershipTestConfigurations.CABEDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.CIOBBuildingProfessionApplicationBodyMembership with { Id = null }, dynamicsServiceProfessionalMembershipTestConfigurations.CIOBDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.OtherBuildingProfessionApplicationBodyMembership with { Id = null }, dynamicsServiceProfessionalMembershipTestConfigurations.OtherDynamicsBuildingInspectorProfessionalBodyMembership },
+        };
+
+        public static IEnumerable<object[]> MembershipsExisting =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership with {Id = null, MembershipNumber = "9999" }, dynamicsServiceProfessionalMembershipTestConfigurations.RICSDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.CABEBuildingProfessionApplicationBodyMembership with { Id = null, MembershipNumber = "9999" }, dynamicsServiceProfessionalMembershipTestConfigurations.CABEDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.CIOBBuildingProfessionApplicationBodyMembership with { Id = null, MembershipNumber = "9999" }, dynamicsServiceProfessionalMembershipTestConfigurations.CIOBDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.OtherBuildingProfessionApplicationBodyMembership with { Id = null, MembershipNumber = "9999" }, dynamicsServiceProfessionalMembershipTestConfigurations.OtherDynamicsBuildingInspectorProfessionalBodyMembership },
+        };
+
+
+        public static IEnumerable<object[]> MembershipsExistingIdProvided =>
+        new List<object[]>
+        {
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership with {MembershipNumber = "9999" }, dynamicsServiceProfessionalMembershipTestConfigurations.RICSDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.CABEBuildingProfessionApplicationBodyMembership with {MembershipNumber = "9999" }, dynamicsServiceProfessionalMembershipTestConfigurations.CABEDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.CIOBBuildingProfessionApplicationBodyMembership with {MembershipNumber = "9999" }, dynamicsServiceProfessionalMembershipTestConfigurations.CIOBDynamicsBuildingInspectorProfessionalBodyMembership },
+            new object[] { dynamicsServiceProfessionalMembershipTestConfigurations.OtherBuildingProfessionApplicationBodyMembership with {MembershipNumber = "9999" }, dynamicsServiceProfessionalMembershipTestConfigurations.OtherDynamicsBuildingInspectorProfessionalBodyMembership },
+        };
+
+
+        [Theory]
+        [MemberData(nameof(MembershipsNoExisting))]
+        public async Task CreateOrUpdateBuildingInspectorProfessionalBodyMembership_NoExistingMembership(BuildingInspectorProfessionalBodyMembership buildingInspectorProfessionalBodyMembership, DynamicsBuildingInspectorProfessionalBodyMembership dynamicsBuildingInspectorProfessionalBodyMembership)
+        {
+            //Arrange
+            var testDynamicsBuildingInspectorProfessionalBodyMembership = new DynamicsBuildingInspectorProfessionalBodyMembership(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorProfessionalBodyMembership.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorProfessionalBodyMembership.BuildingInspectorId})",
+                professionalBodyRefId: $"/accounts({buildingInspectorProfessionalBodyMembership.ProfessionalBodyId})",
+                bsr_membershipnumber: buildingInspectorProfessionalBodyMembership.MembershipNumber,
+                bsr_currentmembershiplevelortype: buildingInspectorProfessionalBodyMembership.CurrentMembershipLevelOrType,
+                statuscode: buildingInspectorProfessionalBodyMembership.StatusCode ?? 1,
+                statecode: buildingInspectorProfessionalBodyMembership.StateCode ?? 0,
+                yearRefId: buildingInspectorProfessionalBodyMembership.YearId is null ? null : $"/bsr_years({buildingInspectorProfessionalBodyMembership.YearId})"
+                );
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorProfessionalBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{buildingInspectorProfessionalBodyMembership.ProfessionalBodyId}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership>
+            {
+                value = new List<DynamicsBuildingInspectorProfessionalBodyMembership>()
+            });
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithRequestJson(testDynamicsBuildingInspectorProfessionalBodyMembership)
+            .WithVerb(HttpMethod.Post)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid));
+
+            //Act
+            var testRegisterMembership = await _dynamicsService.CreateOrUpdateBuildingInspectorProfessionalBodyMembership(buildingInspectorProfessionalBodyMembership);
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorProfessionalBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{buildingInspectorProfessionalBodyMembership.ProfessionalBodyId}'")
+            .WithVerb(HttpMethod.Get);
+
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithRequestJson(testDynamicsBuildingInspectorProfessionalBodyMembership)
+            .WithVerb(HttpMethod.Post);
+
+            Assert.Equal(testRegisterMembership, buildingInspectorProfessionalBodyMembership with { Id = dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid });
+        }
+
+        [Theory]
+        [MemberData(nameof(MembershipsExisting))]
+        public async Task CreateOrUpdateBuildingInspectorProfessionalBodyMembership_ExistingMembership(BuildingInspectorProfessionalBodyMembership buildingInspectorProfessionalBodyMembership, DynamicsBuildingInspectorProfessionalBodyMembership dynamicsBuildingInspectorProfessionalBodyMembership)
+        {
+
+            //Arrange
+            var testDynamicsBuildingInspectorProfessionalBodyMembership = new DynamicsBuildingInspectorProfessionalBodyMembership(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorProfessionalBodyMembership.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorProfessionalBodyMembership.BuildingInspectorId})",
+                professionalBodyRefId: $"/accounts({buildingInspectorProfessionalBodyMembership.ProfessionalBodyId})",
+                bsr_membershipnumber: buildingInspectorProfessionalBodyMembership.MembershipNumber,
+                bsr_currentmembershiplevelortype: buildingInspectorProfessionalBodyMembership.CurrentMembershipLevelOrType,
+                statuscode: buildingInspectorProfessionalBodyMembership.StatusCode ?? 1,
+                statecode: buildingInspectorProfessionalBodyMembership.StateCode ?? 0,
+                yearRefId: buildingInspectorProfessionalBodyMembership.YearId is null ? null : $"/bsr_years({buildingInspectorProfessionalBodyMembership.YearId})"
+                );
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorProfessionalBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{buildingInspectorProfessionalBodyMembership.ProfessionalBodyId}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(body: new DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership>
+            {
+                value = new List<DynamicsBuildingInspectorProfessionalBodyMembership>()
+                {
+                    dynamicsBuildingInspectorProfessionalBodyMembership
+                }
+            });
+
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships({dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid})")
+            .WithRequestJson(testDynamicsBuildingInspectorProfessionalBodyMembership)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid));
+
+            //Act
+            var testRegisterMembership = await _dynamicsService.CreateOrUpdateBuildingInspectorProfessionalBodyMembership(buildingInspectorProfessionalBodyMembership);
+
+            //Assert
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithQueryParam("$filter", $"_bsr_biapplicationid_value eq '{buildingInspectorProfessionalBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{buildingInspectorProfessionalBodyMembership.ProfessionalBodyId}'")
+            .WithVerb(HttpMethod.Get);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships({dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid})")
+            .WithRequestJson(testDynamicsBuildingInspectorProfessionalBodyMembership)
+            .WithVerb(HttpMethod.Patch);
+
+            Assert.Equal(testRegisterMembership, buildingInspectorProfessionalBodyMembership with { Id = dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid });
+            Assert.Equal(testRegisterMembership.MembershipNumber, buildingInspectorProfessionalBodyMembership.MembershipNumber);
+            Assert.Equal(testRegisterMembership.MembershipNumber, buildingInspectorProfessionalBodyMembership.MembershipNumber);
+        }
+
+        [Theory]
+        [MemberData(nameof(MembershipsExistingIdProvided))]
+        public async Task CreateOrUpdateBuildingInspectorProfessionalBodyMembership_ExistingMembershipIdProvided(BuildingInspectorProfessionalBodyMembership buildingInspectorProfessionalBodyMembership, DynamicsBuildingInspectorProfessionalBodyMembership dynamicsBuildingInspectorProfessionalBodyMembership)
+        {
+
+            //Arrange
+            var testDynamicsBuildingInspectorProfessionalBodyMembership = new DynamicsBuildingInspectorProfessionalBodyMembership(
+                buidingProfessionApplicationReferenceId: $"/bsr_buildingprofessionapplications({buildingInspectorProfessionalBodyMembership.BuildingProfessionApplicationId})",
+                contactRefId: $"/contacts({buildingInspectorProfessionalBodyMembership.BuildingInspectorId})",
+                professionalBodyRefId: $"/accounts({buildingInspectorProfessionalBodyMembership.ProfessionalBodyId})",
+                bsr_membershipnumber: buildingInspectorProfessionalBodyMembership.MembershipNumber,
+                bsr_currentmembershiplevelortype: buildingInspectorProfessionalBodyMembership.CurrentMembershipLevelOrType,
+                statuscode: buildingInspectorProfessionalBodyMembership.StatusCode ?? 1,
+                statecode: buildingInspectorProfessionalBodyMembership.StateCode ?? 0,
+                yearRefId: buildingInspectorProfessionalBodyMembership.YearId is null ? null : $"/bsr_years({buildingInspectorProfessionalBodyMembership.YearId})"
+                );
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships({buildingInspectorProfessionalBodyMembership.Id})")
+            .WithRequestJson(testDynamicsBuildingInspectorProfessionalBodyMembership)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid));
+
+            //Act
+            var testRegisterMembership = await _dynamicsService.CreateOrUpdateBuildingInspectorProfessionalBodyMembership(buildingInspectorProfessionalBodyMembership);
+
+            //Assert
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships({buildingInspectorProfessionalBodyMembership.Id})")
+            .WithRequestJson(testDynamicsBuildingInspectorProfessionalBodyMembership)
+            .WithVerb(HttpMethod.Patch);
+
+            Assert.Equal(testRegisterMembership, buildingInspectorProfessionalBodyMembership with { Id = dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid });
+            Assert.Equal(testRegisterMembership.MembershipNumber, buildingInspectorProfessionalBodyMembership.MembershipNumber);
+            Assert.Equal(testRegisterMembership.MembershipNumber, buildingInspectorProfessionalBodyMembership.MembershipNumber);
+        }
+
 
     }
 }
