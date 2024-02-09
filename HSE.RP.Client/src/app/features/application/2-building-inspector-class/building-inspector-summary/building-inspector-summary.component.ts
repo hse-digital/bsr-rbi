@@ -100,8 +100,10 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
     if(this.applicationService.model.InspectorClass?.ClassType.Class === BuildingInspectorClassType.Class1){
       this.applicationService.model.InspectorClass!.ClassTechnicalManager = 'no';
       this.applicationService.model.Competency = new Competency();
+      this.applicationService.model.InspectorClass.CompletionState = ComponentCompletionState.Complete;
       this.applicationService.model.StageStatus!['Competency'] = StageCompletionState.Complete;
     }
+    this.applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete;
     await this.applicationService.syncBuildingInspectorClass();
     this.applicationService.model.StageStatus['BuildingInspectorClass'] = StageCompletionState.Complete;
     this.saveAndContinue();

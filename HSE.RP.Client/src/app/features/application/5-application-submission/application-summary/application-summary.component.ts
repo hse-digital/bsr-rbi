@@ -165,7 +165,7 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
 
       var position = 10;
       pdf.addImage(contentDataURL, 'PNG', 20, position, imgWidth, imgHeight);
-      pdf.save('ApplicationSummery.pdf');
+      pdf.save('ApplicationSummary.pdf');
     });
 
   }

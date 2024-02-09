@@ -117,8 +117,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
       this.DemandModel()[value] = true;
     });
 
-    this.applicationService.model.InspectorClass!.ClassType.CompletionState =
-      ComponentCompletionState.InProgress;
+    //this.applicationService.model.InspectorClass!.ClassType.CompletionState = ComponentCompletionState.InProgress;
   }
 
   override canAccess(

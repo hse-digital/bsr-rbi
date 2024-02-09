@@ -361,7 +361,7 @@ public class DynamicsSynchronisationFunctions
         if (dynamicsBuildingProfessionApplication != null)
         {
 
-            if (buildingProfessionApplicationModel.ProfessionalMemberships.IsProfessionBodyRelevantYesNo == "no")
+            if (buildingProfessionApplicationModel.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "no")
             {
                 if (dynamicsProfessionalMemberships != null)
                 {
@@ -2173,7 +2173,7 @@ public class DynamicsSynchronisationFunctions
             var dynamicsProfessionalMemberships = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorProfessionalBodyMembership>>(nameof(GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
 
 
-            if (buildingProfessionApplicationModel.ProfessionalMemberships.IsProfessionBodyRelevantYesNo == "no")
+            if (buildingProfessionApplicationModel.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo == "no")
             {
                 if (dynamicsProfessionalMemberships != null)
                 {
