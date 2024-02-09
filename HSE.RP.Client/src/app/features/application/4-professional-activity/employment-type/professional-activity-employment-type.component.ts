@@ -78,23 +78,21 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
   override async saveAndComeBack(): Promise<void> {
     this.processing = true;
 
-    const status =
-      this.applicationService.model.ProfessionalActivity.EmploymentDetails
-        ?.CompletionState;
+    const status = this.applicationService.model.ProfessionalActivity.EmploymentDetails?.CompletionState;
 
-    if (
-      this.model?.EmploymentType === this.existingEmploymentType &&
-      status === ComponentCompletionState.Complete
+    if (this.model?.EmploymentType === this.existingEmploymentType && status === ComponentCompletionState.Complete
     ) {
-      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState =
-        ComponentCompletionState.Complete;
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.Complete;
     } else {
-      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState =
-        ComponentCompletionState.InProgress;
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmploymentTypeSelection!.CompletionState = ComponentCompletionState.InProgress;
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.InProgress;
     }
+
+
 
     this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmploymentTypeSelection!.EmploymentType =
       this.model?.EmploymentType;
+
 
     if (!this.hasErrors) {
       this.triggerScreenReaderNotification();
@@ -111,6 +109,8 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+    
+
     applicationService.model.ProfessionalActivity.EmploymentDetails!.EmploymentTypeSelection =
       this.model;
 
@@ -122,11 +122,9 @@ export class ProfessionalActivityEmploymentTypeComponent extends PageComponent<E
       this.model?.EmploymentType === this.existingEmploymentType &&
       status === ComponentCompletionState.Complete
     ) {
-      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState =
-        ComponentCompletionState.Complete;
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.Complete;
     } else {
-      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState =
-        ComponentCompletionState.InProgress;
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.InProgress;
     }
   }
 

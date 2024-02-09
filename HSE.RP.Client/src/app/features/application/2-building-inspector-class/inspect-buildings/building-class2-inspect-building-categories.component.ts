@@ -79,8 +79,8 @@ export class Class2InspectBuildingCategoriesComponent extends PageComponent<Clas
       demandModel[value] = true;
     });
 
-    this.applicationService.model.InspectorClass!.ClassType.CompletionState =
-      ComponentCompletionState.InProgress;
+    // this.applicationService.model.InspectorClass!.ClassType.CompletionState =
+    //   ComponentCompletionState.InProgress;
   }
 
   override canAccess(
