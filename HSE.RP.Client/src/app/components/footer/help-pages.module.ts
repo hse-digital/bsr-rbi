@@ -33,11 +33,10 @@ export class HelpPagesModule {
   static baseRoute: string = 'help';
 
   static footerLinks = [
-    { title: "Contact us", href: 'https://www.gov.uk/guidance/contact-the-building-safety-regulator'},
-    { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityComponent.route}` },
-    { title: "Cookies", href: `/${HelpPagesModule.baseRoute}/${CookiesComponent.route}` },
-    { title: "Feedback", href: "https://forms.office.com/e/p1rYGz27V6" },
-    { title: "Privacy", href: `/${HelpPagesModule.baseRoute}/${PrivacyNoticeComponent.route}` },
-    //{ title: "Terms and conditions", href: `/${HelpPagesModule.baseRoute}/${TermsConditionsComponent.route}` },
+    { title: "Contact us", href: 'https://www.gov.uk/guidance/contact-the-building-safety-regulator', isNewTab: false},
+    { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityComponent.route}`,isNewTab: false },
+    { title: "Cookies", href: `/${HelpPagesModule.baseRoute}/${CookiesComponent.route}`, isNewTab: false},
+    { title: "Feedback", href: "https://forms.office.com/e/p1rYGz27V6" ,isNewTab: false},
+    { title: "Privacy", href: `/${HelpPagesModule.baseRoute}/${PrivacyNoticeComponent.route}`, isNewTab: false }
   ];
 }
