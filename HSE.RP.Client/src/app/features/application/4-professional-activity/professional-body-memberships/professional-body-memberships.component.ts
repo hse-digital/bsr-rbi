@@ -9,6 +9,7 @@ import { ProfessionalBodySelectionComponent } from '../professional-body-selecti
 import { ComponentCompletionState } from 'src/app/models/component-completion-state.enum';
 import { ProfessionalMembershipAndEmploymentSummaryComponent } from '../professional-membership-and-employment-summary/professional-membership-and-employment-summary.component';
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
+import { ProfessionalActivity } from 'src/app/models/professional-activity.model';
 
 
 
@@ -38,6 +39,10 @@ export class ProfessionalBodyMembershipsComponent extends PageComponent<Applican
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = params['queryParam'];
     });
+    if(!applicationService.model.ProfessionalActivity)
+    {
+      applicationService.model.ProfessionalActivity = new ProfessionalActivity();
+    }
     if (!applicationService.model.ProfessionalMemberships) {
       applicationService.model.ProfessionalMemberships = new ApplicantProfessionBodyMemberships();
       applicationService.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships = new ApplicantHasProfessionBodyMemberships();
