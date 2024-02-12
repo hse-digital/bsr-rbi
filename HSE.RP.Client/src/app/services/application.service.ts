@@ -7,6 +7,11 @@ import { ApplicationStatus } from '../models/application-status.enum';
 import { StageCompletionState } from '../models/stage-completion-state.enum';
 import { Sanitizer } from '../helpers/sanitizer';
 import { ComponentCompletionState } from '../models/component-completion-state.enum';
+import { BuildingInspectorClass } from '../models/building-inspector-class.model';
+import { ProfessionalActivity } from '../models/professional-activity.model';
+import { ApplicantHasProfessionBodyMemberships, ApplicantProfessionBodyMembershipsHelper } from '../models/applicant-professional-body-membership';
+import { ProfessionalActivityHelper } from '../helpers/professional-activity-helper.component';
+import { ProfessionalBodyMembershipStep } from '../models/professional-body-membership-step.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -103,19 +108,26 @@ export class ApplicationService {
     } else if (ValidationOption === 'phone-option') {
       let application: BuildingProfessionalModel = await firstValueFrom(
         this.httpClient.get<BuildingProfessionalModel>(
-          `api/GetApplicationPhone/${ApplicationNumber.toUpperCase()}/${PhoneNumber?.trim().replace("+44","0")}/${OTPToken}`
+          `api/GetApplicationPhone/${ApplicationNumber.toUpperCase()}/${PhoneNumber?.trim().replace("+44", "0")}/${OTPToken}`
         )
       );
       this.model = application;
     }
     this.model.ReturningApplication = true;
 
+    //If issue in model where class or professional activity is null set them to new #21710 #21821
+
+    if (!this.model.InspectorClass) {
+      this.model.InspectorClass = new BuildingInspectorClass()
+    }
+    if (!this.model.ProfessionalActivity) {
+      this.model.ProfessionalActivity = new ProfessionalActivity();
+    }
+
     //If application does not have inspector class completion state required for #9319 add it
-    if(!this.model.InspectorClass?.CompletionState)
-    {
-      
-      switch(this.model.InspectorClass?.ClassType?.CompletionState)
-      {
+    if (!this.model.InspectorClass?.CompletionState) {
+
+      switch (this.model.InspectorClass?.ClassType?.CompletionState) {
         case ComponentCompletionState.Complete:
           this.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete;
           break;
@@ -126,10 +138,77 @@ export class ApplicationService {
           this.model.InspectorClass!.CompletionState = ComponentCompletionState.NotStarted;
           break;
       }
-      
-      
 
     }
+
+    //If application does not have ApplicantHasProfessionBodyMemberships  required for #9319 add it
+    if (!this.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships) {
+      this.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships = new ApplicantHasProfessionBodyMemberships();
+      if (ApplicantProfessionBodyMembershipsHelper.AnyCompleted(this.model.ProfessionalMemberships)) {
+        this.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships.CompletionState = ComponentCompletionState.Complete;
+        this.model.ProfessionalMemberships.ApplicantHasProfessionBodyMemberships.IsProfessionBodyRelevantYesNo = "yes";
+      }
+    }
+
+    if(!this.model.ProfessionalActivity.ApplicantProfessionalBodyMembership?.RemoveOptionSelected)
+    {
+      this.model.ProfessionalActivity.ApplicantProfessionalBodyMembership!.RemoveOptionSelected = "";
+    }
+
+    if(!this.model.ProfessionalActivity.ApplicantProfessionalBodyMembership?.CurrentStep)
+    {
+      this.model.ProfessionalActivity.ApplicantProfessionalBodyMembership!.CurrentStep = ProfessionalBodyMembershipStep.NotStarted;
+    }
+
+    //If application does not have remove option in professional memberships required for #9319 add it
+    if (!this.model.ProfessionalMemberships.CABE.RemoveOptionSelected) {
+      this.model.ProfessionalMemberships.CABE.RemoveOptionSelected = '';
+    }
+    if (!this.model.ProfessionalMemberships.RICS.RemoveOptionSelected) {
+      this.model.ProfessionalMemberships.RICS.RemoveOptionSelected = '';
+    }
+    if (!this.model.ProfessionalMemberships.CIOB.RemoveOptionSelected) {
+      this.model.ProfessionalMemberships.CIOB.RemoveOptionSelected = '';
+    }
+    if (!this.model.ProfessionalMemberships.OTHER.RemoveOptionSelected) {
+      this.model.ProfessionalMemberships.OTHER.RemoveOptionSelected = '';
+    }
+
+    //If application does not have professional membership current step  required for #9319 add it
+    if (!this.model.ProfessionalMemberships.CABE.CurrentStep) {
+      if (this.model.ProfessionalMemberships.CABE.CompletionState == ComponentCompletionState.Complete) {
+        this.model.ProfessionalMemberships.CABE.CurrentStep = ProfessionalBodyMembershipStep.ConfirmDetails;
+      }
+      else {
+        this.model.ProfessionalMemberships.CABE.CurrentStep = ProfessionalBodyMembershipStep.NotStarted;
+      }
+    }
+    if (!this.model.ProfessionalMemberships.RICS.CurrentStep) {
+      if (this.model.ProfessionalMemberships.RICS.CompletionState == ComponentCompletionState.Complete) {
+        this.model.ProfessionalMemberships.RICS.CurrentStep = ProfessionalBodyMembershipStep.ConfirmDetails;
+      }
+      else {
+        this.model.ProfessionalMemberships.RICS.CurrentStep = ProfessionalBodyMembershipStep.NotStarted;
+      }
+    }
+    if (!this.model.ProfessionalMemberships.CIOB.CurrentStep) {
+      if (this.model.ProfessionalMemberships.CIOB.CompletionState == ComponentCompletionState.Complete) {
+        this.model.ProfessionalMemberships.CIOB.CurrentStep = ProfessionalBodyMembershipStep.ConfirmDetails;
+      }
+      else {
+        this.model.ProfessionalMemberships.CIOB.CurrentStep = ProfessionalBodyMembershipStep.NotStarted;
+      }
+    }
+    if (!this.model.ProfessionalMemberships.OTHER.CurrentStep) {
+      if (this.model.ProfessionalMemberships.OTHER.CompletionState == ComponentCompletionState.Complete) {
+        this.model.ProfessionalMemberships.OTHER.CurrentStep = ProfessionalBodyMembershipStep.ConfirmDetails;
+      }
+      else {
+        this.model.ProfessionalMemberships.OTHER.CurrentStep = ProfessionalBodyMembershipStep.NotStarted;
+      }
+    }
+
+
     this.updateLocalStorage();
   }
 
@@ -153,7 +232,7 @@ export class ApplicationService {
             EmailAddress: string;
             PhoneNumber: string;
           }>(
-            `api/ValidateApplicationNumberPhone/${PhoneNumber!.trim().replace("+44","0")}/${ApplicationNumber.toUpperCase()}`
+            `api/ValidateApplicationNumberPhone/${PhoneNumber!.trim().replace("+44", "0")}/${ApplicationNumber.toUpperCase()}`
           )
         );
       } else if ((ValidationOption === 'phone-option')) {
@@ -254,7 +333,7 @@ export class ApplicationService {
   }
 
   async CheckDuplicateBuildingProfessionalApplication(): Promise<boolean> {
-   return await lastValueFrom(
+    return await lastValueFrom(
       this.httpClient.post<boolean>(`api/CheckDuplicateBuildingProfessionalApplication`, Sanitizer.sanitize(this.model))
     );
   }
