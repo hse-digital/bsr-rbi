@@ -68,7 +68,7 @@ namespace HSE.RP.API.Services
         Task AssignContactType(string contactId, string contactTypeId);
         Task<DynamicsOrganisationsSearchResponse> SearchOrganisations(string authorityName, string accountTypeId);
     }
-    public class DynamicsService : IDynamicsService 
+    public class DynamicsService : IDynamicsService
     {
         private readonly DynamicsModelDefinitionFactory dynamicsModelDefinitionFactory;
         private readonly SwaOptions swaOptions;
@@ -866,27 +866,28 @@ namespace HSE.RP.API.Services
                 return false;
             }
 
-            //Check for existing contact
+            //_bsr_buildingprofessionapplicationid_value
+
+            //Check for existing contacts
             var contact = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
             {
                         ("$filter", $"firstname eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}'"),
             });
 
-            //If contact exists check for existing application
-            if (contact.value.FirstOrDefault() != null)
+            foreach (var dynamicsContact in contact.value)
             {
-                var application = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
-            {
-                        ("$filter", $"_bsr_applicantid_value eq '{contact.value.FirstOrDefault().contactid}' and statecode ne 1 and bsr_buildingprofessiontypecode eq {(int)BuildingProfessionType.BuildingInspector}"),
-            });
-
-                return application.value.Count > 0;
+                Console.WriteLine(dynamicsContact.contactid);
+                var existingApplication = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
+                {
+                    ("$filter", $"_bsr_applicantid_value eq '{dynamicsContact.contactid}' and statecode ne 1 and bsr_buildingprofessiontypecode eq {(int)BuildingProfessionType.BuildingInspector}"),
+                });
+                if(existingApplication.value.Count > 0)
+                {
+                    return true;
+                }
             }
-            else
-            {
-                return false;
 
-            }
+            return false;
 
         }
 
@@ -895,8 +896,8 @@ namespace HSE.RP.API.Services
             var application = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
                         {
                         ("$filter", $"bsr_cosmosid eq '{cosmosId}'"),
-            }); 
-            
+            });
+
             return application.value.FirstOrDefault();
         }
     }
