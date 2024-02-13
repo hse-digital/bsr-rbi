@@ -14,7 +14,9 @@ public record BuildingProfessionApplication(
     DateOnly? AssessmentdDate = null,
     string? CosmosId = null,
     BuildingProfessionApplicationStatus? StatusCode = null,
+    int ? StateCode = null,
     BuildingProfessionApplicationStage? BuildingProfessionApplicationStage = null
+
 
     ) : Entity(Id);
 
@@ -32,6 +34,7 @@ public record DynamicsBuildingProfessionApplication(
     string CosmosId = null,
     BuildingProfessionApplicationStage? bsr_buildingprofessionalapplicationstage = null,
     int? statuscode = null,
+    int? statecode = null,
     string bsr_assessmentcertnumber = null,
     DateOnly? bsr_assessmentdate = null,
     bool? bsr_hasindependentassessment = null
@@ -59,14 +62,13 @@ public enum BuildingProfessionApplicationStage
 
 public enum BuildingProfessionApplicationStatus
 {
-    Ready = 760_810_002,
     InProgress = 760_810_001,
-    HoldPendingIASO = 760_810_003,
-    HoldPendingInformationCorrection = 760_810_004,
+    ReadyToAssign = 760_810_002,
     Completed = 760_810_005,
-    Terminated = 760_810_007,
-    EscalatedToAuditTeam = 760_810_006,
-    AwaitingDecisionReview = 760_810_008,
+    Cancelled = 760_810_007,
     New = 760_810_009,
     Submitted = 760_810_010,
+    Assigned = 760_810_011,
+    OnHold = 760_810_012,
+    Inactive = 2
 }
