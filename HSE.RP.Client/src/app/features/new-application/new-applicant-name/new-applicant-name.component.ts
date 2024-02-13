@@ -14,6 +14,8 @@ import { Competency } from 'src/app/models/competency.model';
 import { v4 as uuidv4 } from 'uuid';
 import { ApplicationStage } from 'src/app/models/application-stage.enum';
 import { ApplicantProfessionBodyMemberships } from 'src/app/models/applicant-professional-body-membership';
+import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
+import { ProfessionalActivity } from 'src/app/models/professional-activity.model';
 
 @Component({
   selector: 'hse-applicant-name',
@@ -64,8 +66,10 @@ export class NewApplicantNameComponent extends PageComponent<BuildingProfessiona
         "Payment": StageCompletionState.Incomplete,
       };
     }
+    applicationService.model.InspectorClass = new BuildingInspectorClass();
     applicationService.model.Competency = new Competency();
     applicationService.model.ProfessionalMemberships = new ApplicantProfessionBodyMemberships;
+    applicationService.model.ProfessionalActivity = new ProfessionalActivity();
     applicationService.model.ApplicationStage = ApplicationStage.PersonalDetails;
     this.model = applicationService.model;
 

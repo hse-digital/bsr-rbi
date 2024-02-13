@@ -16,6 +16,7 @@ import { Class3InspectBuildingCategories } from 'src/app/models/class3-inspect-b
 import { Competency } from 'src/app/models/competency.model';
 import { StageCompletionState } from 'src/app/models/stage-completion-state.enum';
 import { ApplicationSummaryComponent } from '../../5-application-submission/application-summary/application-summary.component';
+import { BuildingInspectorClass } from 'src/app/models/building-inspector-class.model';
 
 @Component({
   selector: 'hse-building-inspector-class-selection',
@@ -57,6 +58,10 @@ export class BuildingInspectorClassSelectionComponent extends PageComponent<Clas
       };
 
     } else {
+      if(!applicationService.model.InspectorClass)
+      {
+        applicationService.model.InspectorClass = new BuildingInspectorClass()
+      }
       if (
         applicationService.model.InspectorClass?.ClassType.Class ===
         BuildingInspectorClassType.ClassNone
