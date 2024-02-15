@@ -37,7 +37,7 @@ export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<Empl
     private companiesService: CompaniesService
   ) {
     super(activatedRoute);
-    this.updateOnSave = false;
+    this.updateOnSave = true;
   }
 
   override async onInit(applicationService: ApplicationService): Promise<void> {
@@ -58,8 +58,14 @@ export class EmploymentPrivateSectorBodyNameComponent extends PageComponent<Empl
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+
+    if(this.model?.CompletionState != ComponentCompletionState.Complete){
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.InProgress;
+    }
+
     this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName =
       this.model;
+
   }
 
   override canAccess(

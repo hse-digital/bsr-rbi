@@ -55,8 +55,12 @@ export class EmploymentPublicSectorBodyNameComponent extends PageComponent<Emplo
   }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
+    if(this.model?.CompletionState != ComponentCompletionState.Complete){
+      this.applicationService.model.ProfessionalActivity.EmploymentDetails!.CompletionState = ComponentCompletionState.InProgress;
+    }
 
     this.applicationService.model.ProfessionalActivity.EmploymentDetails!.EmployerName=this.model;
+
 
    }
 
