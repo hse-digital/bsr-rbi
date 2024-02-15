@@ -323,11 +323,52 @@ public class DynamicsSynchronisationFunctions
                         BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                         ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                         ClassId = BuildingInspectorClassNames.Ids[1],
-                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Registered,
+                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
                         StateCode = 0
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
                 }
+
+                //Set other classes to considered
+                var classesToUpdate = dynamicsRegistrationClasses.Where(x => x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[1]);
+                if (classesToUpdate.Any())
+                {
+                    foreach (DynamicsBuildingInspectorRegistrationClass classToUpdate in classesToUpdate)
+                    {
+                        var registrationClass = new BuildingInspectorRegistrationClass
+                        {
+                            Id = classToUpdate.bsr_biregclassid,
+                            BuildingProfessionApplicationId = classToUpdate._bsr_biapplicationid_value,
+                            ApplicantId = classToUpdate._bsr_buildinginspectorid_value,
+                            ClassId = classToUpdate._bsr_biclassid_value,
+                            StatusCode = (int)BuildingInspectorRegistrationClassStatus.Considered,
+                            StateCode = 0
+                        };
+
+                        await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
+                    }
+                }
+
+                //Set other registration activities to considered
+                var registrationActivities = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationActivity>>(nameof(GetRegistrationActivitiesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+                if (registrationActivities.Any())
+                {
+                    foreach (DynamicsBuildingInspectorRegistrationActivity registrationActivity in registrationActivities)
+                    {
+                        var activity = new BuildingInspectorRegistrationActivity
+                        {
+                            Id = registrationActivity.bsr_biregactivityId,
+                            BuildingProfessionApplicationId = registrationActivity._bsr_biapplicationid_value,
+                            BuildingInspectorId = registrationActivity._bsr_buildinginspectorid_value,
+                            ActivityId = registrationActivity._bsr_biactivityid_value,
+                            StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Considered,
+                            StateCode = 0
+                        };
+
+                        await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), activity);
+                    }
+                }
+
 
             }
 
@@ -593,7 +634,7 @@ public class DynamicsSynchronisationFunctions
                 await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
             }
 
-            //If the selected class has changed set its status to inactive 
+            //If the selected class has changed set its status to considered 
             var classesToUpdate = dynamicsRegistrationClasses.Where(x => x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[selectedRegistrationClassId] && x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[4]).ToList();
             if (classesToUpdate.Any())
             {
@@ -605,8 +646,8 @@ public class DynamicsSynchronisationFunctions
                         BuildingProfessionApplicationId = classToUpdate._bsr_biapplicationid_value,
                         ApplicantId = classToUpdate._bsr_buildinginspectorid_value,
                         ClassId = classToUpdate._bsr_biclassid_value,
-                        StatusCode = 2,
-                        StateCode = 1
+                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Considered,
+                        StateCode = 0
                     };
 
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
@@ -643,8 +684,8 @@ public class DynamicsSynchronisationFunctions
                             BuildingProfessionApplicationId = classToUpdate._bsr_biapplicationid_value,
                             ApplicantId = classToUpdate._bsr_buildinginspectorid_value,
                             ClassId = classToUpdate._bsr_biclassid_value,
-                            StatusCode = 2,
-                            StateCode = 1
+                            StatusCode = (int)BuildingInspectorRegistrationClassStatus.Considered,
+                            StateCode = 0
                         };
 
                         await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
@@ -745,7 +786,7 @@ public class DynamicsSynchronisationFunctions
             //Get selected activities
             var selectedActivities = buildingProfessionApplicationModel.InspectorClass.Activities;
 
-            //If selected class is class 1 then no need to update activities, but we need to set any previously selected activities to inactive
+            //If selected class is class 1 then no need to update activities, but we need to set any previously selected activities to considered
             if (selectedRegistrationClassId == 1)
             {
                 var dynamicsRegistrationActivities = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationActivity>>(nameof(GetRegistrationActivitiesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
@@ -760,8 +801,8 @@ public class DynamicsSynchronisationFunctions
                         BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                         BuildingCategoryId = activity._bsr_bibuildingcategoryid_value,
                         ActivityId = activity._bsr_biactivityid_value,
-                        StatusCode = 2,
-                        StateCode = 1
+                        StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Considered,
+                        StateCode = 0
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), registrationActivity);
                 }
@@ -1495,7 +1536,7 @@ public class DynamicsSynchronisationFunctions
                     BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                     ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                     ClassId = BuildingInspectorClassNames.Ids[selectedRegistrationClassId],
-                    StatusCode = selectedRegistrationClassId == (int)BuildingInspectorClassType.Class1 ? (int)BuildingInspectorRegistrationClassStatus.Registered : (int)BuildingInspectorRegistrationClassStatus.Applied,
+                    StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
                     StateCode = 0
                 };
                 await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
@@ -1513,8 +1554,8 @@ public class DynamicsSynchronisationFunctions
                         BuildingProfessionApplicationId = classToUpdate._bsr_biapplicationid_value,
                         ApplicantId = classToUpdate._bsr_buildinginspectorid_value,
                         ClassId = classToUpdate._bsr_biclassid_value,
-                        StatusCode = 2,
-                        StateCode = 1
+                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Considered,
+                        StateCode = 0
                     };
 
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
@@ -1551,8 +1592,8 @@ public class DynamicsSynchronisationFunctions
                             BuildingProfessionApplicationId = classToUpdate._bsr_biapplicationid_value,
                             ApplicantId = classToUpdate._bsr_buildinginspectorid_value,
                             ClassId = classToUpdate._bsr_biclassid_value,
-                            StatusCode = 2,
-                            StateCode = 1
+                            StatusCode = (int)BuildingInspectorRegistrationClassStatus.Considered,
+                            StateCode = 0
                         };
 
                         await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
@@ -1668,8 +1709,8 @@ public class DynamicsSynchronisationFunctions
                         BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                         BuildingCategoryId = activity._bsr_bibuildingcategoryid_value,
                         ActivityId = activity._bsr_biactivityid_value,
-                        StatusCode = 2,
-                        StateCode = 1
+                        StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Considered,
+                        StateCode = 0
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), registrationActivity);
                 }
@@ -2148,12 +2189,52 @@ public class DynamicsSynchronisationFunctions
                         BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                         ApplicantId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                         ClassId = BuildingInspectorClassNames.Ids[1],
-                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Registered,
+                        StatusCode = (int)BuildingInspectorRegistrationClassStatus.Applied,
                         StateCode = 0
                     };
                     await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
                 }
 
+                //Set other classes to considered
+                var previousClassesToUpdate = dynamicsRegistrationClasses.Where(x => x._bsr_biclassid_value != BuildingInspectorClassNames.Ids[1]);
+
+                if (previousClassesToUpdate.Any())
+                {
+                    foreach (DynamicsBuildingInspectorRegistrationClass classToUpdate in previousClassesToUpdate)
+                    {
+                        var registrationClass = new BuildingInspectorRegistrationClass
+                        {
+                            Id = classToUpdate.bsr_biregclassid,
+                            BuildingProfessionApplicationId = classToUpdate._bsr_biapplicationid_value,
+                            ApplicantId = classToUpdate._bsr_buildinginspectorid_value,
+                            ClassId = classToUpdate._bsr_biclassid_value,
+                            StatusCode = (int)BuildingInspectorRegistrationClassStatus.Considered,
+                            StateCode = 0
+                        };
+
+                        await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationClass), registrationClass);
+                    }
+                }
+
+                //Set other registration activities to considered
+                var registrationActivities = await orchestrationContext.CallActivityAsync<List<DynamicsBuildingInspectorRegistrationActivity>>(nameof(GetRegistrationActivitiesUsingApplicationId), dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid);
+                if (registrationActivities.Any())
+                {
+                    foreach (DynamicsBuildingInspectorRegistrationActivity registrationActivity in registrationActivities)
+                    {
+                        var activity = new BuildingInspectorRegistrationActivity
+                        {
+                            Id = registrationActivity.bsr_biregactivityId,
+                            BuildingProfessionApplicationId = registrationActivity._bsr_biapplicationid_value,
+                            BuildingInspectorId = registrationActivity._bsr_buildinginspectorid_value,
+                            ActivityId = registrationActivity._bsr_biactivityid_value,
+                            StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Considered,
+                            StateCode = 0
+                        };
+
+                        await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationActivity), activity);
+                    }
+                }
             }
 
             if (buildingProfessionApplicationModel.Competency.CompetencyIndependentAssessmentStatus.IAStatus == "yes")

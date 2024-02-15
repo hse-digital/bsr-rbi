@@ -39,4 +39,5 @@ public enum BuildingInspectorRegistrationActivityStatus
 {
     Applied = 760_810_001,
     Registered = 760_810_002,
+    Considered = 760_810_003,
 }
