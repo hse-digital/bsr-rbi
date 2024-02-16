@@ -771,8 +771,8 @@ public class DynamicsSynchronisationFunctions
                             BuildingProfessionApplicationId = dynamicsBuildingProfessionApplication.bsr_buildingprofessionapplicationid,
                             BuildingInspectorId = dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid,
                             CountryID = BuildingInspectorCountryNames.Ids["Wales"],
-                            StatusCode = (int)BuildingInspectorRegistrationActivityStatus.Considered,
-                            StateCode = 0
+                            StatusCode = 2,
+                            StateCode = 1
                         };
                         await orchestrationContext.CallActivityAsync(nameof(CreateOrUpdateRegistrationCountry), registrationCountry);
                     }
