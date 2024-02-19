@@ -36,6 +36,10 @@
         Agree and continue to payment
       </govuk-button>
 
+      <govuk-button (onClick)="saveAndContinue()" [disabled]="loading" [isLoading]="loading">
+        Agree and continue to payment
+      </govuk-button>
+
     </div>
   </div>
 </div>
