@@ -56,12 +56,16 @@ export class FindAddressComponent {
   }
 
   isPostcodeValid(): boolean {
-    let postcode = this.searchModel.postcode?.trim()?.replace(' ', '');
+
+    let postcode = this.searchModel.postcode?.replace(/[^\w\s]/gi, '')?.trim()?.replace(/\s+/g, '');
+
+
+    
     this.postcodeHasErrors = true;
     if (!postcode) {
       this.postcodeErrorText = 'Enter a postcode';
     } else if (!FieldValidations.PostcodeValidator(postcode)) {
-      this.postcodeErrorText = "Enter a real postcode, like 'EC3A 8BF'.";
+      this.postcodeErrorText = "Enter a real postcode";
     }
     else{
       this.postcodeHasErrors = false;
@@ -76,7 +80,7 @@ export class FindAddressComponent {
   }
 
   private searchAddress(): Promise<AddressResponseModel> {
-    return this.addressService.SearchAllAddressByPostcode(this.searchModel.postcode!);
+    return this.addressService.SearchAllAddressByPostcode(this.searchModel.postcode!.replace(/[^\w\s]/gi, '')?.trim()?.replace(/\s+/g, ''));
   }
 
   warningMessage(): string {
