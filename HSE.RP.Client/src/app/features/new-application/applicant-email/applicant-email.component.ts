@@ -21,7 +21,7 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
   production: boolean = environment.production;
   emailHasErrors: boolean = false;
   duplicateApplication: boolean = false;
-  duplicateApplicationMessage: string = "There is already an application associated with your email address. "
+  duplicateApplicationMessage: string = "There is already an application associated with the email address provided. Check your original registration email for your application number, beginning 'RBCP'. You can continue your application using this number. If you cannot find your registration email or access your application, "
   // duplicateApplicationLinkText?: string = "here"
   // duplicateApplicationLinkUri?: string = "https://contact-the-building-safety-regulator.hse.gov.uk"
   duplicateApplicationLinkText?: string
@@ -64,8 +64,8 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
     else if (this.duplicateApplication == true){
       this.emailHasErrors = true;
       this.emailErrorMessage = this.duplicateApplicationMessage;
-      this.duplicateApplicationLinkText = "Contact BSR"
-      this.duplicateApplicationLinkUri = "https://contact-the-building-safety-regulator.hse.gov.uk"
+      this.duplicateApplicationLinkText = "Contact BSR."
+      this.duplicateApplicationLinkUri = "https://www.gov.uk/guidance/contact-the-building-safety-regulator"
 
     }
     else {
