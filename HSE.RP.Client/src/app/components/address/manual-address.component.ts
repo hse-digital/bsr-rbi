@@ -89,7 +89,7 @@ export class ManualAddressComponent {
     if (!postcode) {
       this.postcodeErrorMessage = 'Enter a postcode';
     } else if (!FieldValidations.PostcodeValidator(postcode)) {
-      this.postcodeErrorMessage = "Enter a real postcode, like 'EC3A 8BF'.";
+      this.postcodeErrorMessage = "Enter a real postcode.";
     } else {
       error = false;
     }
