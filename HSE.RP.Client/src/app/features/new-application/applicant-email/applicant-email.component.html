@@ -9,7 +9,7 @@
     title="There is a problem"
     #summaryError
   >
-    <govuk-summary-error-linkable
+    <govuk-summary-error-linkable style="white-space: pre-line;"
       *ngIf="emailHasErrors"
       anchorId="applicant-email"
       message="{{ emailErrorMessage }}"
@@ -59,7 +59,7 @@
     apply to register as a building inspector.</govuk-body
   >
 
-  <govuk-input-linkable
+  <govuk-input-linkable style="white-space: pre-line;"
     id="applicant-email"
     label="Enter your email address"
     [(model)]="model!.Email"
