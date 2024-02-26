@@ -25,6 +25,8 @@ using FluentAssertions;
 using BuildingInspectorClass = HSE.RP.API.Models.BuildingInspectorClass;
 using HSE.RP.API.UnitTests.TestData;
 using DurableTask.Core;
+using HSE.RP.API.Functions;
+using System.Net.Mail;
 
 namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 {
@@ -32,6 +34,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
     {
 
         private readonly IDynamicsService _dynamicsService;
+        private readonly IDynamicsSynchronisationFunctions _dynamicsSynchronisationFunctions;
 
         //Create dynamicsservice using mockdynamicsservice
         private BuildingProfessionApplicationModel buildingProfessionApplicationModel;
@@ -61,6 +64,8 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         public DynamicsServiceTests()
         {
             _dynamicsService = DynamicsService;
+            _dynamicsSynchronisationFunctions = DynamicsSynchronisationFunctions;
+
 
 
 
@@ -414,6 +419,326 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
             HttpTest.ForCallsTo("https://login.microsoftonline.com/6b5953be-6b1d-4980-b26b-56ed8b0bf3dc/oauth2/token")
             .RespondWithJson(new DynamicsAuthenticationModel { AccessToken = DynamicsAuthToken });
+        }
+
+        [Fact]
+        public async Task GetContactsAsync()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName}' and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email}' ")            
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsContact> { value = new List<DynamicsContact> { dynamicsContact } });
+
+
+            //Act
+
+            var testGetContacts = await _dynamicsService.GetContactsAsync(buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName}' and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email}' ")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.NotEmpty(testGetContacts.value);
+            Assert.Equal(dynamicsContact.contactid, testGetContacts.value.First().contactid);
+
+        }
+
+        [Fact]
+        public async Task CreateNewContactAsync()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithVerb(HttpMethod.Post)
+            .WithRequestJson(dynamicsContactNewApplication)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader("123456789"));
+            //Act
+
+            var testCreateContact = await _dynamicsService.CreateNewContactAsync(dynamicsContactNewApplication);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithRequestJson(dynamicsContactNewApplication)
+            .WithVerb(HttpMethod.Post);
+
+
+            Assert.Equal("123456789", testCreateContact.contactid);
+
+        }
+
+        [Fact]
+        public async Task FindExistingContactAsync_ContactFound()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}' and contains(telephone1, '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')")
+            .WithQueryParam("$expand", "bsr_contacttype_contact")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsContact> { value = new List<DynamicsContact> { dynamicsContact } });
+
+
+            //Act
+
+            var testGetContacts = await _dynamicsService.FindExistingContactAsync(buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email,buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}' and contains(telephone1, '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')")
+            .WithQueryParam("$expand", "bsr_contacttype_contact")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.NotNull(testGetContacts);
+            Assert.Equal(dynamicsContact.contactid, testGetContacts.contactid);
+
+        }
+
+        [Fact]
+        public async Task FindExistingContactAsync_ContactNotFound()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}' and contains(telephone1, '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')")
+            .WithQueryParam("$expand", "bsr_contacttype_contact")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsContact> { value = new List<DynamicsContact> { } });
+
+
+            //Act
+
+            var testGetContacts = await _dynamicsService.FindExistingContactAsync(buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}' and contains(telephone1, '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')")
+            .WithQueryParam("$expand", "bsr_contacttype_contact")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Null(testGetContacts);
+
+        }
+
+        [Fact]
+        public async Task FindExistingBuildingProfessionalBodyMembership_MembershipFound()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithAnyQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership> { value = new List<DynamicsBuildingInspectorProfessionalBodyMembership> { dynamicsServiceProfessionalMembershipTestConfigurations.RICSDynamicsBuildingInspectorProfessionalBodyMembership } });
+
+
+            //Act
+
+            var testGetMembership = await _dynamicsService.FindExistingBuildingProfessionalBodyMembership(dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id, dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithAnyQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.NotNull(testGetMembership);
+            Assert.Equal(dynamicsServiceProfessionalMembershipTestConfigurations.RICSDynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid, testGetMembership.bsr_biprofessionalmembershipid);
+
+        }
+
+        [Fact]
+        public async Task FindExistingBuildingProfessionalBodyMembership_MembershipNotFound()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithAnyQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership> { value = new List<DynamicsBuildingInspectorProfessionalBodyMembership> { } });
+
+
+            //Act
+
+            var testGetMembership = await _dynamicsService.FindExistingBuildingProfessionalBodyMembership(dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id, dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithAnyQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Null(testGetMembership);
+
+        }
+
+        [Fact]
+        public async Task CreateDynamicsPaymentAsync()
+        {
+
+            //Arrange
+
+
+            var testDynamicsPayment = new DynamicsPayment
+            {
+                buildingProfessionApplicationReferenceId = $"/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid})",
+                bsr_amountpaid = 100,
+                bsr_cardtypecreditdebit = DynamicsPaymentCardType.Credit,
+                bsr_lastfourdigitsofcardnumber = "1234",
+                bsr_cardexpirydate = "12/23",
+                bsr_cardbrandegvisa = "visa",
+                bsr_billingaddress = "25, HAVELOCK ROAD, GREET, BIRMINGHAM, B11 3RQ",
+                bsr_emailaddress = "",
+                bsr_service = "rbiportal"
+            };
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_payments")
+            .WithVerb(HttpMethod.Post)
+            .WithRequestJson(testDynamicsPayment)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader("123456789"));
+
+
+            //Act
+
+            var testPaymentResult = await _dynamicsService.CreateDynamicsPaymentAsync(testDynamicsPayment);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_payments")
+            .WithVerb(HttpMethod.Post)
+            .WithRequestJson(testDynamicsPayment);
+
+            Assert.Equal("123456789", testPaymentResult.bsr_paymentid);
+
+        }
+
+        [Fact]
+        public async Task UpdateDynamicsPaymentAsync()
+        {
+
+            //Arrange
+
+
+            var testDynamicsPayment = new DynamicsPayment
+            {
+                bsr_paymentid = "123456789",
+                buildingProfessionApplicationReferenceId = $"/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid})",
+                bsr_amountpaid = 100,
+                bsr_cardtypecreditdebit = DynamicsPaymentCardType.Credit,
+                bsr_lastfourdigitsofcardnumber = "1234",
+                bsr_cardexpirydate = "12/23",
+                bsr_cardbrandegvisa = "visa",
+                bsr_billingaddress = "25, HAVELOCK ROAD, GREET, BIRMINGHAM, B11 3RQ",
+                bsr_emailaddress = "",
+                bsr_service = "rbiportal",
+                bsr_govukpaystatus = "success"
+            };
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_payments({testDynamicsPayment.bsr_paymentid})")
+            .WithVerb(HttpMethod.Patch)
+            .WithRequestJson(testDynamicsPayment)
+            .RespondWith(status: 204);
+
+
+            //Act
+
+            await _dynamicsService.UpdateInvoicePaymentAsync(testDynamicsPayment);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_payments({testDynamicsPayment.bsr_paymentid})")
+            .WithVerb(HttpMethod.Patch)
+            .WithRequestJson(testDynamicsPayment);
+
+
+
+        }
+
+        [Fact]
+        public async Task UpdatePersonalDetails()
+        {
+
+
+            //Arrange
+            var testContact = new Contact
+            {
+                Id = dynamicsContact.contactid ?? "",
+                FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName ?? "",
+                LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName ?? "",
+                Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email ?? "",
+                AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
+                PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? null,
+                AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
+                Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
+                birthdate = buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth is null ? null :
+                new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
+                                         int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),
+                                         int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day)),
+                NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber
+            };
+
+            var testContactWrapper = new ContactWrapper(testContact, dynamicsContact);
+
+            var testNewDynamicsContact = new DynamicsContact
+            {
+                firstname = testContactWrapper.Model.FirstName,
+                lastname = testContactWrapper.Model.LastName,
+                emailaddress1 = testContactWrapper.Model.Email,
+                emailaddress2 = testContactWrapper.Model.AlternativeEmail,
+                telephone1 = testContactWrapper.Model.PhoneNumber,
+                business2 = testContactWrapper.Model.AlternativePhoneNumber,
+                address1_addresstypecode = 3,
+                address1_line1 = testContactWrapper.Model.Address.Address,
+                address1_line2 = testContactWrapper.Model.Address.AddressLineTwo,
+                address1_city = testContactWrapper.Model.Address.Town,
+                address1_postalcode = testContactWrapper.Model.Address.Postcode,
+                bsr_address1uprn = testContactWrapper.Model.Address.UPRN,
+                bsr_address1usrn = testContactWrapper.Model.Address.USRN,
+                bsr_address1lacode = testContactWrapper.Model.Address.CustodianCode,
+                bsr_address1ladescription = testContactWrapper.Model.Address.CustodianDescription,
+                bsr_manualaddress = testContactWrapper.Model.Address.IsManual is null ? null :
+                                testContactWrapper.Model.Address.IsManual is true ? YesNoOption.Yes :
+                                YesNoOption.No,
+                birthdate = testContactWrapper.Model.birthdate,
+                bsr_nationalinsuranceno = testContactWrapper.Model.NationalInsuranceNumber
+            };
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts({testContact.Id})")
+            .WithRequestJson(testNewDynamicsContact)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204);
+
+            //Act
+
+            await _dynamicsSynchronisationFunctions.UpdateContact(testContactWrapper);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts({testContact.Id})")
+            .WithRequestJson(testNewDynamicsContact)
+            .WithVerb(HttpMethod.Patch);
+
         }
 
         [Fact]

@@ -23,6 +23,7 @@ using HSE.RP.API.Extensions;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSE.RP.API.Models.Payment;
 using HSEPortal.API.Models.Payment;
+using HSE.RP.API.Functions;
 
 namespace HSE.RP.API.UnitTests
 {
@@ -30,6 +31,8 @@ namespace HSE.RP.API.UnitTests
     {
         protected HttpTest HttpTest { get; }
         protected IDynamicsService DynamicsService { get; set; }
+        protected IDynamicsSynchronisationFunctions DynamicsSynchronisationFunctions { get; set; }
+        protected IMapper mapper { get; set; }
         protected DynamicsApi DynamicsApi { get; }
         protected OTPService OtpService { get; set; }
         protected IOptions<FeatureOptions> FeatureOptions = new OptionsWrapper<FeatureOptions>(new FeatureOptions());
@@ -83,6 +86,8 @@ namespace HSE.RP.API.UnitTests
             HttpTest = new HttpTest();
             DynamicsApi = new DynamicsApi(options.Object);
             DynamicsService = new DynamicsService(new DynamicsModelDefinitionFactory(), new OptionsWrapper<FeatureOptions>(featureOptions), options.Object, new OptionsWrapper<SwaOptions>(new SwaOptions()), new DynamicsApi(options.Object));
+            DynamicsSynchronisationFunctions = new DynamicsSynchronisationFunctions(DynamicsService, new OptionsWrapper<IntegrationsOptions>(integrationOptions), mapper);
+
             OtpService = new OTPService(IntegrationsOptions);
         }
         protected HttpRequestData BuildHttpRequestData<T>(T data, params string[] parameters)
