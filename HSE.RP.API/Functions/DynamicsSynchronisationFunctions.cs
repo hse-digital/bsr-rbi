@@ -17,7 +17,52 @@ using Microsoft.Extensions.Options;
 
 namespace HSE.RP.API.Functions;
 
-public class DynamicsSynchronisationFunctions
+public interface IDynamicsSynchronisationFunctions
+{
+    Task CreateOrUpdateBuildingInspectorEmploymentDetails([ActivityTrigger] BuildingInspectorEmploymentDetail buildingInspectorEmploymentDetail);
+    Task CreateOrUpdateBuildingInspectorProfessionalBodyMembership([ActivityTrigger] BuildingInspectorProfessionalBodyMembership buildingInspectorProfessionalBodyMembership);
+    Task<DynamicsAccount> CreateOrUpdateEmployer([ActivityTrigger] BuildingProfessionApplicationModel buildingProfessionApplicationModel);
+    Task CreateOrUpdatePayment([ActivityTrigger] BuildingProfessionApplicationPayment buildingProfessionApplicationPayment);
+    Task CreateOrUpdateRegistrationActivity([ActivityTrigger] BuildingInspectorRegistrationActivity buildingInspectorRegistrationActivity);
+    Task CreateOrUpdateRegistrationClass([ActivityTrigger] BuildingInspectorRegistrationClass buildingInspectorRegistrationClass);
+    Task CreateOrUpdateRegistrationCountry([ActivityTrigger] BuildingInspectorRegistrationCountry buildingInspectorRegistrationCountry);
+    Task<List<DynamicsBuildingInspectorProfessionalBodyMembership>> GetBuildingInspectorProfessionalBodyMembershipsUsingApplicationId([ActivityTrigger] string applicationId);
+    Task<DynamicsBuildingProfessionApplication> GetBuildingProfessionApplicationUsingId([ActivityTrigger] string applicationId);
+    Task<DynamicsContact> GetContactUsingId([ActivityTrigger] string contactId);
+    Task<List<DynamicsPayment>> GetDynamicsPayments([ActivityTrigger] string applicationId);
+    Task<DynamicsYear> GetDynamicsYear([ActivityTrigger] string Year);
+    Task<DynamicsBuildingInspectorEmploymentDetail> GetEmploymentDetailsUsingId([ActivityTrigger] string applicationId);
+    Task<PaymentResponseModel> GetPaymentStatus([ActivityTrigger] string paymentId);
+    Task<List<DynamicsBuildingInspectorRegistrationActivity>> GetRegistrationActivitiesUsingApplicationId([ActivityTrigger] string applicationId);
+    Task<List<DynamicsBuildingInspectorRegistrationClass>> GetRegistrationClassesUsingApplicationId([ActivityTrigger] string applicationId);
+    Task<List<DynamicsBuildingInspectorRegistrationCountry>> GetRegistrationCountriesUsingApplicationId([ActivityTrigger] string applicationId);
+    Task<HttpResponseData> SyncApplicationStage([HttpTrigger(AuthorizationLevel.Anonymous, new[] { "post" })] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient);
+    Task<HttpResponseData> SyncBuildingInspectorClass([HttpTrigger(AuthorizationLevel.Anonymous, new[] { "post" })] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient);
+    Task<HttpResponseData> SyncCompetency([HttpTrigger(AuthorizationLevel.Anonymous, new[] { "post" })] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient);
+    Task<HttpResponseData> SyncDeclaration([HttpTrigger(AuthorizationLevel.Anonymous, new[] { "post" })] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient);
+    Task<HttpResponseData> SyncEmploymentDetails([HttpTrigger(AuthorizationLevel.Anonymous, new[] { "post" })] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient);
+    Task<HttpResponseData> SyncFullApplication([HttpTrigger(AuthorizationLevel.Anonymous, new[] { "post" })] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient);
+    Task SynchroniseApplicationStage([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext);
+    Task SynchroniseBuildingInspectorClass([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext);
+    Task SynchroniseCompetency([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext);
+    Task SynchroniseDeclaration([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext);
+    Task SynchroniseEmploymentDetails([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext);
+    Task SynchroniseFullApplication([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext);
+    Task SynchronisePayment([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext);
+    Task SynchronisePersonalDetails([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext);
+    Task SynchroniseProfessionalBodyMemberships([OrchestrationTrigger] TaskOrchestrationContext orchestrationContext);
+    Task<HttpResponseData> SyncPayment([HttpTrigger(AuthorizationLevel.Anonymous, new[] { "post" })] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient);
+    Task<HttpResponseData> SyncPersonalDetails([HttpTrigger(AuthorizationLevel.Anonymous, new[] { "post" })] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient);
+    Task<HttpResponseData> SyncProfessionalBodyMemberships([HttpTrigger(AuthorizationLevel.Anonymous, new[] { "post" })] HttpRequestData request, EncodedRequest encodedRequest, [DurableClient] DurableTaskClient durableTaskClient);
+    Task UpdateBuildingInspectorApplicationStage([ActivityTrigger] DynamicsBuildingProfessionApplication buildingProfessionApplication);
+    Task UpdateBuildingProfessionApplication([ActivityTrigger] BuildingProfessionApplicationWrapper buildingProfessionApplicationWrapper);
+    Task UpdateBuildingProfessionApplicationCompetency([ActivityTrigger] BuildingProfessionApplicationWrapper buildingProfessionApplicationWrapper);
+    BuildingProfessionApplicationModel UpdateBuildingProfessionApplicationInCosmos([ActivityTrigger] BuildingProfessionApplicationModel buildingProfessionApplicationModel);
+    Task UpdateBuildingProfessionApplicationToSubmitted([ActivityTrigger] DynamicsBuildingProfessionApplication buildingProfessionApplication);
+    Task UpdateContact([ActivityTrigger] ContactWrapper contactWrapper);
+}
+
+public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunctions
 {
     private readonly IDynamicsService dynamicsService;
     private readonly IMapper mapper;
@@ -169,9 +214,9 @@ public class DynamicsSynchronisationFunctions
 
         BuildingProfessionApplicationStage? applicationStage = applicationStageMapper.ToBuildingApplicationStage(buildingProfessionApplicationModel.ApplicationStage);
 
-        if(applicationStage != null)
+        if (applicationStage != null)
         {
-            await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingInspectorApplicationStage), dynamicsBuildingProfessionApplication with { bsr_buildingprofessionalapplicationstage = applicationStage});
+            await orchestrationContext.CallActivityAsync(nameof(UpdateBuildingInspectorApplicationStage), dynamicsBuildingProfessionApplication with { bsr_buildingprofessionalapplicationstage = applicationStage });
         }
 
     }

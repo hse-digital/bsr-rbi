@@ -25,6 +25,7 @@ using FluentAssertions;
 using BuildingInspectorClass = HSE.RP.API.Models.BuildingInspectorClass;
 using HSE.RP.API.UnitTests.TestData;
 using DurableTask.Core;
+using HSE.RP.API.Functions;
 
 namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 {
@@ -32,6 +33,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
     {
 
         private readonly IDynamicsService _dynamicsService;
+        private readonly IDynamicsSynchronisationFunctions _dynamicsSynchronisationFunctions;
 
         //Create dynamicsservice using mockdynamicsservice
         private BuildingProfessionApplicationModel buildingProfessionApplicationModel;
@@ -61,6 +63,8 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         public DynamicsServiceTests()
         {
             _dynamicsService = DynamicsService;
+            _dynamicsSynchronisationFunctions = DynamicsSynchronisationFunctions;
+
 
 
 
@@ -414,6 +418,74 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
             HttpTest.ForCallsTo("https://login.microsoftonline.com/6b5953be-6b1d-4980-b26b-56ed8b0bf3dc/oauth2/token")
             .RespondWithJson(new DynamicsAuthenticationModel { AccessToken = DynamicsAuthToken });
+        }
+
+        [Fact]
+        public async Task UpdatePersonalDetails()
+        {
+
+
+            //Arrange
+            var testContact = new Contact
+            {
+                Id = dynamicsContact.contactid ?? "",
+                FirstName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName ?? "",
+                LastName = buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName ?? "",
+                Email = buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email ?? "",
+                AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
+                PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? null,
+                AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
+                Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
+                birthdate = buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth is null ? null :
+                new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
+                                         int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),
+                                         int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day)),
+                NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber
+            };
+
+            var testContactWrapper = new ContactWrapper(testContact, dynamicsContact);
+
+            var testNewDynamicsContact = new DynamicsContact
+            {
+                firstname = testContactWrapper.Model.FirstName,
+                lastname = testContactWrapper.Model.LastName,
+                emailaddress1 = testContactWrapper.Model.Email,
+                emailaddress2 = testContactWrapper.Model.AlternativeEmail,
+                telephone1 = testContactWrapper.Model.PhoneNumber,
+                business2 = testContactWrapper.Model.AlternativePhoneNumber,
+                address1_addresstypecode = 3,
+                address1_line1 = testContactWrapper.Model.Address.Address,
+                address1_line2 = testContactWrapper.Model.Address.AddressLineTwo,
+                address1_city = testContactWrapper.Model.Address.Town,
+                address1_postalcode = testContactWrapper.Model.Address.Postcode,
+                bsr_address1uprn = testContactWrapper.Model.Address.UPRN,
+                bsr_address1usrn = testContactWrapper.Model.Address.USRN,
+                bsr_address1lacode = testContactWrapper.Model.Address.CustodianCode,
+                bsr_address1ladescription = testContactWrapper.Model.Address.CustodianDescription,
+                bsr_manualaddress = testContactWrapper.Model.Address.IsManual is null ? null :
+                                testContactWrapper.Model.Address.IsManual is true ? YesNoOption.Yes :
+                                YesNoOption.No,
+                birthdate = testContactWrapper.Model.birthdate,
+                bsr_nationalinsuranceno = testContactWrapper.Model.NationalInsuranceNumber
+            };
+
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts({testContact.Id})")
+            .WithRequestJson(testNewDynamicsContact)
+            .WithVerb(HttpMethod.Patch)
+            .RespondWith(status: 204);
+
+            //Act
+
+            await _dynamicsSynchronisationFunctions.UpdateContact(testContactWrapper);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts({testContact.Id})")
+            .WithRequestJson(testNewDynamicsContact)
+            .WithVerb(HttpMethod.Patch);
+
         }
 
         [Fact]
@@ -1850,7 +1922,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships({dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid})")
             .WithRequestJson(testDynamicsBuildingInspectorProfessionalBodyMembership)
             .WithVerb(HttpMethod.Patch)
-            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid));
+            .RespondWith(status: 204);
 
             //Act
             var testRegisterMembership = await _dynamicsService.CreateOrUpdateBuildingInspectorProfessionalBodyMembership(buildingInspectorProfessionalBodyMembership);
