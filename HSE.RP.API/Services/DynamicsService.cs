@@ -68,7 +68,7 @@ namespace HSE.RP.API.Services
         Task AssignContactType(string contactId, string contactTypeId);
         Task<DynamicsOrganisationsSearchResponse> SearchOrganisations(string authorityName, string accountTypeId);
     }
-    public class DynamicsService : IDynamicsService 
+    public class DynamicsService : IDynamicsService
     {
         private readonly DynamicsModelDefinitionFactory dynamicsModelDefinitionFactory;
         private readonly SwaOptions swaOptions;
@@ -232,6 +232,7 @@ namespace HSE.RP.API.Services
                 return contact with { Id = contactId };
             }
 
+            await AssignContactType(existingContact.contactid, DynamicsContactTypes.BIApplicant);
 
             return contact with { Id = existingContact.contactid };
         }
@@ -351,8 +352,17 @@ namespace HSE.RP.API.Services
 
         public async Task AssignContactType(string contactId, string contactTypeId)
         {
-            await dynamicsApi.Create($"contacts({contactId})/bsr_contacttype_contact/$ref",
+            var contactTypeExists = await dynamicsApi.Get<DynamicsResponse<DynamicsContactType>>($"contacts({contactId})/bsr_contacttype_contact", new[]
+            {
+                ("$filter", $"bsr_contacttypeid eq '{contactTypeId}'")
+            });
+
+            if(contactTypeExists.value.Count == 0)
+            {
+                await dynamicsApi.Create($"contacts({contactId})/bsr_contacttype_contact/$ref",
                 new DynamicsContactType { contactTypeReferenceId = $"{dynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_contacttypes({contactTypeId})" });
+            }
+
         }
 
         public async Task<DynamicsPayment> GetPaymentByReference(string reference)
@@ -858,36 +868,36 @@ namespace HSE.RP.API.Services
             return response.value.FirstOrDefault();
         }
 
+
+
         public async Task<bool> CheckDupelicateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel)
         {
-
             if (featureOptions.DisableApplicationDuplicationCheck)
             {
                 return false;
             }
 
-            //Check for existing contact
+            // Check for existing contacts
             var contact = await dynamicsApi.Get<DynamicsResponse<DynamicsContact>>("contacts", new[]
             {
-                        ("$filter", $"firstname eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}'"),
+                ("$filter", $"firstname eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModel.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}'"),
             });
 
-            //If contact exists check for existing application
-            if (contact.value.FirstOrDefault() != null)
+            foreach (var dynamicsContact in contact.value)
             {
-                var application = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
-            {
-                        ("$filter", $"_bsr_applicantid_value eq '{contact.value.FirstOrDefault().contactid}' and statecode ne 1 and bsr_buildingprofessiontypecode eq {(int)BuildingProfessionType.BuildingInspector}"),
-            });
+                // Get all applications for contact which are not cancelled or inactive
+                var existingApplications = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
+                {
+                    ("$filter", $"_bsr_applicantid_value eq '{dynamicsContact.contactid}' and statuscode ne {(int)BuildingProfessionApplicationStatus.Cancelled} and statuscode ne {(int)BuildingProfessionApplicationStatus.Inactive} and bsr_buildingprofessiontypecode eq {(int)BuildingProfessionType.BuildingInspector}"),
+                });
 
-                return application.value.Count > 0;
-            }
-            else
-            {
-                return false;
-
+                if (existingApplications.value.Count > 0)
+                {
+                    return true;
+                }
             }
 
+            return false;
         }
 
         public async Task<DynamicsBuildingProfessionApplication> CheckDupelicateBuildingProfessionApplicationUsingCosmosIdAsync(string cosmosId)
@@ -895,8 +905,8 @@ namespace HSE.RP.API.Services
             var application = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionApplication>>("bsr_buildingprofessionapplications", new[]
                         {
                         ("$filter", $"bsr_cosmosid eq '{cosmosId}'"),
-            }); 
-            
+            });
+
             return application.value.FirstOrDefault();
         }
     }
