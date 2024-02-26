@@ -1,5 +1,5 @@
 
-<govuk-formpage saveAndContinueText="Verify email" [hideSaveAndComeBack]=true (saveAndContinue)="validateOTP()" [hideBackButton]=false>
+<govuk-formpage saveAndContinueText="Verify email" [hideSaveAndComeBack]=true (saveAndContinue)="validateOTP()" [hideBackButton]=false id="new-applicant-verify-email">
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
     <govuk-error-link anchorId="input-security-code" [message]="getOtpError()" />
   </govuk-error-summary>

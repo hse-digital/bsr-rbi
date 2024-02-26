@@ -1,6 +1,6 @@
 
 
-<govuk-formpage saveAndContinueText="Send verification text" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
+<govuk-formpage saveAndContinueText="Send verification text" [hideSaveAndComeBack]=true (saveAndContinue)="saveAndContinue()" [hideBackButton]=false id="new-applicant-enter-phone">
 
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="!modelValid" anchorId="input-applicant-phone" message="Enter a valid telephone number" />
