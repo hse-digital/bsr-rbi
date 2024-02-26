@@ -2035,7 +2035,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships({dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid})")
             .WithRequestJson(testDynamicsBuildingInspectorProfessionalBodyMembership)
             .WithVerb(HttpMethod.Patch)
-            .RespondWith(status: 204);
+            .RespondWith(status: 204, headers: BuildODataEntityHeader(dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid));
 
             //Act
             var testRegisterMembership = await _dynamicsService.CreateOrUpdateBuildingInspectorProfessionalBodyMembership(buildingInspectorProfessionalBodyMembership);
