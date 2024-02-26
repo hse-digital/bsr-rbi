@@ -1,4 +1,4 @@
-<govuk-formpage saveAndContinueText="Save and Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=false>
+<govuk-formpage saveAndContinueText="Save and Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=false id="employer-other-name">
 
   <govuk-error-summary *ngIf="otherNameHasErrors" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="invalidNameError" anchorId="input-employer-other-name" message={{errorMessage}} />

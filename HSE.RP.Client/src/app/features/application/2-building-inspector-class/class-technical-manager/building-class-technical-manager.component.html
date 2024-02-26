@@ -1,6 +1,6 @@
 <govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]="false"
 (saveAndComeBack)="saveAndComeBack()"
-  (saveAndContinue)="saveAndContinue()" [hideBackButton]="false">
+  (saveAndContinue)="saveAndContinue()" [hideBackButton]="false" id="building-inspector-class-technical-manager">
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="!modelValid" anchorId="class-technical-manager" message="{{ errorMessage }}" />
   </govuk-error-summary>
