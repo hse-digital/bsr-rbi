@@ -421,6 +421,90 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         }
 
         [Fact]
+        public async Task CreateDynamicsPaymentAsync()
+        {
+
+            //Arrange
+
+
+            var testDynamicsPayment = new DynamicsPayment
+            {
+                buildingProfessionApplicationReferenceId = $"/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid})",
+                bsr_amountpaid = 100,
+                bsr_cardtypecreditdebit = DynamicsPaymentCardType.Credit,
+                bsr_lastfourdigitsofcardnumber = "1234",
+                bsr_cardexpirydate = "12/23",
+                bsr_cardbrandegvisa = "visa",
+                bsr_billingaddress = "25, HAVELOCK ROAD, GREET, BIRMINGHAM, B11 3RQ",
+                bsr_emailaddress = "",
+                bsr_service = "rbiportal"
+            };
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_payments")
+            .WithVerb(HttpMethod.Post)
+            .WithRequestJson(testDynamicsPayment)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader("123456789"));
+
+
+            //Act
+
+            var testPaymentResult = await _dynamicsService.CreateDynamicsPaymentAsync(testDynamicsPayment);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_payments")
+            .WithVerb(HttpMethod.Post)
+            .WithRequestJson(testDynamicsPayment);
+
+            Assert.Equal("123456789", testPaymentResult.bsr_paymentid);
+
+        }
+
+        [Fact]
+        public async Task UpdateDynamicsPaymentAsync()
+        {
+
+            //Arrange
+
+
+            var testDynamicsPayment = new DynamicsPayment
+            {
+                bsr_paymentid = "123456789",
+                buildingProfessionApplicationReferenceId = $"/bsr_buildingprofessionapplications({dynamicsBuildingProfessionApplicationNewApplication.bsr_buildingprofessionapplicationid})",
+                bsr_amountpaid = 100,
+                bsr_cardtypecreditdebit = DynamicsPaymentCardType.Credit,
+                bsr_lastfourdigitsofcardnumber = "1234",
+                bsr_cardexpirydate = "12/23",
+                bsr_cardbrandegvisa = "visa",
+                bsr_billingaddress = "25, HAVELOCK ROAD, GREET, BIRMINGHAM, B11 3RQ",
+                bsr_emailaddress = "",
+                bsr_service = "rbiportal",
+                bsr_govukpaystatus = "success"
+            };
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_payments({testDynamicsPayment.bsr_paymentid})")
+            .WithVerb(HttpMethod.Patch)
+            .WithRequestJson(testDynamicsPayment)
+            .RespondWith(status: 204);
+
+
+            //Act
+
+            await _dynamicsService.UpdateInvoicePaymentAsync(testDynamicsPayment);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_payments({testDynamicsPayment.bsr_paymentid})")
+            .WithVerb(HttpMethod.Patch)
+            .WithRequestJson(testDynamicsPayment);
+
+
+
+        }
+
+        [Fact]
         public async Task UpdatePersonalDetails()
         {
 
