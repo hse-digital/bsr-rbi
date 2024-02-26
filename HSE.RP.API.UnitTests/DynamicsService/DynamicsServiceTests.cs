@@ -450,6 +450,32 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         }
 
         [Fact]
+        public async Task CreateNewContactAsync()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithVerb(HttpMethod.Post)
+            .WithRequestJson(dynamicsContactNewApplication)
+            .RespondWith(status: 204, headers: BuildODataEntityHeader("123456789"));
+            //Act
+
+            var testCreateContact = await _dynamicsService.CreateNewContactAsync(dynamicsContactNewApplication);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithRequestJson(dynamicsContactNewApplication)
+            .WithVerb(HttpMethod.Post);
+
+
+            Assert.Equal("123456789", testCreateContact.contactid);
+
+        }
+
+        [Fact]
         public async Task CreateDynamicsPaymentAsync()
         {
 
