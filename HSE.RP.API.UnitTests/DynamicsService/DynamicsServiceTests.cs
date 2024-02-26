@@ -476,7 +476,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         }
 
         [Fact]
-        public async Task FindExistingContactAsync()
+        public async Task FindExistingContactAsync_ContactFound()
         {
 
             //Arrange
@@ -502,6 +502,35 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
             Assert.NotNull(testGetContacts);
             Assert.Equal(dynamicsContact.contactid, testGetContacts.contactid);
+
+        }
+
+        [Fact]
+        public async Task FindExistingContactAsync_ContactNotFound()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}' and contains(telephone1, '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')")
+            .WithQueryParam("$expand", "bsr_contacttype_contact")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsContact> { value = new List<DynamicsContact> { } });
+
+
+            //Act
+
+            var testGetContacts = await _dynamicsService.FindExistingContactAsync(buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName.EscapeSingleQuote()}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName.EscapeSingleQuote()}' and statuscode eq 1 and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email.EscapeSingleQuote()}' and contains(telephone1, '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantPhone.PhoneNumber.Replace("+", string.Empty).EscapeSingleQuote()}')")
+            .WithQueryParam("$expand", "bsr_contacttype_contact")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Null(testGetContacts);
 
         }
 
