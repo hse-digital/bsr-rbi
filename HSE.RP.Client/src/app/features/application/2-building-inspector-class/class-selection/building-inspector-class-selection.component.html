@@ -1,5 +1,5 @@
 <govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndComeBack)="saveAndComeBack()"
-  (saveAndContinue)="saveAndContinue()" [hideBackButton]=false>
+  (saveAndContinue)="saveAndContinue()" [hideBackButton]=false id="building-inspector-class-selection">
 
   <govuk-error-summary *ngIf="selectedOptionError" title="There is a problem" #summaryError>
     <govuk-error-link *ngIf="selectedOptionError" anchorId="radios-bi-class-selection" [message]="errorMessage" />

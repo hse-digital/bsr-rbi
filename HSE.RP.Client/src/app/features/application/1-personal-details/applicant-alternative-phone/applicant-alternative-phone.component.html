@@ -1,4 +1,4 @@
-<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" [hideBackButton]=false (saveAndComeBack)="saveAndComeBack()">
+<govuk-formpage saveAndContinueText="Save and continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" [hideBackButton]=false (saveAndComeBack)="saveAndComeBack()" id="applicant-alternative-phone">
 
   <govuk-error-summary *ngIf="phoneNumberHasErrors" title="There is a problem" #summaryError>
     <govuk-error-link anchorId="radios-alternative-phone" message={{errorMessage}} />
