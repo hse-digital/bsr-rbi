@@ -535,6 +535,61 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         }
 
         [Fact]
+        public async Task FindExistingBuildingProfessionalBodyMembership_MembershipFound()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithAnyQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership> { value = new List<DynamicsBuildingInspectorProfessionalBodyMembership> { dynamicsServiceProfessionalMembershipTestConfigurations.RICSDynamicsBuildingInspectorProfessionalBodyMembership } });
+
+
+            //Act
+
+            var testGetMembership = await _dynamicsService.FindExistingBuildingProfessionalBodyMembership(dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id, dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithAnyQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.NotNull(testGetMembership);
+            Assert.Equal(dynamicsServiceProfessionalMembershipTestConfigurations.RICSDynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid, testGetMembership.bsr_biprofessionalmembershipid);
+
+        }
+
+        [Fact]
+        public async Task FindExistingBuildingProfessionalBodyMembership_MembershipNotFound()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithAnyQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id}'")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsBuildingInspectorProfessionalBodyMembership> { value = new List<DynamicsBuildingInspectorProfessionalBodyMembership> { } });
+
+
+            //Act
+
+            var testGetMembership = await _dynamicsService.FindExistingBuildingProfessionalBodyMembership(dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id, dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_biprofessionalmemberships")
+            .WithAnyQueryParam("$filter", $"_bsr_biapplicationid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.BuildingProfessionApplicationId}' and _bsr_professionalbodyid_value eq '{dynamicsServiceProfessionalMembershipTestConfigurations.RICSBuildingProfessionApplicationBodyMembership.Id}'")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.Null(testGetMembership);
+
+        }
+
+        [Fact]
         public async Task CreateDynamicsPaymentAsync()
         {
 
