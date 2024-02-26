@@ -26,6 +26,7 @@ using BuildingInspectorClass = HSE.RP.API.Models.BuildingInspectorClass;
 using HSE.RP.API.UnitTests.TestData;
 using DurableTask.Core;
 using HSE.RP.API.Functions;
+using System.Net.Mail;
 
 namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 {
@@ -418,6 +419,34 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
             HttpTest.ForCallsTo("https://login.microsoftonline.com/6b5953be-6b1d-4980-b26b-56ed8b0bf3dc/oauth2/token")
             .RespondWithJson(new DynamicsAuthenticationModel { AccessToken = DynamicsAuthToken });
+        }
+
+        [Fact]
+        public async Task GetContactsAsync()
+        {
+
+            //Arrange
+
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName}' and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email}' ")            
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsContact> { value = new List<DynamicsContact> { dynamicsContact } });
+
+
+            //Act
+
+            var testGetContacts = await _dynamicsService.GetContactsAsync(buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName, buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email);
+
+
+
+            //Assert
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/contacts")
+            .WithAnyQueryParam("$filter", $"firstname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.FirstName}' and lastname eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantName.LastName}' and emailaddress1 eq '{buildingProfessionApplicationModelNewApplication.PersonalDetails.ApplicantEmail.Email}' ")
+            .WithVerb(HttpMethod.Get);
+
+            Assert.NotEmpty(testGetContacts.value);
+            Assert.Equal(dynamicsContact.contactid, testGetContacts.value.First().contactid);
+
         }
 
         [Fact]
