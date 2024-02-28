@@ -738,8 +738,8 @@ export class ApplicationTaskListComponent extends PageComponent<BuildingProfessi
               return TaskStatus.CannotStart;
             } else {
               if (
-                this.model?.StageStatus['ApplicationConfirmed'] ==
-                StageCompletionState.Complete
+                this.model?.StageStatus['ApplicationConfirmed'] == StageCompletionState.Complete 
+                && this.determineApplicationSummaryTask(aModel) == TaskStatus.SummaryCanStart
               ) {
                 if (this.paymentStatus == this.paymentEnum.Success) {
                   return TaskStatus.Complete;

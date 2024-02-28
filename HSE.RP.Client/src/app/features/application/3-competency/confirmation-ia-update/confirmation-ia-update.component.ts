@@ -31,6 +31,8 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
 
   constructor(activatedRoute: ActivatedRoute) {
     super(activatedRoute);
+    this.updateOnSave = true;
+
   }
 
   override onInit(applicationService: ApplicationService): void {
@@ -38,9 +40,17 @@ export class ConfirmationIaUpdateComponent extends PageComponent<string> {
       this.queryParam = params['queryParam'];
     });
   }
+
   override async onSave(
     applicationService: ApplicationService
-  ): Promise<void> {}
+  ): Promise<void> {
+    if(this.selectedOption == 'yes'){
+    this.applicationService.model.StageStatus['ApplicationConfirmed'] = StageCompletionState.Incomplete;
+    this.applicationService.model.Competency = new Competency();
+    this.applicationService.updateApplication();
+    }
+
+  }
   override canAccess(
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
