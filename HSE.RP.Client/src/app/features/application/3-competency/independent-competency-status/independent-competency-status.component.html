@@ -18,33 +18,67 @@
     />
   </govuk-error-summary>
 
-  <h1 class="govuk-heading-l">
-    Competency assessment certificate
-  </h1>
+  <h1 class="govuk-heading-l">Competency assessment certificate</h1>
 
   <govuk-body>
     <p>
-      To do BSR-regulated activities unsupervised, you must have passed a BSR-approved competency assessment for the class you want to register for.
+      You must pass a BSR-approved competency assessment for the class you want
+      to register for
     </p>
 
     <p>Assessment is done by BSR-approved providers:</p>
 
     <govuk-list classes="govuk-list--bullet">
       <govuk-list-item text="Building Safety Competence Foundation (BSCF)" />
-      <govuk-list-item text="Chartered Association of Building Engineers (CABE)"/>
-      <govuk-list-item text="Total Training and Development (TTD)"/>
+      <govuk-list-item
+        text="Chartered Association of Building Engineers (CABE)"
+      />
+      <govuk-list-item text="Total Training and Development (TTD)" />
+    </govuk-list>
+
+    <h3 class="govuk-heading-m">
+      If you have not passed your competency assessment
+    </h3>
+
+    <p>
+      If you have not passed assessment, you can still complete your
+      registration. You should apply for the class you are being assessed for,
+      but you will be registered as a class 1 building inspector.
+    </p>
+
+    <p>
+      You can continue to work on regulated building control activities (for the
+      class of RBI you are undertaking a competency assessment for) without
+      supervision if you are all of the following:
+    </p>
+
+    <govuk-list classes="govuk-list--bullet">
+      <govuk-list-item text="an existing building control professional" />
+      <govuk-list-item text="registered as a class 1 RBI by 6 April " />
+      <govuk-list-item
+        text="enrolled in, and actively working through, one of the BSR-approved competency assessment schemes by 6 April"
+      />
+      <govuk-list-item
+        text="a scheme provider has not told you that you have not passed your competency assessment for a second time "
+      />
     </govuk-list>
 
     <p>
-      If you have not passed assessment, you can still complete your registration, but you will be registered as a class 1 building inspector. You will not be able to do BSR-regulated building control activities without supervision after April 2024.
+      You must pass your competency assessment by the deadline that applies to
+      the country you will work in to continue working on class 2 and 3
+      projects. If you do not, you cannot continue to work on regulated building
+      control activities and will be treated as a class 1 trainee RBI.
     </p>
 
-    <p>You can request to change your class of registration when you have completed a relevant competency assessment.</p>
+    <p>
+      You can request to change your class of registration when you have
+      completed a relevant competency assessment.
+    </p>
 
     <govuk-radio-group
       title="Do you have a valid certificate from a BSR-approved competency assessment provider?"
       hintText=" "
-      [errorText]=errorMessage
+      [errorText]="errorMessage"
       id="independent-assessment-status"
       [(model)]="selectedOption"
       class="govuk-radios--inline"
