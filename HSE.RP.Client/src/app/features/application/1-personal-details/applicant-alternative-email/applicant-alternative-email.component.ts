@@ -84,11 +84,11 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<ApplicantE
     } else if (this.selectedOption === 'no') {
       return !this.emailHasErrors;
     } else if (this.model?.Email == '') {
-      this.emailErrorMessage = 'Enter your alternative email address';
+      this.emailErrorMessage = 'The alternative email address cannot be blank';
       this.emailHasErrors = true;
     } else {
       this.emailHasErrors = !EmailValidator.isValid(this.model!.Email ?? '');
-      this.emailErrorMessage = 'Enter a valid email address';
+      this.emailErrorMessage = 'Enter a real email address, for example name@example.com';
     }
     return !this.emailHasErrors;
   }

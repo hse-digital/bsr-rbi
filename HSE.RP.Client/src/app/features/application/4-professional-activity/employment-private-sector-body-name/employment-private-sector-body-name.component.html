@@ -1,23 +1,43 @@
-<govuk-formpage saveAndContinueText="Continue" [hideSaveAndComeBack]=false (saveAndContinue)="saveAndContinue()" (saveAndComeBack)="saveAndComeBack()" [hideBackButton]=false id="employer-private-sectory-body-name">
-
-  <govuk-error-summary
-  *ngIf="hasErrors"
-  title="There is a problem"
-  #summaryError
+<govuk-formpage
+  saveAndContinueText="Continue"
+  [hideSaveAndComeBack]="false"
+  (saveAndContinue)="saveAndContinue()"
+  (saveAndComeBack)="saveAndComeBack()"
+  [hideBackButton]="false"
+  id="employer-private-sectory-body-name"
 >
-  <govuk-error-link
-    *ngIf="privateSectorBodyNameHasErrors"
-    anchorId="input-organisation-name"
-    message="Enter the name of the organisation you are employed by"
+  <govuk-error-summary
+    *ngIf="hasErrors"
+    title="There is a problem"
+    #summaryError
+  >
+    <govuk-error-link
+      *ngIf="privateSectorBodyNameHasErrors"
+      anchorId="input-organisation-name"
+      message="Enter the name of the organisation you are employed by"
+    />
+  </govuk-error-summary>
+
+  <h1 class="govuk-heading-l">
+    Find the private sector building control body that employs you
+  </h1>
+
+  <govuk-input-autocomplete
+    label="Search by name"
+    labelClass="govuk-label--s"
+    id="organisation-name"
+    hint="Begin typing the organisation name. If the name does not appear in the drop-down list, type the full name of the organisation."
+    [(model)]="this.model!.FullName"
+    #field
+    [govukRequired]="field"
+    [values]="companies"
+    (onDebounce)="searchCompanies($event)"
+    (onSelectedValue)="selectCompanyName($event)"
+    [errorText]="
+      getErrorDescription(
+        privateSectorBodyNameHasErrors,
+        'Enter the name of the organisation you are employed by'
+      )
+    "
   />
-</govuk-error-summary>
-
-  <h1 class="govuk-heading-l">Find the private sector building control body that employs you</h1>
-
- <govuk-input-autocomplete label="Search by name" labelClass="govuk-label--s" id="organisation-name"
- hint="Begin typing the organisation name. If the name does not appear in the drop-down list, type the full name of the organisation."
- [(model)]="this.model!.FullName" #field [govukRequired]="field"
- [values]="companies" (onDebounce)="searchCompanies($event)" (onSelectedValue)="selectCompanyName($event)"
- [errorText]="getErrorDescription(privateSectorBodyNameHasErrors, 'Enter the name of the organisation you are employed by')"/>
-
 </govuk-formpage>

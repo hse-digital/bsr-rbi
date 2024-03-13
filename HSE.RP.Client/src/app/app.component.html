@@ -1,29 +1,50 @@
-<govuk-cookie-banner [viewCookiesLink]="viewCookiesLink"
-                    title="Register as a building inspector"
-                    class="govuk-width-container"
-                    [showCookieBanner]="cookieBannerModel.showCookies"
-                    [showConfirmBanner]="cookieBannerModel.showConfirmBanner"
-                    [cookiesAccepted]="cookieBannerModel.cookiesAccepted"
-                    (onChangeCookies)="cookiesChanged()"
-                    (onCookiesAccepted)="cookiesAccepted()"
-                    (onCookiesRejected)="cookiesRejected()"
+<govuk-cookie-banner
+  [viewCookiesLink]="viewCookiesLink"
+  title="Register as a building inspector"
+  class="govuk-width-container"
+  [showCookieBanner]="cookieBannerModel.showCookies"
+  [showConfirmBanner]="cookieBannerModel.showConfirmBanner"
+  [cookiesAccepted]="cookieBannerModel.cookiesAccepted"
+  (onChangeCookies)="cookiesChanged()"
+  (onCookiesAccepted)="cookiesAccepted()"
+  (onCookiesRejected)="cookiesRejected()"
 >
   <govuk-body>
     We use some essential cookies to make this service work.
   </govuk-body>
 
   <govuk-body>
-    We'd like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.
+    We'd like to set additional cookies so we can remember your settings,
+    understand how people use the service and make improvements.
   </govuk-body>
 </govuk-cookie-banner>
 
-<govuk-page Title="Register as a building inspector" [govukLogoLink]="govukLogoLink" [headerTitleLink]="appHeaderLink" [footerLinks]="footerLinks" headerTitle="Register as a building inspector">
+<govuk-page
+  Title="Register as a building inspector"
+  [govukLogoLink]="govukLogoLink"
+  [headerTitleLink]="appHeaderLink"
+  [footerLinks]="footerLinks"
+  headerTitle="Register as a building inspector"
+>
   <govuk-phase-banner tag="Beta">
-    This is a new service - your <a href="https://forms.office.com/e/p1rYGz27V6" role="link" tabindex="0" target="_blank">feedback</a> will help us to improve it.
+    This is a new service - your
+    <a
+      href="https://forms.office.com/e/p1rYGz27V6"
+      role="link"
+      tabindex="0"
+      target="_blank"
+      >feedback</a
+    >
+    will help us to improve it.
   </govuk-phase-banner>
   <router-outlet />
 </govuk-page>
 
-
-<timeout-modal *ngIf="showTimeoutDialog" [delayToTimeout]="120" (onContinueClicked)="timeoutContinue()" (onSaveAndComebackClicked)="timeoutSaveAndComeBack()" (onTimeout)="timeout()" />
+<timeout-modal
+  *ngIf="showTimeoutDialog"
+  [delayToTimeout]="120"
+  (onContinueClicked)="timeoutContinue()"
+  (onSaveAndComebackClicked)="timeoutSaveAndComeBack()"
+  (onTimeout)="timeout()"
+/>
 <div id="hiddenAlertContainer" role="alert" class="visually-hidden"></div>
