@@ -103,15 +103,12 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
     }
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
-    name: 's118-${environment}-bsr-acs-workspace'
-    location: location
-    properties: {
-        sku: {
-            name: 'PerGB2018'
-        }
-        retentionInDays: 30
-    }
+var workspaceIds = {
+    dev: '/subscriptions/7dd7c789-6ddc-446f-9d95-bc53bd12fbb3/resourceGroups/p102-dev-itf-acs-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/p102-dev-itf-acs-monitor-log'
+    qa : '/subscriptions/9c0963f0-2058-40ef-b829-9dd9ef573b5e/resourceGroups/p102-test-itf-acs-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/p102-test-itf-acs-monitor-log'
+    uat: '/subscriptions/9c0963f0-2058-40ef-b829-9dd9ef573b5e/resourceGroups/p102-test-itf-acs-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/p102-test-itf-acs-monitor-log'
+    pre: '/subscriptions/20007ca9-8c0c-4cf0-9fff-05306e45c7fe/resourceGroups/p102-prod-itf-acs-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/p102-prod-itf-acs-monitor-log'
+    prod: '/subscriptions/20007ca9-8c0c-4cf0-9fff-05306e45c7fe/resourceGroups/p102-prod-itf-acs-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/p102-prod-itf-acs-monitor-log'
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
@@ -120,7 +117,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
     kind: 'web'
     properties: {
         Application_Type: 'web'
-        WorkspaceResourceId: logAnalyticsWorkspace.id
+        WorkspaceResourceId: workspaceIds[environment]
         Request_Source: 'rest'
     }
 }
