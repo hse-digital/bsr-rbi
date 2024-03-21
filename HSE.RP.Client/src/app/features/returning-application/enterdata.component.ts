@@ -205,7 +205,7 @@ export class ReturningApplicationEnterDataComponent {
       this.errors.emailAddress.errorText = 'Enter your email address';
       this.errors.emailAddress.hasError = true;
     } else if (!EmailValidator.isValid(this.emailAddress!)) {
-      this.errors.emailAddress.errorText = 'Enter a real email address';
+      this.errors.emailAddress.errorText = 'Enter an email address in the correct format, like name@example.com';
       this.errors.emailAddress.hasError = true;
     }
   }
