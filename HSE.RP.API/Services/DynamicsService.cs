@@ -357,11 +357,27 @@ namespace HSE.RP.API.Services
                 ("$filter", $"bsr_contacttypeid eq '{contactTypeId}'")
             });
 
-            if(contactTypeExists.value.Count == 0)
+            if (contactTypeExists.value.Count == 0)
             {
                 await dynamicsApi.Create($"contacts({contactId})/bsr_contacttype_contact/$ref",
                 new DynamicsContactType { contactTypeReferenceId = $"{dynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_contacttypes({contactTypeId})" });
             }
+
+        }
+
+        public async Task AssignAccountType(string accountId, string accountTypeId)
+        {
+            var accountTypeExists = await dynamicsApi.Get<DynamicsResponse<DynamicsAccountTypeRelationship>>($"accounts({accountId})/bsr_Account_bsr_accounttype_bsr_accounttype", new[]
+            {
+                            ("$filter", $"bsr_accounttypeid eq '{accountTypeId}'")
+                        });
+
+            if (accountTypeExists.value.Count == 0)
+            {
+                await dynamicsApi.Create($"accounts({accountId})/bsr_Account_bsr_accounttype_bsr_accounttype/$ref",
+            new DynamicsAccountTypeRelationship { accountTypeReferenceId = $"{dynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_accounttypes({accountTypeId})" });
+            }
+            
 
         }
 
@@ -793,9 +809,17 @@ namespace HSE.RP.API.Services
             var employer = await dynamicsApi.Get<DynamicsResponse<DynamicsAccount>>("accounts",
                                                            ("$filter", $"name eq '{buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.FullName}'" +
                                                            $" and address1_postalcode eq '{buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Postcode}'"));
+            var accountTypeId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType switch
+            {
+                Enums.EmploymentType.PublicSector => DynamicsAccountType.Ids["public-sector-building-control-body"],
+                Enums.EmploymentType.PrivateSector => DynamicsAccountType.Ids["private-sector-building-control-body"],
+                _ => DynamicsAccountType.Ids["other"]
+            };
 
             if (employer.value.Count() == 0)
             {
+
+
                 //Create a new account
                 var dynamicsAccount = new DynamicsAccount()
                 {
@@ -816,21 +840,23 @@ namespace HSE.RP.API.Services
                     countryReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country is null ? null :
                                          buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "England" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["England"]})" :
                                          buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "Wales" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["Wales"]})" :
-                                         null,
+                                         null
                     //[property: JsonPropertyName("bsr_accounttype_accountId@odata.bind")]
-                    accountTypeReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == Enums.EmploymentType.PublicSector ? $"/bsr_accounttypes({DynamicsAccountType.Ids["public-sector-building-control-body"]})" :
-                    buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == Enums.EmploymentType.PrivateSector ? $"/bsr_accounttypes({DynamicsAccountType.Ids["private-sector-building-control-body"]})" :
-                    $"/bsr_accounttypes({DynamicsAccountType.Ids["other"]})"
+                    //accountTypeReferenceId = $"/bsr_accounttypes({accountTypeId})"
                 };
 
                 var response = await dynamicsApi.Create("accounts", dynamicsAccount);
                 var employerId = ExtractEntityIdFromHeader(response.Headers);
                 employer = await dynamicsApi.Get<DynamicsResponse<DynamicsAccount>>("accounts",
                                                ("$filter", $"accountid eq '{employerId}'"));
+
+                //Update account type many to many relationship
+                await AssignAccountType(employerId, accountTypeId);
+
                 return employer.value.FirstOrDefault();
             }
 
-
+            await AssignAccountType(employer.value.FirstOrDefault().accountid, accountTypeId);
 
             return employer.value.FirstOrDefault();
         }
