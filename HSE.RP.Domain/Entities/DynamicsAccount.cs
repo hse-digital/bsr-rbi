@@ -41,3 +41,9 @@ public static class DynamicsAccountType
         
     };
 }
+
+public record DynamicsAccountTypeRelationship(
+    string bsr_name = null,
+    string bsr_accounttypeid = null,
+    [property: JsonPropertyName("@odata.id")]
+    string accountTypeReferenceId = null);
