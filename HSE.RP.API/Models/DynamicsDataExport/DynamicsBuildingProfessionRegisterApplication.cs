@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HSE.RP.API.Models.DynamicsDataExport
 {
-    public class DynamicsBuildingProfessionApplication
+    public class DynamicsBuildingProfessionRegisterApplication
     {
         [JsonPropertyName("bsr_buildingprofessionapplicationid")]
         public required string BuildingProfessionApplicationDynamicsId { get; set; }

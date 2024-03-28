@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HSE.RP.API.Models.Register;
 using HSE.RP.API.Models.DynamicsDataExport;
-using HSE.RR.API.Mappers;
+using HSE.RP.API.Mappers;
 using HSE.RP.API.Extensions;
 using System.Net;
 using Azure.Core;

@@ -49,7 +49,7 @@ namespace HSE.RPR.API.Functions
             List<BuildingProfessionApplication> RBIApplications = new List<BuildingProfessionApplication>();
 
             // Map Dynamics RBI applications to RBIApplication model
-            foreach (DynamicsBuildingProfessionApplication dynamicsRBIApplication in DynamicsRBIApplications)
+            foreach (DynamicsBuildingProfessionRegisterApplication dynamicsRBIApplication in DynamicsRBIApplications)
             {
                 RBIApplications.Add(applicationMapper.ToRBIApplication(dynamicsRBIApplication));
             }
