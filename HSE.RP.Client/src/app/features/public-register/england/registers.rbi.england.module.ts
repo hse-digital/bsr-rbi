@@ -54,5 +54,5 @@ const routes = new HseRoutes([
     ]
 })
 export class RBIEnglandModule {
-  static baseRoute: string = 'england';
+  static baseRoute: string = 'public-register-england';
 }
