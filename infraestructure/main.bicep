@@ -203,6 +203,18 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=CosmosConnection)'
                 }
                 {
+                    name: 'Integrations__CosmosConnection'
+                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=CosmosConnection)'
+                }
+                {
+                    name: 'Integrations__CosmosDatabase'
+                    value: 'hseportal'
+                }
+                {
+                    name: 'Integrations__CosmosContainer'
+                    value: 'regulating-professions'
+                }
+                {
                     name: 'Integrations__OrdnanceSurveyEndpoint'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=Integrations--OrdnanceSurveyEndpoint)'
                 }
