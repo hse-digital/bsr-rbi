@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ViewChild } from '@angular/core';
 import { GovukCookieBannerComponent } from 'hse-angular';
 import { CookiesBannerModel, CookiesBannerService } from './services/cookies-banner.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit, AfterViewChecked {
 
   showTimeoutDialog = false;
   footerLinks = HelpPagesModule.footerLinks;
@@ -21,12 +21,55 @@ export class AppComponent {
 
   appHeaderLink = environment.headerLink;
   govukLogoLink = environment.govukLogoLink;
+  headerTitleText = "";
+
   title: string = "HSE.RP.Client";
   constructor(private applicationService: ApplicationService,
     private router: Router, private idleTimerService: IdleTimerService, private activatedRoute: ActivatedRoute, private cookiesBannerService: CookiesBannerService, private navigationService: NavigationService) {
     this.initTimer();
     this.initCookiesBanner();
   }
+
+  ngAfterViewChecked(): void {
+    this.setHeaderLink();
+    this.setHeaderText();
+
+  }
+
+  private doesUrlContains(...segment: string[]) {
+    return segment.filter(x => window.location.href.indexOf(x) > -1).length > 0;
+  }
+
+  setHeaderLink() {
+    if (this.doesUrlContains("/public-register/england")) {
+      this.appHeaderLink = "/public-register/england";
+    } else if (this.doesUrlContains("/public-register/wales")) {
+      this.appHeaderLink = "/public-register/wales";
+    }
+    else {
+      environment.headerLink
+    }
+  }
+
+
+  setHeaderText() {
+    if (this.doesUrlContains("/public-register")) {
+      if (this.doesUrlContains("england")) {
+        this.headerTitleText = "Find a registered building inspector in England";
+      }
+      else if (this.doesUrlContains("wales")) {
+        this.headerTitleText = "Find a registered building inspector in Wales";
+      }
+      else {
+        this.headerTitleText = ""
+      }
+    }
+    else {
+
+      this.headerTitleText = "Register as a building inspector"
+    }
+  }
+
 
   async timeoutSaveAndComeBack() {
     await this.applicationService.updateApplication();
@@ -46,17 +89,13 @@ export class AppComponent {
   }
 
   initTimer() {
-    this.idleTimerService.initTimer(13*60, () => {
+    this.idleTimerService.initTimer(13 * 60, () => {
       if (typeof window !== 'undefined' && (this.doesUrlContains("/application/", "/new-application/", "/returning-application"))) {
         this.showTimeoutDialog = true;
       } else {
         this.initTimer();
       }
     });
-  }
-
-  private doesUrlContains(...segment: string[]) {
-    return segment.filter(x => window.location.href.indexOf(x) > -1).length > 0;
   }
 
   @ViewChild(GovukCookieBannerComponent) cookieBanner?: GovukCookieBannerComponent;
@@ -88,4 +127,6 @@ export class AppComponent {
   async cookiesChanged() {
     await this.navigationService.navigate(`/${HelpPagesModule.baseRoute}/${CookiesComponent.route}`);
   }
+
+
 }
