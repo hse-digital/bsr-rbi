@@ -38,5 +38,5 @@ const routes = new HseRoutes([
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class RegistersModule {
-  static baseRoute: string = 'public-register';
+  static baseRoute: string = '';
 }
