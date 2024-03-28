@@ -14,7 +14,7 @@ using HSE.RP.API.Mappers;
 using HSE.RP.API.Extensions;
 using System.Net;
 
-namespace HSE.RPR.API.Functions
+namespace HSE.RP.API.Functions
 {
     public interface IExportFunctions
     {

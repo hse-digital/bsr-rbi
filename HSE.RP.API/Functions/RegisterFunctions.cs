@@ -16,7 +16,7 @@ using Azure.Core;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 
-namespace HSE.RPR.API.Functions
+namespace HSE.RP.API.Functions
 {
     public interface IRegisterFunctions
     {
