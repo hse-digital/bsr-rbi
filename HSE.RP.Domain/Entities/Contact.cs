@@ -12,6 +12,7 @@ public record Contact(
     string AlternativeEmail = null,
     string NationalInsuranceNumber = null,
     BuildingAddress Address = null,
+    BuildingAddress BusinessAddress = null,
     DateOnly? birthdate = null,
     string buildingProfessionApplicationReferenceId = null,
     string jobRoleReferenceId = null
@@ -37,6 +38,20 @@ public record DynamicsContact(
     string bsr_address1lacode = null,
     string bsr_address1ladescription = null,
     YesNoOption? bsr_manualaddress = null,
+
+    int? address2_addresstypecode = null,
+    string address2_line1 = null,
+    string address2_line2 = null,
+    string address2_city = null,
+    string address2_county = null,
+    string address2_country = null,
+    string address2_postalcode = null,
+    string bsr_address2uprn = null,
+    string bsr_address2usrn = null,
+    string bsr_address2lacode = null,
+    string bsr_address2ladescription = null,
+    YesNoOption? bsr_manualaddress2 = null,
+
     [property: JsonPropertyName("bsr_JobRole@odata.bind")]
     string jobRoleReferenceId = null,
     DynamicsContactType[] bsr_contacttype_contact = null,

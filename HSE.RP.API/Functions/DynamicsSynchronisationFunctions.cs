@@ -1,4 +1,5 @@
 using AutoMapper;
+using DurableTask.Core;
 using Flurl;
 using Flurl.Http;
 using HSE.RP.API.Enums;
@@ -14,6 +15,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace HSE.RP.API.Functions;
 
@@ -275,6 +277,8 @@ public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunction
             {
                 employerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})";
 
+                //Need update contact address 2 with employer address
+                await orchestrationContext.CallActivityAsync(nameof(UpdateContactBusinessAddress), buildingProfessionApplicationModel);
             }
 
 
@@ -1365,6 +1369,31 @@ public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunction
     public Task<DynamicsAccount> CreateOrUpdateEmployer([ActivityTrigger] BuildingProfessionApplicationModel buildingProfessionApplicationModel)
     {
         return dynamicsService.CreateOrUpdateEmployer(buildingProfessionApplicationModel);
+    }
+
+    [Function(nameof(UpdateContactBusinessAddress))]
+    public async Task UpdateContactBusinessAddress([ActivityTrigger] BuildingProfessionApplicationModel buildingProfessionApplicationModel)
+    {
+        var dynamicsBuildingProfessionApplication = await dynamicsService.GetBuildingProfessionApplicationUsingId(buildingProfessionApplicationModel.Id);
+        var dynamicsContact = await dynamicsService.GetContactUsingId(dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid);
+
+        await dynamicsService.UpdateContact(dynamicsContact, new DynamicsContact() with {
+            address2_addresstypecode = 760_810_001,
+            address2_line1 = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Address,
+            address2_line2 = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.AddressLineTwo,
+            address2_city = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Town,
+            address2_country = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country,
+            address2_postalcode = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Postcode,
+            bsr_address2uprn = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.UPRN,
+            bsr_address2usrn = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.USRN,
+            bsr_address2lacode = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.CustodianCode,
+            bsr_address2ladescription = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.CustodianDescription,
+            bsr_manualaddress2 = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.IsManual is null ?
+                                null :
+                                buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.IsManual is true ?
+                                YesNoOption.Yes :
+                                YesNoOption.No
+        });
     }
 
     [Function(nameof(GetRegistrationClassesUsingApplicationId))]
@@ -2523,13 +2552,15 @@ public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunction
                 {
                     //Lookup employer relationship in accounts table
                     var employerDetails = await orchestrationContext.CallActivityAsync<DynamicsAccount>(nameof(CreateOrUpdateEmployer), buildingProfessionApplicationModel);
-
+                    
                     employerIdAccount = $"/accounts({employerDetails.accountid})";
 
                 }
                 else if (buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmploymentTypeSelection.EmploymentType == EmploymentType.Other
                     && buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerName.OtherBusinessSelection == "no")
                 {
+                    await orchestrationContext.CallActivityAsync(nameof(UpdateContactBusinessAddress), buildingProfessionApplicationModel);
+
                     employerIdContact = $"/contacts({dynamicsBuildingProfessionApplication.bsr_applicantid_contact.contactid})";
 
                 }
