@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSE.RPR.API.Models.Search
+namespace HSE.RP.API.Models.Search
 {
     public class RBIInspectorNamesResponse
     {
