@@ -2,7 +2,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { HseAngularModule } from "hse-angular";
 import { CommonModule } from "@angular/common";
-
+import { RouterModule } from '@angular/router';
 import { GovukRequiredDirective } from "./required.directive";
 import { TaskListItemComponent } from "./task-list-item/task-list-item.component";
 
@@ -23,8 +23,15 @@ import { GovukErrorLinkableComponent, GovukSummaryErrorLinkableComponent } from 
 import { GovukInputLinkableComponent } from "./govuk-input-linkable/govuk-input-linkable.component";
 import { FormsModule } from "@angular/forms";
 import { GovukFieldLinkableComponent } from "./govuk-field-linkable/govuk-field-linkable.component";
+import { RBIResultsComponent } from "./rbi-results/rbi-results.component";
+import { RBIDetailsComponent } from "./rbi-details/rbi-details.component";
+import { RBISearchComponent } from "./rbi-search/rbi-search.component";
+import { HseRoutes } from "../helpers/hse.route";
 
 
+
+const routes = new HseRoutes([
+]);
 
 @NgModule({
   declarations: [
@@ -45,13 +52,18 @@ import { GovukFieldLinkableComponent } from "./govuk-field-linkable/govuk-field-
     GovukSummaryErrorLinkableComponent,
     GovukErrorLinkableComponent,
     GovukInputLinkableComponent,
-    GovukFieldLinkableComponent
+    GovukFieldLinkableComponent,
+    RBISearchComponent,
+    RBIResultsComponent,
+    RBIDetailsComponent,
   ],
   imports: [
     HseAngularModule,
     CommonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forChild(routes.getRoutes()),
+
   ],
   exports: [
     GovukRequiredDirective,
@@ -65,7 +77,10 @@ import { GovukFieldLinkableComponent } from "./govuk-field-linkable/govuk-field-
     GovukSummaryErrorLinkableComponent,
     GovukErrorLinkableComponent,
     GovukInputLinkableComponent,
-    GovukFieldLinkableComponent
+    GovukFieldLinkableComponent,
+    RBISearchComponent,
+    RBIResultsComponent,
+    RBIDetailsComponent,
 
 
 
