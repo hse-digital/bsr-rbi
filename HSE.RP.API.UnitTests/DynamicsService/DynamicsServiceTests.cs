@@ -27,6 +27,7 @@ using HSE.RP.API.UnitTests.TestData;
 using DurableTask.Core;
 using HSE.RP.API.Functions;
 using System.Net.Mail;
+using HSE.RP.API.Mappers;
 
 namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 {
@@ -678,7 +679,29 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
         {
 
 
+
+            CountryCodeMapper CountryCodeMapper = new CountryCodeMapper();
+
             //Arrange
+
+            var address = new BuildingAddress
+            {
+                Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Address ?? "",
+                AddressLineTwo = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.AddressLineTwo ?? "",
+                BuildingName = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.BuildingName ?? "",
+                Number = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Number ?? "",
+                Street = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Street ?? "",
+                Town = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Town ?? "",
+                Country = CountryCodeMapper.MapCountry(buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Country ?? ""),
+                AdministrativeArea = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.AdministrativeArea ?? "",
+                Postcode = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Postcode ?? "",
+                IsManual = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.IsManual ?? false,
+                ClassificationCode = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.ClassificationCode ?? "",
+                CustodianCode = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.CustodianCode ?? "",
+                CustodianDescription = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.CustodianDescription ?? ""
+            };
+
+
             var testContact = new Contact
             {
                 Id = dynamicsContact.contactid ?? "",
@@ -693,7 +716,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
                                          int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),
                                          int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day)),
-                NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber
+                NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber,
             };
 
             var testContactWrapper = new ContactWrapper(testContact, dynamicsContact);
@@ -710,6 +733,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 address1_line1 = testContactWrapper.Model.Address.Address,
                 address1_line2 = testContactWrapper.Model.Address.AddressLineTwo,
                 address1_city = testContactWrapper.Model.Address.Town,
+                address1_country = testContactWrapper.Model.Address.Country,
                 address1_postalcode = testContactWrapper.Model.Address.Postcode,
                 bsr_address1uprn = testContactWrapper.Model.Address.UPRN,
                 bsr_address1usrn = testContactWrapper.Model.Address.USRN,
@@ -719,7 +743,11 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                                 testContactWrapper.Model.Address.IsManual is true ? YesNoOption.Yes :
                                 YesNoOption.No,
                 birthdate = testContactWrapper.Model.birthdate,
-                bsr_nationalinsuranceno = testContactWrapper.Model.NationalInsuranceNumber
+                bsr_nationalinsuranceno = testContactWrapper.Model.NationalInsuranceNumber,
+                            countryReferenceId = testContactWrapper.Model.Address.Country is null ? null :
+                                         testContactWrapper.Model.Address.Country == "England" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["England"]})" :
+                                         testContactWrapper.Model.Address.Country == "Wales" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["Wales"]})" :
+                                         null
             };
 
 
