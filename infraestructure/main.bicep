@@ -103,24 +103,6 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
     }
 }
 
-var registerContainerName = 'regulating-professions'
-resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2022-05-15' = {
-    parent: cosmosDB
-    name: registerContainerName
-    properties: {
-        resource: {
-            id: registerContainerName
-            partitionKey: {
-                paths: [
-                    '/buildingProfessionType'
-                ]
-                kind: 'Hash'
-            }
-            defaultTtl: -1
-        }
-    }
-}
-
 var workspaceIds = {
     dev: '/subscriptions/7dd7c789-6ddc-446f-9d95-bc53bd12fbb3/resourceGroups/p102-dev-itf-acs-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/p102-dev-itf-acs-monitor-log'
     qa : '/subscriptions/9c0963f0-2058-40ef-b829-9dd9ef573b5e/resourceGroups/p102-test-itf-acs-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/p102-test-itf-acs-monitor-log'
@@ -219,18 +201,6 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
                 {
                     name: 'CosmosConnection'
                     value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=CosmosConnection)'
-                }
-                {
-                    name: 'Integrations__CosmosConnection'
-                    value: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=CosmosConnection)'
-                }
-                {
-                    name: 'Integrations__CosmosDatabase'
-                    value: 'hseportal'
-                }
-                {
-                    name: 'Integrations__CosmosContainer'
-                    value: 'regulating-professions'
                 }
                 {
                     name: 'Integrations__OrdnanceSurveyEndpoint'

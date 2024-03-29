@@ -12,10 +12,8 @@ using HSE.RP.API.Services;
 using HSE.RP.API.Services.CompanySearch;
 using HSE.RP.Domain.DynamicsDefinitions;
 using HSEPortal.API.Models.Payment;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -50,14 +48,6 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
     serviceCollection.AddTransient<CompanySearchService>();
     serviceCollection.AddTransient<CompanySearchFactory>();
 
-    serviceCollection.AddTransient<IApplicationMapper, ApplicationMapper>();
-    serviceCollection.AddTransient<IRegisterSearchService, RegisterSearchService>();
-
-    serviceCollection.AddSingleton<ICosmosDbService, CosmosDbService>(sp =>
-    {
-        var integrationsOptions = sp.GetRequiredService<IOptions<IntegrationsOptions>>();
-        return InitializeCosmosClientAsync(integrationsOptions).GetAwaiter().GetResult();
-    });
 
     serviceCollection.AddSingleton(_ => new MapperConfiguration(config =>
     {
@@ -69,23 +59,7 @@ static void ConfigureServices(HostBuilderContext builderContext, IServiceCollect
     }).CreateMapper());
 }
 
-static async Task<CosmosDbService> InitializeCosmosClientAsync(IOptions<IntegrationsOptions> integrationsOptions)
-{
-    var databaseName = integrationsOptions.Value.CosmosDatabase;
-    var containerName = integrationsOptions.Value.CosmosContainer;
-    var client = new CosmosClient(integrationsOptions.Value.CosmosConnection, new CosmosClientOptions()
-    {
-        SerializerOptions = new CosmosSerializationOptions()
-        {
-            PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase,
-        }
-    });
-    var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
-    var container = await database.Database.CreateContainerIfNotExistsAsync(containerName, "/buildingProfessionType");
-    return new CosmosDbService(client, database, container);
 
-
-}
 
 public class SystemTextJsonSerializer : ISerializer
 {
