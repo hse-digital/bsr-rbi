@@ -27,6 +27,7 @@ import { NewApplicationModule } from './features/new-application/new-application
 import { ApplicationSubmissionComponent } from './features/returning-application/application-submission/application-submission.component';
 import { A11yModule } from '@angular/cdk/a11y';
 import { HttpInterceptorService } from './services/http-interceptor.service';
+import { RegistersModule } from './features/public-register/registers.module';
 
 const routes = new HseRoutes([
   HseRoute.protected(SampleComponent.route, SampleComponent, SampleComponent.title),
@@ -35,6 +36,7 @@ const routes = new HseRoutes([
   HseRoute.forLoadChildren(HelpPagesModule.baseRoute, () => import('./components/footer/help-pages.module').then(m => m.HelpPagesModule)),
   HseRoute.forLoadChildren(ApplicationModule.baseRoute, () => import('./features/application/application.module').then(m => m.ApplicationModule)),
   HseRoute.forLoadChildren(NewApplicationModule.baseRoute, () => import('./features/new-application/new-application.module').then(m => m.NewApplicationModule)),
+  HseRoute.forLoadChildren(RegistersModule.baseRoute, () => import('./features/public-register/registers.module').then(m => m.RegistersModule)),
   HseRoute.unsafe(NotFoundComponent.route, NotFoundComponent, undefined, NotFoundComponent.title),
   HseRoute.protected(ReturningApplicationComponent.route, ReturningApplicationComponent, ReturningApplicationComponent.title),
   HseRoute.protected(ApplicationSubmissionComponent.route, ApplicationSubmissionComponent, ApplicationSubmissionComponent.title),
@@ -57,7 +59,7 @@ const routes = new HseRoutes([
     TimeoutComponent,
     SampleComponent,
     ApplicationSubmissionComponent,
-  ],
+    ],
   imports: [
     RouterModule.forRoot(routes.getRoutes(), { initialNavigation: 'enabledBlocking', scrollPositionRestoration: 'enabled' }),
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

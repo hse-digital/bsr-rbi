@@ -1,0 +1,277 @@
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <govuk-error-summary *ngIf="searchModelHasErrors" title="There is a problem" #summaryError>
+        <govuk-error-link anchorId="input-inspector-name" message={{searchModelBuildingInspectorErrorText}} />
+        <govuk-error-link anchorId="input-employer-name" message={{searchModelBuildingControllerErrorText}} />
+      </govuk-error-summary>
+      <h1 class="govuk-heading-xl" *ngIf="searching">...Loading results</h1>
+      <h1 class="govuk-heading-xl" *ngIf="!searching">
+        {{ displayResults.length }} Search results
+      </h1>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <h3 class="govuk-heading-m">Search the register</h3>
+
+      <div class="govuk-form-group">
+        <div id="form-inputs">
+          <div class="govuk-!-static-margin-bottom-5">
+            <govuk-input-autocomplete
+              class="govuk-!-width-full"
+              id="inspector-name"
+              label="Building inspector name"
+              [errorText]="searchModelBuildingInspectorErrorText"
+              [(model)]="searchModel['inspector-name']"
+              #field
+              [govukRequired]="field"
+              [values]="inspectors"
+              (onDebounce)="searchInspectors($event)"
+              (onSelectedValue)="selectInspectorName($event)"
+              (onKeyupEnter)="searchBuildingInspectors()"
+            />
+          </div>
+
+          <div class="govuk-!-static-margin-bottom-5">
+            <govuk-input-autocomplete
+              class="govuk-!-width-full"
+              id="employer-name"
+              label="Building control body"
+              [errorText]="searchModelBuildingControllerErrorText"
+              [(model)]="searchModel['building-control-body']"
+              #field
+              [govukRequired]="field"
+              [values]="companies"
+              (onDebounce)="searchCompanies($event)"
+              (onSelectedValue)="selectCompanyName($event)"
+              (onKeyupEnter)="searchBuildingInspectors()"
+            />
+          </div>
+
+          <govuk-button
+            id="search-button"
+            [isLoading]="searching"
+            loadingText="Searching..."
+            [disabled]="searching"
+            (keyup.enter)="searchBuildingInspectors()"
+            (click)="searchBuildingInspectors()"
+            >Search
+          </govuk-button>
+
+          <div *ngIf="searchResponse.Results > 0" class="govuk-form-group">
+            <govuk-checkbox-group
+              title="Filter by class"
+              [(model)]="searchModel['class-filter']"
+              id="class-selection"
+              (onCheckboxSelected)="filterByClass()"
+              #field
+              [govukRequired]="field"
+            >
+              <govuk-checkbox
+                #checkbox
+                id="class-1"
+                [isDisabled]="this.classOneDisabled"
+                [model]="searchModel['class-filter']"
+                text="Class 1"
+                value="Class 1 trainee building inspector"
+
+              />
+              <govuk-checkbox
+                #checkbox
+                id="class-2"
+                [isDisabled]="this.classTwoDisabled"
+                [model]="searchModel['class-filter']"
+                text="Class 2"
+                value="Class 2 building inspector"
+              />
+              <govuk-checkbox
+                #checkbox
+                [isDisabled]="this.classThreeDisabled"
+                id="class-3"
+                [model]="searchModel['class-filter']"
+                text="Class 3"
+                value="Class 3 specialist building inspector"
+              />
+              <govuk-checkbox
+                #checkbox
+                id="class-4"
+                [isDisabled]="this.classFourDisabled"
+                [model]="searchModel['class-filter']!"
+                text="Class 4"
+                value="Class 4 technical manager"
+              />
+            </govuk-checkbox-group>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+      <div *ngIf="searching">
+        <i class="fa fa-spinner fa-spin"></i>
+        <span> ...Loading results</span>
+      </div>
+
+      <div *ngIf="!searching" id="result-list">
+        <div *ngIf="displayResults.length == 0">
+          <h4 class="govuk-heading-s">Your search matched no results</h4>
+          <govuk-body>
+            There are no building inspectors that match your search. Try
+            searching again, or
+            <a href="https://www.gov.uk/guidance/contact-the-building-safety-regulator">contact the Building Safety Regulator</a> if you need
+            help.
+          </govuk-body>
+          <hr
+            class="govuk-section-break govuk-section-break--m govuk-section-break--visible"
+          />
+        </div>
+
+        <ul *ngIf="searchResponse.Results > 0" class="govuk-list">
+          <li *ngFor="let application of searchResultPageItems">
+            <p class="govuk-body">
+              <strong
+                ><a
+                  class="govuk-link"
+                  [routerLink]="['../detail']"
+                  [queryParams]="{ Id: application.ApplicationNumber, searchModel: stringifySearchModel()}"
+                  >{{ application.Applicant?.ApplicantName }}</a
+                ></strong
+              >
+            </p>
+
+            <ng-template [ngIf]="application.Employer?.EmploymentType =='Private' || application.Employer?.EmploymentType =='Public'">
+              <p *ngIf="application.Employer?.EmployerName" class="govuk-body-s">
+                Employer: {{ application.Employer!.EmployerName | uppercase }}<br />
+              Employer address: {{ application.Employer!.EmployerAddress }}
+            </p>
+            <p *ngIf="!application.Employer?.EmployerName" class="govuk-body-s">
+              Employer: None
+            </p>
+            </ng-template>
+
+            <ng-template [ngIf]="application.Employer?.EmploymentType=='Unemployed'">
+              <p class="govuk-body-s">
+                Employer: None
+            </p>
+            </ng-template>
+
+            <ng-template [ngIf]="application.Employer?.EmploymentType=='Other' && application.Employer?.EmployerName != ''">
+              <p *ngIf="application.Employer?.EmployerName" class="govuk-body-s">
+                Business name: {{ application.Employer!.EmployerName | uppercase }}<br />
+              Business address: {{ application.Employer!.EmployerAddress }}
+            </p>
+            <p *ngIf="!application.Employer?.EmployerName" class="govuk-body-s">
+              Business name: None
+            </p>
+            </ng-template>
+
+            <ng-template [ngIf]="application.Employer?.EmploymentType=='Other' && application.Employer?.EmployerName == ''">
+              <p class="govuk-body-s">
+              Business address: {{ application.Employer!.EmployerAddress ?? 'None' }}
+            </p>
+            </ng-template>
+
+
+            <hr
+              class="govuk-section-break govuk-section-break--m govuk-section-break--visible"
+            />
+          </li>
+        </ul>
+      </div>
+
+      
+      <nav *ngIf="pages.length > 1"
+        class="govuk-pagination pagination"
+        role="navigation"
+        aria-label="results"
+      >
+        <div *ngIf="currentPage != 1" class="govuk-pagination__prev">
+          <a
+            class="govuk-link govuk-pagination__link"
+            (click)="pagePrev()"
+            rel="prev"
+          >
+            <svg
+              class="govuk-pagination__icon govuk-pagination__icon--prev"
+              xmlns="http://www.w3.org/2000/svg"
+              height="13"
+              width="15"
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 15 13"
+            >
+              <path
+                d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z"
+              ></path>
+            </svg>
+            <span class="govuk-pagination__link-title">Previous</span></a
+          >
+        </div>
+        
+        <div *ngIf="pages.length <= 6">
+        <ul class="govuk-pagination__list">
+          <li
+            class="govuk-pagination__item"
+            *ngFor="let page of pages"
+            [ngClass]="{ 'govuk-pagination__item--current': currentPage === page}"
+            (click)="pageChange(page)"
+          >
+            <a class="govuk-link govuk-pagination__link" aria-label="Page" [ngStyle]="{'color' :currentPage === page ? '#fff' : '#1d70b8'}">
+              {{ page }}
+            </a>
+          </li>
+        </ul>
+        </div>
+        
+        <div *ngIf="pages.length >= 6">
+          <ul class="govuk-pagination__list">
+            <li
+              class="govuk-pagination__item"
+              *ngFor="let page of getPages()"
+              [ngClass]="{ 'govuk-pagination__item--current': currentPage === page}"
+            >
+
+                <ng-container *ngIf="getPageLabel(page) !== '...'">
+                  <a class="govuk-link govuk-pagination__link" aria-label="Page" [ngStyle]="{'color' :currentPage === page ? '#fff' : '#1d70b8'}" (click)="pageChange(page)">
+                    {{getPageLabel(page)}}
+                  </a>
+                </ng-container>
+                <ng-container *ngIf="getPageLabel(page) === '...'">
+                  <span class="govuk-pagination__link" aria-label="Page">
+                    {{getPageLabel(page)}}
+                  </span>
+                </ng-container>
+
+            </li>
+          </ul>
+        </div>
+
+        <div *ngIf="currentPage != pages.length" class="govuk-pagination__next">
+          <a
+            class="govuk-link govuk-pagination__link"
+            (click)="pageNext()"
+            rel="next"
+          >
+            <span class="govuk-pagination__link-title">Next</span>
+            <svg
+              class="govuk-pagination__icon govuk-pagination__icon--next"
+              xmlns="http://www.w3.org/2000/svg"
+              height="13"
+              width="15"
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 15 13"
+            >
+              <path
+                d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"
+              ></path></svg
+          ></a>
+        </div>
+      </nav>
+
+
+    </div>
+  </div>
+</div>
