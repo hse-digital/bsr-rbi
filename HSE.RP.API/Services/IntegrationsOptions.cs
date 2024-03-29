@@ -20,5 +20,9 @@ public class IntegrationsOptions
 
     public string Environment { get; set; }
 
+    public string CosmosConnection { get; set; }
+    public string CosmosDatabase { get; set; }
+    public string CosmosContainer { get; set; }
+
 
 }
