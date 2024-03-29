@@ -57,6 +57,8 @@ public record DynamicsContact(
     DynamicsContactType[] bsr_contacttype_contact = null,
     [property: JsonPropertyName("bsr_Address1CountryCode@odata.bind")]
     string countryReferenceId = null,
+    [property: JsonPropertyName("bsr_address2countrycode@odata.bind")]
+    string businessAddressCountryReferenceId = null,
     [property: JsonPropertyName("bsr_buildingprofessionapplicationid@odata.bind")]
     string bsr_buildingprofessionapplicationid = null,
     string bsr_nationalinsuranceno = null,
