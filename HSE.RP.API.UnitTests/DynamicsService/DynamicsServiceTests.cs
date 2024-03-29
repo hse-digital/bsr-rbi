@@ -28,6 +28,7 @@ using DurableTask.Core;
 using HSE.RP.API.Functions;
 using System.Net.Mail;
 using HSE.RP.API.Mappers;
+using HSE.RP.API.Models.DynamicsDataExport;
 
 namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 {
@@ -2256,6 +2257,107 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             Assert.Equal(testRegisterMembership, buildingInspectorProfessionalBodyMembership with { Id = dynamicsBuildingInspectorProfessionalBodyMembership.bsr_biprofessionalmembershipid });
             Assert.Equal(testRegisterMembership.MembershipNumber, buildingInspectorProfessionalBodyMembership.MembershipNumber);
             Assert.Equal(testRegisterMembership.MembershipNumber, buildingInspectorProfessionalBodyMembership.MembershipNumber);
+        }
+
+        [Fact]
+        public async Task GetDynamicsRBIApplications_ShouldReturnListOfDynamicsApplications()
+        {
+
+            //Arrange
+            var dynamicsRBIApplications = new List<DynamicsBuildingProfessionRegisterApplication>
+                {
+                    new DynamicsBuildingProfessionRegisterApplication
+                    {
+                        BuildingProfessionApplicationDynamicsId = Guid.NewGuid().ToString(),
+                        ApplicationId = "RBI001",
+                        BuildingProfessionType = (Models.Enums.BuildingProfessionType)BuildingProfessionType.BuildingInspector,
+                        DecisionDate = DateTime.Now.ToString(),
+                        Applicant = new DynamicsApplicant
+                        {
+                            ApplicantFirstName = "John",
+                            ApplicantLastName = "Doe"
+                        },
+                        ApplicantCountryDetails = new List<ApplicantCountryDetails>()
+                        {
+                            new ApplicantCountryDetails
+                            {
+                                CountryDetailsId = Guid.NewGuid().ToString(),
+                                Country = new DynamicsCountry
+                                {
+                                    CountryId = Guid.NewGuid().ToString(),
+                                    CountryName = "England",
+
+                                }
+                            }
+                        },
+                        ApplicantClassDetails = new List<ApplicantClassDetails>
+                        {
+                            new ApplicantClassDetails
+                            {
+                                ClassDetailsId = Guid.NewGuid().ToString(),
+
+                                Class = new DynamicsClass
+                                {
+                                    ClassId = Guid.NewGuid().ToString(),
+                                    ClassName = "Class 2"
+                                }
+                            }
+                        },
+                        ApplicantEmploymentDetails = new List<ApplicantEmploymentDetail>
+                        {
+                            new ApplicantEmploymentDetail
+                            {
+                                EmploymentDetailId = Guid.NewGuid().ToString(),
+                                Employer = new DynamicsEmployer
+                                {
+                                    EmployerAccountId = Guid.NewGuid().ToString(),
+                                    EmployerName = "Employer 1",
+                                    EmployerAddress = "Address 1"
+                                }
+                            }
+                        },
+                        ApplicantActivityDetails = new List<ApplicantActivityDetails>
+                        {
+                            new ApplicantActivityDetails
+                            {
+                                ApplicantActivityDetailsId = Guid.NewGuid().ToString(),
+                                Activity = new DynamicsActivity
+                                {
+                                    ActivityId = Guid.NewGuid().ToString(),
+                                    ActivityName = "Assessing Plans"
+                                },
+                                Category = new DynamicsCategory
+                                {
+                                    CategoryId = Guid.NewGuid().ToString(),
+                                    CategoryName = "Category A"
+                                },
+                                ActivityStatus = (Models.Enums.BuildingInspectorRegistrationActivityStatus)BuildingInspectorRegistrationActivityStatus.Applied
+                            }
+                        }
+                    }
+                };
+            HttpTest.ForCallsTo($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications")
+            .WithAnyQueryParam("$select", $"bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_decisiondate,bsr_decisioncondition,bsr_regulatorydecisionstatus,bsr_reviewdecision,statuscode")
+            .WithAnyQueryParam("$expand", $"bsr_applicantid_contact($select=firstname,lastname,address2_composite),bsr_biemploymentdetail_buildingprofessionappl($select=bsr_biemploymentdetailid,_bsr_employmenttypeid_value;$expand=bsr_biemployerid_account($select=name,address1_composite);$filter=(statuscode eq 1)),bsr_bsr_biregclass_buildingprofessionapplicat($select=bsr_biregclassid,statuscode;$expand=bsr_biclassid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_biregactivity_buildingprofessionapplicati($select=bsr_biregactivityid,statuscode;$expand=bsr_biactivityid($select=bsr_name),bsr_bibuildingcategoryid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_bsr_biregcountry_buildingprofessionapplic($select=bsr_biregcountryid;$expand=bsr_countryid($select=bsr_name);$filter=(statecode eq 0))")
+            .WithAnyQueryParam("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_applicantid_contact/contactid ne null)")
+            .WithVerb(HttpMethod.Get)
+            .RespondWithJson(new DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>
+            {
+                value = dynamicsRBIApplications
+            });
+
+            //Act
+            var result = await _dynamicsService.GetDynamicsRBIApplications();
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Equals(dynamicsRBIApplications);
+
+            HttpTest.ShouldHaveCalled($"{DynamicsOptions.EnvironmentUrl}/api/data/v9.2/bsr_buildingprofessionapplications")
+            .WithAnyQueryParam("$select", $"bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_decisiondate,bsr_decisioncondition,bsr_regulatorydecisionstatus,bsr_reviewdecision,statuscode")
+            .WithAnyQueryParam("$expand", $"bsr_applicantid_contact($select=firstname,lastname,address2_composite),bsr_biemploymentdetail_buildingprofessionappl($select=bsr_biemploymentdetailid,_bsr_employmenttypeid_value;$expand=bsr_biemployerid_account($select=name,address1_composite);$filter=(statuscode eq 1)),bsr_bsr_biregclass_buildingprofessionapplicat($select=bsr_biregclassid,statuscode;$expand=bsr_biclassid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_biregactivity_buildingprofessionapplicati($select=bsr_biregactivityid,statuscode;$expand=bsr_biactivityid($select=bsr_name),bsr_bibuildingcategoryid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_bsr_biregcountry_buildingprofessionapplic($select=bsr_biregcountryid;$expand=bsr_countryid($select=bsr_name);$filter=(statecode eq 0))")
+            .WithAnyQueryParam("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_applicantid_contact/contactid ne null)")
+            .WithVerb(HttpMethod.Get);
         }
 
 
