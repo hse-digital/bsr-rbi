@@ -41,10 +41,10 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   }
 
   setHeaderLink() {
-    if (this.doesUrlContains("/public-register-england")) {
-      this.appHeaderLink = "/public-register-england";
-    } else if (this.doesUrlContains("/public-register-wales")) {
-      this.appHeaderLink = "/public-register-wales";
+    if (this.doesUrlContains("/public-register/england")) {
+      this.appHeaderLink = "/public-register/england";
+    } else if (this.doesUrlContains("/public-register/wales")) {
+      this.appHeaderLink = "/public-register/wales";
     }
     else {
       environment.headerLink
@@ -53,23 +53,19 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
 
 
   setHeaderText() {
-    if (this.doesUrlContains("/public-register-england")) {
-      if (this.doesUrlContains("results", "details")) {
+    if (this.doesUrlContains("/public-register")) {
+      if (this.doesUrlContains("england")) {
         this.headerTitleText = "Find a registered building inspector in England";
       }
-      else {
-        this.headerTitleText = ""
-      }
-    }
-    else if (this.doesUrlContains("/public-register-wales")) {
-      if (this.doesUrlContains("results", "details")) {
-        this.headerTitleText = "Find a registered building inspector in England";
+      else if (this.doesUrlContains("wales")) {
+        this.headerTitleText = "Find a registered building inspector in Wales";
       }
       else {
         this.headerTitleText = ""
       }
     }
     else {
+
       this.headerTitleText = "Register as a building inspector"
     }
   }
