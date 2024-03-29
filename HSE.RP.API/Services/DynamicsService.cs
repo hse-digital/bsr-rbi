@@ -5,7 +5,6 @@ using HSE.RP.API.Extensions;
 using HSE.RP.API.Mappers;
 using HSE.RP.API.Model;
 using HSE.RP.API.Models;
-using HSE.RP.API.Models.DynamicsDataExport;
 using HSE.RP.API.Models.DynamicsSynchronisation;
 using HSE.RP.API.Models.LocalAuthority;
 using HSE.RP.API.Models.Payment;
@@ -20,13 +19,6 @@ namespace HSE.RP.API.Services
 {
     public interface IDynamicsService
     {
-
-        /// <summary>
-        /// Retrieves a list of DynamicsRBIApplications.
-        /// </summary>
-        /// <returns>A list of DynamicsRBIApplications.</returns>
-        Task<List<DynamicsBuildingProfessionRegisterApplication>> GetDynamicsRBIApplications();
-
         Task<DynamicsPayment> CreatePaymentAsync(DynamicsPayment dynamicsPayment, string ApplicationId);
 
         Task<bool> CheckDupelicateBuildingProfessionApplicationAsync(BuildingProfessionApplicationModel buildingProfessionApplicationModel);
@@ -93,21 +85,6 @@ namespace HSE.RP.API.Services
             this.dynamicsOptions = dynamicsOptions.Value;
             this.featureOptions = featureOptions.Value;
         }
-
-        /// <inheritdoc/>
-        public async Task<List<DynamicsBuildingProfessionRegisterApplication>> GetDynamicsRBIApplications()
-        {
-            var DynamicsRBIApplications = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>("bsr_buildingprofessionapplications", new[]
-            {
-                    ("$select", $"bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_decisiondate,bsr_decisioncondition,bsr_regulatorydecisionstatus,bsr_reviewdecision,statuscode"),
-                    ("$expand", $"bsr_applicantid_contact($select=firstname,lastname,address2_composite),bsr_biemploymentdetail_buildingprofessionappl($select=bsr_biemploymentdetailid,_bsr_employmenttypeid_value,;$expand=bsr_biemployerid_account($select=name,address1_composite);$filter=(statuscode eq 1)),bsr_bsr_biregclass_buildingprofessionapplicat($select=bsr_biregclassid,statuscode;$expand=bsr_biclassid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_biregactivity_buildingprofessionapplicati($select=bsr_biregactivityid,statuscode;$expand=bsr_biactivityid($select=bsr_name),bsr_bibuildingcategoryid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_bsr_biregcountry_buildingprofessionapplic($select=bsr_biregcountryid;$expand=bsr_countryid($select=bsr_name);$filter=(statecode eq 0))"),
-                    ("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_applicantid_contact/contactid ne null)")
-                });
-
-            return DynamicsRBIApplications.value;
-
-        }
-
 
         public async Task<DynamicsPayment> CreatePaymentAsync(DynamicsPayment dynamicsPayment, string ApplicationId)
         {
