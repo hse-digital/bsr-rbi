@@ -75,7 +75,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
     }
     else if (this.doesUrlContains("/public-register-wales")) {
       if (this.doesUrlContains("results", "details")) {
-        this.headerTitleText = "Find a registered building inspector in England";
+        this.headerTitleText = "Find a registered building inspector in Wales";
       }
       else {
         this.headerTitleText = ""
