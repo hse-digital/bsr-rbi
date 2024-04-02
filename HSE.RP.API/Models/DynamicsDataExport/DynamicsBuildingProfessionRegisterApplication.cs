@@ -15,7 +15,7 @@ namespace HSE.RP.API.Models.DynamicsDataExport
         [JsonPropertyName("bsr_buildingprofessiontypecode")]
         public BuildingProfessionType BuildingProfessionType { get; set; }
 
-        [JsonPropertyName("bsr_decisiondate")]
+        [JsonPropertyName("bsr_registrationcommencementdate")]
         public required string DecisionDate { get; set; }
 
         [JsonPropertyName("bsr_decisioncondition")]
