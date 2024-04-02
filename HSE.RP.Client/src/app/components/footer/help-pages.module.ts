@@ -7,11 +7,13 @@ import { TermsConditionsComponent } from './terms-conditions/terms-conditions.co
 import { AccessibilityComponent } from './accessibility/accessibility.component';
 import { CookiesComponent } from './cookies/cookies.component';
 import { HseRoute, HseRoutes } from 'src/app/helpers/hse.route';
+import { AccessibilityRegisterComponent } from './accessibility-register/accessibility-register.component';
 
 const routes = new HseRoutes([
   HseRoute.unsafe(PrivacyNoticeComponent.route, PrivacyNoticeComponent, undefined, PrivacyNoticeComponent.title),
   HseRoute.unsafe(TermsConditionsComponent.route, TermsConditionsComponent, undefined, TermsConditionsComponent.title),
   HseRoute.unsafe(AccessibilityComponent.route, AccessibilityComponent, undefined, AccessibilityComponent.title),
+  HseRoute.unsafe(AccessibilityRegisterComponent.route, AccessibilityRegisterComponent, undefined, AccessibilityRegisterComponent.title),
   HseRoute.unsafe(CookiesComponent.route, CookiesComponent, undefined, CookiesComponent.title),
 ]);
 
@@ -20,6 +22,7 @@ const routes = new HseRoutes([
     PrivacyNoticeComponent,
     TermsConditionsComponent,
     AccessibilityComponent,
+    AccessibilityRegisterComponent,
     CookiesComponent,
   ],
   imports: [
@@ -42,6 +45,6 @@ export class HelpPagesModule {
 
   static registerFooterLinks = [
     { title: "Contact us", href: 'https://www.gov.uk/guidance/contact-the-building-safety-regulator', isNewTab: false},
-    { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityComponent.route}`,isNewTab: false }
+    { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityRegisterComponent.route}`,isNewTab: false }
   ];
 }
