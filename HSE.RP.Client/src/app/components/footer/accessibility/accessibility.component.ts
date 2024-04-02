@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 })
 export class AccessibilityComponent {
   public static route: string = "accessibility-statement";
-  static title: string = "Accessibility statement - Register a high-rise building - GOV.UK";
+  static title: string = "Accessibility statement - Register as a building inspector - GOV.UK";
 
   constructor() { }
 }
