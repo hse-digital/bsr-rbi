@@ -27,7 +27,7 @@ export class RBISearchComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.lastUpdated = await this.searchService.GetRegisterLastUpdated('BuildingInspector', this.country);
+    //this.lastUpdated = await this.searchService.GetRegisterLastUpdated('BuildingInspector', this.country);
   }
 
   isSearchModelValid(): boolean {
