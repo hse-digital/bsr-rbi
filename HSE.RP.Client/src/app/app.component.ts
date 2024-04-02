@@ -33,6 +33,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   ngAfterViewChecked(): void {
     this.setHeaderLink();
     this.setHeaderText();
+    this.setFooterLinks();
 
   }
 
@@ -47,7 +48,18 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
       this.appHeaderLink = "/public-register-wales";
     }
     else {
-      environment.headerLink
+      this.appHeaderLink = environment.headerLink
+    }
+  }
+
+  setFooterLinks() {
+    if (this.doesUrlContains("/public-register-england")) {
+      this.footerLinks  = HelpPagesModule.registerFooterLinks;
+    } else if (this.doesUrlContains("/public-register-wales")) {
+      this.footerLinks = HelpPagesModule.registerFooterLinks;
+    }
+    else {
+      this.footerLinks = HelpPagesModule.footerLinks
     }
   }
 
