@@ -39,4 +39,9 @@ export class HelpPagesModule {
     { title: "Feedback", href: "https://forms.office.com/e/p1rYGz27V6" ,isNewTab: false},
     { title: "Privacy", href: `/${HelpPagesModule.baseRoute}/${PrivacyNoticeComponent.route}`, isNewTab: false }
   ];
+
+  static registerFooterLinks = [
+    { title: "Contact us", href: 'https://www.gov.uk/guidance/contact-the-building-safety-regulator', isNewTab: false},
+    { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityComponent.route}`,isNewTab: false }
+  ];
 }
