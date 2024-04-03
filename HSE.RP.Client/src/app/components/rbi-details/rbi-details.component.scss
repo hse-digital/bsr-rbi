@@ -10,3 +10,15 @@
     font-weight: 700;
     color: #505a5f;
 }
+
+.govuk-summary-list__value p {
+    margin-bottom: 10px ;
+}
+
+.govuk-summary-list__value > :last-child {
+    margin-bottom: 0 ;
+}
+
+.govuk-summary-list__value > :last-child p {
+    margin-bottom: 0 ;
+}

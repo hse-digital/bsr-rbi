@@ -95,9 +95,9 @@
         </ng-template>
 
         <govuk-summary-list-row key="Class"
-          ><p *ngFor="let class of rbiApplication?.Classes">
+          ><govuk-body *ngFor="let class of rbiApplication?.Classes">
             {{ this.mapClassDisplayName(class) }}
-          </p>
+          </govuk-body>
         </govuk-summary-list-row>
 
         <ng-container
@@ -124,13 +124,13 @@
 
           <ng-template #hasPlans>
             <govuk-summary-list-row key="Plans assessment"
-              ><p
+              ><govuk-body 
                 *ngFor="
                   let category of getActivity('Assessing Plans')!.Categories
                 "
               >
                 {{ category.CategoryName }} - {{ category.CategoryDescription }}
-              </p>
+          </govuk-body>
             </govuk-summary-list-row>
           </ng-template>
 
@@ -151,9 +151,9 @@
 
           <ng-template #hasInspection>
             <govuk-summary-list-row key="Inspection"
-              ><p *ngFor="let category of getActivity('Inspect')!.Categories">
+              ><govuk-body *ngFor="let category of getActivity('Inspect')!.Categories">
                 {{ category.CategoryName }} - {{ category.CategoryDescription }}
-              </p>
+              </govuk-body>
             </govuk-summary-list-row>
           </ng-template>
         </ng-template>

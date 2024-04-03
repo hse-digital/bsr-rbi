@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Input, OnInit, Output, } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewEncapsulation, } from '@angular/core';
 import { NavigationService } from '../../services/navigation.service';
 import { RBISearchResponse, SearchService } from '../../services/search.service';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +9,8 @@ import { TitleService } from '../../services/title.service';
 @Component({
   selector: 'hse-rbi-results',
   templateUrl: './rbi-results.component.html',
-  styleUrls: ['./rbi-results.component.scss']
+  styleUrls: ['./rbi-results.component.scss'],
+  encapsulation: ViewEncapsulation.None 
 })
 export class RBIResultsComponent implements OnInit {
   @Input() country!: string;
