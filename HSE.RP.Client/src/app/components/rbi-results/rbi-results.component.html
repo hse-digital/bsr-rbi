@@ -151,32 +151,32 @@
             <ng-template [ngIf]="application.Employer?.EmploymentType =='Private' || application.Employer?.EmploymentType =='Public'">
               <p *ngIf="application.Employer?.EmployerName" class="govuk-body-s">
                 Employer: {{ application.Employer!.EmployerName | uppercase }}<br />
-              Employer address: {{ application.Employer!.EmployerAddress }}
+              Employer address: {{ application.Employer!.EmployerAddress | uppercase }}
             </p>
             <p *ngIf="!application.Employer?.EmployerName" class="govuk-body-s">
-              Employer: None
+              Employer: NONE
             </p>
             </ng-template>
 
             <ng-template [ngIf]="application.Employer?.EmploymentType=='Unemployed'">
               <p class="govuk-body-s">
-                Employer: None
+                Employer: NONE
             </p>
             </ng-template>
 
             <ng-template [ngIf]="application.Employer?.EmploymentType=='Other' && application.Employer?.EmployerName != ''">
               <p *ngIf="application.Employer?.EmployerName" class="govuk-body-s">
                 Business name: {{ application.Employer!.EmployerName | uppercase }}<br />
-              Business address: {{ application.Employer!.EmployerAddress }}
+              Business address: {{ application.Employer!.EmployerAddress | uppercase }}
             </p>
             <p *ngIf="!application.Employer?.EmployerName" class="govuk-body-s">
-              Business name: None
+              Business name: NONE
             </p>
             </ng-template>
 
-            <ng-template [ngIf]="application.Employer?.EmploymentType=='Other' && application.Employer?.EmployerName == ''">
+            <ng-template [ngIf]="application.Employer?.EmploymentType=='Other' && application.Employer?.EmployerName == ''" >
               <p class="govuk-body-s">
-              Business address: {{ application.Employer!.EmployerAddress ?? 'None' }}
+              Business address: {{ application.Employer!.EmployerAddress  ?? 'None' | uppercase}}
             </p>
             </ng-template>
 

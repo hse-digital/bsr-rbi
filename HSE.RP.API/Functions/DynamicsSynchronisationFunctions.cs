@@ -1401,12 +1401,17 @@ public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunction
 
         CountryCodeMapper countryCodeMapper = new CountryCodeMapper();
 
+
+        var country = countryCodeMapper.MapCountry(buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country);
+
+        var countryId = countryCodeMapper.MapDynamicsCountryCode(country);
+
         await dynamicsService.UpdateContact(dynamicsContact, new DynamicsContact() with {
             address2_addresstypecode = 760_810_001,
             address2_line1 = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Address,
             address2_line2 = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.AddressLineTwo,
             address2_city = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Town,
-            address2_country = countryCodeMapper.MapCountry(buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country),
+            address2_country = country,
             address2_postalcode = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Postcode,
             bsr_address2uprn = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.UPRN,
             bsr_address2usrn = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.USRN,
@@ -1417,10 +1422,8 @@ public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunction
                                 buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.IsManual is true ?
                                 YesNoOption.Yes :
                                 YesNoOption.No,
-            businessAddressCountryReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country is null ? null :
-                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "E" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["England"]})" :
-                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "W" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["Wales"]})" :
-                                         null
+            businessAddressCountryReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country is null ? null : $"/bsr_countries({countryId})"
+
         });
     }
 
@@ -1479,7 +1482,13 @@ public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunction
     [Function(nameof(UpdateContact))]
     public Task UpdateContact([ActivityTrigger] ContactWrapper contactWrapper)
     {
-        //var stage = buildingProfessionApplicationWrapper.DynamicsBuildingProfessionApplication.bsr_applicationstage == BuildingApplicationStage.ApplicationSubmitted ? BuildingApplicationStage.ApplicationSubmitted : buildingProfessionApplicationWrapper.Stage;
+
+        CountryCodeMapper countryCodeMapper = new CountryCodeMapper();
+
+        var country = contactWrapper.Model.Address.Country ?? null;
+
+        var countryId = countryCodeMapper.MapDynamicsCountryCode(country);
+
         return dynamicsService.UpdateContact(contactWrapper.DynamicsContact, new DynamicsContact
         {
             firstname = contactWrapper.Model.FirstName,
@@ -1503,10 +1512,8 @@ public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunction
                                 YesNoOption.No,
             birthdate = contactWrapper.Model.birthdate,
             bsr_nationalinsuranceno = contactWrapper.Model.NationalInsuranceNumber,
-            countryReferenceId = contactWrapper.Model.Address.Country is null ? null :
-                                         contactWrapper.Model.Address.Country == "England" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["England"]})" :
-                                         contactWrapper.Model.Address.Country == "Wales" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["Wales"]})" :
-                                         null
+            countryReferenceId = countryId is null ? null : $"/bsr_countries({countryId})"
+
 
         });
     }
@@ -1598,6 +1605,25 @@ public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunction
 
             if (dynamicsContact != null)
             {
+                CountryCodeMapper CountryCodeMapper = new CountryCodeMapper();
+
+                var address = new BuildingAddress
+                {
+                    Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Address ?? "",
+                    AddressLineTwo = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.AddressLineTwo ?? "",
+                    BuildingName = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.BuildingName ?? "",
+                    Number = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Number ?? "",
+                    Street = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Street ?? "",
+                    Town = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Town ?? "",
+                    Country = CountryCodeMapper.MapCountry(buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Country ?? ""),
+                    AdministrativeArea = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.AdministrativeArea ?? "",
+                    Postcode = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Postcode ?? "",
+                    IsManual = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.IsManual ?? false,
+                    ClassificationCode = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.ClassificationCode ?? "",
+                    CustodianCode = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.CustodianCode ?? "",
+                    CustodianDescription = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.CustodianDescription ?? ""
+                };
+
                 var contact = new Contact
                 {
                     Id = dynamicsContact.contactid ?? "",
@@ -1607,14 +1633,13 @@ public class DynamicsSynchronisationFunctions : IDynamicsSynchronisationFunction
                     AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
                     PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? null,
                     AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
-                    Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
+                    Address = address,
                     birthdate = buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth is null ? null :
                     new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
                                              int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),
                                              int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Day)),
                     NationalInsuranceNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantNationalInsuranceNumber.NationalInsuranceNumber
                 };
-
                 var contactWrapper = new ContactWrapper(contact, dynamicsContact);
 
 
