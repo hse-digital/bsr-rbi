@@ -683,6 +683,8 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 
             CountryCodeMapper CountryCodeMapper = new CountryCodeMapper();
 
+
+
             //Arrange
 
             var address = new BuildingAddress
@@ -693,7 +695,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 Number = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Number ?? "",
                 Street = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Street ?? "",
                 Town = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Town ?? "",
-                Country = CountryCodeMapper.MapCountry(buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Country ?? ""),
+                Country = CountryCodeMapper.MapCountry(buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Country ?? null),
                 AdministrativeArea = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.AdministrativeArea ?? "",
                 Postcode = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.Postcode ?? "",
                 IsManual = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress.IsManual ?? false,
@@ -712,7 +714,7 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
                 AlternativeEmail = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativeEmail.Email,
                 PhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantPhone.PhoneNumber ?? null,
                 AlternativePhoneNumber = buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone is null ? null : buildingProfessionApplicationModel.PersonalDetails.ApplicantAlternativePhone.PhoneNumber ?? "",
-                Address = buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress is null ? new BuildingAddress { } : buildingProfessionApplicationModel.PersonalDetails.ApplicantAddress,
+                Address = address,
                 birthdate = buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth is null ? null :
                 new DateOnly(int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Year),
                                          int.Parse(buildingProfessionApplicationModel.PersonalDetails.ApplicantDateOfBirth.Month),

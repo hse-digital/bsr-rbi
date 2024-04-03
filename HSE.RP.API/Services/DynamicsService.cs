@@ -845,6 +845,10 @@ namespace HSE.RP.API.Services
                 
                 CountryCodeMapper countryCodeMapper = new CountryCodeMapper();
 
+                var country = countryCodeMapper.MapCountry(buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country);
+
+                var countryId = countryCodeMapper.MapDynamicsCountryCode(country);
+
                 //Create a new account
                 var dynamicsAccount = new DynamicsAccount()
                 {
@@ -853,17 +857,15 @@ namespace HSE.RP.API.Services
                     address1_line1 = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Address,
                     address1_line2 = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.AddressLineTwo,
                     address1_city = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Town,
-                    address1_country = countryCodeMapper.MapCountry(buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country ?? ""),
+                    address1_country = country,
                     address1_postalcode = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Postcode,
                     bsr_address1uprn = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.UPRN,
                     bsr_address1usrn = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.USRN,
                     bsr_address1lacode = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.CustodianCode,
                     bsr_address1ladescription = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.CustodianDescription,
                     bsr_manualaddress = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.IsManual is null ? null : buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.IsManual is true ? YesNoOption.Yes : YesNoOption.No,
-                    countryReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country is null ? null :
-                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "E" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["England"]})" :
-                                         buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country == "W" ? $"/bsr_countries({BuildingInspectorCountryNames.Ids["Wales"]})" :
-                                         null
+                    countryReferenceId = buildingProfessionApplicationModel.ProfessionalActivity.EmploymentDetails.EmployerAddress.Country is null ? null : $"/bsr_countries({countryId})"
+                               
                 };
 
                 var response = await dynamicsApi.Create("accounts", dynamicsAccount);

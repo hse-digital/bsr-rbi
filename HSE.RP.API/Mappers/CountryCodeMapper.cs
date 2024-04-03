@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HSE.RP.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace HSE.RP.API.Mappers
     {
 
         string MapCountry(string countryCode);
+        string MapDynamicsCountryCode(string country);
     }
 
     public class CountryCodeMapper : ICountryCodeMapper
     {
-        /// <inheritdoc/>
         public string MapCountry(string countryCode)
         {
             switch (countryCode)
@@ -35,10 +36,17 @@ namespace HSE.RP.API.Mappers
                 case "J":
                     return "Outside of the land boundaries";
                 default:
-                    return "";
+                    return null;
             }
         }
+
+        public string MapDynamicsCountryCode(string country)
+        {
+            return BuildingInspectorCountryNames.Ids[country] ?? null;
+        }
+        
     }
+    
 }
 
 
