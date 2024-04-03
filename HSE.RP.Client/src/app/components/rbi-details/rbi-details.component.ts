@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Input, OnInit, Output, } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewEncapsulation, } from '@angular/core';
 import { NavigationService } from '../../services/navigation.service';
 import { RBISearchResponse, SearchService } from '../../services/search.service';
 import { ActivatedRoute } from '@angular/router';
@@ -7,7 +7,8 @@ import { Activity, BuildingProfessionalModel } from '../../models/building-profe
 @Component({
   selector: 'hse-rbi-details',
   templateUrl: './rbi-details.component.html',
-  styleUrls: ['./rbi-details.component.scss']
+  styleUrls: ['./rbi-details.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RBIDetailsComponent implements OnInit {
 

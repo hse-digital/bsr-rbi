@@ -62,8 +62,11 @@
           </govuk-button>
 
           <div *ngIf="searchResponse.Results > 0" class="govuk-form-group">
+
             <govuk-checkbox-group
               title="Filter by class"
+              class="govuk-fieldset__legend--m"
+              f
               [(model)]="searchModel['class-filter']"
               id="class-selection"
               (onCheckboxSelected)="filterByClass()"
@@ -72,6 +75,7 @@
             >
               <govuk-checkbox
                 #checkbox
+                class="govuk-checkboxes--small"
                 id="class-1"
                 [isDisabled]="this.classOneDisabled"
                 [model]="searchModel['class-filter']"
@@ -81,6 +85,7 @@
               />
               <govuk-checkbox
                 #checkbox
+                class="govuk-checkboxes--small"
                 id="class-2"
                 [isDisabled]="this.classTwoDisabled"
                 [model]="searchModel['class-filter']"
@@ -89,6 +94,7 @@
               />
               <govuk-checkbox
                 #checkbox
+                class="govuk-checkboxes--small"
                 [isDisabled]="this.classThreeDisabled"
                 id="class-3"
                 [model]="searchModel['class-filter']"
@@ -97,6 +103,7 @@
               />
               <govuk-checkbox
                 #checkbox
+                class="govuk-checkboxes--small"
                 id="class-4"
                 [isDisabled]="this.classFourDisabled"
                 [model]="searchModel['class-filter']!"
