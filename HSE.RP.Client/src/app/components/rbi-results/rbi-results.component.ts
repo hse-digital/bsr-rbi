@@ -55,7 +55,7 @@ export class RBIResultsComponent implements OnInit {
       this.classOneDisabled = false;
       this.classTwoDisabled = false;
       this.classThreeDisabled = false;
-      this.classFourDisabled = false;
+      this.classFourDisabled = true;
     }
     if (this.searchModel["class-filter"]!.includes("Class 1 trainee building inspector")) {
       this.classOneDisabled = false;
@@ -81,7 +81,7 @@ export class RBIResultsComponent implements OnInit {
       this.classOneDisabled = false;
       this.classTwoDisabled = false;
       this.classThreeDisabled = false;
-      this.classFourDisabled = false;
+      this.classFourDisabled = true;
     }
 
   }
