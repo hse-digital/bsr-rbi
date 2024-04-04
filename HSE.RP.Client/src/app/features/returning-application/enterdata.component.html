@@ -104,7 +104,8 @@
       <govuk-input
         id="email-address"
         label="Email address"
-        labelClass="govuk-label--s"
+        labelClass="govuk-label--s govuk-!-font-weight-regular"
+        hint="We'll only use this to send you a receipt"
         [(model)]="emailAddress"
         [maxlength]="100"
         (modelChange)="emailAddressChange.emit(emailAddress)"
@@ -137,7 +138,7 @@
       <govuk-input
         id="phone-number"
         label="Mobile phone number"
-        labelClass="govuk-label--s"
+        labelClass="govuk-label--s govuk-!-font-weight-regular"
         [(model)]="phoneNumber"
         [maxlength]="100"
         (modelChange)="phoneNumberChange.emit(phoneNumber)"
