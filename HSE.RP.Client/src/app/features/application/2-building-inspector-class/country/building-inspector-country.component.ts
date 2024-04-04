@@ -13,6 +13,8 @@ import { ApplicationSummaryComponent } from '../../5-application-submission/appl
 import { GovukRequiredDirective } from 'src/app/components/required.directive';
 import { IComponentModel } from 'src/app/models/component. interface';
 import { GovukCheckboxComponent, GovukCheckboxGroupComponent } from 'hse-angular';
+import { ApplicationTaskListComponent } from '../../task-list/task-list.component';
+import { NextStage } from 'src/app/helpers/next-section.helper';
 
 @Component({
   selector: 'hse-building-inspector-country',
@@ -96,6 +98,7 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
 
 
     applicationService.model.InspectorClass!.InspectorCountryOfWork = this.model;
+    
 
   }
 
@@ -178,11 +181,21 @@ export class BuildingInspectorCountryComponent extends PageComponent<BuildingIns
       }
 
     }
+
+    if(this.applicationService.model.InspectorClass?.CompletionState === ComponentCompletionState.Complete)
+    {
     return this.navigationService.navigateRelative(
       BuildingInspectorSummaryComponent.route,
       this.activatedRoute,
       { resetIA: this.resetIA}
     );
+    }
+    else{
+      return this.navigationService.navigateRelative(
+        `../${ApplicationTaskListComponent.route}`,
+        this.activatedRoute, undefined, NextStage.getNextStage(this.applicationService.model)
+      );
+    }
   }
 
   DerivedIsComplete(value: boolean): void {}

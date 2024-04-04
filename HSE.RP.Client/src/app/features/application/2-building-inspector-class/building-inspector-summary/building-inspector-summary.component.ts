@@ -113,6 +113,9 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
     applicationService: ApplicationService,
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
+
+    
+
     return true;
     //! check if previous section (country) is comeplete
     //return (this.applicationService.model.InspectorClass?.InspectorCountryOfWork?.CompletionState === ComponentCompletionState.Complete);
