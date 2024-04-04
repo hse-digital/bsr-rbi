@@ -64,7 +64,7 @@
         <ng-template #englandRegister>
           <govuk-inset-text
             >There is a different
-            <a
+            <a class="govuk-link"
               [routerLink]="['/public-register-wales']"
               class="govuk-link"
             >
@@ -75,7 +75,7 @@
         <ng-template #walesRegister>
           <govuk-inset-text
             >There is a different
-            <a
+            <a class="govuk-link"
               [routerLink]="['/public-register-england']"
               class="govuk-link"
             >
@@ -88,24 +88,24 @@
 
         <govuk-body>Experienced building inspectors in {{country}} can complete their competency assessment and upgrade their registration until 30 September 2024.</govuk-body>
 
-        <govuk-body>Registered building inspectors (RBIs) registered as class 1 will be temporarily extended to the class of RBI for which they are undertaking a competency assessment if they meet <a href="https://www.gov.uk/guidance/registered-building-inspectors#extension-period-eligibility" target="_self">all the criteria</a>.</govuk-body>
+        <govuk-body>Registered building inspectors (RBIs) registered as class 1 will be temporarily extended to the class of RBI for which they are undertaking a competency assessment if they meet <a class="govuk-link" href="https://www.gov.uk/guidance/registered-building-inspectors#extension-period-eligibility" target="_self">all the criteria</a>.</govuk-body>
 
         <govuk-body>The RBI registers will not show when inspectors’ registration is temporarily extended during the competency assessment extension period.</govuk-body>
 
-        <govuk-body>You can ask RBIs to show that they meet the criteria for the scope of their registration to be temporarily extended. Check by asking an RBI to provide evidence, such as confirmation from one of the <a href="public-register-{{country | lowercase}}#approved-independent-assessment-scheme-providers">BSR-approved independent assessment scheme providers</a>:</govuk-body>
+        <govuk-body>You can ask RBIs to show that they meet the criteria for the scope of their registration to be temporarily extended. Check by asking an RBI to provide evidence, such as confirmation from one of the <a class="govuk-link" href="public-register-{{country | lowercase}}#approved-independent-assessment-scheme-providers">BSR-approved independent assessment scheme providers</a>:</govuk-body>
 
         <govuk-list classes="govuk-list--bullet">
           <govuk-list-item text="that they are enrolled on a scheme"></govuk-list-item>
           <govuk-list-item text="the class at which they are undergoing their competency assessment"></govuk-list-item>
         </govuk-list>
 
-        <h2 class="govuk-heading-m" id="approved-independent-assessment-scheme-providers">Approved independent assessment scheme providers</h2>
+        <h3 class="govuk-heading-s" id="approved-independent-assessment-scheme-providers">Approved independent assessment scheme providers</h3>
 
         <govuk-body>The BSR-approved independent assessment scheme providers are:</govuk-body>
         <govuk-list classes="govuk-list--bullet">
-          <govuk-list-item text="The Chartered Association of Building Engineers" link="https://cbuilde.com/"></govuk-list-item>
-          <govuk-list-item text="Building Safety Competence Foundation" link="https://www.thebscf.org/home/"></govuk-list-item>
-          <govuk-list-item text="Total Training and Development Limited" link="https://ttd-education.org/"></govuk-list-item>
+          <govuk-list-item><a class="govuk-link" href="https://cbuilde.com/" target="_self">The Chartered Association of Building Engineers</a></govuk-list-item>
+          <govuk-list-item><a class="govuk-link" href="https://www.thebscf.org/home/" target="_self">Building Safety Competence Foundation</a></govuk-list-item>
+          <govuk-list-item><a class="govuk-link" href="https://ttd-education.org/" target="_self">Total Training and Development Limited</a></govuk-list-item>
         </govuk-list>
 
           <h2 class="govuk-heading-m">Search the register</h2>
@@ -170,7 +170,7 @@
         <govuk-body>
           If you want to carry out BSR-regulated activities (such as
           assessing plans and inspecting), you must
-          <a
+          <a class="govuk-link"
             href="https://www.gov.uk/guidance/register-as-a-building-inspector"
             target="_blank"
             >register as a building inspector online</a
@@ -180,7 +180,7 @@
         <h2 class="govuk-heading-m">If you need help using the register</h2>
 
         <govuk-body>
-          <a href="https://www.gov.uk/guidance/contact-the-building-safety-regulator">Contact BSR</a> if you need help with the building
+          <a class="govuk-link" href="https://www.gov.uk/guidance/contact-the-building-safety-regulator">Contact BSR</a> if you need help with the building
           inspector register.
         </govuk-body>
       </div>
@@ -196,14 +196,14 @@
         <nav role="navigation" aria-labelledby="subsection-title">
           <ul class="govuk-list govuk-!-font-size-16">
             <li>
-              <a
+              <a class="govuk-link"
                 href="https://www.gov.uk/guidance/registered-building-inspectors#role-of-a-building-inspector"
               >
                 Registered building inspectors
               </a>
             </li>
             <li>
-              <a
+              <a class="govuk-link" 
                 href="https://www.gov.uk/guidance/register-your-business-as-a-building-control-approver#when-to-register"
               >
                 Registered building control approvers
@@ -215,14 +215,14 @@
         <nav role="navigation" aria-labelledby="subsection-title">
           <ul class="govuk-list govuk-!-font-size-16">
             <li>
-              <a
+              <a class="govuk-link"
                 href="https://www.gov.uk/guidance/register-as-a-building-inspector"
               >
                 Register as a building inspector
               </a>
             </li>
             <li>
-              <a
+              <a class="govuk-link"
                 href="https://www.gov.uk/guidance/register-your-business-as-a-building-control-approver"
               >
                 Register your business as a building control approver
