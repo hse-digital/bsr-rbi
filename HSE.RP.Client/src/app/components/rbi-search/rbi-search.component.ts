@@ -38,7 +38,7 @@ export class RBISearchComponent implements OnInit {
     this.searchModelHasErrors = false;
 
     if (!name && !employer) {
-      this.searchModelBuildingInspectorErrorText = 'Enter an inspector name';
+      this.searchModelBuildingInspectorErrorText = 'Enter a building inspector name';
       this.searchModelBuildingControllerErrorText = 'Enter a building control body';
       this.searchModelHasErrors = true;
     }
