@@ -42,6 +42,10 @@ namespace HSE.RP.API.Mappers
 
         public string MapDynamicsCountryCode(string country)
         {
+            if(country == null)
+            {
+                return null;
+            }
             return BuildingInspectorCountryNames.Ids[country] ?? null;
         }
         
