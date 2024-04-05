@@ -127,7 +127,7 @@
           <govuk-body>
             There are no building inspectors that match your search. Try
             searching again, or
-            <a href="https://www.gov.uk/guidance/contact-the-building-safety-regulator">contact the Building Safety Regulator</a> if you need
+            <a class="govuk-link" href="https://www.gov.uk/guidance/contact-the-building-safety-regulator">contact the Building Safety Regulator</a> if you need
             help.
           </govuk-body>
           <hr
@@ -142,7 +142,7 @@
                 ><a
                   class="govuk-link"
                   [routerLink]="['../detail']"
-                  [queryParams]="{ Id: application.ApplicationNumber, searchModel: stringifySearchModel()}"
+                  [queryParams]="{ Id: application.Id}"
                   >{{ application.Applicant?.ApplicantName }}</a
                 ></strong
               >

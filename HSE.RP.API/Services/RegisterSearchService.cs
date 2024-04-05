@@ -107,17 +107,11 @@ namespace HSE.RP.API.Services
 
         public async Task<BuildingProfessionApplication> GetRBIDetails(string applicationNumber)
         {
-            var rbiDetails = await cosmosDbService.GetApplicationByApplicationNumber<BuildingProfessionApplication>(applicationNumber, "BuildingInspector");
+            var rbiDetails = await cosmosDbService.GetItemAsync<BuildingProfessionApplication>(applicationNumber, "BuildingInspector");
 
             return rbiDetails;
         }
 
-        public async Task<BuildingProfessionApplication> GetRBCADetails(string applicationNumber)
-        {
-            var rbcaDetails = await cosmosDbService.GetApplicationByApplicationNumber<BuildingProfessionApplication>(applicationNumber, "BuildingControlApprover");
-
-            return rbcaDetails;
-        }
     }
 
 }

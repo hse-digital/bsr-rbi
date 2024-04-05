@@ -49,8 +49,6 @@ namespace HSE.RP.API.Services
         /// <returns>A task representing the asynchronous operation.</returns>
         Task<T> GetItemAsync<T>(string id, string partitionKeyValue);
 
-        Task<T> GetApplicationByApplicationNumber<T>(string applicationNumber, string buildingProfessionType) where T : IBuildingProfessionApplication;
-
         /// <summary>
         /// Removes items from the Cosmos DB container by building profession type.
         /// </summary>
@@ -283,20 +281,6 @@ namespace HSE.RP.API.Services
             return RBIApplcations;
         }
 
-
-
-        public async Task<T> GetApplicationByApplicationNumber<T>(string applicationNumber, string buildingProfessionType) where T : IBuildingProfessionApplication
-        {
-            //Get item using application number and building profession type
-                IQueryable<T> query = container.GetItemLinqQueryable<T>()
-                .Where(item => item.ApplicationNumber == applicationNumber && item.BuildingProfessionType == buildingProfessionType);
-
-            FeedIterator<T> queryResultSetIterator = query.ToFeedIterator();
-
-            FeedResponse<T> response = await queryResultSetIterator.ReadNextAsync();
-
-            return response.FirstOrDefault();
-        }
     }
 
 }

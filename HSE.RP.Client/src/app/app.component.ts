@@ -21,6 +21,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
 
   appHeaderLink = environment.headerLink;
   govukLogoLink = environment.govukLogoLink;
+  feedbackLink = "";
   headerTitleText = "";
 
   title: string = "HSE.RP.Client";
@@ -34,12 +35,24 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
     this.setHeaderLink();
     this.setHeaderText();
     this.setFooterLinks();
-
+    this.setFeedbackLink();
   }
 
   private doesUrlContains(...segment: string[]) {
     return segment.filter(x => window.location.href.indexOf(x) > -1).length > 0;
   }
+
+  setFeedbackLink() {
+    if (this.doesUrlContains("/public-register-england")) {
+      this.feedbackLink = "https://forms.office.com/e/bYnhFX6gCU";
+    } else if (this.doesUrlContains("/public-register-wales")) {
+      this.feedbackLink = "https://forms.office.com/e/bYnhFX6gCU";
+    }
+    else {
+      this.feedbackLink = "https://forms.office.com/e/p1rYGz27V6"
+    }
+  }
+
 
   setHeaderLink() {
     if (this.doesUrlContains("/public-register-england")) {

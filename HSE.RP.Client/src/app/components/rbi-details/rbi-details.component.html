@@ -15,7 +15,7 @@
     <div class="govuk-grid-column-two-thirds">
       <govuk-summary-list *ngIf="rbiApplication?.Id">
         <govuk-summary-list-row key="Registration number"
-          >{{ rbiApplication?.ApplicationNumber }}
+          >{{ rbiApplication?.Id }}
         </govuk-summary-list-row>
 
         <ng-template
@@ -174,7 +174,7 @@
       <govuk-details summaryText="Incorrect details?">
         <govuk-body>
           If the details of this registered building inspector are incorrect, 
-          <a href="https://www.gov.uk/guidance/contact-the-building-safety-regulator">contact BSR</a>.
+          <a class="govuk-link" href="https://www.gov.uk/guidance/contact-the-building-safety-regulator">contact BSR</a>.
         </govuk-body>
         <govuk-body>
           It can take a few days for details to be updated on the register.
@@ -183,7 +183,7 @@
       </govuk-details>
 
       <govuk-body
-        ><a
+        ><a class="govuk-link"
           [routerLink]="['../results']"
           [queryParams]="{
             'inspector-name': this.searchModel['inspector-name'],
@@ -194,7 +194,7 @@
         ></govuk-body
       >
       <govuk-body
-        ><a [routerLink]="['../']">Start a new search</a></govuk-body
+        ><a class="govuk-link" [routerLink]="['../']">Start a new search</a></govuk-body
       >
     </div>
   </div>

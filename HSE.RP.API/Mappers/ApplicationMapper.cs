@@ -109,8 +109,7 @@ namespace HSE.RP.API.Mappers
 
             return new BuildingProfessionApplication
             {
-                Id = Guid.NewGuid().ToString(),
-                ApplicationNumber = dynamicsRBIApplication.ApplicationId,
+                Id = dynamicsRBIApplication.ApplicationId,
                 BuildingProfessionType = dynamicsRBIApplication.BuildingProfessionType.ToString(),
                 Applicant = new Applicant
                 {
