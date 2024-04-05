@@ -29,6 +29,7 @@ using HSE.RP.API.Functions;
 using System.Net.Mail;
 using HSE.RP.API.Mappers;
 using HSE.RP.API.Models.DynamicsDataExport;
+using Google.Protobuf.WellKnownTypes;
 
 namespace HSE.RP.API.UnitTests.DynamicsServiceTest
 {
@@ -2345,8 +2346,10 @@ namespace HSE.RP.API.UnitTests.DynamicsServiceTest
             .WithVerb(HttpMethod.Get)
             .RespondWithJson(new DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>
             {
-                value = dynamicsRBIApplications
+                value = dynamicsRBIApplications, nextLink = null
             });
+
+
 
             //Act
             var result = await _dynamicsService.GetDynamicsRBIApplications();

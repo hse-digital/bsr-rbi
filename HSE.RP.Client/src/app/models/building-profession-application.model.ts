@@ -1,7 +1,6 @@
 export class BuildingProfessionalModel {
 
     public Id?: string;
-    public ApplicationNumber?: string;
     public BuildingProfessionType?: string;
     public ValidFrom?: Date;
     public ValidTo?: Date;

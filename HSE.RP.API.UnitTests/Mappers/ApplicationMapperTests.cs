@@ -152,7 +152,6 @@ namespace HSE.RP.API.UnitTests.Mappers
             // Assert
             Assert.NotNull(result);
             Assert.NotEmpty(result.Id);
-            Assert.Equal("123", result.ApplicationNumber);
             Assert.Equal(BuildingProfessionType.BuildingInspector.ToString(), result.BuildingProfessionType);
             Assert.Equal("John Doe", result.Applicant.ApplicantName);
             Assert.NotNull(result.Employer);

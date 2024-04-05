@@ -28,8 +28,8 @@ namespace HSE.RP.API.UnitTests.Services
             var country = "England";
             var nameResponse = new List<BuildingProfessionApplication>
             {
-                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "123", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" } },
-                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "456", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "Jane Smith" } }
+                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" } },
+                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "Jane Smith" } }
             };
             cosmosDbServiceMock.Setup(x => x.GetInspectorsByNameAndCountry(name, country)).ReturnsAsync(nameResponse);
 
@@ -50,8 +50,8 @@ namespace HSE.RP.API.UnitTests.Services
             var country = "England";
             var companyResponse = new List<BuildingProfessionApplication>
             {
-                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "123", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" }, Employer = new Employer{ EmployerName = "ABC Corp", EmployerAddress = "1 Evilstreet" } },
-                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "456", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "Jane Smith" }, Employer = new Employer{ EmployerName = "ABCDEFG", EmployerAddress = "Imaginary Way" } }
+                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" }, Employer = new Employer{ EmployerName = "ABC Corp", EmployerAddress = "1 Evilstreet" } },
+                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "Jane Smith" }, Employer = new Employer{ EmployerName = "ABCDEFG", EmployerAddress = "Imaginary Way" } }
             };
             cosmosDbServiceMock.Setup(x => x.GetInspectorsByCompanyAndCountry(company, country)).ReturnsAsync(companyResponse);
 
@@ -71,7 +71,7 @@ namespace HSE.RP.API.UnitTests.Services
             var service = "BuildingInspector";
             var country = "England";
 
-            var lastUpdated = new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "123", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = new DateTime(2022, 1, 1), Applicant = new Applicant { ApplicantName = "John Doe" } };
+            var lastUpdated = new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = new DateTime(2022, 1, 1), Applicant = new Applicant { ApplicantName = "John Doe" } };
             cosmosDbServiceMock.Setup(x => x.GetLastUpdatedByBuildingProfessionTypeAndCountry(service, country)).ReturnsAsync(lastUpdated);
 
             // Act
@@ -90,8 +90,8 @@ namespace HSE.RP.API.UnitTests.Services
             var country = "England";
             var searchResponse = new List<BuildingProfessionApplication>
             {
-                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "123", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" } },
-                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "456", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "Jane Smith" } }
+                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" } },
+                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "Jane Smith" } }
             };
             cosmosDbServiceMock.Setup(x => x.SearchRBIRegister(name, company, country)).ReturnsAsync(searchResponse);
 
@@ -110,8 +110,8 @@ namespace HSE.RP.API.UnitTests.Services
         {
             // Arrange
             var id = "123";
-            var rbiDetails = new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "123", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" } };
-            cosmosDbServiceMock.Setup(x => x.GetApplicationByApplicationNumber<BuildingProfessionApplication>(id, "BuildingInspector")).ReturnsAsync(rbiDetails);
+            var rbiDetails = new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" } };
+            cosmosDbServiceMock.Setup(x => x.GetItemAsync<BuildingProfessionApplication>(id, "BuildingInspector")).ReturnsAsync(rbiDetails);
 
             // Act
             var result = await registerSearchService.GetRBIDetails(id);

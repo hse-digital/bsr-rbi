@@ -15,6 +15,7 @@ using HSE.RP.Domain.DynamicsDefinitions;
 using HSE.RP.Domain.Entities;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace HSE.RP.API.Services
 {
@@ -97,6 +98,8 @@ namespace HSE.RP.API.Services
         /// <inheritdoc/>
         public async Task<List<DynamicsBuildingProfessionRegisterApplication>> GetDynamicsRBIApplications()
         {
+
+            var result = new List<DynamicsBuildingProfessionRegisterApplication>();
             var DynamicsRBIApplications = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>("bsr_buildingprofessionapplications", new[]
             {
                     ("$select", $"bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_registrationcommencementdate,bsr_decisioncondition,bsr_regulatorydecisionstatus,bsr_reviewdecision,statuscode"),
@@ -104,9 +107,23 @@ namespace HSE.RP.API.Services
                     ("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_applicantid_contact/contactid ne null)")
                 });
 
-            return DynamicsRBIApplications.value;
+
+
+                do
+                {
+                    result.AddRange(DynamicsRBIApplications.value);
+                    if (DynamicsRBIApplications.nextLink != null)
+                    {
+                        DynamicsRBIApplications = await dynamicsApi.GetNextPage<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>(DynamicsRBIApplications.nextLink);
+                    }
+                } while (DynamicsRBIApplications.nextLink != null);
+            
+
+            return result;
 
         }
+
+        
 
 
         public async Task<DynamicsPayment> CreatePaymentAsync(DynamicsPayment dynamicsPayment, string ApplicationId)

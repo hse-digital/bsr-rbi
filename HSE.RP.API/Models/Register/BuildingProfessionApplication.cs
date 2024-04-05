@@ -13,7 +13,6 @@ namespace HSE.RP.API.Models.Register
     {
         List<Activity> Activities { get; set; }
         Applicant Applicant { get; set; }
-        string ApplicationNumber { get; set; }
         string BuildingProfessionType { get; set; }
         List<string> Classes { get; set; }
         List<string> Countries { get; set; }
@@ -29,8 +28,6 @@ namespace HSE.RP.API.Models.Register
     {
 
         public required string Id { get; set; }
-
-        public required string ApplicationNumber { get; set; }
 
         public required string BuildingProfessionType { get; set; }
 

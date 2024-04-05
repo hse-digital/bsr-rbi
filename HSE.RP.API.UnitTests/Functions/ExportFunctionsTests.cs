@@ -190,7 +190,6 @@ namespace HSE.RP.API.UnitTests.Functions
             {
                 new BuildingProfessionApplication {
                     Id = "1",
-                    ApplicationNumber = "1",
                     BuildingProfessionType = BuildingProfessionType.BuildingInspector.ToString(),
                     Applicant = new Applicant
                     {
@@ -207,7 +206,6 @@ namespace HSE.RP.API.UnitTests.Functions
                 },
                 new BuildingProfessionApplication {
                     Id = "2",
-                    ApplicationNumber = "2",
                     BuildingProfessionType = BuildingProfessionType.BuildingInspector.ToString(),
                     Applicant = new Applicant
                     {

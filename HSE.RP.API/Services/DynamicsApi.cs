@@ -1,9 +1,13 @@
 ﻿using Flurl;
 using Flurl.Http;
+using HSE.RP.API.Model;
 using HSE.RP.API.Models;
+using HSE.RP.API.Models.DynamicsDataExport;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using Polly;
 using Polly.Retry;
+using System.Web;
 
 namespace HSE.RP.API.Services
 {
@@ -11,6 +15,7 @@ namespace HSE.RP.API.Services
     {
         Task<IFlurlResponse> Create(string endpoint, object entity, bool returnObjectResponse = false);
         Task<T> Get<T>(string endpoint, params (string, string)[] filters);
+        Task<T> GetNextPage<T>(string nextLink);
         Task<IFlurlResponse> Update(string endpoint, object entity);
     }
 
@@ -77,6 +82,17 @@ namespace HSE.RP.API.Services
             });
         }
 
+        public async Task<T> GetNextPage<T>(string nextLink)
+        {
+            var token = await GetAuthenticationTokenAsync();
+
+            var request = nextLink
+            .WithOAuthBearerToken(token);
+
+            return await request.GetJsonAsync<T>();
+
+        }
+
         internal async Task<string> GetAuthenticationTokenAsync()
         {
             var response = await $"https://login.microsoftonline.com/{dynamicsOptions.TenantId}/oauth2/token"
@@ -91,5 +107,8 @@ namespace HSE.RP.API.Services
 
             return response.AccessToken;
         }
+
+
+
     }
 }

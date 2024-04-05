@@ -200,8 +200,8 @@ namespace HSE.RP.API.UnitTests.Functions
             {
                 RBIApplications = new List<BuildingProfessionApplication>
                 {
-                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "123", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" }, Employer = new Employer{ EmployerName = "Ultra Corp", EmployerAddress = "1 Evilstreet" } },
-                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "456", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Smith" }, Employer = new Employer{ EmployerName = "Mega Corp", EmployerAddress = "Imaginary Way" } }
+                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" }, Employer = new Employer{ EmployerName = "Ultra Corp", EmployerAddress = "1 Evilstreet" } },
+                    new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Smith" }, Employer = new Employer{ EmployerName = "Mega Corp", EmployerAddress = "Imaginary Way" } }
                 },
                 Results=2
             };
@@ -272,7 +272,7 @@ namespace HSE.RP.API.UnitTests.Functions
             // Arrange
             var requestData = BuildHttpRequestDataWithUri<string>("test", new Uri("http://noaddress.com/123"));
             var id = "123";
-            var rbiDetails = new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), ApplicationNumber = "123", BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" }, Employer = new Employer { EmployerName = "Ultra Corp", EmployerAddress = "1 Evilstreet" } };
+            var rbiDetails = new BuildingProfessionApplication { Id = Guid.NewGuid().ToString(), BuildingProfessionType = "BuildingInspector", Countries = new List<string> { "England" }, CreationDate = DateTime.Now, Applicant = new Applicant { ApplicantName = "John Doe" }, Employer = new Employer { EmployerName = "Ultra Corp", EmployerAddress = "1 Evilstreet" } };
 
 
             registerSearchServiceMock.Setup(x => x.GetRBIDetails(id)).ReturnsAsync(rbiDetails);
