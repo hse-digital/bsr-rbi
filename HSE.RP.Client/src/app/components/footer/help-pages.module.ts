@@ -39,12 +39,13 @@ export class HelpPagesModule {
     { title: "Contact us", href: 'https://www.gov.uk/guidance/contact-the-building-safety-regulator', isNewTab: false},
     { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityComponent.route}`,isNewTab: false },
     { title: "Cookies", href: `/${HelpPagesModule.baseRoute}/${CookiesComponent.route}`, isNewTab: false},
-    { title: "Feedback", href: "https://forms.office.com/e/bYnhFX6gCU" ,isNewTab: false},
+    { title: "Feedback", href: "https://forms.office.com/e/p1rYGz27V6" ,isNewTab: false},
     { title: "Privacy", href: `/${HelpPagesModule.baseRoute}/${PrivacyNoticeComponent.route}`, isNewTab: false }
   ];
 
   static registerFooterLinks = [
     { title: "Contact us", href: 'https://www.gov.uk/guidance/contact-the-building-safety-regulator', isNewTab: false},
-    { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityRegisterComponent.route}`,isNewTab: false }
+    { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityRegisterComponent.route}`,isNewTab: false },
+    { title: "Feedback", href: "https://forms.office.com/e/bYnhFX6gCU" ,isNewTab: false},
   ];
 }
