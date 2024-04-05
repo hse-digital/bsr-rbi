@@ -100,6 +100,7 @@ namespace HSE.RP.API.Services
         {
 
             var result = new List<DynamicsBuildingProfessionRegisterApplication>();
+
             var DynamicsRBIApplications = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>("bsr_buildingprofessionapplications", new[]
             {
                     ("$select", $"bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_registrationcommencementdate,bsr_decisioncondition,bsr_regulatorydecisionstatus,bsr_reviewdecision,statuscode"),
@@ -107,17 +108,13 @@ namespace HSE.RP.API.Services
                     ("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_applicantid_contact/contactid ne null)")
                 });
 
+            result.AddRange(DynamicsRBIApplications.value);
 
-
-                do
-                {
-                    result.AddRange(DynamicsRBIApplications.value);
-                    if (DynamicsRBIApplications.nextLink != null)
-                    {
-                        DynamicsRBIApplications = await dynamicsApi.GetNextPage<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>(DynamicsRBIApplications.nextLink);
-                    }
-                } while (DynamicsRBIApplications.nextLink != null);
-            
+            while(DynamicsRBIApplications.nextLink != null)
+            {
+                DynamicsRBIApplications = await dynamicsApi.GetNextPage<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>(DynamicsRBIApplications.nextLink);
+                result.AddRange(DynamicsRBIApplications.value);
+            }
 
             return result;
 
