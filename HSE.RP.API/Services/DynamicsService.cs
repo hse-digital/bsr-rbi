@@ -108,7 +108,7 @@ namespace HSE.RP.API.Services
                     ("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_applicantid_contact/contactid ne null)")
                 });
 
-            result = DynamicsRBIApplications.value;
+            result.AddRange(DynamicsRBIApplications.value);
 
             while(DynamicsRBIApplications.nextLink != null)
             {
