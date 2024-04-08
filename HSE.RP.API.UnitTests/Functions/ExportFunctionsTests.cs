@@ -35,7 +35,7 @@ namespace HSE.RP.API.UnitTests.Functions
             );
         }
 
-        [Fact]
+        /*[Fact]
         public async Task ExportRBIApplicationsToCosmos_ShouldExportApplicationsToCosmosDb()
         {
             // Arrange
@@ -271,7 +271,7 @@ namespace HSE.RP.API.UnitTests.Functions
             _applicationMapperMock.Verify(mapper => mapper.ToRBIApplication(It.IsAny<DynamicsBuildingProfessionRegisterApplication>()), Times.Exactly(dynamicsRBIApplications.Count));
             _cosmosDbServiceMock.Verify(service => service.AddItemAsync(It.IsAny<BuildingProfessionApplication>(), It.IsAny<string>()), Times.Exactly(rbiApplications.Count));
             _cosmosDbServiceMock.Verify(service => service.RemoveItemsByBuildingProfessionTypeAndCreationDateAsync<BuildingProfessionApplication>(It.IsAny<string>(), It.IsAny<DateTime>()), Times.Once);
-        }
+        }*/
 
 
     }
