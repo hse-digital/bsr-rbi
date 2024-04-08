@@ -75,7 +75,13 @@ namespace HSE.RP.API.Functions
 
             application.ApplicantEmploymentDetails = employmentDetails;
 
+            //Get class details
 
+            var classDetails = await dynamicsService.GetDynamicsRBIApplicationClassDetails(application.ApplicationId);
+
+            application.ApplicantClassDetails = classDetails;
+
+            //Get activity details
 
             return applicationMapper.ToRBIApplication(application);
         }

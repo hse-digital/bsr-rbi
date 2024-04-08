@@ -78,6 +78,7 @@ namespace HSE.RP.API.Services
         Task AssignContactType(string contactId, string contactTypeId);
         Task<DynamicsOrganisationsSearchResponse> SearchOrganisations(string authorityName, string accountTypeId);
         Task<List<ApplicantEmploymentDetail>> GetDynamicsRBIApplicationEmploymentDetails(string applicationId);
+        Task<List<ApplicantClassDetails>> GetDynamicsRBIApplicationClassDetails(string applicationId);
     }
     public class DynamicsService : IDynamicsService
     {
@@ -139,6 +140,55 @@ namespace HSE.RP.API.Services
             {
                 employmentDetails = await dynamicsApi.GetNextPage<DynamicsResponse<ApplicantEmploymentDetail>>(employmentDetails.nextLink);
                 result.AddRange(employmentDetails.value);
+            }
+
+            return result;
+
+        }
+
+        public async Task<List<ApplicantClassDetails>> GetDynamicsRBIApplicationClassDetails(string applicationId)
+        {
+
+            var result = new List<ApplicantClassDetails>();
+
+            var classDetails = await dynamicsApi.Get<DynamicsResponse<ApplicantClassDetails>>("bsr_biregclasses", new[]
+            {
+                    ("$select", $"bsr_biregclassid,statuscode"),
+                    ("$expand", $"bsr_biclassid($select=bsr_name)"),
+                    ("$filter", $"(statuscode eq 760810002) and (_bsr_biapplicationid_value eq '${applicationId}')")
+                });
+
+            result.AddRange(classDetails.value);
+
+            while (classDetails.nextLink != null)
+            {
+                classDetails = await dynamicsApi.GetNextPage<DynamicsResponse<ApplicantClassDetails>>(classDetails.nextLink);
+                result.AddRange(classDetails.value);
+            }
+
+            return result;
+
+        }
+
+
+        public async Task<List<ApplicantActivityDetails>> GetDynamicsRBIApplicationActivityDetails(string applicationId)
+        {
+
+            var result = new List<ApplicantActivityDetails>();
+
+            var activityDetails = await dynamicsApi.Get<DynamicsResponse<ApplicantActivityDetails>>("bsr_biregactivities", new[]
+            {
+                    ("$select", $"bsr_biregactivityid,statuscode"),
+                    ("$expand", $"bsr_biactivityid($select=bsr_name),bsr_bibuildingcategoryid($select=bsr_name)"),
+                    ("$filter", $"(statuscode eq 760810002) and (_bsr_biapplicationid_value eq '${applicationId}')")
+                });
+
+            result.AddRange(activityDetails.value);
+
+            while (activityDetails.nextLink != null)
+            {
+                activityDetails = await dynamicsApi.GetNextPage<DynamicsResponse<ApplicantActivityDetails>>(activityDetails.nextLink);
+                result.AddRange(activityDetails.value);
             }
 
             return result;
