@@ -104,6 +104,9 @@ export class RBIResultsComponent implements OnInit {
 
     this.getApplicationPage();
 
+    this.page = 1;
+    this.currentPage = 1;
+
   }
 
   async startSearch() {
@@ -235,7 +238,6 @@ export class RBIResultsComponent implements OnInit {
 
   }
 
-  //Function to get an array containing the first, last and the current page plus the items one before and after the current page, include the first and last page in the array at the first and last indiex
   getPages() {
     let pages = [this.currentPage];
     let i = 1;

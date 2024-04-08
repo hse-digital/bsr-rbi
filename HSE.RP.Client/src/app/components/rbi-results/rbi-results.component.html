@@ -142,7 +142,7 @@
                 ><a
                   class="govuk-link"
                   [routerLink]="['../detail']"
-                  [queryParams]="{ Id: application.Id}"
+                  [queryParams]="{ Id: application.Id, searchModel: stringifySearchModel()}"
                   >{{ application.Applicant?.ApplicantName }}</a
                 ></strong
               >
@@ -222,7 +222,7 @@
           <li
             class="govuk-pagination__item"
             *ngFor="let page of pages"
-            [ngClass]="{ 'govuk-pagination__item--current': currentPage === page}"
+            [ngClass]="{ 'govuk-pagination__item--current': currentPage === page, 'govuk-pagination__item--ellipses': getPageLabel(page) == '...'}"
             (click)="pageChange(page)"
           >
             <a class="govuk-link govuk-pagination__link" aria-label="Page" [ngStyle]="{'color' :currentPage === page ? '#fff' : '#1d70b8'}">
@@ -232,13 +232,13 @@
         </ul>
         </div>
         
-        <div *ngIf="pages.length >= 6">
+        <div *ngIf="pages.length > 6">
           <ul class="govuk-pagination__list">
             <li
               class="govuk-pagination__item"
               *ngFor="let page of getPages()"
-              [ngClass]="{ 'govuk-pagination__item--current': currentPage === page}"
-            >
+              [ngClass]="{ 'govuk-pagination__item--current': currentPage === page, 'govuk-pagination__item--ellipses': getPageLabel(page) == '...'}"
+              >
 
                 <ng-container *ngIf="getPageLabel(page) !== '...'">
                   <a class="govuk-link govuk-pagination__link" aria-label="Page" [ngStyle]="{'color' :currentPage === page ? '#fff' : '#1d70b8'}" (click)="pageChange(page)">
