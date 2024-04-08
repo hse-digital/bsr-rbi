@@ -285,7 +285,7 @@ export class RBIResultsComponent implements OnInit {
     if (this.isActivePage(page) || this.isBoundaryPage(page) || this.isAdjacentPage(page) || this.isEarlyPage(page) || this.isLatePage(page)) {
       return page;
     } else {
-      return '...';
+      return '⋯';
     }
   }
 
