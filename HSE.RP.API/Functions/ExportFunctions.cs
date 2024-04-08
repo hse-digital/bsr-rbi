@@ -37,7 +37,7 @@ namespace HSE.RP.API.Functions
             this.cosmosDbService = cosmosDbService;
         }
 
-        // Export RBI applications to Cosmos DB
+
         [Function(nameof(ExportRBIApplicationsToCosmos))]
         public async Task ExportRBIApplicationsToCosmos([TimerTrigger("0 5 0 * * *")] TimerInfo timer, [DurableClient] DurableTaskClient durableTaskClient)
         {
@@ -50,16 +50,18 @@ namespace HSE.RP.API.Functions
         [Function(nameof(RunExportRBIOrchestration))]
         public async Task RunExportRBIOrchestration([OrchestrationTrigger] TaskOrchestrationContext context)
         {
-            var rbiApplications = await context.CallActivityAsync<List<DynamicsBuildingProfessionRegisterApplication>>(nameof(GetDynamicsRBIApplications));
+            var rbiApplications = await context.CallActivityAsync<List<DynamicsBuildingProfessionRegisterApplication>>(nameof(GetDynamicsRBIApplicationsToProcess));
+
+
 
             var imports = rbiApplications.Select(async application => await context.CallActivityAsync(nameof(ImportRBIApplication), application)).ToList();
             await Task.WhenAll(imports);
         }
 
-        [Function(nameof(GetDynamicsRBIApplications))]
-        public async Task<List<DynamicsBuildingProfessionRegisterApplication>> GetDynamicsRBIApplications([ActivityTrigger] object x)
+        [Function(nameof(GetDynamicsRBIApplicationsToProcess))]
+        public async Task<List<DynamicsBuildingProfessionRegisterApplication>> GetDynamicsRBIApplicationsToProcess([ActivityTrigger] object x)
         {
-            return await dynamicsService.GetDynamicsRBIApplications();
+            return await dynamicsService.GetDynamicsRBIApplicationsToProcess();
         }
 
         [Function(nameof(ImportRBIApplication))]
@@ -68,20 +70,9 @@ namespace HSE.RP.API.Functions
         {
 
 
-            var employmentDetails = await dynamicsService.GetDynamicsRBIApplicationEmploymentDetails(application.BuildingProfessionApplicationDynamicsId);
-            application.ApplicantEmploymentDetails = employmentDetails;
+            var dynamicsApplication = await dynamicsService.GetDynamicsRBIApplicationData(application.BuildingProfessionApplicationDynamicsId);
 
-            
-            var classDetails = await dynamicsService.GetDynamicsRBIApplicationClassDetails(application.BuildingProfessionApplicationDynamicsId);
-            application.ApplicantClassDetails = classDetails;
-
-            var activityDetails = await dynamicsService.GetDynamicsRBIApplicationActivityDetails(application.BuildingProfessionApplicationDynamicsId);
-            application.ApplicantActivityDetails = activityDetails;
-
-            var countryDetails = await dynamicsService.GetDynamicsRBIApplicationCountryDetails(application.BuildingProfessionApplicationDynamicsId);
-            application.ApplicantCountryDetails = countryDetails;
-
-            var applicationModel = applicationMapper.ToRBIApplication(application);
+            var applicationModel = applicationMapper.ToRBIApplication(dynamicsApplication);
 
             return applicationModel;
         }

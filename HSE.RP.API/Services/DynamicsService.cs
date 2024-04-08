@@ -81,6 +81,8 @@ namespace HSE.RP.API.Services
         Task<List<ApplicantClassDetails>> GetDynamicsRBIApplicationClassDetails(string applicationId);
         Task<List<ApplicantActivityDetails>> GetDynamicsRBIApplicationActivityDetails(string applicationId);
         Task<List<ApplicantCountryDetails>> GetDynamicsRBIApplicationCountryDetails(string applicationId);
+        Task<List<DynamicsBuildingProfessionRegisterApplication>> GetDynamicsRBIApplicationsToProcess();
+        Task<DynamicsBuildingProfessionRegisterApplication> GetDynamicsRBIApplicationData(string applicationId);
     }
     public class DynamicsService : IDynamicsService
     {
@@ -99,7 +101,46 @@ namespace HSE.RP.API.Services
             this.featureOptions = featureOptions.Value;
         }
 
-        /// <inheritdoc/>
+
+        public async Task<List<DynamicsBuildingProfessionRegisterApplication>> GetDynamicsRBIApplicationsToProcess()
+        {
+
+            var result = new List<DynamicsBuildingProfessionRegisterApplication>();
+
+            var DynamicsRBIApplications = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>("bsr_buildingprofessionapplications", new[]
+            {
+                    ("$select", $"bsr_buildingprofessionapplicationid"),
+                    ("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_applicantid_contact/contactid ne null)")
+                });
+
+            result.AddRange(DynamicsRBIApplications.value);
+
+            while (DynamicsRBIApplications.nextLink != null)
+            {
+                DynamicsRBIApplications = await dynamicsApi.GetNextPage<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>(DynamicsRBIApplications.nextLink);
+                result.AddRange(DynamicsRBIApplications.value);
+            }
+
+            return result;
+
+        }
+
+        public async Task<DynamicsBuildingProfessionRegisterApplication> GetDynamicsRBIApplicationData(string applicationId)
+        {
+
+
+            var DynamicsRBIApplications = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>("bsr_buildingprofessionapplications", new[]
+            {
+                    ("$select", $"bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_rbcadeclarationpositioninbusiness,bsr_decisioncondition,bsr_decisionreason,bsr_regulatorydecisionstatus,bsr_reviewdecision,bsr_buildingprofessionapplicationid"),
+                    ("$expand", $"bsr_applicantid_contact($select=firstname,lastname),bsr_biemploymentdetail_buildingprofessionappl($select=bsr_biemploymentdetailid;$expand=bsr_biemployerid_account($select=name,address1_composite);$filter=(statuscode eq 1)),bsr_bsr_biregclass_buildingprofessionapplicat($select=bsr_biregclassid,statuscode;$expand=bsr_biclassid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_biregactivity_buildingprofessionapplicati($select=bsr_biregactivityid,statuscode;$expand=bsr_biactivityid($select=bsr_name),bsr_bibuildingcategoryid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_bsr_biregcountry_buildingprofessionapplic($select=bsr_biregcountryid;$expand=bsr_countryid($select=bsr_name);$filter=(statecode eq 0))"),
+                    ("$filter", $"(statuscode eq 760810005) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_buildingprofessionapplicationid eq '{applicationId}') and (bsr_applicantid_contact/contactid ne null)")
+                });
+
+
+            return DynamicsRBIApplications.value.FirstOrDefault();
+
+        }
+
         public async Task<List<DynamicsBuildingProfessionRegisterApplication>> GetDynamicsRBIApplications()
         {
 
