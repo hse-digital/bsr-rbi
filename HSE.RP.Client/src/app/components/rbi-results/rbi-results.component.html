@@ -222,7 +222,7 @@
           <li
             class="govuk-pagination__item"
             *ngFor="let page of pages"
-            [ngClass]="{ 'govuk-pagination__item--current': currentPage === page, 'govuk-pagination__item--ellipses': getPageLabel(page) == '...'}"
+            [ngClass]="{ 'govuk-pagination__item--current': currentPage === page}"
             (click)="pageChange(page)"
           >
             <a class="govuk-link govuk-pagination__link" aria-label="Page" [ngStyle]="{'color' :currentPage === page ? '#fff' : '#1d70b8'}">
@@ -237,15 +237,15 @@
             <li
               class="govuk-pagination__item"
               *ngFor="let page of getPages()"
-              [ngClass]="{ 'govuk-pagination__item--current': currentPage === page, 'govuk-pagination__item--ellipses': getPageLabel(page) == '...'}"
+              [ngClass]="{ 'govuk-pagination__item--current': currentPage === page, 'govuk-pagination__item--ellipses': getPageLabel(page) == '⋯'}"
               >
 
-                <ng-container *ngIf="getPageLabel(page) !== '...'">
+                <ng-container *ngIf="getPageLabel(page) !== '⋯'">
                   <a class="govuk-link govuk-pagination__link" aria-label="Page" [ngStyle]="{'color' :currentPage === page ? '#fff' : '#1d70b8'}" (click)="pageChange(page)">
                     {{getPageLabel(page)}}
                   </a>
                 </ng-container>
-                <ng-container *ngIf="getPageLabel(page) === '...'">
+                <ng-container *ngIf="getPageLabel(page) === '⋯'">
                   <span class="govuk-pagination__link" aria-label="Page">
                     {{getPageLabel(page)}}
                   </span>
