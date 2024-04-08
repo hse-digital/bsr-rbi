@@ -69,7 +69,6 @@ namespace HSE.RP.API.Functions
         public async Task<BuildingProfessionApplication> ImportRBIApplication([ActivityTrigger] DynamicsBuildingProfessionRegisterApplication application)
         {
 
-
             var dynamicsApplication = await dynamicsService.GetDynamicsRBIApplicationData(application.BuildingProfessionApplicationDynamicsId);
 
             var applicationModel = applicationMapper.ToRBIApplication(dynamicsApplication);
