@@ -142,7 +142,7 @@
                 ><a
                   class="govuk-link"
                   [routerLink]="['../detail']"
-                  [queryParams]="{ Id: application.Id}"
+                  [queryParams]="{ Id: application.Id, searchModel: stringifySearchModel()}"
                   >{{ application.Applicant?.ApplicantName }}</a
                 ></strong
               >
