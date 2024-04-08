@@ -13,12 +13,14 @@ using HSE.RP.API.Models.DynamicsDataExport;
 using HSE.RP.API.Mappers;
 using HSE.RP.API.Extensions;
 using System.Net;
+using Microsoft.DurableTask;
+using Microsoft.DurableTask.Client;
 
 namespace HSE.RP.API.Functions
 {
     public interface IExportFunctions
     {
-        Task ExportRBIApplicationsToCosmos([TimerTrigger("0 5 0 * * *")] TimerInfo timer);
+      
 
     }
 
@@ -37,30 +39,48 @@ namespace HSE.RP.API.Functions
 
         // Export RBI applications to Cosmos DB
         [Function(nameof(ExportRBIApplicationsToCosmos))]
-        public async Task ExportRBIApplicationsToCosmos([TimerTrigger("0 5 0 * * *")] TimerInfo timer)
+        public async Task ExportRBIApplicationsToCosmos([TimerTrigger("0 5 0 * * *")] TimerInfo timer, [DurableClient] DurableTaskClient durableTaskClient)
         {
 
-            // Remove old RBI applications from Cosmos DB
-            await cosmosDbService.RemoveItemsByBuildingProfessionTypeAndCreationDateAsync<BuildingProfessionApplication>("BuildingInspector", DateTime.Now.Date);
+            await durableTaskClient.ScheduleNewOrchestrationInstanceAsync(nameof(RunExportRBIOrchestration));
 
-            // Get RBI applications from Dynamics
-            var DynamicsRBIApplications = await dynamicsService.GetDynamicsRBIApplications();
-
-            List<BuildingProfessionApplication> RBIApplications = new List<BuildingProfessionApplication>();
-
-            // Map Dynamics RBI applications to RBIApplication model
-            foreach (DynamicsBuildingProfessionRegisterApplication dynamicsRBIApplication in DynamicsRBIApplications)
-            {
-                RBIApplications.Add(applicationMapper.ToRBIApplication(dynamicsRBIApplication));
-            }
-
-            // Add RBI applications to Cosmos DB
-            foreach (BuildingProfessionApplication rbiApplication in RBIApplications)
-            {
-                await cosmosDbService.AddItemAsync(rbiApplication, rbiApplication.BuildingProfessionType);
-            }
 
         }
+
+        [Function(nameof(RunExportRBIOrchestration))]
+        public async Task RunExportRBIOrchestration([OrchestrationTrigger] TaskOrchestrationContext context)
+        {
+            var rbiApplications = await context.CallActivityAsync<List<DynamicsBuildingProfessionRegisterApplication>>(nameof(GetDynamicsRBIApplications));
+
+            var imports = rbiApplications.Select(async application => await context.CallActivityAsync(nameof(ImportRBIApplication), application)).ToList();
+            await Task.WhenAll(imports);
+        }
+
+        [Function(nameof(GetDynamicsRBIApplications))]
+        public async Task<List<DynamicsBuildingProfessionRegisterApplication>> GetDynamicsRBIApplications([ActivityTrigger] object x)
+        {
+            return await dynamicsService.GetDynamicsRBIApplications();
+        }
+
+        [Function(nameof(ImportRBIApplication))]
+        [CosmosDBOutput("%Integrations:CosmosDatabase%", "%Integrations:CosmosContainer%", Connection = "CosmosConnection")]
+        public async Task<BuildingProfessionApplication> ImportRBIApplication([ActivityTrigger] DynamicsBuildingProfessionRegisterApplication application)
+        {
+            // query expanded collections and assign to application before mapping
+            // var data = await dynamicsService.GetWhatever(application);
+            // application.abc = data.abc;
+
+            //Get employment details
+            var employmentDetails = await dynamicsService.GetDynamicsRBIApplicationEmploymentDetails(application.ApplicationId);
+
+            application.ApplicantEmploymentDetails = employmentDetails;
+
+
+
+            return applicationMapper.ToRBIApplication(application);
+        }
+
+
 
     }
 
