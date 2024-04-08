@@ -66,24 +66,24 @@ namespace HSE.RP.API.Functions
         [CosmosDBOutput("%Integrations:CosmosDatabase%", "%Integrations:CosmosContainer%", Connection = "CosmosConnection")]
         public async Task<BuildingProfessionApplication> ImportRBIApplication([ActivityTrigger] DynamicsBuildingProfessionRegisterApplication application)
         {
-            // query expanded collections and assign to application before mapping
-            // var data = await dynamicsService.GetWhatever(application);
-            // application.abc = data.abc;
 
-            //Get employment details
-            var employmentDetails = await dynamicsService.GetDynamicsRBIApplicationEmploymentDetails(application.ApplicationId);
 
+            var employmentDetails = await dynamicsService.GetDynamicsRBIApplicationEmploymentDetails(application.BuildingProfessionApplicationDynamicsId);
             application.ApplicantEmploymentDetails = employmentDetails;
 
-            //Get class details
-
-            var classDetails = await dynamicsService.GetDynamicsRBIApplicationClassDetails(application.ApplicationId);
-
+            
+            var classDetails = await dynamicsService.GetDynamicsRBIApplicationClassDetails(application.BuildingProfessionApplicationDynamicsId);
             application.ApplicantClassDetails = classDetails;
 
-            //Get activity details
+            var activityDetails = await dynamicsService.GetDynamicsRBIApplicationActivityDetails(application.BuildingProfessionApplicationDynamicsId);
+            application.ApplicantActivityDetails = activityDetails;
 
-            return applicationMapper.ToRBIApplication(application);
+            var countryDetails = await dynamicsService.GetDynamicsRBIApplicationCountryDetails(application.BuildingProfessionApplicationDynamicsId);
+            application.ApplicantCountryDetails = countryDetails;
+
+            var applicationModel = applicationMapper.ToRBIApplication(application);
+
+            return applicationModel;
         }
 
 

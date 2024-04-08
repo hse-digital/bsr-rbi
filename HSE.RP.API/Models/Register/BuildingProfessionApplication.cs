@@ -26,27 +26,37 @@ namespace HSE.RP.API.Models.Register
 
     public class BuildingProfessionApplication : IBuildingProfessionApplication
     {
-
+        [JsonPropertyName("id")]
         public required string Id { get; set; }
 
+        [JsonPropertyName("buildingProfessionType")]
         public required string BuildingProfessionType { get; set; }
 
+        [JsonPropertyName("validFrom")]
         public DateTime ValidFrom { get; set; }
 
+        [JsonPropertyName("validTo")]
         public DateTime ValidTo { get; set; }
 
+        [JsonPropertyName("decisionCondition")]
         public string? DecisionCondition { get; set; }
 
+        [JsonPropertyName("countries")]
         public required List<string> Countries { get; set; }
 
+        [JsonPropertyName("creationDate")]
         public required DateTime CreationDate { get; set; }
 
+        [JsonPropertyName("applicant")]
         public required Applicant Applicant { get; set; }
 
+        [JsonPropertyName("employer")]
         public Employer? Employer { get; set; }
 
+        [JsonPropertyName("classes")]
         public List<string>? Classes { get; set; }
 
+        [JsonPropertyName("activities")]
         public List<Activity>? Activities { get; set; }
 
     }

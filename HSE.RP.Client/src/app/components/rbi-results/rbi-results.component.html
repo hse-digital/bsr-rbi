@@ -142,41 +142,41 @@
                 ><a
                   class="govuk-link"
                   [routerLink]="['../detail']"
-                  [queryParams]="{ Id: application.Id, searchModel: stringifySearchModel()}"
-                  >{{ application.Applicant?.ApplicantName }}</a
+                  [queryParams]="{ Id: application.id, searchModel: stringifySearchModel()}"
+                  >{{ application.applicant?.applicantName }}</a
                 ></strong
               >
             </p>
 
-            <ng-template [ngIf]="application.Employer?.EmploymentType =='Private' || application.Employer?.EmploymentType =='Public'">
-              <p *ngIf="application.Employer?.EmployerName" class="govuk-body-s">
-                Employer: {{ application.Employer!.EmployerName | uppercase }}<br />
-              Employer address: {{ application.Employer!.EmployerAddress | uppercase }}
+            <ng-template [ngIf]="application.employer?.employmentType =='Private' || application.employer?.employmentType =='Public'">
+              <p *ngIf="application.employer?.employerName" class="govuk-body-s">
+                Employer: {{ application.employer!.employerName | uppercase }}<br />
+              Employer address: {{ application.employer!.employerAddress | uppercase }}
             </p>
-            <p *ngIf="!application.Employer?.EmployerName" class="govuk-body-s">
+            <p *ngIf="!application.employer?.employerName" class="govuk-body-s">
               Employer: NONE
             </p>
             </ng-template>
 
-            <ng-template [ngIf]="application.Employer?.EmploymentType=='Unemployed'">
+            <ng-template [ngIf]="application.employer?.employmentType=='Unemployed'">
               <p class="govuk-body-s">
                 Employer: NONE
             </p>
             </ng-template>
 
-            <ng-template [ngIf]="application.Employer?.EmploymentType=='Other' && application.Employer?.EmployerName != ''">
-              <p *ngIf="application.Employer?.EmployerName" class="govuk-body-s">
-                Business name: {{ application.Employer!.EmployerName | uppercase }}<br />
-              Business address: {{ application.Employer!.EmployerAddress | uppercase }}
+            <ng-template [ngIf]="application.employer?.employmentType=='Other' && application.employer?.employerName != ''">
+              <p *ngIf="application.employer?.employerName" class="govuk-body-s">
+                Business name: {{ application.employer!.employerName | uppercase }}<br />
+              Business address: {{ application.employer!.employerAddress | uppercase }}
             </p>
-            <p *ngIf="!application.Employer?.EmployerName" class="govuk-body-s">
+            <p *ngIf="!application.employer?.employerName" class="govuk-body-s">
               Business name: NONE
             </p>
             </ng-template>
 
-            <ng-template [ngIf]="application.Employer?.EmploymentType=='Other' && application.Employer?.EmployerName == ''" >
+            <ng-template [ngIf]="application.employer?.employmentType=='Other' && application.employer?.employerName == ''" >
               <p class="govuk-body-s">
-              Business address: {{ application.Employer!.EmployerAddress  ?? 'None' | uppercase}}
+              Business address: {{ application.employer!.employerAddress  ?? 'None' | uppercase}}
             </p>
             </ng-template>
 

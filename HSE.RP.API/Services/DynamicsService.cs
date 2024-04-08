@@ -79,6 +79,8 @@ namespace HSE.RP.API.Services
         Task<DynamicsOrganisationsSearchResponse> SearchOrganisations(string authorityName, string accountTypeId);
         Task<List<ApplicantEmploymentDetail>> GetDynamicsRBIApplicationEmploymentDetails(string applicationId);
         Task<List<ApplicantClassDetails>> GetDynamicsRBIApplicationClassDetails(string applicationId);
+        Task<List<ApplicantActivityDetails>> GetDynamicsRBIApplicationActivityDetails(string applicationId);
+        Task<List<ApplicantCountryDetails>> GetDynamicsRBIApplicationCountryDetails(string applicationId);
     }
     public class DynamicsService : IDynamicsService
     {
@@ -105,7 +107,7 @@ namespace HSE.RP.API.Services
 
             var DynamicsRBIApplications = await dynamicsApi.Get<DynamicsResponse<DynamicsBuildingProfessionRegisterApplication>>("bsr_buildingprofessionapplications", new[]
             {
-                    ("$select", $"bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_registrationcommencementdate,bsr_decisioncondition,bsr_regulatorydecisionstatus,bsr_reviewdecision,statuscode"),
+                    ("$select", $"bsr_buildingprofessionapplicationid,bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_registrationcommencementdate,bsr_decisioncondition,bsr_regulatorydecisionstatus,bsr_reviewdecision,statuscode"),
                     ("$expand", $"bsr_applicantid_contact($select=firstname,lastname,address2_composite)"),
                     ("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_applicantid_contact/contactid ne null)")
                 });
@@ -129,9 +131,9 @@ namespace HSE.RP.API.Services
 
             var employmentDetails = await dynamicsApi.Get<DynamicsResponse<ApplicantEmploymentDetail>>("bsr_biemploymentdetails", new[]
             {
-                    ("$select", $"bsr_biemploymentdetailid,_bsr_biapplicationid_value"),
+                    ("$select", $"bsr_biemploymentdetailid,_bsr_biapplicationid_value,_bsr_employmenttypeid_value"),
                     ("$expand", $"bsr_biemployerid_account($select=address1_composite,name)"),
-                    ("$filter", $"(statuscode eq 1) and (_bsr_biapplicationid_value eq '${applicationId}')")
+                    ("$filter", $"(statuscode eq 1) and (_bsr_biapplicationid_value eq '{applicationId}')")
                 });
 
             result.AddRange(employmentDetails.value);
@@ -155,7 +157,7 @@ namespace HSE.RP.API.Services
             {
                     ("$select", $"bsr_biregclassid,statuscode"),
                     ("$expand", $"bsr_biclassid($select=bsr_name)"),
-                    ("$filter", $"(statuscode eq 760810002) and (_bsr_biapplicationid_value eq '${applicationId}')")
+                    ("$filter", $"(statuscode eq 760810002) and (_bsr_biapplicationid_value eq '{applicationId}')")
                 });
 
             result.AddRange(classDetails.value);
@@ -180,7 +182,7 @@ namespace HSE.RP.API.Services
             {
                     ("$select", $"bsr_biregactivityid,statuscode"),
                     ("$expand", $"bsr_biactivityid($select=bsr_name),bsr_bibuildingcategoryid($select=bsr_name)"),
-                    ("$filter", $"(statuscode eq 760810002) and (_bsr_biapplicationid_value eq '${applicationId}')")
+                    ("$filter", $"(statuscode eq 760810002) and (_bsr_biapplicationid_value eq '{applicationId}')")
                 });
 
             result.AddRange(activityDetails.value);
@@ -195,6 +197,29 @@ namespace HSE.RP.API.Services
 
         }
 
+        public async Task<List<ApplicantCountryDetails>> GetDynamicsRBIApplicationCountryDetails(string applicationId)
+        {
+
+            var result = new List<ApplicantCountryDetails>();
+
+            var countryDetails = await dynamicsApi.Get<DynamicsResponse<ApplicantCountryDetails>>("bsr_biregcountries", new[]
+            {
+                    ("$select", $"bsr_biregcountryid"),
+                    ("$expand", $"bsr_countryid($select=bsr_name)"),
+                    ("$filter", $"(statecode eq 0) and (_bsr_biapplicationid_value eq '{applicationId}')")
+                });
+
+            result.AddRange(countryDetails.value);
+
+            while (countryDetails.nextLink != null)
+            {
+                countryDetails = await dynamicsApi.GetNextPage<DynamicsResponse<ApplicantCountryDetails>>(countryDetails.nextLink);
+                result.AddRange(countryDetails.value);
+            }
+
+            return result;
+
+        }
 
 
 

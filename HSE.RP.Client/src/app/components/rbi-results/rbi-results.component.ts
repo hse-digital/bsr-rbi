@@ -91,10 +91,10 @@ export class RBIResultsComponent implements OnInit {
     await this.setClassFilterValidation();
     if (this.searchModel["class-filter"]!.length > 0) {
       if (this.searchModel["class-filter"]!.length == 2) {
-        this.displayResults = this.searchResponse.RBIApplications.filter(application => isEqual(application.Classes, this.searchModel["class-filter"]));
+        this.displayResults = this.searchResponse.RBIApplications.filter(application => isEqual(application.classes, this.searchModel["class-filter"]));
       } else {
         this.displayResults = this.searchResponse.RBIApplications.filter(application => {
-          return application.Classes!.some(cls => this.searchModel["class-filter"]!.includes(cls));
+          return application.classes!.some(cls => this.searchModel["class-filter"]!.includes(cls));
         });
       }
     }
