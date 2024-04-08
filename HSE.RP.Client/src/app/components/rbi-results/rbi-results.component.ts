@@ -104,6 +104,9 @@ export class RBIResultsComponent implements OnInit {
 
     this.getApplicationPage();
 
+    this.page = 1;
+    this.currentPage = 1;
+
   }
 
   async startSearch() {
