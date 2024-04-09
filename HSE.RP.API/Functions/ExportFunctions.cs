@@ -50,12 +50,20 @@ namespace HSE.RP.API.Functions
         [Function(nameof(RunExportRBIOrchestration))]
         public async Task RunExportRBIOrchestration([OrchestrationTrigger] TaskOrchestrationContext context)
         {
+            var tasks = new List<Task>();
             var rbiApplications = await context.CallActivityAsync<List<DynamicsBuildingProfessionRegisterApplication>>(nameof(GetDynamicsRBIApplicationsToProcess));
 
+            var existingApplications = await context.CallActivityAsync<List<string>>(nameof(GetExistingRegisterApplications));
 
+            var applicationsToRemove = existingApplications.Except(rbiApplications.Select(x => x.ApplicationId)).ToList();
 
+            var removes = applicationsToRemove.Select(async application => await context.CallActivityAsync(nameof(RemoveRBIApplication), application)).ToList();
+            tasks.AddRange(removes);
+            
             var imports = rbiApplications.Select(async application => await context.CallActivityAsync(nameof(ImportRBIApplication), application)).ToList();
-            await Task.WhenAll(imports);
+            tasks.AddRange(imports);
+            await Task.WhenAll(tasks);
+
         }
 
         [Function(nameof(GetDynamicsRBIApplicationsToProcess))]
@@ -74,6 +82,21 @@ namespace HSE.RP.API.Functions
             var applicationModel = applicationMapper.ToRBIApplication(dynamicsApplication);
 
             return applicationModel;
+        }
+
+        [Function(nameof(GetExistingRegisterApplications))]
+        public async Task<List<string>> GetExistingRegisterApplications([ActivityTrigger] DynamicsBuildingProfessionRegisterApplication application)
+        {
+
+            var applicationIds = await cosmosDbService.GetIDsByBuildingProfessionType("BuildingInspector");
+
+            return applicationIds;
+        }
+
+        [Function(nameof(RemoveRBIApplication))]
+        public async Task RemoveRBIApplication([ActivityTrigger] string applicationId)
+        {
+           await cosmosDbService.RemoveItemAsync<BuildingProfessionApplication>(applicationId, "BuildingInspector");
         }
 
 

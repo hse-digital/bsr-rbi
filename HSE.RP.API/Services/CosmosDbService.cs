@@ -91,6 +91,8 @@ namespace HSE.RP.API.Services
         /// <returns>A task representing the asynchronous operation.</returns>
         Task<BuildingProfessionApplication> GetLastUpdatedByBuildingProfessionTypeAndCountry(string buildingProfessionType, string country);
 
+        Task<List<string>> GetIDsByBuildingProfessionType(string buildingProfessionType);
+
         /// <summary>
         /// Searches the RBI register in the Cosmos DB container by name, company, and country.
         /// </summary>
@@ -99,7 +101,7 @@ namespace HSE.RP.API.Services
         /// <param name="country">The country to search for.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
         Task<List<BuildingProfessionApplication>> SearchRBIRegister(string name, string company, string country);
-
+        Task RemoveItemAsync<T>(string id, string partitionKeyValue);
     }
 
     public class CosmosDbService : ICosmosDbService
@@ -147,6 +149,12 @@ namespace HSE.RP.API.Services
             {
                 return default;
             }
+        }
+
+        
+        public async Task RemoveItemAsync<T>(string id, string partitionKeyValue)
+        {
+            await container.DeleteItemAsync<T>(id, new PartitionKey(partitionKeyValue));
         }
 
         /// <inheritdoc/>
@@ -255,6 +263,26 @@ namespace HSE.RP.API.Services
 
             FeedResponse<BuildingProfessionApplication> response = await queryResultSetIterator.ReadNextAsync();
             return response.FirstOrDefault();
+        }
+
+        public async Task<List<string>> GetIDsByBuildingProfessionType(string buildingProfessionType)
+        {
+            IQueryable<string> query = container.GetItemLinqQueryable<BuildingProfessionApplication>()
+                .Where(item => item.BuildingProfessionType == buildingProfessionType)
+                .Select(item => item.Id);
+
+            FeedIterator<string> queryResultSetIterator = query.ToFeedIterator();
+
+            List<string> ids = new List<string>();
+
+            while (queryResultSetIterator.HasMoreResults)
+            {
+                FeedResponse<string> currentResultSet = await queryResultSetIterator.ReadNextAsync();
+
+                ids.AddRange(currentResultSet);
+            }
+
+            return ids;
         }
 
         /// <inheritdoc/>
