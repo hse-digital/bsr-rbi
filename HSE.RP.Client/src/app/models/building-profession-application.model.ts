@@ -1,35 +1,35 @@
 export class BuildingProfessionalModel {
 
-    public Id?: string;
-    public BuildingProfessionType?: string;
-    public ValidFrom?: Date;
-    public ValidTo?: Date;
-    public DecisionCondition?: string;
-    public DecisionConditionReason?: string;
-    public Countries?: string[];
-    public CreationDate?: Date;
-    public Applicant?: Applicant;
-    public Employer?: Employer;
-    public Classes?: string[];
-    public Activities?: Activity[];
+    public id?: string;
+    public buildingProfessionType?: string;
+    public validFrom?: Date;
+    public validTo?: Date;
+    public decisionCondition?: string;
+    public decisionConditionReason?: string;
+    public countries?: string[];
+    public creationDate?: Date;
+    public applicant?: Applicant;
+    public employer?: Employer;
+    public classes?: string[];
+    public activities?: Activity[];
 }
 
 export class Activity {
-    public ActivityName?: string;
-    public Categories?: Category[];
+    public activityName?: string;
+    public categories?: Category[];
 }
 
 export class Applicant {
-    public ApplicantName?: string;
+    public applicantName?: string;
 }
 
 export class Category {
-    public CategoryName?: string;
-    public CategoryDescription?: string;
+    public categoryName?: string;
+    public categoryDescription?: string;
 }
 
 export class Employer {
-    public EmployerName?: string;
-    public EmployerAddress?: string;
-    public EmploymentType?: string;
+    public employerName?: string;
+    public employerAddress?: string;
+    public employmentType?: string;
 }

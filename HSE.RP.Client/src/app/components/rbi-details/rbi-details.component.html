@@ -3,7 +3,7 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl" *ngIf="loading">Loading details</h1>
       <h1 class="govuk-heading-xl" *ngIf="!loading && rbiApplication">
-        {{ rbiApplication.Applicant?.ApplicantName }}
+        {{ rbiApplication.applicant?.applicantName }}
       </h1>
       <h1 class="govuk-heading-xl" *ngIf="!loading && !rbiApplication">
         No Inspector with Id {{ Id }} found
@@ -13,98 +13,98 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <govuk-summary-list *ngIf="rbiApplication?.Id">
+      <govuk-summary-list *ngIf="rbiApplication?.id">
         <govuk-summary-list-row key="Registration number"
-          >{{ rbiApplication?.Id }}
+          >{{ rbiApplication?.id }}
         </govuk-summary-list-row>
 
         <ng-template
           [ngIf]="
-            rbiApplication?.Employer?.EmploymentType == 'Private' ||
-            rbiApplication?.Employer?.EmploymentType == 'Public'
+            rbiApplication?.employer?.employmentType == 'Private' ||
+            rbiApplication?.employer?.employmentType == 'Public'
           "
         >
           <govuk-summary-list-row key="Employer"
             >{{
-              rbiApplication?.Employer?.EmployerName == "" ||
-              rbiApplication?.Employer?.EmployerName == undefined
+              rbiApplication?.employer?.employerName == "" ||
+              rbiApplication?.employer?.employerName == undefined
                 ? "None"
-                : rbiApplication?.Employer?.EmployerName
+                : rbiApplication?.employer?.employerName
             }}
           </govuk-summary-list-row>
 
           <govuk-summary-list-row
-            *ngIf="rbiApplication?.Employer?.EmployerAddress"
+            *ngIf="rbiApplication?.employer?.employerAddress"
             key="Employer address"
-            >{{ rbiApplication?.Employer?.EmployerAddress | uppercase}}
+            >{{ rbiApplication?.employer?.employerAddress | uppercase}}
           </govuk-summary-list-row>
         </ng-template>
 
         <ng-template
-          [ngIf]="rbiApplication?.Employer?.EmploymentType == 'Unemployed'"
+          [ngIf]="rbiApplication?.employer?.employmentType == 'Unemployed'"
         >
           <govuk-summary-list-row key="Employer"
             >{{
-              rbiApplication?.Employer?.EmployerName == "" ||
-              rbiApplication?.Employer?.EmployerName == undefined
+              rbiApplication?.employer?.employerName == "" ||
+              rbiApplication?.employer?.employerName == undefined
                 ? "None"
-                : rbiApplication?.Employer?.EmployerName
+                : rbiApplication?.employer?.employerName
             }}
           </govuk-summary-list-row>
 
           <govuk-summary-list-row
-            *ngIf="rbiApplication?.Employer?.EmployerAddress"
+            *ngIf="rbiApplication?.employer?.employerAddress"
             key="Employer address"
-            >{{ rbiApplication?.Employer?.EmployerAddress | uppercase }}
+            >{{ rbiApplication?.employer?.employerAddress | uppercase }}
           </govuk-summary-list-row>
         </ng-template>
 
         <ng-template
           [ngIf]="
-            rbiApplication?.Employer?.EmploymentType == 'Other' &&
-            rbiApplication?.Employer?.EmployerName != ''
+            rbiApplication?.employer?.employmentType == 'Other' &&
+            rbiApplication?.employer?.employerName != ''
           "
         >
           <govuk-summary-list-row key="Business name"
             >{{
-              rbiApplication?.Employer?.EmployerName == "" ||
-              rbiApplication?.Employer?.EmployerName == undefined
+              rbiApplication?.employer?.employerName == "" ||
+              rbiApplication?.employer?.employerName == undefined
                 ? "None"
-                : rbiApplication?.Employer?.EmployerName
+                : rbiApplication?.employer?.employerName
             }}
           </govuk-summary-list-row>
 
           <govuk-summary-list-row
-            *ngIf="rbiApplication?.Employer?.EmployerAddress"
+            *ngIf="rbiApplication?.employer?.employerAddress"
             key="Business address"
-            >{{ rbiApplication?.Employer?.EmployerAddress | uppercase }}
+            >{{ rbiApplication?.employer?.employerAddress | uppercase }}
           </govuk-summary-list-row>
         </ng-template>
 
         <ng-template
           [ngIf]="
-            rbiApplication?.Employer?.EmploymentType == 'Other' &&
-            rbiApplication?.Employer?.EmployerName == ''
+            rbiApplication?.employer?.employmentType == 'Other' &&
+            rbiApplication?.employer?.employerName == ''
           "
         >
           <govuk-summary-list-row
-            *ngIf="rbiApplication?.Employer?.EmployerAddress"
+            *ngIf="rbiApplication?.employer?.employerAddress"
             key="Business address"
-            >{{ rbiApplication?.Employer?.EmployerAddress | uppercase }}
+            >{{ rbiApplication?.employer?.employerAddress | uppercase }}
           </govuk-summary-list-row>
         </ng-template>
 
         <govuk-summary-list-row key="Class"
-          ><govuk-body *ngFor="let class of rbiApplication?.Classes">
+          ><govuk-body *ngFor="let class of rbiApplication?.classes">
             {{ this.mapClassDisplayName(class) }}
           </govuk-body>
         </govuk-summary-list-row>
 
         <ng-container
           *ngIf="
-            !rbiApplication?.Classes?.includes(
+            !rbiApplication?.classes?.includes(
               'Class 1 trainee building inspector'
-            ) && (rbiApplication?.Classes)!.length > 0;
+            ) && (rbiApplication?.classes)!.length > 0;
             then nonClass1
           "
         >
@@ -126,10 +126,10 @@
             <govuk-summary-list-row key="Plans assessment"
               ><govuk-body 
                 *ngFor="
-                  let category of getActivity('Assessing Plans')!.Categories
+                  let category of getActivity('Assessing Plans')!.categories
                 "
               >
-                {{ category.CategoryName }} - {{ category.CategoryDescription }}
+                {{ category.categoryName }} - {{ category.categoryDescription }}
           </govuk-body>
             </govuk-summary-list-row>
           </ng-template>
@@ -151,8 +151,8 @@
 
           <ng-template #hasInspection>
             <govuk-summary-list-row key="Inspection"
-              ><govuk-body *ngFor="let category of getActivity('Inspect')!.Categories">
-                {{ category.CategoryName }} - {{ category.CategoryDescription }}
+              ><govuk-body *ngFor="let category of getActivity('Inspect')!.categories">
+                {{ category.categoryName }} - {{ category.categoryDescription }}
               </govuk-body>
             </govuk-summary-list-row>
           </ng-template>
@@ -160,15 +160,15 @@
 
         <govuk-summary-list-row
           key="Conditions"
-          >{{ rbiApplication?.DecisionCondition }}
+          >{{ rbiApplication?.decisionCondition }}
         </govuk-summary-list-row>
 
         <govuk-summary-list-row key="Date issued"
-          >{{ rbiApplication?.ValidFrom | date : "d MMMM yyyy" }}
+          >{{ rbiApplication?.validFrom | date : "d MMMM yyyy" }}
         </govuk-summary-list-row>
 
         <govuk-summary-list-row key="Valid until"
-          >{{ rbiApplication?.ValidTo | date : "d MMMM yyyy" }}
+          >{{ rbiApplication?.validTo | date : "d MMMM yyyy" }}
         </govuk-summary-list-row>
       </govuk-summary-list>
       <govuk-details summaryText="Incorrect details?">

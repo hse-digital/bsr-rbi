@@ -5,6 +5,9 @@ namespace HSE.RP.API.Models.DynamicsDataExport
 
     public class ApplicantActivityDetails
     {
+        [JsonPropertyName("_bsr_biapplicationid_value")]
+        public string? applicationId { get; set; }
+
         [JsonPropertyName("bsr_biregactivityid")]
         public required string ApplicantActivityDetailsId { get; set; }
 

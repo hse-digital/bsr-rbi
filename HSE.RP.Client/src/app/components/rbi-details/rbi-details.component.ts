@@ -42,13 +42,13 @@ export class RBIDetailsComponent implements OnInit {
 
   //check if rbiapplcation contains a specific activity name
   hasActivity(activity: string): boolean {
-    return this.rbiApplication?.Activities?.some(act => act.ActivityName === activity) ?? false;
+    return this.rbiApplication?.activities?.some(act => act.activityName === activity) ?? false;
   }
 
   getActivity(activity: string): Activity | undefined {
 
     //Return activity by name
-    return this.rbiApplication?.Activities?.find(act => act.ActivityName === activity);
+    return this.rbiApplication?.activities?.find(act => act.activityName === activity);
 
   }
 

@@ -7,19 +7,19 @@ namespace HSE.RP.API.Models.DynamicsDataExport
     public class DynamicsBuildingProfessionRegisterApplication
     {
         [JsonPropertyName("bsr_buildingprofessionapplicationid")]
-        public required string BuildingProfessionApplicationDynamicsId { get; set; }
+        public  string BuildingProfessionApplicationDynamicsId { get; set; }
 
         [JsonPropertyName("bsr_buildingproappid")]
-        public required string ApplicationId { get; set; }
+        public  string ApplicationId { get; set; }
 
         [JsonPropertyName("bsr_buildingprofessiontypecode")]
         public BuildingProfessionType BuildingProfessionType { get; set; }
 
         [JsonPropertyName("bsr_registrationcommencementdate")]
-        public required string DecisionDate { get; set; }
+        public string DecisionDate { get; set; }
 
         [JsonPropertyName("bsr_decisioncondition")]
-        public string? DecisionCondition { get; set; }
+        public string DecisionCondition { get; set; }
 
         [JsonPropertyName("bsr_regulatorydecisionstatus")]
         public BuildingProfessionRegulatoryDecisionStatus BuildingProfessionRegulatoryDecisionStatus { get; set; }
@@ -28,7 +28,7 @@ namespace HSE.RP.API.Models.DynamicsDataExport
         public string? ReviewDecision { get; set; }
 
         [JsonPropertyName("bsr_applicantid_contact")]
-        public required DynamicsApplicant Applicant { get; set; }
+        public DynamicsApplicant Applicant { get; set; }
 
         [JsonPropertyName("statuscode")]
         public BuildingProfessionApplicationStatus ApplicationStatus { get; set; }
