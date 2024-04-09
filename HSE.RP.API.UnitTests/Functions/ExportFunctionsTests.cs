@@ -11,6 +11,8 @@ using Moq;
 using Xunit;
 using HSE.RP.API.Models.Enums;
 using Grpc.Core;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace HSE.RP.API.UnitTests.Functions
 {
@@ -21,6 +23,7 @@ namespace HSE.RP.API.UnitTests.Functions
         private readonly Mock<ICosmosDbService> _cosmosDbServiceMock;
         private readonly Mock<IOptions<FeatureOptions>> _featureOptionsOptionsMock;
         private readonly ExportFunctions exportFunctions;
+        private readonly ILogger<ExportFunctions> _logger;
 
         public ExportFunctionsTests()
         {
@@ -31,7 +34,8 @@ namespace HSE.RP.API.UnitTests.Functions
             exportFunctions = new ExportFunctions(
                 _dynamicsServiceMock.Object,
                 _applicationMapperMock.Object,
-                _cosmosDbServiceMock.Object
+                _cosmosDbServiceMock.Object,
+                _logger
             );
         }
 
