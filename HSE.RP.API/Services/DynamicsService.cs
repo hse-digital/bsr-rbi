@@ -168,7 +168,7 @@ namespace HSE.RP.API.Services
             {
                     ("$select", $"bsr_biemploymentdetailid,_bsr_biapplicationid_value,_bsr_employmenttypeid_value"),
                     ("$expand", $"bsr_biemployerid_account($select=address1_composite,name)"),
-                    ("$filter", $"(statuscode eq 1) and (modifiedon ge {DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd")})")
+                    ("$filter", $"(statuscode eq 1) and (bsr_biemployerid_account/modifiedon ge {DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd")} or modifiedon ge {DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd")})")
                 });
 
             result.AddRange(employmentDetails.value);
