@@ -82,8 +82,17 @@ namespace HSE.RP.API.Functions
             tasks.AddRange(imports);
 
             await Task.WhenAll(tasks);
-            logger.LogInformation($"Applications removed: {applicationsToRemove.Count}");
-            logger.LogInformation($"Applications updated: {applicationsToUpdate.Count}");
+            logger.LogInformation("Applications removed:");
+            foreach (var application in applicationsToRemove)
+            {
+                logger.LogInformation(application);
+            }
+
+            logger.LogInformation("Applications updated:");
+            foreach (var application in applicationsToUpdate)
+            {
+                logger.LogInformation(application);
+            }
 
 
 
@@ -103,6 +112,7 @@ namespace HSE.RP.API.Functions
             tasks.AddRange(removes);
 
             var imports = rbiApplications.Select(async application => await context.CallActivityAsync(nameof(ImportRBIApplication), application)).ToList();
+
             tasks.AddRange(imports);
             await Task.WhenAll(tasks);
 
@@ -160,6 +170,8 @@ namespace HSE.RP.API.Functions
 
             var applicationModel = applicationMapper.ToRBIApplication(dynamicsApplication);
 
+            logger.LogInformation($"Updating application {applicationModel.Id}: {applicationModel.Applicant.ApplicantName ?? "None"} in register");
+
             return applicationModel;
         }
 
@@ -176,6 +188,7 @@ namespace HSE.RP.API.Functions
         [Function(nameof(RemoveRBIApplication))]
         public async Task RemoveRBIApplication([ActivityTrigger] string applicationId)
         {
+           logger.LogInformation($"Removing application {applicationId} from register");
            await cosmosDbService.RemoveItemAsync<BuildingProfessionApplication>(applicationId, "BuildingInspector");
         }
 
