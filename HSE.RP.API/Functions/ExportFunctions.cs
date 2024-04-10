@@ -72,7 +72,9 @@ namespace HSE.RP.API.Functions
             var removes = applicationsToRemove.Select(async application => await context.CallActivityAsync(nameof(RemoveRBIApplication), application)).ToList();
             tasks.AddRange(removes);
 
-            var applicationsToUpdate = await context.CallActivityAsync<List<string>>(nameof(GetModifiedRegisterApplications));
+            var modifiedApplications = await context.CallActivityAsync<List<string>>(nameof(GetModifiedApplications));
+
+            var applicationsToUpdate = rbiApplications.Where(x => modifiedApplications.Contains(x.BuildingProfessionApplicationDynamicsId)).Select(x => x.BuildingProfessionApplicationDynamicsId).ToList();
 
             var imports = applicationsToUpdate.Select(async application => await context.CallActivityAsync(nameof(UpdateRBIApplication), application)).ToList();
 
@@ -100,8 +102,6 @@ namespace HSE.RP.API.Functions
             var removes = applicationsToRemove.Select(async application => await context.CallActivityAsync(nameof(RemoveRBIApplication), application)).ToList();
             tasks.AddRange(removes);
 
-
-
             var imports = rbiApplications.Select(async application => await context.CallActivityAsync(nameof(ImportRBIApplication), application)).ToList();
             tasks.AddRange(imports);
             await Task.WhenAll(tasks);
@@ -110,8 +110,8 @@ namespace HSE.RP.API.Functions
             logger.LogInformation($"Applications updated: {rbiApplications.Count}");
         }
 
-        [Function(nameof(GetModifiedRegisterApplications))]
-        public async Task<List<string>> GetModifiedRegisterApplications([ActivityTrigger] DynamicsBuildingProfessionRegisterApplication application)
+        [Function(nameof(GetModifiedApplications))]
+        public async Task<List<string>> GetModifiedApplications([ActivityTrigger] DynamicsBuildingProfessionRegisterApplication application)
         {
 
 

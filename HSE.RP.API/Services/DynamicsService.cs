@@ -128,7 +128,7 @@ namespace HSE.RP.API.Services
             {
                     ("$select", $"bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_registrationcommencementdate,bsr_decisioncondition,bsr_decisionreason,bsr_regulatorydecisionstatus,bsr_reviewdecision,bsr_buildingprofessionapplicationid"),
                     ("$expand", $"bsr_applicantid_contact($select=firstname,lastname),bsr_biemploymentdetail_buildingprofessionappl($select=bsr_biemploymentdetailid, _bsr_employmenttypeid_value;$expand=bsr_biemployerid_account($select=name,address1_composite);$filter=(statuscode eq 1)),bsr_bsr_biregclass_buildingprofessionapplicat($select=bsr_biregclassid,statuscode;$expand=bsr_biclassid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_biregactivity_buildingprofessionapplicati($select=bsr_biregactivityid,statuscode;$expand=bsr_biactivityid($select=bsr_name),bsr_bibuildingcategoryid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_bsr_biregcountry_buildingprofessionapplic($select=bsr_biregcountryid;$expand=bsr_countryid($select=bsr_name);$filter=(statecode eq 0))"),
-                    ("$filter", $"(statuscode eq 760810005) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_buildingprofessionapplicationid eq '{applicationId}') and (bsr_applicantid_contact/contactid ne null)")
+                    ("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (bsr_buildingprofessionapplicationid eq '{applicationId}') and (bsr_applicantid_contact/contactid ne null)")
                 });
             return DynamicsRBIApplications.value.FirstOrDefault();
 
@@ -144,7 +144,7 @@ namespace HSE.RP.API.Services
             {
                     ("$select", $"bsr_buildingproappid,bsr_buildingprofessiontypecode,bsr_registrationcommencementdate,bsr_decisioncondition,bsr_decisionreason,bsr_regulatorydecisionstatus,bsr_reviewdecision,bsr_buildingprofessionapplicationid"),
                     ("$expand", $"bsr_applicantid_contact($select=firstname,lastname),bsr_biemploymentdetail_buildingprofessionappl($select=bsr_biemploymentdetailid, _bsr_employmenttypeid_value;$expand=bsr_biemployerid_account($select=name,address1_composite);$filter=(statuscode eq 1)),bsr_bsr_biregclass_buildingprofessionapplicat($select=bsr_biregclassid,statuscode;$expand=bsr_biclassid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_biregactivity_buildingprofessionapplicati($select=bsr_biregactivityid,statuscode;$expand=bsr_biactivityid($select=bsr_name),bsr_bibuildingcategoryid($select=bsr_name);$filter=(statuscode eq 760810002)),bsr_bsr_biregcountry_buildingprofessionapplic($select=bsr_biregcountryid;$expand=bsr_countryid($select=bsr_name);$filter=(statecode eq 0))"),
-                    ("$filter", $"(statuscode eq 760810005) and (bsr_buildingprofessiontypecode eq 760810000) and (modifiedon ge {DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd")}) and (bsr_applicantid_contact/contactid ne null)")
+                    ("$filter", $"(statuscode eq 760810005) and ((Microsoft.Dynamics.CRM.In(PropertyName='bsr_regulatorydecisionstatus',PropertyValues=['760810000','760810002']))) and (bsr_buildingprofessiontypecode eq 760810000) and (modifiedon ge {DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd")}) and (bsr_applicantid_contact/contactid ne null)")
                 });
 
             result.AddRange(DynamicsRBIApplications.value);

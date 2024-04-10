@@ -8,6 +8,7 @@ import { ApplicationService } from './services/application.service';
 import { IdleTimerService } from './services/idle-timer.service';
 import { NavigationService } from './services/navigation.service';
 import { environment } from 'src/environments/environment';
+import { CookiesRegisterComponent } from './components/footer/cookies/cookies-register.component';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   govukLogoLink = environment.govukLogoLink;
   feedbackLink = "";
   headerTitleText = "";
+  cookieTitleText = "";
 
   title: string = "HSE.RP.Client";
   constructor(private applicationService: ApplicationService,
@@ -36,6 +38,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
     this.setHeaderText();
     this.setFooterLinks();
     this.setFeedbackLink();
+    this.setCookieTitleText();
   }
 
   private doesUrlContains(...segment: string[]) {
@@ -53,6 +56,20 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
     }
   }
 
+  isPublicRegisterPage() {
+    if (this.doesUrlContains("/public-register-england")) {
+      return true;
+    } else if (this.doesUrlContains("/public-register-wales")) {
+      return true;
+    }
+    else if (this.doesUrlContains("/help/cookies-register")) {
+      return true;
+    }
+
+    else {
+      return false;
+    }
+  }
 
   setHeaderLink() {
     if (this.doesUrlContains("/public-register-england")) {
@@ -60,17 +77,43 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
     } else if (this.doesUrlContains("/public-register-wales")) {
       this.appHeaderLink = "/public-register-wales";
     }
+    else if (this.doesUrlContains("/help/cookies-register")) {
+      //if user was on public-register-england then go back to public-register-england without query param
+      if (window.location.href.indexOf("/public-register-england") > -1) {
+        this.appHeaderLink = "/public-register-england";
+      }
+      //if user was on public-register-wales then go back to public-register-wales without query param
+      else if (window.location.href.indexOf("/public-register-wales") > -1) {
+        this.appHeaderLink = "/public-register-wales";
+      }
+
+    }
     else {
       this.appHeaderLink = environment.headerLink
     }
   }
 
+  setCookieTitleText() {
+    if (this.doesUrlContains("/public-register-england")) {
+      this.cookieTitleText = "Find a registered building inspector in England";
+    } else if (this.doesUrlContains("/public-register-wales")) {
+      this.cookieTitleText = "Find a registered building inspector in Wales";
+    }
+    else {
+      this.cookieTitleText = "Register as a building inspector"
+    }
+  }
+
   setFooterLinks() {
     if (this.doesUrlContains("/public-register-england")) {
-      this.footerLinks  = HelpPagesModule.registerFooterLinks;
+      this.footerLinks = HelpPagesModule.registerFooterLinks;
     } else if (this.doesUrlContains("/public-register-wales")) {
       this.footerLinks = HelpPagesModule.registerFooterLinks;
+
+    } else if (this.doesUrlContains("/cookies-register")) {
+      this.footerLinks = HelpPagesModule.registerFooterLinks;
     }
+
     else {
       this.footerLinks = HelpPagesModule.footerLinks
     }
@@ -93,6 +136,9 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
       else {
         this.headerTitleText = ""
       }
+    }
+    else if (this.doesUrlContains("/help/cookies-register")) {
+      this.headerTitleText = "Find a registered building inspector"
     }
     else {
       this.headerTitleText = "Register as a building inspector"
@@ -139,7 +185,12 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
 
   initCookiesBanner() {
     this.cookieBannerModel = this.cookiesBannerService.getShowCookiesStatus();
-    this.viewCookiesLink = `/${HelpPagesModule.baseRoute}/${CookiesComponent.route}`;
+    if (this.isPublicRegisterPage()) {
+      this.viewCookiesLink = `/${HelpPagesModule.baseRoute}/${CookiesRegisterComponent.route}`;
+    }
+    else {
+      this.viewCookiesLink = `/${HelpPagesModule.baseRoute}/${CookiesComponent.route}`;
+    }
   }
 
   cookiesAccepted() {
@@ -154,7 +205,12 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   }
 
   async cookiesChanged() {
-    await this.navigationService.navigate(`/${HelpPagesModule.baseRoute}/${CookiesComponent.route}`);
+    if (this.isPublicRegisterPage()) {
+      await this.navigationService.navigate(`/${HelpPagesModule.baseRoute}/${CookiesRegisterComponent.route}`);
+    }
+    else {
+      await this.navigationService.navigate(`/${HelpPagesModule.baseRoute}/${CookiesComponent.route}`);
+    }
   }
 
 
