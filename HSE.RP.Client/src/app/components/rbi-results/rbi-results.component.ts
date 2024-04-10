@@ -32,6 +32,11 @@ export class RBIResultsComponent implements OnInit {
   searchModelBuildingInspectorErrorText: string = '';
   searchModelBuildingControllerErrorText: string = '';
 
+
+  inspectorAutoCompleteSearching = false;
+  companyAutoCompleteSearching = false;
+
+
   pageSize = 20;
   currentPage = 1;
   page = 1;
@@ -144,6 +149,16 @@ export class RBIResultsComponent implements OnInit {
     return this.searchModelHasErrors && showError ? errorMessage : undefined;
   }
 
+  startSearchBuildingInspectors() {
+    if(this.companyAutoCompleteSearching == false && this.inspectorAutoCompleteSearching == false){
+      this.searchBuildingInspectors();
+    }
+    else{
+      this.companyAutoCompleteSearching = false;
+      this.inspectorAutoCompleteSearching = false;
+    }
+  }
+
   async searchBuildingInspectors() {
     this.searching = true;
 
@@ -160,7 +175,11 @@ export class RBIResultsComponent implements OnInit {
 
   companies: string[] = [];
   async searchCompanies(company: string) {
+    this.companyAutoCompleteSearching = false;
+
     if (company?.length > 2) {
+      this.companyAutoCompleteSearching = true;
+
       var response = await this.searchService.SearchRBICompanyNames(
         company,
         this.country
@@ -171,13 +190,21 @@ export class RBIResultsComponent implements OnInit {
 
   selectCompanyName(company: string) {
     this.searchModel['building-control-body'] = company;
+    this.companies = [];
+
+    document.getElementById('input-employer-name')?.blur();
+    document.getElementById('input-employer-name')?.focus();
   }
 
 
   inspectors: string[] = [];
 
   async searchInspectors(name: string) {
+    this.inspectorAutoCompleteSearching = false;
+
     if (name?.length > 2) {
+      this.inspectorAutoCompleteSearching = true;
+
       var response = await this.searchService.SearchRBIInspectorNames(
         name,
         this.country
@@ -188,6 +215,10 @@ export class RBIResultsComponent implements OnInit {
 
   selectInspectorName(name: string) {
     this.searchModel['inspector-name'] = name;
+    this.inspectors = [];
+
+    document.getElementById('input-inspector-name')?.blur();
+    document.getElementById('input-inspector-name')?.focus();
   }
 
   range(start: number, end: number): number[] {

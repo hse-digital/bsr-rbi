@@ -31,8 +31,8 @@
               [values]="inspectors"
               (onDebounce)="searchInspectors($event)"
               (onSelectedValue)="selectInspectorName($event)"
-              (onKeyupEnter)="searchBuildingInspectors()"
-            />
+              (keyup.enter)="startSearchBuildingInspectors()"
+              />
           </div>
 
           <div class="govuk-!-static-margin-bottom-5">
@@ -47,8 +47,8 @@
               [values]="companies"
               (onDebounce)="searchCompanies($event)"
               (onSelectedValue)="selectCompanyName($event)"
-              (onKeyupEnter)="searchBuildingInspectors()"
-            />
+              (keyup.enter)="startSearchBuildingInspectors()"
+              />
           </div>
 
           <govuk-button

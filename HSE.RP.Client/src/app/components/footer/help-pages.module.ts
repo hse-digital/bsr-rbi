@@ -8,6 +8,7 @@ import { AccessibilityComponent } from './accessibility/accessibility.component'
 import { CookiesComponent } from './cookies/cookies.component';
 import { HseRoute, HseRoutes } from 'src/app/helpers/hse.route';
 import { AccessibilityRegisterComponent } from './accessibility-register/accessibility-register.component';
+import { CookiesRegisterComponent } from './cookies/cookies-register.component';
 
 const routes = new HseRoutes([
   HseRoute.unsafe(PrivacyNoticeComponent.route, PrivacyNoticeComponent, undefined, PrivacyNoticeComponent.title),
@@ -15,6 +16,7 @@ const routes = new HseRoutes([
   HseRoute.unsafe(AccessibilityComponent.route, AccessibilityComponent, undefined, AccessibilityComponent.title),
   HseRoute.unsafe(AccessibilityRegisterComponent.route, AccessibilityRegisterComponent, undefined, AccessibilityRegisterComponent.title),
   HseRoute.unsafe(CookiesComponent.route, CookiesComponent, undefined, CookiesComponent.title),
+  HseRoute.unsafe(CookiesRegisterComponent.route, CookiesRegisterComponent, undefined, CookiesRegisterComponent.title),
 ]);
 
 @NgModule({
@@ -24,6 +26,7 @@ const routes = new HseRoutes([
     AccessibilityComponent,
     AccessibilityRegisterComponent,
     CookiesComponent,
+    CookiesRegisterComponent,
   ],
   imports: [
     RouterModule.forChild(routes.getRoutes()),
@@ -46,6 +49,7 @@ export class HelpPagesModule {
   static registerFooterLinks = [
     { title: "Contact us", href: 'https://www.gov.uk/guidance/contact-the-building-safety-regulator', isNewTab: false},
     { title: "Accessibility", href: `/${HelpPagesModule.baseRoute}/${AccessibilityRegisterComponent.route}`,isNewTab: false },
+    { title: "Cookies", href: `/${HelpPagesModule.baseRoute}/${CookiesRegisterComponent.route}`, isNewTab: false},
     { title: "Feedback", href: "https://forms.office.com/e/bYnhFX6gCU" ,isNewTab: false},
   ];
 }
