@@ -111,6 +111,7 @@
           <govuk-list-item><a class="govuk-link" href="https://ttd-education.org/" target="_self">Total Training and Development Limited</a></govuk-list-item>
         </govuk-list>
 
+
           <h2 class="govuk-heading-m">Search the register</h2>
 
           <govuk-body>
@@ -133,7 +134,7 @@
                 [values]="inspectors"
                 (onDebounce)="searchInspectors($event)"
                 (onSelectedValue)="selectInspectorName($event)"
-                (onKeyupEnter)="searchBuildingInspectors()"
+                (keyup.enter)="startSearchBuildingInspectors()"
 
                 
                 
@@ -152,7 +153,7 @@
                 [values]="companies"
                 (onDebounce)="searchCompanies($event)"
                 (onSelectedValue)="selectCompanyName($event)"
-                (onKeyupEnter)="searchBuildingInspectors()"
+                (keyup.enter)="startSearchBuildingInspectors()"
               />
             </div>
           </div>
