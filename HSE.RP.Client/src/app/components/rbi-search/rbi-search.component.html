@@ -123,7 +123,7 @@
 
           <div id="form-inputs" >
             <div class="govuk-!-static-margin-bottom-5">
-              <govuk-input-autocomplete
+              <govuk-input
                 class="govuk-!-width-two-thirds"
                 id="inspector-name"
                 label="Building inspector name"
@@ -131,10 +131,8 @@
                 [(model)]="searchModel['inspector-name']"
                 #field
                 [govukRequired]="field"
-                [values]="inspectors"
-                (onDebounce)="searchInspectors($event)"
-                (onSelectedValue)="selectInspectorName($event)"
-                (keyup.enter)="startSearchBuildingInspectors()"
+
+                (keyup.enter)="searchBuildingInspectors()"
 
                 
                 
@@ -142,7 +140,7 @@
             </div>
 
             <div class="govuk-!-static-margin-bottom-5">
-              <govuk-input-autocomplete
+              <govuk-input
                 class="govuk-!-width-two-thirds"
                 id="employer-name"
                 label="Building control body"
@@ -150,10 +148,7 @@
                 [(model)]="searchModel['building-control-body']"
                 #field
                 [govukRequired]="field"
-                [values]="companies"
-                (onDebounce)="searchCompanies($event)"
-                (onSelectedValue)="selectCompanyName($event)"
-                (keyup.enter)="startSearchBuildingInspectors()"
+                (keyup.enter)="searchBuildingInspectors()"
               />
             </div>
           </div>
