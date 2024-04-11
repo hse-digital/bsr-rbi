@@ -65,6 +65,11 @@ namespace HSE.RP.API.Functions
             var tasks = new List<Task>();
 
             var rbiApplications = await context.CallActivityAsync<List<DynamicsBuildingProfessionRegisterApplication>>(nameof(GetDynamicsRBIApplicationsToProcess));
+            if(rbiApplications.Count==0)
+            {                 
+                logger.LogError("No applications to process in dynamics - investigate update process");
+                throw new Exception("No applications to process in dynamics - investigate update process");
+            }
             var existingApplications = await context.CallActivityAsync<List<string>>(nameof(GetExistingRegisterApplications));
             var applicationsToRemove = existingApplications.Except(rbiApplications.Select(x => x.ApplicationId)).ToList();
 

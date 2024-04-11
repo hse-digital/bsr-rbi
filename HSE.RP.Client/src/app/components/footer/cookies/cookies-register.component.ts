@@ -3,8 +3,8 @@ import { Cookies, CookiesBannerService } from 'src/app/services/cookies-banner.s
 import { LocalStorage } from "src/app/helpers/local-storage";
 
 @Component({
-  selector: 'hse-cookies',
-  templateUrl: './cookies.component.html'
+  selector: 'hse-cookies-register',
+  templateUrl: './cookies-register.component.html'
 })
 export class CookiesRegisterComponent implements OnInit {
   public static route: string = "cookies-register";
