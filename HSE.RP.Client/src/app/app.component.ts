@@ -46,9 +46,9 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   }
 
   setFeedbackLink() {
-    if (this.doesUrlContains("/public-register-england")) {
+    if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-england")) {
       this.feedbackLink = "https://forms.office.com/e/bYnhFX6gCU";
-    } else if (this.doesUrlContains("/public-register-wales")) {
+    } else if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-wales")) {
       this.feedbackLink = "https://forms.office.com/e/bYnhFX6gCU";
     }
     else {
@@ -57,12 +57,12 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   }
 
   isPublicRegisterPage() {
-    if (this.doesUrlContains("/public-register-england")) {
+    if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-england")) {
       return true;
-    } else if (this.doesUrlContains("/public-register-wales")) {
+    } else if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-wales")) {
       return true;
     }
-    else if (this.doesUrlContains("/help/cookies-register")) {
+    else if (typeof window !== 'undefined' && this.doesUrlContains("/help/cookies-register")) {
       return true;
     }
 
@@ -72,18 +72,18 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   }
 
   setHeaderLink() {
-    if (this.doesUrlContains("/public-register-england")) {
+    if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-england")) {
       this.appHeaderLink = "/public-register-england";
-    } else if (this.doesUrlContains("/public-register-wales")) {
+    } else if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-wales")) {
       this.appHeaderLink = "/public-register-wales";
     }
-    else if (this.doesUrlContains("/help/cookies-register")) {
+    else if (typeof window !== 'undefined' && this.doesUrlContains("/help/cookies-register")) {
       //if user was on public-register-england then go back to public-register-england without query param
-      if (window.location.href.indexOf("/public-register-england") > -1) {
+      if (typeof window !== 'undefined' && window.location.href.indexOf("/public-register-england") > -1) {
         this.appHeaderLink = "/public-register-england";
       }
       //if user was on public-register-wales then go back to public-register-wales without query param
-      else if (window.location.href.indexOf("/public-register-wales") > -1) {
+      else if (typeof window !== 'undefined' && window.location.href.indexOf("/public-register-wales") > -1) {
         this.appHeaderLink = "/public-register-wales";
       }
 
@@ -94,9 +94,9 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   }
 
   setCookieTitleText() {
-    if (this.doesUrlContains("/public-register-england")) {
+    if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-england")) {
       this.cookieTitleText = "Find a registered building inspector in England";
-    } else if (this.doesUrlContains("/public-register-wales")) {
+    } else if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-wales")) {
       this.cookieTitleText = "Find a registered building inspector in Wales";
     }
     else {
@@ -105,12 +105,12 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   }
 
   setFooterLinks() {
-    if (this.doesUrlContains("/public-register-england")) {
+    if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-england")) {
       this.footerLinks = HelpPagesModule.registerFooterLinks;
-    } else if (this.doesUrlContains("/public-register-wales")) {
+    } else if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-wales")) {
       this.footerLinks = HelpPagesModule.registerFooterLinks;
 
-    } else if (this.doesUrlContains("/cookies-register")) {
+    } else if (typeof window !== 'undefined' && this.doesUrlContains("/cookies-register")) {
       this.footerLinks = HelpPagesModule.registerFooterLinks;
     }
 
@@ -121,7 +121,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
 
 
   setHeaderText() {
-    if (this.doesUrlContains("/public-register-england")) {
+    if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-england")) {
       if (this.doesUrlContains("results", "details")) {
         this.headerTitleText = "Find a registered building inspector in England";
       }
@@ -129,7 +129,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
         this.headerTitleText = ""
       }
     }
-    else if (this.doesUrlContains("/public-register-wales")) {
+    else if (typeof window !== 'undefined' && this.doesUrlContains("/public-register-wales")) {
       if (this.doesUrlContains("results", "details")) {
         this.headerTitleText = "Find a registered building inspector in Wales";
       }
@@ -137,7 +137,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
         this.headerTitleText = ""
       }
     }
-    else if (this.doesUrlContains("/help/cookies-register")) {
+    else if (typeof window !== 'undefined' && this.doesUrlContains("/help/cookies-register")) {
       this.headerTitleText = "Find a registered building inspector"
     }
     else {
