@@ -65,26 +65,47 @@ namespace HSE.RP.API.Functions
             var tasks = new List<Task>();
 
             var rbiApplications = await context.CallActivityAsync<List<DynamicsBuildingProfessionRegisterApplication>>(nameof(GetDynamicsRBIApplicationsToProcess));
+
             if(rbiApplications.Count==0)
             {                 
                 logger.LogError("No applications to process in dynamics - investigate update process");
                 throw new Exception("No applications to process in dynamics - investigate update process");
             }
+
             var existingApplications = await context.CallActivityAsync<List<string>>(nameof(GetExistingRegisterApplications));
+
+            if(existingApplications.Count==0)
+            {
+                logger.LogError("No existing applications returned from register- investigate update process");
+                throw new Exception("No existing applications returned from register- investigate update process");
+            }
+
             var applicationsToRemove = existingApplications.Except(rbiApplications.Select(x => x.ApplicationId)).ToList();
 
+            if(applicationsToRemove.Count == 0)
+            {
+                logger.LogInformation("No applications to remove");
+            }
+            else
+            {
+                var removes = applicationsToRemove.Select(async application => await context.CallActivityAsync(nameof(RemoveRBIApplication), application)).ToList();
+                tasks.AddRange(removes);
+            }
 
-            var removes = applicationsToRemove.Select(async application => await context.CallActivityAsync(nameof(RemoveRBIApplication), application)).ToList();
-            tasks.AddRange(removes);
+
 
             var modifiedApplications = await context.CallActivityAsync<List<string>>(nameof(GetModifiedApplications));
-
             var applicationsToUpdate = rbiApplications.Where(x => modifiedApplications.Contains(x.BuildingProfessionApplicationDynamicsId)).Select(x => x.BuildingProfessionApplicationDynamicsId).ToList();
 
-            var imports = applicationsToUpdate.Select(async application => await context.CallActivityAsync(nameof(UpdateRBIApplication), application)).ToList();
-
-
-            tasks.AddRange(imports);
+            if(applicationsToUpdate.Count == 0)
+            {
+                logger.LogInformation("No applications to update");
+            }
+            else
+            {
+                var imports = applicationsToUpdate.Select(async application => await context.CallActivityAsync(nameof(UpdateRBIApplication), application)).ToList();
+                tasks.AddRange(imports);
+            }
 
             await Task.WhenAll(tasks);
             logger.LogInformation("Applications removed:");
