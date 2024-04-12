@@ -23,7 +23,7 @@ import { ProfessionalActivity } from 'src/app/models/professional-activity.model
 })
 export class NewApplicantNameComponent extends PageComponent<BuildingProfessionalModel> {
   public static route: string = "new-applicant-name";
-  static title: string = "Your Name - Apply for building control approval for a higher-risk building - GOV.UK";
+  static title: string = "Your name - Apply for building control approval for a higher-risk building - GOV.UK";
   production: boolean = environment.production;
   FirstNameValid: boolean = false;
   LastNameValid: boolean = false;

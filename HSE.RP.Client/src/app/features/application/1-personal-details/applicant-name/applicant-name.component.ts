@@ -20,7 +20,7 @@ import { ApplicationSummaryComponent } from '../../5-application-submission/appl
 export class ApplicantNameComponent extends PageComponent<ApplicantName> {
   public static route: string = PersonalDetailRoutes.NAME;
   static title: string =
-    'Your Name - Apply for building control approval for a higher-risk building - GOV.UK';
+    'Your name - Apply for building control approval for a higher-risk building - GOV.UK';
   production: boolean = environment.production;
   FirstNameValid: boolean = false;
   LastNameValid: boolean = false;
