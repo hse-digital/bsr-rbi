@@ -63,9 +63,9 @@ export class FindAddressComponent {
     
     this.postcodeHasErrors = true;
     if (!postcode) {
-      this.postcodeErrorText = 'Enter a postcode';
+      this.postcodeErrorText = 'Enter postcode';
     } else if (!FieldValidations.PostcodeValidator(postcode)) {
-      this.postcodeErrorText = "Enter a real postcode";
+      this.postcodeErrorText = "Enter a full UK postcode";
     }
     else{
       this.postcodeHasErrors = false;

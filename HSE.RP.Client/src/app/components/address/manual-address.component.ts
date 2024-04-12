@@ -87,9 +87,9 @@ export class ManualAddressComponent {
     let postcode = this.model.Postcode?.replace(' ', '');
     let error = true;
     if (!postcode) {
-      this.postcodeErrorMessage = 'Enter a postcode';
+      this.postcodeErrorMessage = 'Enter postcode';
     } else if (!FieldValidations.PostcodeValidator(postcode)) {
-      this.postcodeErrorMessage = "Enter a real postcode.";
+      this.postcodeErrorMessage = "Enter a full UK postcode.";
     } else {
       error = false;
     }
