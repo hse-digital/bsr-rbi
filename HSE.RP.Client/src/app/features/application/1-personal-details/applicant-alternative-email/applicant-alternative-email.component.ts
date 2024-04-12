@@ -84,7 +84,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<ApplicantE
     } else if (this.selectedOption === 'no') {
       return !this.emailHasErrors;
     } else if (this.model?.Email == '') {
-      this.emailErrorMessage = 'The alternative email address cannot be blank';
+      this.emailErrorMessage = 'Enter an email address';
       this.emailHasErrors = true;
     } else {
       this.emailHasErrors = !EmailValidator.isValid(this.model!.Email ?? '');
