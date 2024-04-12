@@ -94,7 +94,7 @@ export class ApplicantAlternativePhoneComponent extends PageComponent<ApplicantP
       if (this.isNullOrWhitespace(this.model?.PhoneNumber)) {
         this.errorMessage = 'Enter your alternative telephone number';
       } else {
-        this.errorMessage = 'Enter a UK telephone number';
+        this.errorMessage = 'Enter a valid mobile telephone number';
       }
     }
 

@@ -88,7 +88,7 @@ export class ApplicantAlternativeEmailComponent extends PageComponent<ApplicantE
       this.emailHasErrors = true;
     } else {
       this.emailHasErrors = !EmailValidator.isValid(this.model!.Email ?? '');
-      this.emailErrorMessage = 'Enter a real email address, for example name@example.com';
+      this.emailErrorMessage = 'Enter an email address in the correct format, like name@example.com';
     }
     return !this.emailHasErrors;
   }

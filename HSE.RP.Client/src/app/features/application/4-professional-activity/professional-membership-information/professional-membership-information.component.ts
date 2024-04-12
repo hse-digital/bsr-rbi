@@ -136,21 +136,21 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
     if (!this.model.MembershipNumber) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.INPUT_MEMBERSHIPNUMBER_REQUIRED,
-        Anchor: 'mem-input-num',
+        Anchor: 'input-mem-input-num',
       });
     }
 
     if (!this.model.MembershipLevel) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.INPUT_MEMBERSHIPLEVEL_REQUIRED,
-        Anchor: 'mem-input-level',
+        Anchor: 'input-mem-input-level',
       });
     }
 
     if (!Number(this.membershipYearString)) {
       this.validationErrors.push({
         Text: ERROR_MESSAGES.YEAR_ACHIVED_REQUIRED,
-        Anchor: 'mem-input-year',
+        Anchor: 'input-mem-input-year',
       });
     } else {
       const membershipYear = Number(this.membershipYearString);
@@ -170,7 +170,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
       }
     }
 
-    if (this.validationErrors.length > 2) {
+    if (this.validationErrors.length > 1) {
       this.singleValidationErrors.push({
         Text: `Enter your ${this.PROFESSIONAL_BODY_ORG_NAME} membership details`,
         Anchor: '',
@@ -206,7 +206,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
 
   getMembershipErrorDescription(): string {
     const indexNumber = this.validationErrors.findIndex(
-      (x) => x.Anchor === 'mem-input-num'
+      (x) => x.Anchor === 'input-mem-input-num'
     );
 
     if (indexNumber >= 0) {
@@ -218,7 +218,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
 
   getLevelErrorDescription(): string {
     const indexNumber = this.validationErrors.findIndex(
-      (x) => x.Anchor === 'mem-input-level'
+      (x) => x.Anchor === 'input-mem-input-level'
     );
 
     if (indexNumber >= 0) {
@@ -230,7 +230,7 @@ export class ProfessionalMembershipInformationComponent extends PageComponent<Ap
 
   getYearErrorDescription(): string {
     const indexNumber = this.validationErrors.findIndex(
-      (x) => x.Anchor === 'mem-input-year'
+      (x) => x.Anchor === 'input-mem-input-year'
     );
 
     if (indexNumber >= 0) {

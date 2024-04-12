@@ -56,7 +56,7 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
 
     this.emailHasErrors = false;
 
-    if (this.model == null || this.model == '')
+    if (this.model?.Email == null || this.model.Email == '')
     {
       this.emailHasErrors = true;
       this.emailErrorMessage = "Enter an email address";
@@ -70,7 +70,7 @@ export class ApplicantEmailComponent extends PageComponent<ApplicantEmail>  {
     }
     else {
       this.emailHasErrors = !EmailValidator.isValid(this.model!.Email ?? '');
-      this.emailErrorMessage = `Enter a valid email address`;
+      this.emailErrorMessage = `Enter an email address in the correct format, like name@example.com`;
     }
 
 

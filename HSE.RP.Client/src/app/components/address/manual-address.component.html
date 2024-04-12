@@ -2,7 +2,9 @@
 <div class="govuk-form-group">
 
   <govuk-error-summary *ngIf="hasErrors" title="There is a problem" #summaryError>
-    <govuk-error-link *ngIf="!addressOneIsValid || !townOrCityIsValid || !model.Postcode" anchorId="{{anchorId}}" message="Enter home address details" />
+    <govuk-error-link *ngIf="!addressOneIsValid" anchorId="input-address-line-one" message="Enter address line 1, typically the building and street" />
+    <govuk-error-link *ngIf="!townOrCityIsValid" anchorId="input-town-or-city" message="Enter a town or city" />
+    <govuk-error-link *ngIf="!model.Postcode" anchorId="input-postcode" message="Enter a postcode" />
     <govuk-error-link *ngIf="!!model.Postcode && !postcodeIsValid" anchorId="input-postcode" message="{{postcodeErrorMessage}}" />
   </govuk-error-summary>
 

@@ -26,11 +26,11 @@
 
   <govuk-warning message="Your mobile telephone number will not be published." background="#0"></govuk-warning>
 
-  <govuk-input id="applicant-phone" label="Telephone or mobile number"
+  <govuk-input id="applicant-phone" label="Mobile telephone number"
                [(model)]="model!.PhoneNumber"
                labelClass="govuk-label--s"
-               hint="Enter a UK telephone or mobile number without spaces. For example, 01234567890 or +447654321098"
-               [errorText]="getErrorDescription(!modelValid, 'Enter a valid telephone number')"
+               hint="Enter a UK mobile number without spaces. For example, 01234567890 or +447654321098"
+               [errorText]="getErrorDescription(!modelValid, 'Enter a valid mobile telephone number')"
                hintClass="no-margin-top"
                (onKeyupEnter)="saveAndContinue()" />
 

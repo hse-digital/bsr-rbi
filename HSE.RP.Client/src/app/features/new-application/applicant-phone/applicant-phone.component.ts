@@ -23,7 +23,7 @@ export class ApplicantPhoneComponent extends PageComponent<ApplicantPhone> {
   production: boolean = environment.production;
   modelValid: boolean = false;
   phoneNumberHasErrors = false;
-  phoneNumberErrorMessage = 'Enter your telephone number';
+  phoneNumberErrorMessage = 'Enter a valid mobile telephone number';
 
   constructor(
     activatedRoute: ActivatedRoute,
