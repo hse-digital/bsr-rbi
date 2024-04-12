@@ -135,7 +135,7 @@ export class BuildingInspectorRegulatedActivitiesComponent extends PageComponent
     this.errorText = '';
     if (this.selections.length == 0) {
       this.selectedOptionError = true;
-      this.errorText = 'Select a restricted activity';
+      this.errorText = 'Select a BSR-regulated activity';
     }
     return this.selections.length > 0;
   }

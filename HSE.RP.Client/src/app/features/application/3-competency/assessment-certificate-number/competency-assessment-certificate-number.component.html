@@ -26,6 +26,7 @@
     <govuk-input
       id="certificate-number"
       hint="For example, CABE1262IJSBFAHS840"
+      [errorText]="errorMessage"
       [labelledBy]="'certificate-header'"
       [maxlength]=20
       [(model)]="model!.CertificateNumber"
@@ -36,6 +37,7 @@
   <div *ngIf="organisationPrefix == 'BSCF'">
     <govuk-input hint="For example, BSCF1262IJSBFAHS840 or CV1262IJSBFAHS840"
       id="certificate-number"
+      [errorText]="errorMessage"
       [labelledBy]="'certificate-header'"
       [maxlength]=20
       [(model)]="model!.CertificateNumber"
@@ -48,6 +50,7 @@
     <govuk-input hint="For example, TTD1262IJSBFAHS8400"
       id="certificate-number"
       [labelledBy]="'certificate-header'"
+      [errorText]="errorMessage"
       [maxlength]=20
       [(model)]="model!.CertificateNumber"
       >

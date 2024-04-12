@@ -79,7 +79,7 @@ export class CompetencyAssessmentCertificateNumberComponent extends PageComponen
 
     if (!validCertificateNumRegex) {
       this.errorMessage =
-        'You must enter an assessment certificate number in the correct format';
+        'Enter your assessment certificate number in the correct format';
       this.hasErrors = true;
       return false;
     }

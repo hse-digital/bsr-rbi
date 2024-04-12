@@ -5,11 +5,14 @@
     anchorId="{{ error.Anchor }}"
     message="{{ error.Text }}"
   /> -->
-  <ng-container
-    *ngIf="isSingleMessage; then singleErrorDisplay; else multipleErrorDisplay"
-  >
-  </ng-container>
+  <govuk-error-link
+    *ngFor="let error of validationErrors"
+    anchorId="{{ error.Anchor }}"
+    message="{{ error.Text }}"
+  />
 </govuk-error-summary>
+
+
 <govuk-formpage
   saveAndContinueText="Save and continue"
   [hideSaveAndComeBack]="false"

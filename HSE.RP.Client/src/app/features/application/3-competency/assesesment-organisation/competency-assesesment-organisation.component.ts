@@ -121,7 +121,7 @@ export class CompetencyAssessmentOrganisationComponent extends PageComponent<Com
 
     if (this.model?.ComAssessmentOrganisation === '') {
       this.hasErrors = true;
-      this.errorMessage = 'Select an assessment organisation';
+      this.errorMessage = 'Select an assessment provider';
     }
 
     return !this.hasErrors;
