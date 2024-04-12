@@ -25,7 +25,7 @@ import { NextStage } from 'src/app/helpers/next-section.helper';
   templateUrl: './applicant-summary.component.html',
 })
 export class ApplicantSummaryComponent extends PageComponent<string> {
-  DerivedIsComplete(value: boolean): void {}
+  DerivedIsComplete(value: boolean): void { }
   PersonalDetailRoutes = PersonalDetailRoutes;
 
   public static route: string = PersonalDetailRoutes.SUMMARY;
@@ -67,15 +67,15 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
           .CompletionState === ComponentCompletionState.Complete &&
         this.applicationService.model.PersonalDetails!
           .ApplicantAlternativeEmail!.CompletionState ===
-          ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
         this.applicationService.model.PersonalDetails!
           .ApplicantAlternativePhone!.CompletionState ===
-          ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
         this.applicationService.model.PersonalDetails!.ApplicantDateOfBirth!
           .CompletionState === ComponentCompletionState.Complete &&
         this.applicationService.model.PersonalDetails!
           .ApplicantNationalInsuranceNumber!.CompletionState ===
-          ComponentCompletionState.Complete &&
+        ComponentCompletionState.Complete &&
         this.applicationService.model.PersonalDetails!.ApplicantPhone!
           .CompletionState === ComponentCompletionState.Complete &&
         this.applicationService.model.PersonalDetails!.ApplicantEmail!
@@ -140,9 +140,12 @@ export class ApplicantSummaryComponent extends PageComponent<string> {
   }
 
   async SyncAndContinue() {
-    await this.applicationService.syncPersonalDetails();
-    this.applicationService.model.StageStatus['PersonalDetails'] =
-      StageCompletionState.Complete;
-    this.saveAndContinue();
+    if (!this.processing) {
+      this.processing = true;
+      await this.applicationService.syncPersonalDetails();
+      this.applicationService.model.StageStatus['PersonalDetails'] =
+        StageCompletionState.Complete;
+      this.saveAndContinue();
+    }
   }
 }

@@ -27,7 +27,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
       StageCompletionState.Complete;
   }
 
-  DerivedIsComplete(value: boolean): void {}
+  DerivedIsComplete(value: boolean): void { }
 
   BuildingInspectorRoutes = BuildingInspectorRoutes;
   BuildingInspectorClassType = BuildingInspectorClassType;
@@ -40,7 +40,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   photoHasErrors = false;
   override model?: string;
   queryParam?: string = '';
-  resetIA? : boolean = false;
+  resetIA?: boolean = false;
   assessPlansCategories: string = '';
   assessPlansLink: string = '';
 
@@ -97,16 +97,19 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
   }
 
   async SyncAndContinue() {
-    if(this.applicationService.model.InspectorClass?.ClassType.Class === BuildingInspectorClassType.Class1){
-      this.applicationService.model.InspectorClass!.ClassTechnicalManager = 'no';
-      this.applicationService.model.Competency = new Competency();
-      this.applicationService.model.InspectorClass.CompletionState = ComponentCompletionState.Complete;
-      this.applicationService.model.StageStatus!['Competency'] = StageCompletionState.Complete;
+    if (!this.processing) {
+      this.processing = true;
+      if (this.applicationService.model.InspectorClass?.ClassType.Class === BuildingInspectorClassType.Class1) {
+        this.applicationService.model.InspectorClass!.ClassTechnicalManager = 'no';
+        this.applicationService.model.Competency = new Competency();
+        this.applicationService.model.InspectorClass.CompletionState = ComponentCompletionState.Complete;
+        this.applicationService.model.StageStatus!['Competency'] = StageCompletionState.Complete;
+      }
+      this.applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete;
+      await this.applicationService.syncBuildingInspectorClass();
+      this.applicationService.model.StageStatus['BuildingInspectorClass'] = StageCompletionState.Complete;
+      this.saveAndContinue();
     }
-    this.applicationService.model.InspectorClass!.CompletionState = ComponentCompletionState.Complete;
-    await this.applicationService.syncBuildingInspectorClass();
-    this.applicationService.model.StageStatus['BuildingInspectorClass'] = StageCompletionState.Complete;
-    this.saveAndContinue();
   }
 
   override canAccess(
@@ -114,7 +117,7 @@ export class BuildingInspectorSummaryComponent extends PageComponent<string> {
     routeSnapshot: ActivatedRouteSnapshot
   ): boolean {
 
-    
+
 
     return true;
     //! check if previous section (country) is comeplete
