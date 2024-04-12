@@ -63,9 +63,12 @@ export class ProfessionalMembershipAndEmploymentSummaryComponent extends PageCom
   }
 
   async SyncAndContinue() {
-    await this.applicationService.syncEmploymentDetails();
-    this.applicationService.model.StageStatus['ProfessionalActivity'] = StageCompletionState.Complete;
-    this.saveAndContinue();
+    if (!this.processing) {
+      this.processing = true;
+      await this.applicationService.syncEmploymentDetails();
+      this.applicationService.model.StageStatus['ProfessionalActivity'] = StageCompletionState.Complete;
+      this.saveAndContinue();
+    }
   }
 
   override navigateNext(): Promise<boolean> {

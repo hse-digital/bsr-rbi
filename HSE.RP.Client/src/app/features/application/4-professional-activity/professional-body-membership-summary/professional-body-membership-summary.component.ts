@@ -55,8 +55,7 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
 
-    if(this.model?.CompletionState == ComponentCompletionState.Complete && this.selectedOption == 'yes')
-    {
+    if (this.model?.CompletionState == ComponentCompletionState.Complete && this.selectedOption == 'yes') {
       this.model.CompletionState = ComponentCompletionState.InProgress;
     }
     this.applicationService.model.ProfessionalMemberships = this.model!;
@@ -78,21 +77,19 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
     this.errorMessage = '';
     const memberships = this.applicationService.model.ProfessionalMemberships;
 
-    if(memberships.RICS.CompletionState == ComponentCompletionState.Complete &&
+    if (memberships.RICS.CompletionState == ComponentCompletionState.Complete &&
       memberships.CABE.CompletionState == ComponentCompletionState.Complete &&
       memberships.CIOB.CompletionState == ComponentCompletionState.Complete &&
-      memberships.OTHER.CompletionState == ComponentCompletionState.Complete)
-      {
-        this.summaryHasErrors = false;
-      }
-      else{
-        if(this.selectedOption === '')
-        {
-          this.summaryHasErrors = true;
-          this.errorMessage =
+      memberships.OTHER.CompletionState == ComponentCompletionState.Complete) {
+      this.summaryHasErrors = false;
+    }
+    else {
+      if (this.selectedOption === '') {
+        this.summaryHasErrors = true;
+        this.errorMessage =
           'Select whether you want to tell us about additional memberships you hold or not';
-        }
       }
+    }
 
     return !this.summaryHasErrors;
 
@@ -204,8 +201,11 @@ export class ProfessionalBodyMembershipSummaryComponent extends PageComponent<Ap
   }
 
   async SyncAndContinue() {
-    await this.applicationService.syncProfessionalBodyMemberships();
-    this.saveAndContinue();
+    if (!this.processing) {
+      this.processing = true;
+      await this.applicationService.syncProfessionalBodyMemberships();
+      this.saveAndContinue();
+    }
   }
 
   canAddNewMembership(): boolean {

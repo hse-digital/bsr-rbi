@@ -16,7 +16,7 @@ import { NextStage } from 'src/app/helpers/next-section.helper';
 
 })
 export class CompetencySummaryComponent extends PageComponent<string> {
-  DerivedIsComplete(value: boolean): void {}
+  DerivedIsComplete(value: boolean): void { }
   CompetencyRoutes = CompetencyRoutes;
 
   public static route: string = CompetencyRoutes.SUMMARY;
@@ -59,9 +59,12 @@ export class CompetencySummaryComponent extends PageComponent<string> {
   }
 
   async SyncAndContinue() {
-    await this.applicationService.syncCompetency();
-    this.applicationService.model.StageStatus['Competency'] = StageCompletionState.Complete;
-    this.saveAndContinue();
+    if (!this.processing) {
+      this.processing = true;
+      await this.applicationService.syncCompetency();
+      this.applicationService.model.StageStatus['Competency'] = StageCompletionState.Complete;
+      this.saveAndContinue();
+    }
   }
 
   override navigateNext(): Promise<boolean> {
@@ -115,19 +118,16 @@ export class CompetencySummaryComponent extends PageComponent<string> {
 
     let organisationName = this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation;
 
-    if(this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "BSCF")
-    {
+    if (this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "BSCF") {
       return "Building Safety Competence Foundation (BSCF)";
     }
-    if(this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "CABE")
-    {
+    if (this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "CABE") {
       return "Chartered Association of Building Engineers (CABE)";
     }
-    if(this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "TTD")
-    {
+    if (this.applicationService.model.Competency?.CompetencyAssessmentOrganisation?.ComAssessmentOrganisation == "TTD") {
       return "Total Training and Development (TTD)";
     }
-    else{
+    else {
       return "Unknown organisation";
     }
   }

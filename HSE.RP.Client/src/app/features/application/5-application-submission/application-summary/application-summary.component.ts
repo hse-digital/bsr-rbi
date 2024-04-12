@@ -24,7 +24,7 @@ import { jsPDF } from 'jspdf';
   templateUrl: './application-summary.component.html',
 })
 export class ApplicationSummaryComponent extends PageComponent<string> {
-  DerivedIsComplete(value: boolean): void {}
+  DerivedIsComplete(value: boolean): void { }
   PersonalDetailRoutes = PersonalDetailRoutes;
 
   BuildingInspectorRoutes = BuildingInspectorRoutes;
@@ -56,7 +56,7 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
     this.updateOnSave = true;
   }
 
-  override onInit(applicationService: ApplicationService): void {}
+  override onInit(applicationService: ApplicationService): void { }
 
   override async onSave(applicationService: ApplicationService): Promise<void> {
     // this.applicationService.model.StageStatus['PersonalDetails'] = StageCompletionState.Complete;
@@ -69,17 +69,17 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
   ): boolean {
     return (
       this.applicationService.model.StageStatus!['EmailVerification'] ===
-        StageCompletionState.Complete &&
+      StageCompletionState.Complete &&
       this.applicationService.model.StageStatus!['PhoneVerification'] ===
-        StageCompletionState.Complete &&
+      StageCompletionState.Complete &&
       this.applicationService.model.StageStatus!['PersonalDetails'] ===
-        StageCompletionState.Complete &&
+      StageCompletionState.Complete &&
       this.applicationService.model.StageStatus!['BuildingInspectorClass'] ===
-        StageCompletionState.Complete &&
+      StageCompletionState.Complete &&
       this.applicationService.model.StageStatus!['Competency'] ===
-        StageCompletionState.Complete &&
+      StageCompletionState.Complete &&
       this.applicationService.model.StageStatus!['ProfessionalActivity'] ===
-        StageCompletionState.Complete
+      StageCompletionState.Complete
     );
   }
 
@@ -126,10 +126,13 @@ export class ApplicationSummaryComponent extends PageComponent<string> {
   }
 
   async SyncAndContinue() {
-     await this.applicationService.syncFullApplication();
-    this.applicationService.model.StageStatus['ApplicationConfirmed'] =
-      StageCompletionState.Complete;
-    this.saveAndContinue();
+    if (!this.processing) {
+      this.processing = true;
+      await this.applicationService.syncFullApplication();
+      this.applicationService.model.StageStatus['ApplicationConfirmed'] =
+        StageCompletionState.Complete;
+      this.saveAndContinue();
+    }
   }
 
   public getIndependentAssessmentStatus(): string {
