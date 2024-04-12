@@ -22,11 +22,6 @@
       anchorId="input-last-name"
       message="Enter your last name"
     />
-    <govuk-error-link
-      *ngIf="!FirstNameValid && !LastNameValid"
-      anchorId="input-first-name"
-      message="Enter your first and last name"
-    />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Your name</h1>
@@ -40,12 +35,12 @@
     published in the public register.
   </govuk-body>
 
-  <govuk-inset-text>
+
     <govuk-warning
       message="Your name will be published in the public register."
       background="#0"
     ></govuk-warning>
-  </govuk-inset-text>
+
 
   <div class="govuk-form-group">
     <govuk-input
