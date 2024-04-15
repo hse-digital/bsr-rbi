@@ -16,9 +16,7 @@ import { VerificationData } from './returning-application.component';
 
 @Component({
   selector: 'application-enterdata',
-  templateUrl: './enterdata.component.html',
-  styleUrls: ['./enterdata.component.scss'],
-  encapsulation: ViewEncapsulation.None 
+  templateUrl: './enterdata.component.html'
 })
 export class ReturningApplicationEnterDataComponent {
   hasErrors = false;
