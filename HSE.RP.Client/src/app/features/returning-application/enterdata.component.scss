@@ -1,0 +1,12 @@
+.govuk-radios__label {
+  font-weight: bold !important;
+}
+
+.govuk-radios__label {
+  align-self: center;
+  max-width: calc(100% - 74px);
+  margin-bottom: 0;
+  padding: 7px 15px;
+  cursor: pointer;
+  touch-action: manipulation;
+}

@@ -5,6 +5,7 @@ import {
   Output,
   QueryList,
   ViewChildren,
+  ViewEncapsulation,
 } from '@angular/core';
 import { TitleService } from 'src/app/services/title.service';
 import { GovukErrorSummaryComponent } from 'hse-angular';
@@ -16,6 +17,8 @@ import { VerificationData } from './returning-application.component';
 @Component({
   selector: 'application-enterdata',
   templateUrl: './enterdata.component.html',
+  styleUrls: ['./enterdata.component.scss'],
+  encapsulation: ViewEncapsulation.None 
 })
 export class ReturningApplicationEnterDataComponent {
   hasErrors = false;
@@ -76,11 +79,16 @@ export class ReturningApplicationEnterDataComponent {
       this.errors.applicationNumber.errorText =
         'Enter your 12-digit application reference number and select a verification option';
       this.errors.applicationNumber.anchorId = 'input-application-number';
+      this.errors.verificationOption.hasError = true;
+      this.errors.verificationOption.errorText =
+        'Select a verification method';
+
+      
     }
     else if (!this.verificationOption) {
       this.errors.verificationOption.hasError = true;
       this.errors.verificationOption.errorText =
-        'Select how you want to receive your 6-digit verification code, via text message or email';
+        'Select a verification method';
     }
     else {
       if (this.verificationOption == 'phone-option') {
@@ -212,12 +220,12 @@ export class ReturningApplicationEnterDataComponent {
 
   isPhoneNumberValid() {
     if (!this.phoneNumber) {
-      this.errors.phoneNumber.errorText = 'Enter your mobile telephone number';
+      this.errors.phoneNumber.errorText = 'Enter a valid mobile telephone number';
       this.errors.phoneNumber.hasError = true;
     } else if (
       !PhoneNumberValidator.isValid(this.phoneNumber!.toString() ?? '')
     ) {
-      this.errors.phoneNumber.errorText = 'Enter a UK mobile telephone number';
+      this.errors.phoneNumber.errorText = 'Enter a valid mobile telephone number';
       this.errors.phoneNumber.hasError = true;
     }
   }
