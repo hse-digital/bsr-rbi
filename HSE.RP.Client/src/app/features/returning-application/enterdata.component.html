@@ -1,4 +1,3 @@
-
 <div class="govuk-form-group">
   <govuk-error-summary
     *ngIf="hasErrors"
@@ -26,36 +25,60 @@
       message="{{ errors.verificationOption.errorText }}"
     />
     <govuk-error-link
-    *ngIf="errors.serviceError.hasError"
-    message="{{ errors.serviceError.errorText }}"
-  />
+      *ngIf="errors.serviceError.hasError"
+      message="{{ errors.serviceError.errorText }}"
+    />
   </govuk-error-summary>
 
   <h1 class="govuk-heading-l">Continue a saved application</h1>
 
-  <govuk-input
-    id="application-number"
-    label="Application number"
-    labelClass="govuk-label--s"
-    [maxlength]="12"
-    hint="Your application number is in the email we sent when you began your application. For example, '000123456789'."
-    [(model)]="applicationNumber"
-    class="govuk-input--width-20"
-    (modelChange)="applicationNumberChange.emit(applicationNumber)"
-    
-    [errorText]="
-      getErrorDescription(
-        errors.applicationNumber.hasError,
-        errors.applicationNumber.errorText
-      )
-    "
-    (onKeyupEnter)="validateAndContinue()"
-  />
+  <govuk-body>
+    You'll need the email address, mobile number and application number
+    associated with this application. if you no longer have access to these, you
+    will need to
+    <a
+      class="govuk-link"
+      [routerLink]="['/new-application/new-applicant-name']"
+    >
+      start a new application.</a
+    >.
+  </govuk-body>
 
-  <govuk-body></govuk-body>
+  <div class="govuk-form-group" style="margin-bottom: 30px">
+    <govuk-input
+      id="application-number"
+      label="Application number"
+      labelClass="govuk-label--s"
+      [maxlength]="12"
+      hint="Your application number is in the email we sent when you began your application. For example, '000123456789'."
+      [(model)]="applicationNumber"
+      class="govuk-input--width-20 govuk-!-margin-bottom-20px"
+      (modelChange)="applicationNumberChange.emit(applicationNumber)"
+      [errorText]="
+        getErrorDescription(
+          errors.applicationNumber.hasError,
+          errors.applicationNumber.errorText
+        )
+      "
+      (onKeyupEnter)="validateAndContinue()"
+    />
+  </div>
 
+  <label
+    class="govuk-label govuk-label--s govuk-!-margin-bottom-20px"
+    for="select-security-code-option"
+  >
+    How do you want to receive your 6-digit security code?
+  </label>
+  <govuk-body>
+    <p>
+      1. Choose to receive the the 6-digit security code by text message or
+      email.<br />
+      2. Enter the email or mobile number associated with the application.
+    </p>
+  </govuk-body>
   <govuk-radio-group
-    title="Select how you want to receive your 6-digit verification code"
+    id="select-security-code-option"
     [(model)]="verificationOption"
     #field
     [govukRequired]="field"
@@ -68,44 +91,25 @@
     "
     class="govuk-!-margin-bottom-5"
   >
-    <govuk-body>
-      We will send a 6-digit security code to the email or mobile telephone
-      number you supplied when you began your application.
-
-      <p>
-        If you choose for us to send your code to your mobile phone, we will ask
-        you to enter your email address to verify your application. If you
-        choose for us to send your code to your email address, we will ask you
-        to enter your mobile number to verify your application
-      </p>
-      <p>
-        If the email address, mobile telephone number or application number is
-        no longer available to you, you will need to<a
-          class="govuk-link"
-          [routerLink]="['/new-application/new-applicant-name']"
-        >
-          start a new application.</a
-        >
-      </p>
-    </govuk-body>
     <govuk-radio
       [model]="verificationOption"
       name="phone-option"
       id="phone-option"
       value="phone-option"
-      label="Mobile telephone"
+      label="Text message"
+      labelClass="govuk-label--s govuk-!-font-weight-strong"
+
       (onKeyupEnter)="validateAndContinue()"
       (modelChange)="verificationOptionChange.emit(verificationOption)"
     >
       <govuk-body
-        >To send 6-digit code to your mobile phone, enter your email address to
-        verify your application</govuk-body
+        ><p><strong>Verification:</strong> What email address was used for this application?</p></govuk-body
       >
       <govuk-input
         id="email-address"
         label="Email address"
-        labelClass="govuk-label--s govuk-!-font-weight-regular"
-        hint="We'll only use this to send you a receipt"
+        labelClass="govuk-label--s govuk-!-font-weight-strong"
+
         [(model)]="emailAddress"
         [maxlength]="100"
         (modelChange)="emailAddressChange.emit(emailAddress)"
@@ -131,14 +135,13 @@
       (onKeyupEnter)="validateAndContinue()"
       (modelChange)="verificationOptionChange.emit(verificationOption)"
     >
-      <govuk-body
-        >To send 6-digit code to your email, enter your phone number to verify
-        your application</govuk-body
+    <govuk-body
+    ><p><strong>Verification:</strong> What mobile telephone number was used for this application?</p></govuk-body
       >
       <govuk-input
         id="phone-number"
-        label="Mobile phone number"
-        labelClass="govuk-label--s govuk-!-font-weight-regular"
+        label="Mobile telephone number"
+        labelClass="govuk-label--s govuk-!-font-weight-strong"
         [(model)]="phoneNumber"
         [maxlength]="100"
         (modelChange)="phoneNumberChange.emit(phoneNumber)"
