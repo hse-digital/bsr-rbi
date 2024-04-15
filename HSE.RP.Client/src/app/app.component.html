@@ -26,17 +26,31 @@
   [footerLinks]="footerLinks"
   [headerTitle]="headerTitleText"
 >
+  <div *ngIf="isPublicRegister==true" class="govuk-phase-banner" id="phase-banner">
+    <p class="govuk-phase-banner__content">
+      <span class="govuk-phase-banner__text">
+        This is a new service - your
+        <a
+          href="{{ this.feedbackLink }}"
+          role="link"
+          tabindex="0"
+          target="_blank"
+          >feedback</a
+        >
+        will help us to improve it.
+      </span>
+    </p>
+  </div>
+
+  <div *ngIf="isPublicRegister==false" >
   <govuk-phase-banner tag="Beta">
     This is a new service - your
-    <a
-      href={{this.feedbackLink}}
-      role="link"
-      tabindex="0"
-      target="_blank"
+    <a href="{{ this.feedbackLink }}" role="link" tabindex="0" target="_blank"
       >feedback</a
     >
     will help us to improve it.
   </govuk-phase-banner>
+</div>
 
   <router-outlet />
 </govuk-page>

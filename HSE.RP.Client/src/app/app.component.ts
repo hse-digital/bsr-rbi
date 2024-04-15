@@ -25,6 +25,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
   feedbackLink = "";
   headerTitleText = "";
   cookieTitleText = "";
+  isPublicRegister = false;
 
   title: string = "HSE.RP.Client";
   constructor(private applicationService: ApplicationService,
@@ -39,6 +40,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
     this.setFooterLinks();
     this.setFeedbackLink();
     this.setCookieTitleText();
+    this.setPhaseBanner();
   }
 
   private doesUrlContains(...segment: string[]) {
@@ -54,6 +56,10 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
     else {
       this.feedbackLink = "https://forms.office.com/e/p1rYGz27V6"
     }
+  }
+
+  setPhaseBanner() {
+    this.isPublicRegister = this.isPublicRegisterPage()
   }
 
   isPublicRegisterPage() {
