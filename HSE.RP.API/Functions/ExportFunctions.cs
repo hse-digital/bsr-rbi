@@ -17,6 +17,7 @@ using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
 using Azure.Core;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HSE.RP.API.Functions
 {
@@ -64,37 +65,26 @@ namespace HSE.RP.API.Functions
         {
             var tasks = new List<Task>();
 
-            var rbiApplications = await context.CallActivityAsync<List<DynamicsBuildingProfessionRegisterApplication>>(nameof(GetDynamicsRBIApplicationsToProcess));
 
-            if(rbiApplications.Count==0)
-            {                 
+            var rbiApplications = dynamicsService.GetDynamicsRBIApplicationsToProcess().Result;
+
+            if (rbiApplications.Count == 0)
+            {
                 logger.LogError("No applications to process in dynamics - investigate update process");
                 throw new Exception("No applications to process in dynamics - investigate update process");
             }
 
-            var existingApplications = await context.CallActivityAsync<List<string>>(nameof(GetExistingRegisterApplications));
+            var existingApplications = cosmosDbService.GetIDsByBuildingProfessionType("BuildingInspector").Result;
 
-            if(existingApplications.Count==0)
+
+            if (existingApplications.Count == 0)
             {
-                logger.LogError("No existing applications returned from register- investigate update process");
-                throw new Exception("No existing applications returned from register- investigate update process");
+                logger.LogError("No existing applications returned from register - investigate update process");
+                throw new Exception("No existing applications returned from register - investigate update process");
             }
-
-            var applicationsToRemove = existingApplications.Except(rbiApplications.Select(x => x.ApplicationId)).ToList();
-
-            if(applicationsToRemove.Count == 0)
-            {
-                logger.LogInformation("No applications to remove");
-            }
-            else
-            {
-                var removes = applicationsToRemove.Select(async application => await context.CallActivityAsync(nameof(RemoveRBIApplication), application)).ToList();
-                tasks.AddRange(removes);
-            }
-
-
 
             var modifiedApplications = await context.CallActivityAsync<List<string>>(nameof(GetModifiedApplications));
+
             var applicationsToUpdate = rbiApplications.Where(x => modifiedApplications.Contains(x.BuildingProfessionApplicationDynamicsId)).Select(x => x.BuildingProfessionApplicationDynamicsId).ToList();
 
             if(applicationsToUpdate.Count == 0)
@@ -107,22 +97,20 @@ namespace HSE.RP.API.Functions
                 tasks.AddRange(imports);
             }
 
+
+
             await Task.WhenAll(tasks);
-            logger.LogInformation("Applications removed:");
-            foreach (var application in applicationsToRemove)
-            {
-                logger.LogInformation(application);
-            }
+
+            await context.CallActivityAsync(nameof(RemoveRBIApplications));
+
 
             logger.LogInformation("Applications updated:");
             foreach (var application in applicationsToUpdate)
             {
                 logger.LogInformation(application);
             }
-
-
-
         }
+
 
         [Function(nameof(RunExportRBIOrchestration))]
         public async Task RunExportRBIOrchestration([OrchestrationTrigger] TaskOrchestrationContext context)
@@ -216,6 +204,33 @@ namespace HSE.RP.API.Functions
         {
            logger.LogInformation($"Removing application {applicationId} from register");
            await cosmosDbService.RemoveItemAsync<BuildingProfessionApplication>(applicationId, "BuildingInspector");
+        }
+
+        [Function(nameof(RemoveRBIApplications))]
+        public async Task RemoveRBIApplications([ActivityTrigger] object x)
+        {
+            var rbiApplications = dynamicsService.GetDynamicsRBIApplicationsToProcess().Result;
+
+            if (rbiApplications.Count == 0)
+            {
+                logger.LogError("No applications to process in dynamics - investigate update process");
+                throw new Exception("No applications to process in dynamics - investigate update process");
+            }
+
+            var existingApplications = cosmosDbService.GetIDsByBuildingProfessionType("BuildingInspector").Result;
+
+            if (existingApplications.Count == 0)
+            {
+                logger.LogError("No existing applications returned from register - investigate update process");
+                throw new Exception("No existing applications returned from register - investigate update process");
+            }
+            var applicationsToRemove = existingApplications.Except(rbiApplications.Select(x => x.ApplicationId)).ToList();
+            foreach(var application in applicationsToRemove)
+            {
+                logger.LogInformation($"Removing application {application} from register");
+                await cosmosDbService.RemoveItemAsync<BuildingProfessionApplication>(application, "BuildingInspector");
+            }
+        
         }
 
 
