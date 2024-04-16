@@ -1,20 +1,17 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# BSR - Registered Building Inspectors Registration and Public Register Portal
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## To Debug . . .
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+Install and use Node v18 or later
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Ensure you have Azure Function local runtime installed https://go.microsoft.com/fwlink/?linkid=2174087
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+Check out the repository, preferably to a folder without spaces in the path.
+
+Mark the Portal.Api project and the Portal.Client as startup projects.
+
+Add a local.settings.json to your API project with settigns for dev
+
+Run both projects (Portal.Client will take a long time to start first time as it installs Angular components)
+
+Once both projects have started correctly, run "swa start http://localhost:4200 --api-location http://localhost:7028" this ties the Angular app to the Api, and gives you another port to browse to (4280 by default)
